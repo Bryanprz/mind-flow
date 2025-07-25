@@ -1,0 +1,2 @@
+module LifestylePlansHelper
+end

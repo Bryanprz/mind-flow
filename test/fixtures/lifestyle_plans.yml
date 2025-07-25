@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  daily_routine_items: 
+  seasonal_practices_data: 
+  spiritual_practices_items: 
+
+two:
+  daily_routine_items: 
+  seasonal_practices_data: 
+  spiritual_practices_items: 

@@ -1,0 +1,32 @@
+<%= form_with(model: lifestyle_plan) do |form| %>
+  <% if lifestyle_plan.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(lifestyle_plan.errors.count, "error") %> prohibited this lifestyle_plan from being saved:</h2>
+
+      <ul>
+        <% lifestyle_plan.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :daily_routine_items, style: "display: block" %>
+    <%= form.text_field :daily_routine_items %>
+  </div>
+
+  <div>
+    <%= form.label :seasonal_practices_data, style: "display: block" %>
+    <%= form.text_field :seasonal_practices_data %>
+  </div>
+
+  <div>
+    <%= form.label :spiritual_practices_items, style: "display: block" %>
+    <%= form.text_field :spiritual_practices_items %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

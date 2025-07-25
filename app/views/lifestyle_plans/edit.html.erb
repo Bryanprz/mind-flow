@@ -1,0 +1,12 @@
+<% content_for :title, "Editing lifestyle plan" %>
+
+<h1>Editing lifestyle plan</h1>
+
+<%= render "form", lifestyle_plan: @lifestyle_plan %>
+
+<br>
+
+<div>
+  <%= link_to "Show this lifestyle plan", @lifestyle_plan %> |
+  <%= link_to "Back to lifestyle plans", lifestyle_plans_path %>
+</div>

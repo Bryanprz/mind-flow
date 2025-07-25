@@ -1,0 +1,2 @@
+class LifestylePlan < ApplicationRecord
+end

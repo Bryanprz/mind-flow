@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @lifestyle_plan %>
+
+<div>
+  <%= link_to "Edit this lifestyle plan", edit_lifestyle_plan_path(@lifestyle_plan) %> |
+  <%= link_to "Back to lifestyle plans", lifestyle_plans_path %>
+
+  <%= button_to "Destroy this lifestyle plan", @lifestyle_plan, method: :delete %>
+</div>
