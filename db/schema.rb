@@ -10,9 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_25_074834) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_25_075718) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "foods", force: :cascade do |t|
+    t.string "name"
+    t.string "recommendation"
+    t.string "contraindication"
+    t.text "details"
+    t.string "elements", default: [], array: true
+    t.string "recipes", default: [], array: true
+    t.integer "rasa_taste"
+    t.text "virya_potency"
+    t.text "vipaka_post_digestive_effect"
+    t.string "prabhava_special_action"
+    t.integer "guna_quality"
+    t.text "samskara_preparation"
+    t.text "habitat_and_source"
+    t.integer "form_of_intake"
+    t.text "samyoga_combination"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
