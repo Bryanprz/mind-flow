@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_25_021450) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_25_082537) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,11 +42,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_25_021450) do
 
   create_table "cures", force: :cascade do |t|
     t.string "name"
-    t.text "recipe"
-    t.text "prevention"
     t.string "severity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "recommendation"
+    t.text "contraindication"
+    t.text "details"
+    t.integer "rasa_taste"
+    t.text "virya_potency"
+    t.text "vipaka_post_digestive_effect"
+    t.string "prabhava_special_action"
+    t.integer "guna_quality"
+    t.text "samskara_preparation"
+    t.text "habitat_and_source"
+    t.integer "form_of_intake"
+    t.text "samyoga_combination"
+    t.string "elements", default: [], array: true
+    t.string "recipes", default: [], array: true
   end
 
   create_table "disease_cures", id: false, force: :cascade do |t|

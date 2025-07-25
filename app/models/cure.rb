@@ -1,0 +1,2 @@
+class Cure < ApplicationRecord
+end

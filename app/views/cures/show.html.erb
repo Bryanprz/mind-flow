@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @cure %>
+
+<div>
+  <%= link_to "Edit this cure", edit_cure_path(@cure) %> |
+  <%= link_to "Back to cures", cures_path %>
+
+  <%= button_to "Destroy this cure", @cure, method: :delete %>
+</div>
