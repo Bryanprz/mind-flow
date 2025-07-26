@@ -3,18 +3,19 @@
     <div class="flex h-16 items-center justify-between">
       <div class="flex items-center">
         <div class="flex-shrink-0">
-          <img class="h-15" src="/logo.svg" alt="Healcraft">
+          <%= link_to root_path do %>
+            <img class="h-15" src="/logo.svg" alt="Healcraft">
+          <% end %>
         </div>
       </div>
       <div class="hidden md:block">
         <div class="ml-10 flex items-baseline space-x-4">
-          <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-          <a href="<%= user_path(current_user) %>" class="bg-amber-50 text-amber-600 rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Self</a>
-          <a href="#" class="text-gray-500 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Quest</a>
-          <a href="<%= foods_path %>" class="text-gray-500 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Food</a>
-          <a href="<%= herbs_path %>" class="text-gray-500 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Herbs</a>
-          <a href="<%= cures_path %>" class="text-gray-500 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Cures</a>
-          <a href="<%= lifestyle_plans_path %>" class="text-gray-500 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Lifestyle</a>
+          <a href="<%= user_path(current_user) %>" class="<%= nav_link_class(user_path(current_user)) %>" aria-current="page">Self</a>
+          <a href="#" class="<%= nav_link_class("#") %>">Quest</a>
+          <a href="<%= foods_path %>" class="<%= nav_link_class(foods_path) %>">Food</a>
+          <a href="<%= herbs_path %>" class="<%= nav_link_class(herbs_path) %>">Herbs</a>
+          <a href="<%= cures_path %>" class="<%= nav_link_class(cures_path) %>">Cures</a>
+          <a href="<%= lifestyle_plans_path %>" class="<%= nav_link_class(lifestyle_plans_path) %>">Lifestyle</a>
           <a href="#" class="text-gray-500 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Knowledge</a>
         </div>
       </div>
