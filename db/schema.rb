@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_25_082537) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_27_214333) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -199,11 +199,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_25_082537) do
 
   create_table "questions", force: :cascade do |t|
     t.bigint "quiz_id", null: false
-    t.string "category"
-    t.string "kosha"
     t.text "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "disturbed_doshas", default: [], array: true
     t.index ["quiz_id"], name: "index_questions_on_quiz_id"
   end
 
@@ -237,7 +236,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_25_082537) do
   end
 
   create_table "quiz_submissions", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.bigint "quiz_id", null: false
     t.datetime "completed_at"
     t.jsonb "results", default: {}
@@ -252,6 +251,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_25_082537) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "category"
   end
 
   create_table "seasons", force: :cascade do |t|

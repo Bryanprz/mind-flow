@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   resources :herbs
   resources :foods
   resources :users
+  post 'users/create_from_quiz', to: 'users#create_from_quiz', as: :create_user_from_quiz
+  post 'what_is_my_original_nature', to: 'quizzes#start_prakruti_quiz', as: :start_prakruti_quiz
+  post 'quiz/answer', to: 'quizzes#answer_question', as: :answer_quiz_question
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

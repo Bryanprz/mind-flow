@@ -34,6 +34,37 @@ class UsersController < ApplicationController
     end
   end
 
+  # POST /users/create_from_quiz
+  def create_from_quiz
+    @user = User.new(user_params)
+    @quiz_submission = QuizSubmission.find_by(id: params[:quiz_submission_id])
+
+    if @user.save
+      if @quiz_submission
+        @quiz_submission.update(user: @user)
+        session.delete(:quiz_submission_id) # Clear the guest session ID
+      end
+      # Placeholder for logging in the user. You'll need to implement this
+      # based on your authentication system (e.g., `log_in @user` for custom auth,
+      # or `sign_in @user` for Devise).
+      # For now, we'll just redirect.
+      redirect_to root_path, notice: "Account created and results saved!"
+    else
+      # If user creation fails, re-render the results page with errors
+      # This requires passing @user and @quiz_submission to the partial
+      respond_to do |format|
+        format.html { render "quizzes/_results", locals: { quiz_submission: @quiz_submission, user: @user }, status: :unprocessable_entity }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "main_content_area",
+            partial: "quizzes/results",
+            locals: { quiz_submission: @quiz_submission, user: @user }
+          )
+        end
+      end
+    end
+  end
+
   # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
@@ -65,6 +96,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.expect(user: [ :name, :email, :dob, :prakruti, :vikruti ])
+      params.require(:user).permit(:email, :first_name, :last_name, :password)
     end
 end
