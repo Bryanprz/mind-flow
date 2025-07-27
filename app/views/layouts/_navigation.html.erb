@@ -10,7 +10,11 @@
       </div>
       <div class="hidden md:block">
         <div class="ml-10 flex items-baseline space-x-4">
-          <a href="<%= user_path(current_user) %>" class="<%= nav_link_class(user_path(current_user)) %>" aria-current="page">Self</a>
+          <% if current_user %>
+            <a href="<%= user_path(current_user) %>" class="<%= nav_link_class(user_path(current_user)) %>" aria-current="page">Self</a>
+          <% else %>
+            <a href="<%= new_user_path %>" class="<%= nav_link_class(new_user_path) %>" aria-current="page">Self</a>
+          <% end %>
           <a href="#" class="<%= nav_link_class("#") %>">Quest</a>
           <a href="<%= foods_path %>" class="<%= nav_link_class(foods_path) %>">Food</a>
           <a href="<%= herbs_path %>" class="<%= nav_link_class(herbs_path) %>">Herbs</a>
