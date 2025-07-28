@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
+require "factory_bot_rails"
 
 module ActiveSupport
   class TestCase
@@ -8,8 +9,10 @@ module ActiveSupport
     parallelize(workers: :number_of_processors)
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-    fixtures :all
+    # fixtures :all # Commented out to prevent fixture loading
 
     # Add more helper methods to be used by all tests here...
+    include FactoryBot::Syntax::Methods
+    FactoryBot.find_definitions
   end
 end

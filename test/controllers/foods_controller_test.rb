@@ -2,7 +2,7 @@ require "test_helper"
 
 class FoodsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @food = foods(:one)
+    @food = create(:food)
   end
 
   test "should get index" do
@@ -34,7 +34,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update food" do
-    patch food_url(@food), params: { food: { contraindication: @food.contraindication, details: @food.details, form_of_intake: @food.form_of_intake, guna_quality: @food.guna_quality, habitat_and_source: @food.habitat_and_source, name: @food.name, prabhava_special_action: @food.prabhava_special_action, rasa_taste: @food.rasa_taste, recommendation: @food.recommendation, samskara_preparation: @food.samskara_preparation, samyoga_combination: @food.samyoga_combination, vipaka_post_digestive_effect: @food.vipaka_post_digestive_effect, virya_potency: @food.virya_potency } }
+    patch food_url(@food), params: { food: { name: @food.name, recommendation: @food.recommendation, reason: @food.reason, elements: @food.elements, recipes: @food.recipes, rasa_taste: @food.rasa_taste, virya_potency: @food.virya_potency, vipaka_post_digestive_effect: @food.vipaka_post_digestive_effect, prabhava_special_action: @food.prabhava_special_action, guna_quality: @food.guna_quality, samskara_preparation: @food.samskara_preparation, habitat_and_source: @food.habitat_and_source, form_of_intake: @food.form_of_intake, samyoga_combination: @food.samyoga_combination } }
     assert_redirected_to food_url(@food)
   end
 

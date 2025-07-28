@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :quiz_submission do
+  factory :quiz_entry do
     
   end
 end

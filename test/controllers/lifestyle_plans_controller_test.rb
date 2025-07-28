@@ -2,7 +2,7 @@ require "test_helper"
 
 class LifestylePlansControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @lifestyle_plan = lifestyle_plans(:one)
+    @lifestyle_plan = create(:lifestyle_plan)
   end
 
   test "should get index" do

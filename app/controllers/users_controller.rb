@@ -37,12 +37,12 @@ class UsersController < ApplicationController
   # POST /users/create_from_quiz
   def create_from_quiz
     @user = User.new(user_params)
-    @quiz_submission = QuizSubmission.find_by(id: params[:quiz_submission_id])
+    @quiz_entry = QuizEntry.find_by(id: params[:quiz_entry_id])
 
     if @user.save
-      if @quiz_submission
-        @quiz_submission.update(user: @user)
-        session.delete(:quiz_submission_id) # Clear the guest session ID
+      if @quiz_entry
+        @quiz_entry.update(user: @user)
+        session.delete(:quiz_entry_id) # Clear the guest session ID
       end
       # Placeholder for logging in the user. You'll need to implement this
       # based on your authentication system (e.g., `log_in @user` for custom auth,
@@ -51,14 +51,14 @@ class UsersController < ApplicationController
       redirect_to root_path, notice: "Account created and results saved!"
     else
       # If user creation fails, re-render the results page with errors
-      # This requires passing @user and @quiz_submission to the partial
+      # This requires passing @user and @quiz_entry to the partial
       respond_to do |format|
-        format.html { render "quizzes/_results", locals: { quiz_submission: @quiz_submission, user: @user }, status: :unprocessable_entity }
+        format.html { render "quizzes/_results", locals: { quiz_entry: @quiz_entry, user: @user }, status: :unprocessable_entity }
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
             "main_content_area",
             partial: "quizzes/results",
-            locals: { quiz_submission: @quiz_submission, user: @user }
+            locals: { quiz_entry: @quiz_entry, user: @user }
           )
         end
       end

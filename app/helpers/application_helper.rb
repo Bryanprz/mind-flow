@@ -7,8 +7,8 @@ module ApplicationHelper
     end
   end
 
-  def quiz_progress_percentage(question, quiz_submission)
-    quiz_questions = quiz_submission.quiz.questions.order(:id)
+  def quiz_progress_percentage(question, quiz_entry)
+    quiz_questions = quiz_entry.quiz.questions.order(:id)
     current_index = quiz_questions.index(question)
     total_questions = quiz_questions.count
 
