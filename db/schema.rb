@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_28_014209) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_28_192822) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -202,7 +202,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_014209) do
     t.text "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "disturbed_doshas", default: [], array: true
     t.integer "points"
     t.index ["quiz_id"], name: "index_questions_on_quiz_id"
   end
