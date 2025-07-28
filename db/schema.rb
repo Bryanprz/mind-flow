@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_28_192822) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_28_212140) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -216,11 +216,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_192822) do
 
   create_table "quiz_answers", force: :cascade do |t|
     t.bigint "quiz_entry_id", null: false
-    t.bigint "question_id", null: false
     t.bigint "quiz_option_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["question_id"], name: "index_quiz_answers_on_question_id"
     t.index ["quiz_entry_id"], name: "index_quiz_answers_on_quiz_entry_id"
     t.index ["quiz_option_id"], name: "index_quiz_answers_on_quiz_option_id"
   end
@@ -305,7 +303,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_192822) do
   add_foreign_key "quest_missions", "quest_themes"
   add_foreign_key "quest_themes", "quests"
   add_foreign_key "questions", "quizzes"
-  add_foreign_key "quiz_answers", "questions"
   add_foreign_key "quiz_answers", "quiz_entries"
   add_foreign_key "quiz_answers", "quiz_options"
   add_foreign_key "quiz_entries", "quizzes"

@@ -2,7 +2,6 @@ class QuizzesController < ApplicationController
   def start_prakruti_quiz
     # Find the Prakruti quiz by its category
     @quiz = Quiz.find_by(category: 'prakruti')
-
     if @quiz.nil?
       raise ActiveRecord::RecordNotFound, "No 'Prakruti' quiz found to start. Please ensure it's created and has category set to :prakruti."
     end
@@ -44,7 +43,6 @@ class QuizzesController < ApplicationController
 
     # Save the user's answer
     @quiz_answer = @quiz_entry.quiz_answers.create!(
-      question: @question,
       quiz_option: @quiz_option
     )
 
