@@ -26,6 +26,14 @@
           <% end %>
         </div>
       <% end %>
+
+      <% if has_previous_question %>
+        <%= form_with url: go_back_quiz_question_path, method: :post, data: { turbo_frame: "main_content_area" } do |form| %>
+          <%= form.hidden_field :quiz_submission_id, value: quiz_submission.id %>
+          <%= form.hidden_field :question_id, value: question.id %>
+          <%= form.submit "Back", class: "mt-6 rounded-md bg-gray-200 px-3.5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </turbo-frame>

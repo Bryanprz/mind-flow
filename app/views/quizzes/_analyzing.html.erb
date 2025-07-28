@@ -1,0 +1,24 @@
+<turbo-frame id="main_content_area">
+  <div class="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] px-4 py-8">
+    <div class="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg border border-amber-100 text-center">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Analyzing your responses...</h2>
+      <p class="text-lg text-gray-600 mb-8">Determining your mind-body constitution...</p>
+
+      <!-- Placeholder for animation -->
+      <div class="w-32 h-32 mx-auto mb-8 bg-amber-100 rounded-full flex items-center justify-center">
+        <svg class="animate-spin h-16 w-16 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+
+      <p class="text-sm text-gray-500">Please wait a moment while we process your results.</p>
+    </div>
+  </div>
+</turbo-frame>
+
+<script type="module">
+  setTimeout(() => {
+    Turbo.visit("<%= quiz_results_path(quiz_submission) %>", { frame: "main_content_area" });
+  }, 3000);
+</script>
