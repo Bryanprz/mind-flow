@@ -61,9 +61,9 @@ class QuizzesController < ApplicationController
             locals: { question: @next_question, quiz_entry: @quiz_entry, has_previous_question: true }
           )
         else
-          # Quiz is complete, redirect to user show page with quiz results
+          # Quiz is complete, redirect to show_results for both logged-in and guest users
           @quiz_entry.update(completed_at: Time.current)
-          redirect_to user_path(current_user || 'guest_profile', quiz_entry_id: @quiz_entry.id), notice: "Quiz completed! Here are your results."
+          redirect_to quiz_results_path(quiz_entry_id: @quiz_entry.id), notice: "Quiz completed! Here are your results."
         end
       end
     end

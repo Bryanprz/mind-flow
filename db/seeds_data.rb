@@ -1,6 +1,7 @@
 PRAKRUTI_QUESTIONS_DATA = [
   {
     text: "Which description best fits how your body has naturally been most of your life?",
+    points: 1,
     options: [
       { text: "I’ve always been on the thinner or lighter side, with colder hands and feet, and I tend to get dry skin easily.", dosha: "vata" },
       { text: "I usually have a medium build, feel warm most of the time, and have strong digestion and a sharp or defined look.", dosha: "pitta" },
@@ -9,6 +10,7 @@ PRAKRUTI_QUESTIONS_DATA = [
   },
   {
     text: "What best describes the way energy flows through you day to day?",
+    points: 1,
     options: [
       { text: "I’m full of bursts and movement, always shifting gears, but I can burn out or feel scattered quickly.",
         dosha: "vata" },
@@ -20,6 +22,7 @@ PRAKRUTI_QUESTIONS_DATA = [
   },
   {
     text: "How does your mind usually work when you’re left to your natural pace?",
+    points: 1,
     options: [
       { text: "My mind jumps around a lot—creative, dreamy, and full of ideas, though sometimes it feels hard to focus.", dosha: "vata" },
       { text: "My thoughts are sharp and organized. I like clarity and tend to think critically or strategically.", dosha: "pitta" },
@@ -28,6 +31,7 @@ PRAKRUTI_QUESTIONS_DATA = [
   },
   {
     text: "Which emotional tendencies do you relate to most often?",
+    points: 1,
     options: [
       { text: "I feel things deeply and quickly—excitement, inspiration, or worry can come and go like the wind.", dosha: "vata" },
       { text: "I experience strong emotions like determination or frustration, and I care a lot about doing things right.", dosha: "pitta" },
@@ -36,6 +40,7 @@ PRAKRUTI_QUESTIONS_DATA = [
   },
   {
     text: "What describes the way you usually express your truth or share ideas?",
+    points: 1,
     options: [
       { text: "I express myself with passion and creativity, often inspired in the moment.", dosha: "vata" },
       { text: "I like to be clear and convincing when I speak—making sure I get my point across.", dosha: "pitta" },
@@ -44,6 +49,7 @@ PRAKRUTI_QUESTIONS_DATA = [
   },
   {
     text: "How do you tend to make important decisions or sense your inner truth?",
+    points: 1,
     options: [
       { text: "I often go with my gut or a flash of intuition, even if I can’t always explain why.", dosha: "vata" },
       { text: "I think it through carefully, weigh my options, and trust my logic to guide me.", dosha: "pitta" },
@@ -52,6 +58,7 @@ PRAKRUTI_QUESTIONS_DATA = [
   },
   {
     text: "Where do you feel most at home—most peaceful, joyful, and connected?",
+    points: 1,
     options: [
       { text: "In nature, in movement, or when I’m surrounded by music, art, or silence.", dosha: "vata" },
       { text: "When I’m working toward a goal, learning something new, or transforming myself or others.", dosha: "pitta" },

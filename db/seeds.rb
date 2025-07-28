@@ -12,7 +12,7 @@ end
 
 if prakruti_quiz.questions.none?
   PRAKRUTI_QUESTIONS_DATA.each do |question_data|
-    question = Question.create!(quiz: prakruti_quiz, text: question_data[:text])
+    question = Question.create!(quiz: prakruti_quiz, text: question_data[:text], points: question_data[:points])
     question_data[:options].each do |option_data|
       QuizOption.create!(question: question, text: option_data[:text], dosha: option_data[:dosha])
     end
