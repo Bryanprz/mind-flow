@@ -87,7 +87,17 @@ class QuizzesController < ApplicationController
             @redirect_path = root_path
           end
           
-          render :analyze, status: :ok
+          # Render the _analyzing partial directly
+          respond_to do |format|
+            format.turbo_stream do
+              render turbo_stream: turbo_stream.replace(
+                "main_content_area",
+                partial: "quizzes/analyzing",
+                locals: { quiz_entry: @quiz_entry }
+              )
+            end
+            format.html { render partial: "quizzes/analyzing", locals: { quiz_entry: @quiz_entry } }
+          end
         end
       end
     end
@@ -137,8 +147,14 @@ class QuizzesController < ApplicationController
     end
     
     respond_to do |format|
-      format.turbo_stream
-      format.html { render :analyze }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          "main_content_area",
+          partial: "quizzes/analyzing",
+          locals: { quiz_entry: @quiz_entry }
+        )
+      end
+      format.html { render partial: "quizzes/analyzing", locals: { quiz_entry: @quiz_entry } }
     end
   end
 
