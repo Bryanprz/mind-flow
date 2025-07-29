@@ -4,7 +4,7 @@
       <h2 class="text-3xl font-bold text-gray-800 mb-4">Analyzing your responses...</h2>
       <p class="text-lg text-gray-600 mb-8">Determining your mind-body constitution...</p>
 
-      <!-- Placeholder for animation -->
+      <!-- Loading animation -->
       <div class="w-32 h-32 mx-auto mb-8 bg-amber-100 rounded-full flex items-center justify-center">
         <svg class="animate-spin h-16 w-16 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -18,7 +18,14 @@
 </turbo-frame>
 
 <script type="module">
+  // Show loading animation for 3 seconds, then redirect
   setTimeout(() => {
-    Turbo.visit("<%= quiz_results_path(quiz_entry) %>", { frame: "main_content_area" });
+    <% if current_user %>
+      // If user is logged in, redirect to their profile
+      Turbo.visit("<%= user_path(current_user) %>", { frame: "main_content_area" });
+    <% else %>
+      // If not logged in, redirect to home page
+      Turbo.visit("<%= root_path %>", { frame: "main_content_area" });
+    <% end %>
   }, 3000);
 </script>

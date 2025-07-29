@@ -61,9 +61,33 @@ class QuizzesController < ApplicationController
             locals: { question: @next_question, quiz_entry: @quiz_entry, has_previous_question: true }
           )
         else
-          # Quiz is complete, redirect to show_results for both logged-in and guest users
+          # Quiz is complete, show analyzing screen which will redirect to user profile
           @quiz_entry.update(completed_at: Time.current)
-          redirect_to quiz_results_path(quiz_entry_id: @quiz_entry.id), notice: "Quiz completed! Here are your results."
+          
+          # Calculate results to pass to the analyzing view
+          dosha_scores = Hash.new(0)
+          @quiz_entry.quiz_answers.each do |answer|
+            dosha_scores[answer.quiz_option.dosha] += answer.question.points
+          end
+          
+          # Sort doshas by score in descending order
+          sorted_doshas = dosha_scores.sort_by { |_dosha, score| -score }
+          
+          @primary_dosha_name = sorted_doshas[0][0] if sorted_doshas[0].present?
+          @secondary_dosha_name = sorted_doshas[1][0] if sorted_doshas[1].present?
+          
+          @primary_dosha = Dosha.find_by(name: @primary_dosha_name)
+          @secondary_dosha = Dosha.find_by(name: @secondary_dosha_name)
+          
+          # Update user's prakruti if logged in
+          if current_user
+            current_user.update(prakruti: @primary_dosha_name)
+            @redirect_path = user_path(current_user)
+          else
+            @redirect_path = root_path
+          end
+          
+          render :analyze, status: :ok
         end
       end
     end
@@ -105,10 +129,23 @@ class QuizzesController < ApplicationController
     end
   end
 
+  def analyze
+    @quiz_entry = QuizEntry.find_by(id: params[:quiz_entry_id])
+    
+    unless @quiz_entry && (session[:quiz_entry_id] == @quiz_entry.id || (current_user && current_user.quiz_entries.include?(@quiz_entry)))
+      redirect_to root_path, alert: "Quiz session expired or invalid. Please start again." and return
+    end
+    
+    respond_to do |format|
+      format.turbo_stream
+      format.html { render :analyze }
+    end
+  end
+
   def show_results
     @quiz_entry = QuizEntry.find_by(id: params[:quiz_entry_id])
 
-    unless @quiz_entry && session[:quiz_entry_id] == @quiz_entry.id
+    unless @quiz_entry && (session[:quiz_entry_id] == @quiz_entry.id || (current_user && current_user.quiz_entries.include?(@quiz_entry)))
       redirect_to root_path, alert: "Quiz session expired or invalid. Please start again." and return
     end
 
@@ -119,7 +156,7 @@ class QuizzesController < ApplicationController
     end
 
     # Sort doshas by score in descending order
-    sorted_doshas = dosha_scores.sort_by { |_dosha, score| score }.reverse
+    sorted_doshas = dosha_scores.sort_by { |_dosha, score| -score }
 
     @primary_dosha_name = sorted_doshas[0][0] if sorted_doshas[0].present?
     @secondary_dosha_name = sorted_doshas[1][0] if sorted_doshas[1].present?
@@ -135,6 +172,7 @@ class QuizzesController < ApplicationController
           locals: { quiz_entry: @quiz_entry, primary_dosha: @primary_dosha, secondary_dosha: @secondary_dosha }
         )
       end
+      format.html
     end
   end
 end

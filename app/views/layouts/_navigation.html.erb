@@ -11,7 +11,7 @@
       <div class="hidden md:block">
         <div class="ml-10 flex items-baseline space-x-4">
           <% if current_user %>
-            <a href="<%= user_path(current_user) %>" class="<%= nav_link_class(user_path(current_user)) %>" aria-current="page">Self</a>
+            <a href="<%= user_path(current_user) %>" class="<%= nav_link_class(user_path(current_user)) %> <%= 'bg-amber-100 text-amber-900' if current_page?(user_path(current_user)) %>" aria-current="<%= 'page' if current_page?(user_path(current_user)) %>">Self</a>
           <% else %>
             <a href="<%= new_user_path %>" class="<%= nav_link_class(new_user_path) %>" aria-current="page">Self</a>
           <% end %>
