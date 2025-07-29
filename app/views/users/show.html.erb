@@ -20,20 +20,20 @@
             <div class="sm:grid sm:grid-cols-3 sm:gap-4">
               <dt class="text-sm font-medium text-gray-500">Name</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <%= @user.first_name %> <%= @user.last_name %>
+                <%= @user&.name || 'Guest' %>
               </dd>
             </div>
             <div class="sm:grid sm:grid-cols-3 sm:gap-4">
               <dt class="text-sm font-medium text-gray-500">Email</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <%= @user.email %>
+                <%= @user&.email || 'your_email_here' %>
               </dd>
             </div>
-            <% if @user.date_of_birth.present? %>
+            <% if @user&.date_of_birth.present? %>
               <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt class="text-sm font-medium text-gray-500">Date of Birth</dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  <%= @user.date_of_birth.strftime("%B %d, %Y") %>
+                  <%= @user&.date_of_birth.strftime("%B %d, %Y") %>
                 </dd>
               </div>
             <% end %>
@@ -43,7 +43,7 @@
         <!-- Ayurvedic Profile -->
         <div>
           <h3 class="text-lg font-medium text-gray-900 mb-4">Ayurvedic Profile</h3>
-          <% if @user.prakruti.present? %>
+          <% if @user&.prakruti.present? %>
             <div class="mb-6">
               <h4 class="text-md font-medium text-amber-700 mb-2">Prakruti (Natural Constitution)</h4>
               <div class="bg-amber-50 p-4 rounded-lg border border-amber-100">
@@ -60,7 +60,7 @@
             </div>
           <% end %>
           
-          <% if @user.vikruti.present? %>
+          <% if @user&.vikruti.present? %>
             <div>
               <h4 class="text-md font-medium text-amber-700 mb-2">Vikruti (Current Imbalance)</h4>
               <div class="bg-amber-50 p-4 rounded-lg border border-amber-100">
@@ -77,7 +77,7 @@
             </div>
           <% end %>
           
-          <% if @user.prakruti.blank? && @user.vikruti.blank? %>
+          <% if @user&.prakruti.blank? && @user&.vikruti.blank? %>
             <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
               <div class="flex">
                 <div class="flex-shrink-0">
@@ -99,29 +99,31 @@
       </div>
       
       <!-- Action Buttons -->
-      <div class="mt-8 pt-5 border-t border-gray-200 flex justify-between">
-        <div>
-          <%= link_to edit_user_path(@user), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500" do %>
-            <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-            </svg>
-            Edit Profile
-          <% end %>
-          
-          <% if @user.prakruti.blank? %>
-            <%= link_to start_prakruti_quiz_path, class: "ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-amber-700 bg-amber-100 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500" do %>
+      <% if @user %>
+        <div class="mt-8 pt-5 border-t border-gray-200 flex justify-between">
+          <div>
+            <%= link_to edit_user_path(@user), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500" do %>
               <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
               </svg>
-              Take the Quiz
+              Edit Profile
             <% end %>
-          <% end %>
+
+            <% if @user.prakruti.blank? %>
+              <%= link_to start_prakruti_quiz_path, class: "ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-amber-700 bg-amber-100 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500" do %>
+                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                </svg>
+                Take the Quiz
+              <% end %>
+            <% end %>
+          </div>
+
+          <div>
+            <%= link_to "View Full Report", "#", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-amber-700 bg-white hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500" %>
+          </div>
         </div>
-        
-        <div>
-          <%= link_to "View Full Report", "#", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-amber-700 bg-white hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500" %>
-        </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>

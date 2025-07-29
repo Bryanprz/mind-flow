@@ -1,5 +1,24 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :set_user, only: %i[show edit update destroy]
+  before_action :load_quiz_results, only: [:show, :self]
+
+  # GET /self - Shows the current user's profile or guest quiz results
+  def self
+    if current_user
+      @user = current_user
+      render :show
+    elsif session[:quiz_entry_id]
+      @quiz_entry = QuizEntry.find_by(id: session[:quiz_entry_id])
+      if @quiz_entry.nil?
+        session.delete(:quiz_entry_id)
+        redirect_to root_path, alert: "Session expired. Please take the quiz again."
+        return
+      end
+      render :show
+    else
+      redirect_to root_path, notice: "Please take the quiz to see your results."
+    end
+  end
 
   # GET /users or /users.json
   def index
@@ -8,6 +27,18 @@ class UsersController < ApplicationController
 
   # GET /users/1 or /users/1.json
   def show
+    # Find the most recent completed quiz entry for this user with preloaded associations
+    @quiz_entry = @user.quiz_entries.completed.with_dosha_scores.order(completed_at: :desc).first
+    
+    if @quiz_entry
+      # Get dosha information from the quiz entry
+      dosha_info = @quiz_entry.calculate_primary_doshas
+      @primary_dosha_name = dosha_info[:primary_dosha]
+      @secondary_dosha_name = dosha_info[:secondary_dosha]
+      
+      # Update user's prakruti if not set
+      @quiz_entry.update_user_prakruti!
+    end
   end
 
   # GET /users/new
@@ -89,13 +120,32 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def user_params
-      params.require(:user).permit(:email, :first_name, :last_name, :password)
+  def load_quiz_results
+    if @user
+      # For regular user show action
+      @quiz_entry = @user.quiz_entries.completed.order(completed_at: :desc).first
+    elsif session[:quiz_entry_id]
+      # For guest users
+      @quiz_entry = QuizEntry.find_by(id: session[:quiz_entry_id])
     end
+    
+    if @quiz_entry
+      dosha_info = @quiz_entry.calculate_primary_doshas
+      @primary_dosha_name = dosha_info[:primary_dosha]
+      @secondary_dosha_name = dosha_info[:secondary_dosha]
+      @primary_dosha = Dosha.find_by(name: @primary_dosha_name) if @primary_dosha_name
+      @secondary_dosha = Dosha.find_by(name: @secondary_dosha_name) if @secondary_dosha_name
+    end
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id]) if params[:id].present?
+  end
+
+  # Only allow a list of trusted parameters through.
+  def user_params
+    params.require(:user).permit(:email, :first_name, :last_name, :password)
+  end
 end

@@ -61,43 +61,20 @@ class QuizzesController < ApplicationController
             locals: { question: @next_question, quiz_entry: @quiz_entry, has_previous_question: true }
           )
         else
-          # Quiz is complete, show analyzing screen which will redirect to user profile
+          # Quiz is complete
           @quiz_entry.update(completed_at: Time.current)
           
-          # Calculate results to pass to the analyzing view
-          dosha_scores = Hash.new(0)
-          @quiz_entry.quiz_answers.each do |answer|
-            dosha_scores[answer.quiz_option.dosha] += answer.question.points
-          end
-          
-          # Sort doshas by score in descending order
-          sorted_doshas = dosha_scores.sort_by { |_dosha, score| -score }
-          
-          @primary_dosha_name = sorted_doshas[0][0] if sorted_doshas[0].present?
-          @secondary_dosha_name = sorted_doshas[1][0] if sorted_doshas[1].present?
-          
-          @primary_dosha = Dosha.find_by(name: @primary_dosha_name)
-          @secondary_dosha = Dosha.find_by(name: @secondary_dosha_name)
-          
-          # Update user's prakruti if logged in
+          # For logged-in users, update their prakruti
           if current_user
-            current_user.update(prakruti: @primary_dosha_name)
-            @redirect_path = user_path(current_user)
+            @quiz_entry.update(user: current_user)
+            @quiz_entry.update_user_prakruti!
           else
-            @redirect_path = root_path
+            # For guests, store the quiz_entry_id in the session
+            session[:quiz_entry_id] = @quiz_entry.id
           end
           
-          # Render the _analyzing partial directly
-          respond_to do |format|
-            format.turbo_stream do
-              render turbo_stream: turbo_stream.replace(
-                "main_content_area",
-                partial: "quizzes/analyzing",
-                locals: { quiz_entry: @quiz_entry }
-              )
-            end
-            format.html { render partial: "quizzes/analyzing", locals: { quiz_entry: @quiz_entry } }
-          end
+          # Redirect to self profile to show results
+          redirect_to self_profile_path
         end
       end
     end
@@ -159,33 +136,40 @@ class QuizzesController < ApplicationController
   end
 
   def show_results
-    @quiz_entry = QuizEntry.find_by(id: params[:quiz_entry_id])
+    @quiz_entry = QuizEntry.find_by(id: params[:quiz_entry_id] || params[:id])
 
-    unless @quiz_entry && (session[:quiz_entry_id] == @quiz_entry.id || (current_user && current_user.quiz_entries.include?(@quiz_entry)))
+    # Allow access if:
+    # 1. The quiz entry exists and matches the session (for guests)
+    # 2. The current user owns the quiz entry (for logged-in users)
+    # 3. The quiz entry is completed
+    unless @quiz_entry && 
+           (session[:quiz_entry_id] == @quiz_entry.id || 
+            (current_user && current_user.quiz_entries.include?(@quiz_entry)))
       redirect_to root_path, alert: "Quiz session expired or invalid. Please start again." and return
     end
 
-    # Calculate results
-    dosha_scores = Hash.new(0)
-    @quiz_entry.quiz_answers.each do |answer|
-      dosha_scores[answer.quiz_option.dosha] += answer.question.points
-    end
+    # Calculate results using the QuizEntry model methods
+    dosha_info = @quiz_entry.calculate_primary_doshas
+    @primary_dosha_name = dosha_info[:primary_dosha]
+    @secondary_dosha_name = dosha_info[:secondary_dosha]
 
-    # Sort doshas by score in descending order
-    sorted_doshas = dosha_scores.sort_by { |_dosha, score| -score }
+    @primary_dosha = Dosha.find_by(name: @primary_dosha_name) if @primary_dosha_name
+    @secondary_dosha = Dosha.find_by(name: @secondary_dosha_name) if @secondary_dosha_name
 
-    @primary_dosha_name = sorted_doshas[0][0] if sorted_doshas[0].present?
-    @secondary_dosha_name = sorted_doshas[1][0] if sorted_doshas[1].present?
-
-    @primary_dosha = Dosha.find_by(name: @primary_dosha_name)
-    @secondary_dosha = Dosha.find_by(name: @secondary_dosha_name)
+    # For logged-in users, update their prakruti if not set
+    @quiz_entry.update_user_prakruti! if current_user
 
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
           "main_content_area",
           partial: "quizzes/results",
-          locals: { quiz_entry: @quiz_entry, primary_dosha: @primary_dosha, secondary_dosha: @secondary_dosha }
+          locals: { 
+            quiz_entry: @quiz_entry, 
+            primary_dosha: @primary_dosha, 
+            secondary_dosha: @secondary_dosha,
+            current_user: current_user
+          }
         )
       end
       format.html

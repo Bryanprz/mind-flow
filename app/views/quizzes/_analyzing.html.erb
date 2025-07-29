@@ -16,14 +16,11 @@
 </div>
 
 <script type="module">
-  // Show loading animation for 3 seconds, then redirect
+  // Show loading animation for 3 seconds, then show results
   setTimeout(() => {
-    <% if defined?(current_user) && current_user %>
-      // If user is logged in, redirect to their profile
-      Turbo.visit("<%= user_path(current_user) %>", { frame: "main_content_area" });
-    <% else %>
-      // If not logged in, redirect to home page
-      Turbo.visit("<%= root_path %>", { frame: "main_content_area" });
-    <% end %>
+    // For logged-in users, redirect to their profile
+    // For guests, show results in the current page
+    const url = "<%= current_user ? user_path(current_user) : quiz_show_results_path(@quiz_entry) %>";
+    Turbo.visit(url, { frame: "main_content_area" });
   }, 3000);
 </script>
