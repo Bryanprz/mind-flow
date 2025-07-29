@@ -73,8 +73,12 @@ class QuizzesController < ApplicationController
             session[:quiz_entry_id] = @quiz_entry.id
           end
           
-          # Redirect to self profile to show results
-          redirect_to self_profile_path
+          # Render a Turbo Stream that will trigger a client-side redirect
+          render turbo_stream: turbo_stream.replace(
+            'main_content_area',
+            partial: 'quizzes/redirecting',
+            locals: { self_profile_path: self_profile_path }
+          )
         end
       end
     end

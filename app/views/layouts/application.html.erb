@@ -25,7 +25,7 @@
   <body>
     <%= render "layouts/navigation" %>
     <div class="mt-35">
-      <main class="<%= content_for?(:main_container_class) ? yield(:main_container_class) : 'container mx-auto px-5 flex' %>">
+      <main id="main_content_area" class="<%= content_for?(:main_container_class) ? yield(:main_container_class) : 'container mx-auto px-5 flex' %>">
         <%= yield %>
       </main>
     </div>
