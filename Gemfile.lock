@@ -90,6 +90,7 @@ GEM
     brakeman (7.1.0)
       racc
     builder (3.3.0)
+    byebug (12.0.0)
     capybara (3.40.0)
       addressable
       matrix
@@ -217,6 +218,11 @@ GEM
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-byebug (3.11.0)
+      byebug (~> 12.0)
+      pry (>= 0.13, < 0.16)
+    pry-rails (0.3.11)
+      pry (>= 0.13.0)
     pry-stack_explorer (0.6.1)
       binding_of_caller (~> 1.0)
       pry (~> 0.13)
@@ -406,6 +412,8 @@ DEPENDENCIES
   pg (~> 1.1)
   propshaft
   pry
+  pry-byebug
+  pry-rails
   pry-stack_explorer
   puma (>= 5.0)
   rails (~> 8.0.2)

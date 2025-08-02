@@ -56,7 +56,9 @@ group :development, :test do
   gem 'awesome_print'
   gem 'hirb'
   gem 'pry'
+  gem 'pry-rails'
   gem 'pry-stack_explorer'
+  gem 'pry-byebug'
 end
 
 group :development do
