@@ -36,6 +36,8 @@
           <%= form.hidden_field :question_id, value: question.id %>
           <%= form.submit "Back", class: "mt-6 rounded-md bg-gray-200 px-3.5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
         <% end %>
+      <% else %>
+        <div class="mt-6 h-10"></div>
       <% end %>
     </div>
   </div>
