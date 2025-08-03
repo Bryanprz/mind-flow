@@ -1,1 +1,149 @@
-<%= render 'show' %>
+<div class="container mx-auto px-4 py-8">
+  <% if notice.present? %>
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
+      <span class="block sm:inline"><%= notice %></span>
+    </div>
+  <% end %>
+
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6 bg-amber-50 border-b border-amber-200">
+      <h1 class="text-2xl leading-6 font-bold text-amber-900">Your Ayurvedic Profile</h1>
+      <p class="mt-1 max-w-2xl text-sm text-amber-700">Your unique mind-body constitution</p>
+    </div>
+    
+    <div class="px-4 py-5 sm:p-6">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <!-- Personal Information -->
+        <div>
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Personal Information</h3>
+          <dl class="space-y-4">
+            <div class="sm:grid sm:grid-cols-3 sm:gap-4">
+              <dt class="text-sm font-medium text-gray-500">Name</dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <%= @user&.name || 'Guest' %>
+              </dd>
+            </div>
+            <div class="sm:grid sm:grid-cols-3 sm:gap-4">
+              <dt class="text-sm font-medium text-gray-500">Email</dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <%= @user&.email || 'your_email_here' %>
+              </dd>
+            </div>
+            <% if @user&.date_of_birth.present? %>
+              <div class="sm:grid sm:grid-cols-3 sm:gap-4">
+                <dt class="text-sm font-medium text-gray-500">Date of Birth</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  <%= @user&.date_of_birth.strftime("%B %d, %Y") %>
+                </dd>
+              </div>
+            <% end %>
+          </dl>
+        </div>
+        
+        <!-- Ayurvedic Profile -->
+        <div>
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Ayurvedic Profile</h3>
+          <% if @user&.prakruti.present? %>
+            <div class="mb-6">
+              <h4 class="text-md font-medium text-amber-700 mb-2">Prakruti (Natural Constitution)</h4>
+              <div class="bg-amber-50 p-4 rounded-lg border border-amber-100">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center">
+                    <span class="text-amber-600 font-bold text-lg"><%= @user.prakruti[0].upcase %></span>
+                  </div>
+                  <div class="ml-4">
+                    <p class="text-lg font-medium text-gray-900"><%= @user.prakruti.capitalize %></p>
+                    <p class="text-sm text-gray-500">Your natural mind-body type</p>
+                  </div>
+                </div>
+
+                <% if @primary_dosha&.archetype_info.present? %>
+                  <div class="mt-4 pt-4 border-t border-amber-200">
+                    <h5 class="text-md font-semibold text-gray-800 mb-2">Archetype: <%= @primary_dosha.archetype_info["archetype"] %></h5>
+                    <p class="text-sm text-gray-700 mb-2">Elements: <%= @primary_dosha.archetype_info["elements"] %></p>
+                    <p class="text-sm text-gray-700">Primary Traits: <%= @primary_dosha.archetype_info["primary_traits"] %></p>
+                  </div>
+                <% end %>
+
+                <% if @primary_dosha&.people_manifestation.present? %>
+                  <div class="mt-4 pt-4 border-t border-amber-200">
+                    <h5 class="text-md font-semibold text-gray-800 mb-2">Manifestation in People:</h5>
+                    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                      <li>Body Type: <%= @primary_dosha.people_manifestation["body_type"] %></li>
+                      <li>Emotions: <%= @primary_dosha.people_manifestation["emotions"] %></li>
+                      <li>Energy: <%= @primary_dosha.people_manifestation["energy"] %></li>
+                      <li>Careers: <%= @primary_dosha.people_manifestation["careers"] %></li>
+                    </ul>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+          
+          <% if @user&.vikruti.present? %>
+            <div>
+              <h4 class="text-md font-medium text-amber-700 mb-2">Vikruti (Current Imbalance)</h4>
+              <div class="bg-amber-50 p-4 rounded-lg border border-amber-100">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center">
+                    <span class="text-amber-600 font-bold text-lg"><%= @user.vikruti[0].upcase %></span>
+                  </div>
+                  <div class="ml-4">
+                    <p class="text-lg font-medium text-gray-900"><%= @user.vikruti.capitalize %></p>
+                    <p class="text-sm text-gray-500">Your current imbalance</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          
+          <% if @user&.prakruti.blank? && @user&.vikruti.blank? %>
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-yellow-700">
+                    You haven't completed your Ayurvedic profile yet. 
+                    <%= link_to "Take the quiz now", start_prakruti_quiz_path, class: "font-medium underline text-yellow-700 hover:text-yellow-600" %>
+                    to discover your dosha type.
+                  </p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+      <!-- Action Buttons -->
+      <% if @user %>
+        <div class="mt-8 pt-5 border-t border-gray-200 flex justify-between">
+          <div>
+            <%= link_to edit_user_path(@user), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500" do %>
+              <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+              </svg>
+              Edit Profile
+            <% end %>
+
+            <% if @user.prakruti.blank? %>
+              <%= link_to start_prakruti_quiz_path, class: "ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-amber-700 bg-amber-100 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500" do %>
+                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                </svg>
+                Take the Quiz
+              <% end %>
+            <% end %>
+          </div>
+
+          <div>
+            <%= link_to "View Full Report", "#", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-amber-700 bg-white hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

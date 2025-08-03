@@ -19,4 +19,47 @@ if prakruti_quiz.questions.none?
   end
 end
 
+# Populate Dosha details from Chapter 4 of the PDF
+Dosha.find_or_create_by!(name: 'vata') do |dosha|
+  dosha.archetype_info = {
+    archetype: "Mystic / Visionary",
+    elements: "Space and Air",
+    primary_traits: "Light, dry, mobile, creative, erratic"
+  }
+  dosha.people_manifestation = {
+    body_type: "Thin frame, dry skin, cold hands/feet",
+    emotions: "Anxious, excited, scattered, imaginative",
+    energy: "Bursts of creativity, fatigue comes quickly",
+    careers: "Artist, dancer, musician, writer, entrepreneur, traveler"
+  }
+end
+
+Dosha.find_or_create_by!(name: 'pitta') do |dosha|
+  dosha.archetype_info = {
+    archetype: "Warrior / Reformer",
+    elements: "Fire and Water",
+    primary_traits: "Hot, sharp, intense, focused"
+  }
+  dosha.people_manifestation = {
+    body_type: "Medium build, warm body temperature, sharp features",
+    emotions: "Anger, ambition, courage, determination",
+    energy: "Steady and intense, can burn out from overwork",
+    careers: "Lawyer, police, surgeon, manager, strategist, engineer"
+  }
+end
+
+Dosha.find_or_create_by!(name: 'kapha') do |dosha|
+  dosha.archetype_info = {
+    archetype: "Nurturer / Preserver",
+    elements: "Earth and Water",
+    primary_traits: "Heavy, stable, nurturing, calm"
+  }
+  dosha.people_manifestation = {
+    body_type: "Sturdy build, soft skin, slow digestion",
+    emotions: "Calm, loyal, loving, but prone to lethargy or sadness",
+    energy: "Consistent, slow to start but long-lasting",
+    careers: "Counselor, caregiver, teacher, chef, social worker"
+  }
+end
+
 puts "Seeds file has been run."
