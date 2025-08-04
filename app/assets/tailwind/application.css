@@ -2,7 +2,7 @@
 
 /* @plugin "./daisyui.js"; */
 @plugin "./daisyui.js" {
-  themes: emerald;
+  themes: all;
   logs: true;
 }
 

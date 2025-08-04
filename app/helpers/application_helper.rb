@@ -1,9 +1,20 @@
 module ApplicationHelper
+  # def nav_link_class(path)
+  #   if current_page?(path)
+  #     # Active → subtle fill using primary color, but text stays black
+  #     "bg-primary/20 text-black hover:bg-primary/30 rounded-md px-3 py-2 text-sm font-medium"
+  #   else
+  #     # Inactive → light secondary border, fills primary on hover
+  #     "text-black hover:bg-primary hover:text-black rounded-md px-3 py-2 text-sm font-medium"
+  #   end
+  # end
   def nav_link_class(path)
     if current_page?(path)
-      "bg-amber-50 text-amber-600 rounded-md px-3 py-2 text-sm font-medium"
+      # active tab → filled primary color
+      "bg-primary text-primary-content hover:bg-primary-focus rounded-md px-3 py-2 text-sm font-medium"
     else
-      "text-gray-500 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+      # inactive tab → neutral text, becomes primary on hover
+      "text-primary hover:bg-primary hover:text-primary-content rounded-md px-3 py-2 text-sm font-medium"
     end
   end
 
