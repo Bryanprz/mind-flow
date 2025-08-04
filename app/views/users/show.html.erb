@@ -43,6 +43,75 @@
         <!-- Ayurvedic Profile -->
         <div>
           <h3 class="text-lg font-medium text-gray-900 mb-4">Ayurvedic Profile</h3>
+          <%# Quiz Results Section %>
+          <% if @quiz_entry.present? %>
+            <div class="mt-8 pt-8 border-t border-gray-200">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-medium text-gray-900">Your Quiz Results</h3>
+                <span class="text-sm text-amber-600"><%= @quiz_entry.completed_at&.strftime("%B %d, %Y") %></span>
+              </div>
+              
+              <div class="mt-4 bg-amber-50 p-4 rounded-lg border border-amber-100">
+                <% if @quiz_entry.primary_dosha.present? %>
+                  <div class="mb-6">
+                    <h4 class="text-md font-medium text-amber-700 mb-2">
+                      Primary Dosha: 
+                      <% if @quiz_entry.primary_dosha.is_a?(String) %>
+                        <%= @quiz_entry.primary_dosha.capitalize %>
+                      <% elsif @quiz_entry.primary_dosha.is_a?(Integer) %>
+                        <%= Dosha::TYPES[@quiz_entry.primary_dosha]&.capitalize || "Unknown" %>
+                      <% end %>
+                    </h4>
+                    <% if @primary_dosha&.core_qualities.present? %>
+                      <p class="text-gray-700 mb-3"><%= @primary_dosha.core_qualities["description"] %></p>
+                      
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <% if @primary_dosha.strengths.any? %>
+                          <div>
+                            <h5 class="font-semibold text-gray-800 mb-1">Strengths</h5>
+                            <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                              <% @primary_dosha.strengths.each do |strength| %>
+                                <li><%= strength %></li>
+                              <% end %>
+                            </ul>
+                          </div>
+                        <% end %>
+                        
+                        <% if @primary_dosha.growth_areas.any? %>
+                          <div>
+                            <h5 class="font-semibold text-gray-800 mb-1">Growth Areas</h5>
+                            <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                              <% @primary_dosha.growth_areas.each do |area| %>
+                                <li><%= area %></li>
+                              <% end %>
+                            </ul>
+                          </div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+                
+                <% if @quiz_entry.secondary_dosha.present? && @secondary_dosha.present? %>
+                  <div class="mt-6 pt-6 border-t border-amber-100">
+                    <h4 class="text-md font-medium text-amber-700 mb-2">
+                      Secondary Dosha: 
+                      <% if @quiz_entry.secondary_dosha.is_a?(String) %>
+                        <%= @quiz_entry.secondary_dosha.capitalize %>
+                      <% elsif @quiz_entry.secondary_dosha.is_a?(Integer) %>
+                        <%= Dosha::TYPES[@quiz_entry.secondary_dosha]&.capitalize || "Unknown" %>
+                      <% end %>
+                    </h4>
+                    <% if @secondary_dosha.core_qualities.present? %>
+                      <p class="text-gray-700"><%= @secondary_dosha.core_qualities["description"] %></p>
+                    <% end %>
+                  </div>
+                <% end %>
+                
+              </div>
+            </div>
+          <% end %>
+          
           <% if @user&.prakruti.present? %>
             <div class="mb-6">
               <h4 class="text-md font-medium text-amber-700 mb-2">Prakruti (Natural Constitution)</h4>
