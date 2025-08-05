@@ -24,7 +24,7 @@
 
   <body class="min-h-screen flex flex-col">
     <%= render "layouts/navigation" %>
-    <div class="mt-35 flex-1 flex flex-col">
+    <div class="mt-5 flex-1 flex flex-col">
       <main id="main_content_area" class="<%= content_for?(:main_container_class) ? yield(:main_container_class) : 'container mx-auto px-5 flex' %>">
         <%= yield %>
       </main>

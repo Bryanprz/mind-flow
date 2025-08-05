@@ -4,6 +4,15 @@ class UsersController < ApplicationController
 
   # GET /self - Shows the current user's profile or guest quiz results
   def show
+    @symptoms = [
+      {stage: 1, name: 'Accumulation', description: 'stuff', symptoms: ['Bloating', 'Mild fatigue']},
+      {stage: 2, name: 'Aggravation', description: 'stuff', symptoms: ['Heartburn', 'Mild pain']},
+      {stage: 3, name: 'Overflow', description: 'stuff', symptoms: ['Headache', 'Rash']},
+      {stage: 4, name: 'Relocation', description: 'stuff', symptoms: ['Joint pain', 'Muscle ache']},
+      {stage: 5, name: 'Manifestation', description: 'stuff', symptoms: ['Chronic pain', 'Digestive issues']},
+      {stage: 6, name: 'Complication', description: 'stuff', symptoms: ['Arthritis', 'Ulcer']}
+    ]
+
     respond_to do |format|
       format.html do
         if current_user
@@ -32,30 +41,6 @@ class UsersController < ApplicationController
   def index
     @users = User.all
   end
-
-  # GET /users/1 or /users/1.json
-  # def show
-  #   respond_to do |format|
-  #     format.html do
-  #       # Find the most recent completed quiz entry for this user with preloaded associations
-  #       @quiz_entry = @user.quiz_entries.completed.with_dosha_scores.order(completed_at: :desc).first
-  #       
-  #       if @quiz_entry
-  #         # Get dosha information from the quiz entry
-  #         dosha_info = @quiz_entry.calculate_primary_doshas
-  #         @primary_dosha_name = dosha_info[:primary_dosha]
-  #         @secondary_dosha_name = dosha_info[:secondary_dosha]
-  #         
-  #         # Update user's prakruti if not set
-  #         @quiz_entry.update_user_prakruti!
-  #       end
-  #     end
-  #     
-  #     format.turbo_stream do
-  #       # This will render users/show.turbo_stream.erb
-  #     end
-  #   end
-  # end
 
   # GET /users/new
   def new

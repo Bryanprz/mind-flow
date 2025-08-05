@@ -2,7 +2,7 @@ module ApplicationHelper
     def nav_link_class(path)
     if current_page?(path)
       # Active → soft, opaque accent background, black text
-      "bg-accent/20 text-black rounded-md px-3 py-2 text-sm font-medium"
+      "bg-secondary/70 text-black rounded-md px-3 py-2 text-sm font-medium"
     else
       # Inactive → black text, no background
       "text-black px-3 py-2 text-sm font-medium"

@@ -1,8 +1,16 @@
 <% content_for :main_container_class, "flex items-center justify-center" %>
 
 <turbo-frame id="main_content_area">
-  <div class="text-center">
-    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Welcome to Healcraft</h1>
+  <div class="text-center mt-20">
+
+
+    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+      Welcome to 
+      <span class="text-4xl font-bold bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent sm:text-6xl tracking-tight">
+        Chronic Healer
+      </span>
+    </h1>
+
     <p class="mt-6 text-lg leading-8 text-gray-600">Your personalized guide to Ayurvedic wellness.</p>
     <div class="mt-10 flex items-center justify-center gap-x-6">
       <%= form_with url: start_prakruti_quiz_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
