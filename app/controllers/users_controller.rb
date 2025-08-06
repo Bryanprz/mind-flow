@@ -4,14 +4,16 @@ class UsersController < ApplicationController
 
   # GET /self - Shows the current user's profile or guest quiz results
   def show
-    @symptoms = [
-      {stage: 1, name: 'Accumulation', description: 'stuff', symptoms: ['Bloating', 'Mild fatigue']},
-      {stage: 2, name: 'Aggravation', description: 'stuff', symptoms: ['Heartburn', 'Mild pain']},
-      {stage: 3, name: 'Overflow', description: 'stuff', symptoms: ['Headache', 'Rash']},
-      {stage: 4, name: 'Relocation', description: 'stuff', symptoms: ['Joint pain', 'Muscle ache']},
-      {stage: 5, name: 'Manifestation', description: 'stuff', symptoms: ['Chronic pain', 'Digestive issues']},
-      {stage: 6, name: 'Complication', description: 'stuff', symptoms: ['Arthritis', 'Ulcer']}
-    ]
+    @symptoms = []
+
+    DiseaseStage.all.each do |disease_stage|
+      @symptoms << { 
+        stage: disease_stage.formation_stage,
+        name: disease_stage.name,
+        description: disease_stage.description,
+        symptoms: ['']
+      }
+    end
 
     respond_to do |format|
       format.html do
@@ -26,8 +28,6 @@ class UsersController < ApplicationController
             return
           end
           render :show
-        else
-          redirect_to root_path, notice: "Please take the quiz to see your results."
         end
       end
       

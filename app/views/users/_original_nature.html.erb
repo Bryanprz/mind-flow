@@ -1,0 +1,33 @@
+  <!-- Original Nature Card -->
+  <div class="card card-side card-border bg-white">
+  <figure>
+    <img
+      src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=320&h=320&q=80"
+      alt="Movie" />
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title text-xl font-semibold">Your Elemental Archetype</h2>
+    <p class="text-lg">
+      Your unique combination of the five elements shapes your mind, body, and spirit. Understanding your original nature helps you live in harmony with your true self and the world around you.
+    </p>
+    <div class="flex justify-center gap-4 mt-2">
+      <% elements = [
+        {name: 'Space', icon: '🌌'},
+        {name: 'Air', icon: '💨'},
+        {name: 'Fire', icon: '🔥'},
+        {name: 'Water', icon: '💧'},
+        {name: 'Earth', icon: '🌍'}
+      ] %>
+    <% user_strong_elements = @user&.strong_elements || ['Fire', 'Air'] %>
+    <% elements.each do |el| %>
+      <div class="tooltip" data-tip="<%= el[:name] %>">
+        <span class="text-3xl <%= user_strong_elements.include?(el[:name]) ? 'ring-2 ring-primary rounded-full' : 'opacity-60' %>"><%= el[:icon] %></span>
+      </div>
+    <% end %>
+    </div>
+    <div class="card-actions justify-end">
+      <button class="btn btn-accent text-sm font-bold">Learn more</button>
+    </div>
+  </div>
+</div>
+
