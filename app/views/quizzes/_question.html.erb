@@ -8,7 +8,7 @@
       </div>
       <p class="text-sm text-right mb-4"><%= progress_percentage %>% Complete</p>
 
-      <h2 class="text-3xl font-bold mb-8 text-center"><%= question.text %></h2>
+      <h2 class="text-3xl font-bold mb-8 mt-9 text-center"><%= question.text %></h2>
 
       <%= form_with url: answer_quiz_question_path, method: :post, data: { controller: "quiz-question", turbo_frame: "main_content_area" } do |form| %>
         <%= form.hidden_field :quiz_entry_id, value: quiz_entry.id %>
