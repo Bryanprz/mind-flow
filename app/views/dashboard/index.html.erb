@@ -12,11 +12,13 @@
     </h1>
 
     <p class="mt-6 text-lg leading-8 text-gray-600">Your personalized guide to Ayurvedic wellness.</p>
+
     <div class="mt-10 flex items-center justify-center gap-x-6">
       <%= form_with url: start_prakruti_quiz_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
-        <%= button_tag "Get started", class: "btn btn-primary" %>
+        <%= button_tag "Get started", class: "btn btn-primary text-white text-lg" %>
       <% end %>
-      <a href="#" class="btn btn-soft btn-secondary">Learn more <span aria-hidden="true">→</span></a>
+      <a href="#" class="btn btn-soft btn-secondary text-lg">Learn more <span aria-hidden="true">→</span></a>
     </div>
+
   </div>
 </turbo-frame>
