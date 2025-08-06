@@ -1,55 +1,58 @@
 class QuizEntry < ApplicationRecord
   belongs_to :quiz
   belongs_to :user, optional: true
-  has_many :quiz_answers
-  
+  has_many :quiz_answers, dependent: :destroy
+
   # Scopes
   scope :completed, -> { where.not(completed_at: nil) }
   scope :incomplete, -> { where(completed_at: nil) }
-  scope :with_dosha_scores, -> { includes(quiz_answers: { quiz_option: :question }) }
-  
-  # Returns a hash of dosha scores for this quiz entry
-  def calculate_dosha_scores
-    quiz_answers.each_with_object(Hash.new(0)) do |answer, scores|
-      scores[answer.quiz_option.dosha] += answer.question.points
-    end
-  end
-  
-  # Returns the primary and secondary doshas with their scores
+
+  # This is the main method for calculating quiz results.
+  # It tallies scores based on the selected quiz options' dosha enum.
   def calculate_primary_doshas
-    scores = calculate_dosha_scores
-    sorted_doshas = scores.sort_by { |_dosha, score| -score }
-    
-    primary = sorted_doshas[0] if sorted_doshas[0].present?
-    secondary = sorted_doshas[1] if sorted_doshas[1].present?
-    
+    # Step 1: Get all selected doshas for this quiz entry.
+    selected_doshas = self.quiz_answers.joins(quiz_option: :question).pluck('quiz_options.dosha')
+
+    # Step 2: Count the occurrences of each dosha.
+    dosha_scores = { "Vata" => 0, "Pitta" => 0, "Kapha" => 0 }
+    selected_doshas.each do |dosha_enum_value|
+      case dosha_enum_value
+      when 1 # Corresponds to 'vata'
+        dosha_scores["Vata"] += 1
+      when 2 # Corresponds to 'pitta'
+        dosha_scores["Pitta"] += 1
+      when 3 # Corresponds to 'kapha'
+        dosha_scores["Kapha"] += 1
+      end
+    end
+
+    # Step 3: Sort the doshas by score to find the primary and secondary.
+    sorted_doshas = dosha_scores.sort_by { |_, score| -score }
+
+    primary_dosha_name = sorted_doshas[0][0]
+    secondary_dosha_name = sorted_doshas[1][0]
+
+    # Step 4: Return the results.
     {
-      primary_dosha: primary&.first,
-      primary_score: primary&.last,
-      secondary_dosha: secondary&.first,
-      secondary_score: secondary&.last,
-      all_scores: scores
+      primary_dosha: primary_dosha_name,
+      secondary_dosha: secondary_dosha_name,
+      scores: dosha_scores
     }
   end
-  
-  # Returns the primary dosha name
-  def primary_dosha
-    calculate_primary_doshas[:primary_dosha]
-  end
-  
-  # Returns the secondary dosha name
-  def secondary_dosha
-    calculate_primary_doshas[:secondary_dosha]
-  end
-  
-  # Returns all dosha scores
-  def dosha_scores
-    calculate_dosha_scores
-  end
-  
-  # Updates the user's prakruti if not already set
+
+  # Updates the user's prakruti (primary and secondary doshas)
   def update_user_prakruti!
-    return unless user && primary_dosha.present? && user.prakruti.blank?
-    user.update(prakruti: primary_dosha)
+    return unless user && completed_at?
+
+    results = calculate_primary_doshas
+    primary_dosha_name = results[:primary_dosha]
+    secondary_dosha_name = results[:secondary_dosha]
+
+    # Find the Dosha records from the database
+    primary_dosha = Dosha.find_by(name: primary_dosha_name) if primary_dosha_name
+    secondary_dosha = Dosha.find_by(name: secondary_dosha_name) if secondary_dosha_name
+
+    # Update the user's prakruti
+    user.update!(primary_dosha: primary_dosha, secondary_dosha: secondary_dosha)
   end
 end

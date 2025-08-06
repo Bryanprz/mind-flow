@@ -19,9 +19,9 @@
             <label class="block cursor-pointer">
               <%= form.radio_button :quiz_option_id, option.id, class: "hidden peer", data: { action: "change->quiz-question#select" } %>
               <div class="p-4 border-2 border-gray-200 rounded-lg text-left transition-all duration-200 ease-in-out
-                          hover:border-primary hover:bg-primary
+                          hover:border-primary hover:bg-primary hover:text-white
                           peer-checked:border-primary peer-checked:bg-primary peer-checked:shadow-md flex justify-between items-center">
-                <span class="text-lg font-medium peer-checked:text-primary"><%= option.text %></span>
+                <span class="text-lg font-medium"><%= option.text %></span>
                 <svg class="w-6 h-6 text-primary hidden peer-checked:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
@@ -35,7 +35,7 @@
         <%= form_with url: go_back_quiz_question_path, method: :post, data: { turbo_frame: "main_content_area" } do |form| %>
           <%= form.hidden_field :quiz_entry_id, value: quiz_entry.id %>
           <%= form.hidden_field :question_id, value: question.id %>
-          <%= form.submit "Back", class: "mt-6 rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
+          <%= form.submit "Back", class: "mt-6 rounded-md bg-primary text-white px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
         <% end %>
       <% else %>
         <div class="mt-6 h-10"></div>

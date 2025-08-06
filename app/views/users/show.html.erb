@@ -1,12 +1,26 @@
-<div class="container mx-auto px-4 py-8 space-y-10">
+<div class="w-screen -ml-[calc(50vw-50%)] -mr-[calc(50vw-50%)] -mt-5 px-[calc(50vw-50%)] py-8 space-y-10 bg-base-200 min-h-[calc(100vh-4rem)]">
   <h1 class="text-3xl font-black">Your Health Results</h1>
+  
+  <div class="flex flex-col lg:flex-row gap-6">
+    <!-- Left Column (70%) -->
+    <div class="w-full lg:w-[70%]">
+      <%= render 'original_nature' %>
+      <%= render 'symptoms' %>
+    </div>
+    
+    <!-- Right Column (30%) -->
+    <div class="w-full lg:w-[30%]">
+      <%= render 'health_diary' %>
+      <%= render 'symptoms_lister' %>
+    </div>
+  </div>
 
-  <%= render 'original_nature' %>
-  <%= render 'symptoms' %>
-  <%= render 'symptoms_intake' %>
-  <%= render 'symptoms_carousel' %>
-  <%= render 'disease_timeline' %>
-  <%= render 'recommendation_cards' %>
-  <%= render 'shared/book_practitioner_cta' %>
-
+  <!-- Full width sections below -->
+  <div class="space-y-10">
+    <%= render 'symptoms_intake' %>
+    <%= render 'symptoms_carousel' %>
+    <%= render 'disease_timeline' %>
+    <%= render 'recommendation_cards' %>
+    <%= render 'shared/book_practitioner_cta' %>
+  </div>
 </div>

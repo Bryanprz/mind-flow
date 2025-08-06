@@ -1,12 +1,18 @@
 <!-- Symptom Experience Card -->
-<div class="card bg-white card-border mb-8">
+<div class="card bg-base-100 card-border mt-8 mb-8 border-base-300">
   <div class="card-header border-b border-base-200 p-5 rounded-t-lg">
-    <h2 class="text-xl font-semibold">Common Symptoms for your Original Nature</h2>
+    <h2 class="text-lg font-semibold">Common Symptoms experienced by 
+    
+    <span data-tip="hi" class="tooltip text-xl font-bold bg-gradient-to-r to-accent from-primary bg-clip-text text-transparent tracking-wider wavy-text">
+      <%= @primary_dosha_name %>
+    </span>
+    
+    archetypes</h2>
   </div>
   <div class="card-body">
     <!-- Stages of Disease Table/Chart -->
 
-    <p class="text-lg">
+    <p class="text-md">
       These are the six stages of disease most common to your original nature. You can determine what stage of disease you are currently in by tracking your symptoms.
     </p> 
 

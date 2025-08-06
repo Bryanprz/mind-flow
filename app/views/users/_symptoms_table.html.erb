@@ -1,17 +1,17 @@
 <table class="table mt-2">
   <thead>
     <tr>
-      <th class="text-lg">Stage</th>
-      <th class="text-lg">Name</th>
-      <th class="text-lg">Description</th>
-      <th class="text-lg">Symptoms</th>
+      <th class="text-md">Stage</th>
+      <th class="text-md">Name</th>
+      <th class="text-md">Description</th>
+      <th class="text-md">Symptoms</th>
     </tr>
   </thead>
   <tbody>
     <% @symptoms.each do |symptom| %>
       <tr>
-        <td class="text-lg font-bold"><%= symptom[:stage] %></td>
-        <td class="text-lg"><%= symptom[:name] %></td>
+        <td class="text-md font-bold"><%= symptom[:stage] %></td>
+        <td class="text-md font-bold"><%= symptom[:name] %></td>
         <td class="text-md"><%= symptom[:description] %></td>
         <td class="text-md"><%= render_symptom_badges(symptom[:symptoms]) %></td>
       </tr>
