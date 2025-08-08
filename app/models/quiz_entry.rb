@@ -6,6 +6,10 @@ class QuizEntry < ApplicationRecord
   scope :completed, -> { where.not(completed_at: nil) }
   scope :incomplete, -> { where(completed_at: nil) }
 
+  def dosha_scores
+    calculate_primary_doshas[:scores]
+  end
+
   def update_user_prakruti!
     return unless user && completed_at?
 

@@ -21,6 +21,6 @@
     // For logged-in users, redirect to their profile
     // For guests, show results in the current page
     const url = "<%= self_profile_path %>";
-    Turbo.visit(url, { frame: "main_content_area" });
+    window.location.href = url;
   }, 3000);
 </script>

@@ -45,6 +45,15 @@ class QuizzesController < ApplicationController
           @quiz_entry.update(user: current_user) if current_user
           @quiz_entry.update_user_prakruti!
 
+          # Store the results in the session
+          results = @quiz_entry.calculate_primary_doshas
+          session[:recent_quiz_results] = {
+            dosha_scores: results[:scores],
+            primary_dosha: results[:primary_dosha],
+            completed_at: Time.current,
+            show_results: true
+          }
+
           render turbo_stream: turbo_stream.replace(
             'main_content_area',
             partial: 'quizzes/analyzing',

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
-  before_action :load_quiz_results, only: [:show, :self]
+  before_action :load_quiz_results, only: [:show]
 
   # GET /self - Shows the current user's profile or guest quiz results
   def show
@@ -16,20 +16,7 @@ class UsersController < ApplicationController
     end
 
     respond_to do |format|
-      format.html do
-        if current_user
-          @user = current_user
-          render :show
-        elsif session[:quiz_entry_id]
-          @quiz_entry = QuizEntry.find_by(id: session[:quiz_entry_id])
-          if @quiz_entry.nil?
-            session.delete(:quiz_entry_id)
-            redirect_to root_path, alert: "Session expired. Please take the quiz again."
-            return
-          end
-          render :show
-        end
-      end
+      format.html
       
       format.turbo_stream do
         # This will render users/self.turbo_stream.erb
@@ -123,20 +110,31 @@ class UsersController < ApplicationController
   private
 
   def load_quiz_results
-    if @user
-      # For regular user show action
-      @quiz_entry = @user.quiz_entries.completed.order(completed_at: :desc).first
-    elsif session[:quiz_entry_id]
-      # For guest users
-      @quiz_entry = QuizEntry.find_by(id: session[:quiz_entry_id])
-    end
-    
-    if @quiz_entry
-      dosha_info = @quiz_entry.calculate_primary_doshas
-      @primary_dosha_name = dosha_info[:primary_dosha]
-      @secondary_dosha_name = dosha_info[:secondary_dosha]
-      @primary_dosha = Dosha.find_by(name: @primary_dosha_name) if @primary_dosha_name
-      @secondary_dosha = Dosha.find_by(name: @secondary_dosha_name) if @secondary_dosha_name
+    # This simplified method handles only the case where recent quiz results
+    # are present in the session, for a non-logged-in user.
+    if session[:recent_quiz_results].present?
+      # Use .with_indifferent_access because session stores hash keys as strings.
+      # session.delete ensures the results are only shown once.
+      @recent_quiz_results = session.delete(:recent_quiz_results).with_indifferent_access
+
+      # Set the instance variables required by the view.
+      @primary_dosha_name = @recent_quiz_results[:primary_dosha]
+      @dosha_scores = @recent_quiz_results[:dosha_scores]
+      @primary_dosha = Dosha.find_by(name: @primary_dosha_name.downcase)
+
+      # The completed_at from session is a string, so it needs to be parsed.
+      if @recent_quiz_results[:completed_at].is_a?(String)
+        @recent_quiz_results[:completed_at] = Time.parse(@recent_quiz_results[:completed_at])
+      end
+
+      # Calculate secondary dosha from scores.
+      if @dosha_scores.present?
+        sorted_scores = @dosha_scores.sort_by { |_, v| -v }
+        if sorted_scores.length > 1
+          @secondary_dosha_name = sorted_scores[1].first
+          @secondary_dosha = Dosha.find_by(name: @secondary_dosha_name.downcase)
+        end
+      end
     end
   end
 

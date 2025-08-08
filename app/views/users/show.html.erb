@@ -2,7 +2,7 @@
 
 <div class="min-h-screen bg-base-200 -mt-5">
 
-  <div class="w-full max-w-7xl mx-auto py-8 pl-32 pr-0 sm:pl-36 sm:pr-0 lg:pl-48 lg:pr-0">
+  <div class="w-full max-w-7xl mx-auto py-8 pl-32 pr-3 sm:pl-36 sm:pr-0 lg:pl-48 lg:pr-0">
 
     <!-- Page Header Div -->
     <div class="flex flex-col lg:flex-row gap-6 justify-center">
@@ -15,6 +15,7 @@
     <!-- Main section -->
     <div class="flex flex-col lg:flex-row gap-12 justify-center">
       <div class="w-full lg:w-4/5 space-y-6">
+        <%= render 'recent_quiz_results' if @recent_quiz_results %>
         <%= render 'dosha_scores' %>
         <%= render 'original_nature' %>
         <%= render 'dosha_info_tabs' %>
