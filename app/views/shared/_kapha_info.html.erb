@@ -1,36 +1,222 @@
-<div class="bg-green-50 p-6 rounded-2xl border border-green-100">
+<div class="bg-green-50 p-6 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl border border-green-100 space-y-8" data-controller="expandable" data-expandable-expanded-class="expanded" data-expandable-collapsed-class="collapsed">
+  <!-- Header Section -->
   <div class="flex items-start gap-4">
     <div class="flex-shrink-0">
-      <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
         </svg>
       </div>
     </div>
     <div>
-      <h3 class="text-xl font-bold text-green-700 mb-2">Kapha Dosha</h3>
-      <p class="text-green-800 mb-4">Governed by Earth and Water elements, Kapha provides structure and stability. It controls growth, lubrication, and the formation of all tissues.</p>
+      <h1 class="text-2xl font-bold text-green-700 mb-2">🌿 Kapha: The Earth & Water Energy</h1>
+      <p class="text-green-800 mb-4">🌿 Kapha is one of the three elemental archetypes (doshas) made up of <strong>Earth and Water</strong> elements. It governs all structure and stability in the body and mind, providing nourishment, lubrication, and the foundation for strength and endurance.</p>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-4">
         <div>
-          <h4 class="font-semibold text-green-700">Characteristics:</h4>
+          <h4 class="font-semibold text-green-700">Primary Traits:</h4>
           <ul class="list-disc pl-5 space-y-1 mt-1">
-            <li>Heavy, slow, and steady</li>
+            <li>Heavy, stable, nurturing, calm</li>
             <li>Strong and enduring</li>
             <li>Loving and forgiving</li>
-            <li>Prone to weight gain and lethargy when imbalanced</li>
+            <li>Prone to weight gain when imbalanced</li>
           </ul>
         </div>
         <div>
           <h4 class="font-semibold text-green-700">Balancing Tips:</h4>
           <ul class="list-disc pl-5 space-y-1 mt-1">
-            <li>Stay active and maintain a regular exercise routine</li>
+            <li>Stay active with regular exercise</li>
             <li>Favor light, dry, and warming foods</li>
             <li>Try new experiences and changes in routine</li>
             <li>Wake up before 6am for optimal energy</li>
           </ul>
         </div>
       </div>
+      
+      <button 
+        type="button" 
+        class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+        data-action="click->expandable#toggle"
+        data-expandable-target="button"
+        aria-expanded="false"
+        aria-controls="kapha-content"
+      >
+        See More
+        <svg class="ml-2 -mr-1 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Collapsible Content -->
+  <div id="kapha-content" data-expandable-target="content" class="collapsed">
+    <div class="border-t border-green-100 pt-6">
+      <h3 class="text-xl font-bold text-green-700 mb-4">🧍 Physical Constitution & Body Frame</h3>
+      <p class="text-green-800 mb-3"><strong>Typical Kapha Body Type:</strong></p>
+      <ul class="list-disc pl-5 space-y-1 text-green-800 mb-6">
+        <li>Sturdy build, soft skin, slow digestion</li>
+        <li>Tendency to gain weight easily</li>
+        <li>Strong, heavy bone structure</li>
+        <li>Thick hair, large eyes, soft features</li>
+        <li>Naturally high endurance and stamina</li>
+      </ul>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl border border-green-100">
+      <h3 class="text-xl font-bold text-green-700 mb-4">✅ Kapha in Balance (Healthy Manifestation)</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-6">
+          <div>
+            <h4 class="font-semibold text-green-700 mb-2">🧍 Physical Body</h4>
+            <ul class="list-disc pl-5 space-y-1 mt-1 text-green-800">
+              <li>Strength, grounding, stamina, stability</li>
+              <li>Good structural support and lubrication</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-green-700 mt-6 mb-2">⚡ Energy Body</h4>
+            <ul class="list-disc pl-5 space-y-1 mt-1 text-green-800">
+              <li>Stable and steady prana</li>
+              <li>Consistent, sustainable energy</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="space-y-6">
+          <div>
+            <h4 class="font-semibold text-green-700 mb-2">🧠 Mental-Emotional</h4>
+            <ul class="list-disc pl-5 space-y-1 mt-1 text-green-800">
+              <li>Stability, patience, contentment, loyalty</li>
+              <li>Calm, nurturing presence</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-green-700 mt-6 mb-2">🔮 Intuitive Body</h4>
+            <ul class="list-disc pl-5 space-y-1 mt-1 text-green-800">
+              <li>Calm inner knowing, groundedness</li>
+              <li>Stable spiritual foundation</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-green-700 mt-6 mb-2">💫 Soul Body</h4>
+            <ul class="list-disc pl-5 space-y-1 mt-1 text-green-800">
+              <li>Deep contentment and peace</li>
+              <li>Embodied spiritual presence</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10">
+      <h3 class="text-xl font-bold text-green-600 mb-6">❌ Kapha Imbalanced (Disease Manifestation)</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-700">🧍 Physical Body</h4>
+          <ul class="list-disc pl-5 space-y-1 text-green-800 mt-1">
+            <li>Sluggishness, weight gain, congestion, water retention</li>
+            <li>Excessive sleep, heaviness in limbs, mucus build-up</li>
+            <li>Slow digestion, persistent dull aches, swelling, pale or oily skin</li>
+          </ul>
+
+          <h4 class="font-semibold text-green-700 mt-6 mb-2">⚡ Energy Body</h4>
+          <ul class="list-disc pl-5 space-y-1 text-green-800 mt-1">
+            <li>Low pranic flow, fatigue, stagnation, inertia despite rest</li>
+            <li>Labored breath, breathlessness on exertion, slow movements</li>
+            <li>Lack of vitality, resistance to movement, aversion to change</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-green-700 mt-6 mb-2">🧠 Mental-Emotional Body</h4>
+          <ul class="list-disc pl-5 space-y-1 text-green-800 mt-1">
+            <li>Sadness, emotional dullness, melancholy, attachment</li>
+            <li>Emotional heaviness, depression, lack of motivation</li>
+            <li>Stubbornness, emotional clinging, resistance to change, withdrawal</li>
+          </ul>
+
+          <h4 class="font-semibold text-green-700 mt-6 mb-2">🔮 Intuitive Body</h4>
+          <ul class="list-disc pl-5 space-y-1 text-green-800 mt-1">
+            <li>Over-reliance on familiar, resistance to inner growth</li>
+            <li>Lack of clarity in vision, mental inertia</li>
+            <li>Difficulty letting go of beliefs, spiritual apathy, comfort-driven spirituality</li>
+          </ul>
+
+          <h4 class="font-semibold text-green-700 mt-6 mb-2">💫 Soul Body</h4>
+          <ul class="list-disc pl-5 space-y-1 text-green-800 mt-1">
+            <li>Spiritual laziness, clinging to comfort or tradition</li>
+            <li>Difficulty accessing joy or wonder, spiritual stagnation</li>
+            <li>Fear of letting go, mechanical ritualism, over-identification with spiritual identity</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl border border-green-100 mt-9">
+      <h3 class="text-xl font-bold text-green-700 mb-4">🎯 Kapha Personalities & Preferences</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold text-green-700">Career Tendencies:</h4>
+          <p class="text-green-800">Counselor, caregiver, teacher, chef, social worker</p>
+          
+          <h4 class="font-semibold text-green-700 mt-4">Emotional Nature:</h4>
+          <ul class="list-disc pl-5 space-y-1 text-green-800 mt-1">
+            <li>Calm, loyal, loving, but prone to lethargy or sadness</li>
+            <li>Deep, steady emotions with strong attachments</li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-green-700">Energy Pattern:</h4>
+          <p class="text-green-800">Consistent, slow to start but long-lasting. Steady endurance once motivated.</p>
+          
+          <h4 class="font-semibold text-green-700 mt-4">Natural Environments:</h4>
+          <p class="text-green-800">Drawn to comfortable, nurturing spaces, homes, nature, peaceful settings</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12">
+      <h3 class="text-xl font-bold text-green-700 mb-6">⚖️ Key Signs of Kapha Imbalance to Watch For</h3>
+      <div class="space-y-4">
+        <div class="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
+          <span class="text-red-500 font-bold">🔺 Too Much Kapha:</span>
+          <p class="text-green-800">Obesity, sluggishness, heaviness, stagnation, stubbornness, depression, attachment, spiritual laziness, comfort addiction</p>
+        </div>
+        
+        <div class="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg">
+          <span class="text-yellow-600 font-bold">🔻 Too Little Kapha:</span>
+          <p class="text-green-800">Weak bones, low endurance, frailty, instability, insecurity, emptiness, scattered energy, disconnected from embodiment</p>
+        </div>
+        
+        <div class="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+          <span class="text-green-600 font-bold">🟢 Balanced Kapha:</span>
+          <p class="text-green-800">Strength, grounding, stability, patience, contentment, calm inner knowing, deep peace</p>
+        </div>
+      </div>
+      
+      <p class="text-green-700 italic mt-6">Kapha individuals thrive with stimulating practices, movement, and dynamic activities to balance their naturally stable and nurturing energy.</p>
     </div>
   </div>
 </div>
+
+<style>
+  /* Animation for expanding/collapsing */
+  .expanded {
+    max-height: 2000px;
+    opacity: 1;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    overflow: hidden;
+  }
+  
+  .collapsed {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    overflow: hidden;
+  }
+</style>
