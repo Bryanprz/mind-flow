@@ -110,25 +110,27 @@ class UsersController < ApplicationController
   private
 
   def load_quiz_results
-    # This simplified method handles only the case where recent quiz results
-    # are present in the session, for a non-logged-in user.
     if session[:recent_quiz_results].present?
-      # Use .with_indifferent_access because session stores hash keys as strings.
-      # session.delete ensures the results are only shown once.
       @recent_quiz_results = session.delete(:recent_quiz_results).with_indifferent_access
-
-      # Set the instance variables required by the view.
       @primary_dosha_name = @recent_quiz_results[:primary_dosha]
       @dosha_scores = @recent_quiz_results[:dosha_scores]
       @primary_dosha = Dosha.find_by(name: @primary_dosha_name.downcase)
 
-      # The completed_at from session is a string, so it needs to be parsed.
       if @recent_quiz_results[:completed_at].is_a?(String)
         @recent_quiz_results[:completed_at] = Time.parse(@recent_quiz_results[:completed_at])
       end
 
-      # Calculate secondary dosha from scores.
       if @dosha_scores.present?
+        total_score = @dosha_scores.values.sum.to_f
+        @dosha_percentages = {}
+        if total_score > 0
+          @dosha_scores.each do |dosha, score|
+            @dosha_percentages[dosha] = (score / total_score * 100).round
+          end
+        else
+          @dosha_percentages = { 'Vata' => 0, 'Pitta' => 0, 'Kapha' => 0 }
+        end
+
         sorted_scores = @dosha_scores.sort_by { |_, v| -v }
         if sorted_scores.length > 1
           @secondary_dosha_name = sorted_scores[1].first

@@ -17,10 +17,10 @@
           <div class="mt-2">
             <h4 class="font-semibold">Your Dosha Scores:</h4>
             <ul class="space-y-1 mt-1">
-              <% @recent_quiz_results[:dosha_scores].sort_by { |_, v| -v }.each do |dosha, score| %>
+              <% @dosha_percentages.sort_by { |_, v| -v }.each do |dosha, percentage| %>
                 <li class="flex justify-between">
                   <span class="capitalize"><%= dosha %>:</span>
-                  <span class="font-medium"><%= score %>%</span>
+                  <span class="font-medium"><%= percentage %>%</span>
                 </li>
               <% end %>
             </ul>
