@@ -21,6 +21,7 @@ end
 
 # Populate Dosha details from Chapter 4 of the PDF
 Dosha.find_or_create_by!(name: 'vata') do |dosha|
+  dosha.color = "blue"
   dosha.archetype_info = {
     archetype: "Mystic / Visionary",
     elements: "Space and Air",
@@ -35,6 +36,7 @@ Dosha.find_or_create_by!(name: 'vata') do |dosha|
 end
 
 Dosha.find_or_create_by!(name: 'pitta') do |dosha|
+  dosha.color = "red"
   dosha.archetype_info = {
     archetype: "Warrior / Reformer",
     elements: "Fire and Water",
@@ -49,6 +51,7 @@ Dosha.find_or_create_by!(name: 'pitta') do |dosha|
 end
 
 Dosha.find_or_create_by!(name: 'kapha') do |dosha|
+  dosha.color = "green"
   dosha.archetype_info = {
     archetype: "Nurturer / Preserver",
     elements: "Earth and Water",
