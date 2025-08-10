@@ -1,0 +1,29 @@
+prakruti_q1_opt1:
+  question: prakruti_q1
+  text: "Thin, light, and delicate"
+  dosha: 1
+
+prakruti_q1_opt2:
+  question: prakruti_q1
+  text: "Medium, muscular, and well-proportioned"
+  dosha: 2
+
+prakruti_q1_opt3:
+  question: prakruti_q1
+  text: "Large, sturdy, and heavy"
+  dosha: 3
+
+prakruti_q2_opt1:
+  question: prakruti_q2
+  text: "Quick, erratic, and easily fatigued"
+  dosha: 1
+
+prakruti_q2_opt2:
+  question: prakruti_q2
+  text: "Intense, focused, and driven"
+  dosha: 2
+
+prakruti_q2_opt3:
+  question: prakruti_q2
+  text: "Steady, enduring, and sometimes lethargic"
+  dosha: 3

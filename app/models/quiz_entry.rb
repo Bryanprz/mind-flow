@@ -22,7 +22,7 @@ class QuizEntry < ApplicationRecord
     secondary_dosha = Dosha.find_by(name: secondary_dosha_name) if secondary_dosha_name
 
     # Update the user's prakruti
-    user.update!(primary_dosha: primary_dosha, secondary_dosha: secondary_dosha)
+    user.update!(prakruti: primary_dosha)
   end
 
   # This is the main method for calculating quiz results.

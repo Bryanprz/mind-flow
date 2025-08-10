@@ -1,0 +1,9 @@
+prakruti_q1:
+  quiz: prakruti_quiz
+  text: "How would you describe your body frame?"
+  points: 1
+
+prakruti_q2:
+  quiz: prakruti_quiz
+  text: "What is your typical energy level?"
+  points: 1

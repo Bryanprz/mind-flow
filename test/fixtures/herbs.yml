@@ -2,34 +2,6 @@
 
 one:
   name: MyString
-  recommendation: MyString
-  contraindication: MyString
-  details: MyText
-  rasa_taste: 1
-  virya_potency: MyText
-  vipaka_post_digestive_effect: MyText
-  prabhava_special_action: MyString
-  guna_quality: 1
-  samskara_preparation: MyText
-  habitat_and_source: MyText
-  form_of_intake: 1
-  samyoga_combination: MyText
-  elements: MyString
-  recipes: MyString
 
 two:
   name: MyString
-  recommendation: MyString
-  contraindication: MyString
-  details: MyText
-  rasa_taste: 1
-  virya_potency: MyText
-  vipaka_post_digestive_effect: MyText
-  prabhava_special_action: MyString
-  guna_quality: 1
-  samskara_preparation: MyText
-  habitat_and_source: MyText
-  form_of_intake: 1
-  samyoga_combination: MyText
-  elements: MyString
-  recipes: MyString

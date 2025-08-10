@@ -14,8 +14,8 @@ one:
   habitat_and_source: MyText
   form_of_intake: 1
   samyoga_combination: MyText
-  elements: MyString
-  recipes: MyString
+  elements: []
+  recipes: []
 
 two:
   name: MyString
@@ -31,5 +31,5 @@ two:
   habitat_and_source: MyText
   form_of_intake: 1
   samyoga_combination: MyText
-  elements: MyString
-  recipes: MyString
+  elements: []
+  recipes: []

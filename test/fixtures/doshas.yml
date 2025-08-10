@@ -1,0 +1,11 @@
+vata:
+  name: 'Vata'
+  color: 'blue'
+
+pitta:
+  name: 'Pitta'
+  color: 'red'
+
+kapha:
+  name: 'Kapha'
+  color: 'green'

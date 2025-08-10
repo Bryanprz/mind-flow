@@ -3,8 +3,6 @@
 one:
   name: MyString
   recommendation: MyString
-  contraindication: MyString
-  details: MyText
   rasa_taste: 1
   virya_potency: MyText
   vipaka_post_digestive_effect: MyText
@@ -18,8 +16,6 @@ one:
 two:
   name: MyString
   recommendation: MyString
-  contraindication: MyString
-  details: MyText
   rasa_taste: 1
   virya_potency: MyText
   vipaka_post_digestive_effect: MyText
