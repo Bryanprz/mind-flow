@@ -2,7 +2,7 @@
 
   <div class="flex flex-col items-center justify-center min-h-[calc(100vh-80rem)] px-4 py-8">
     <div class="card card-border w-full max-w-2xl bg-neutral p-8" style="color:#d2d3c8;">
-      <% progress_percentage = quiz_progress_percentage(question, quiz_entry) %>
+      <% progress_percentage = quiz_progress_percentage(question, quiz_submission) %>
       <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
         <div class="bg-primary h-2.5 rounded-full" style="width: <%= progress_percentage %>%"></div>
       </div>
@@ -11,7 +11,7 @@
       <h2 class="text-3xl font-bold mb-8 mt-5 text-center"><%= question.text %></h2>
 
       <%= form_with url: answer_quiz_question_path, method: :post, data: { controller: "quiz-question", turbo_frame: "main_content_area" } do |form| %>
-        <%= form.hidden_field :quiz_entry_id, value: quiz_entry.id %>
+        <%= form.hidden_field :quiz_submission_id, value: quiz_submission.id %>
         <%= form.hidden_field :question_id, value: question.id %>
 
         <div class="grid grid-cols-1 gap-4">
@@ -33,7 +33,7 @@
 
       <% if has_previous_question %>
         <%= form_with url: go_back_quiz_question_path, method: :post, data: { turbo_frame: "main_content_area" } do |form| %>
-          <%= form.hidden_field :quiz_entry_id, value: quiz_entry.id %>
+          <%= form.hidden_field :quiz_submission_id, value: quiz_submission.id %>
           <%= form.hidden_field :question_id, value: question.id %>
           <%= form.submit "Back", class: "mt-6 rounded-md bg-primary text-white px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
         <% end %>

@@ -56,12 +56,12 @@ class UsersController < ApplicationController
   # POST /users/create_from_quiz
   def create_from_quiz
     @user = User.new(user_params)
-    @quiz_entry = QuizEntry.find_by(id: params[:quiz_entry_id])
+    @quiz_submission = QuizSubmission.find_by(id: params[:quiz_submission_id])
 
     if @user.save
-      if @quiz_entry
-        @quiz_entry.update(user: @user)
-        session.delete(:quiz_entry_id) # Clear the guest session ID
+      if @quiz_submission
+        @quiz_submission.update(user: @user)
+        session.delete(:quiz_submission_id) # Clear the guest session ID
       end
       # Placeholder for logging in the user. You'll need to implement this
       # based on your authentication system (e.g., `log_in @user` for custom auth,
@@ -70,14 +70,14 @@ class UsersController < ApplicationController
       redirect_to root_path, notice: "Account created and results saved!"
     else
       # If user creation fails, re-render the results page with errors
-      # This requires passing @user and @quiz_entry to the partial
+      # This requires passing @user and @quiz_submission to the partial
       respond_to do |format|
-        format.html { render "quizzes/_results", locals: { quiz_entry: @quiz_entry, user: @user }, status: :unprocessable_entity }
+        format.html { render "quizzes/_results", locals: { quiz_submission: @quiz_submission, user: @user }, status: :unprocessable_entity }
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
             "main_content_area",
             partial: "quizzes/results",
-            locals: { quiz_entry: @quiz_entry, user: @user }
+            locals: { quiz_submission: @quiz_submission, user: @user }
           )
         end
       end
@@ -113,29 +113,40 @@ class UsersController < ApplicationController
     if session[:recent_quiz_results].present?
       @recent_quiz_results = session.delete(:recent_quiz_results).with_indifferent_access
       @primary_dosha_name = @recent_quiz_results[:primary_dosha]
-      @dosha_scores = @recent_quiz_results[:dosha_scores]
-      @primary_dosha = Dosha.find_by(name: @primary_dosha_name.downcase)
+      @dosha_scores = @recent_quiz_results[:dosha_scores] || {}
+      
+      # Safely handle primary_dosha_name being nil
+      if @primary_dosha_name.present?
+        @primary_dosha = Dosha.find_by(name: @primary_dosha_name.to_s.downcase)
+      end
 
+      # Parse completed_at if it's a string
       if @recent_quiz_results[:completed_at].is_a?(String)
         @recent_quiz_results[:completed_at] = Time.parse(@recent_quiz_results[:completed_at])
       end
 
-      if @dosha_scores.present?
+      # Calculate dosha percentages if we have scores
+      if @dosha_scores.present? && @dosha_scores.any?
         total_score = @dosha_scores.values.sum.to_f
         @dosha_percentages = {}
+        
         if total_score > 0
           @dosha_scores.each do |dosha, score|
             @dosha_percentages[dosha] = (score / total_score * 100).round
           end
         else
-          @dosha_percentages = { 'Vata' => 0, 'Pitta' => 0, 'Kapha' => 0 }
+          @dosha_percentages = { 'vata' => 0, 'pitta' => 0, 'kapha' => 0 }
         end
 
+        # Find secondary dosha if we have at least 2 scores
         sorted_scores = @dosha_scores.sort_by { |_, v| -v }
-        if sorted_scores.length > 1
+        if sorted_scores.length > 1 && sorted_scores[1].present?
           @secondary_dosha_name = sorted_scores[1].first
-          @secondary_dosha = Dosha.find_by(name: @secondary_dosha_name.downcase)
+          @secondary_dosha = Dosha.find_by(name: @secondary_dosha_name.to_s.downcase)
         end
+      else
+        # Default values if no scores
+        @dosha_percentages = { 'vata' => 0, 'pitta' => 0, 'kapha' => 0 }
       end
     end
   end

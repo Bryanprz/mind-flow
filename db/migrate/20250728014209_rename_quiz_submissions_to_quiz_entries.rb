@@ -1,6 +1,6 @@
 class RenameQuizSubmissionsToQuizEntries < ActiveRecord::Migration[7.1]
   def change
-    rename_table :quiz_submissions, :quiz_entries
-    rename_column :quiz_answers, :quiz_submission_id, :quiz_entry_id
+    # This migration is intentionally left empty to fix a schema inconsistency.
+    # The quiz_entries table is now created by a different migration.
   end
 end

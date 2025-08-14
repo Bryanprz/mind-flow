@@ -5,11 +5,11 @@ default: &default
 
 development:
   <<: *default
-  database: ancientherb_development
+  database: db/development.sqlite3
 
 test:
   <<: *default
-  database: ancientherb_test
+  database: db/test.sqlite3
 
 production:
   adapter: sqlite3
