@@ -5,11 +5,11 @@ default: &default
 
 development:
   <<: *default
-  database: healcraft_development
+  database: ancientherb_development
 
 test:
   <<: *default
-  database: healcraft_test
+  database: ancientherb_test
 
 production:
   adapter: sqlite3
