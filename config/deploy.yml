@@ -25,6 +25,7 @@ env:
   secret:
     - RAILS_MASTER_KEY
 
-healthcheck:
-  path: /up
-  port: 3000
+proxy:
+  app_port: 3000
+  healthcheck:
+    path: /up
