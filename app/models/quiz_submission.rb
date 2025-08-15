@@ -35,28 +35,44 @@ class QuizSubmission < ApplicationRecord
   end
   
   def calculate_results
-    # This is a placeholder - implement your actual dosha calculation logic here
-    # Example:
+    # Initialize scores with all doshas set to 0
     scores = { vata: 0, pitta: 0, kapha: 0 }
     
     # Calculate scores based on answers
     quiz_answers.includes(:quiz_option).each do |answer|
-      dosha = answer.quiz_option.dosha
-      scores[dosha.to_sym] += 1 if scores.key?(dosha.to_sym)
+      if answer.quiz_option && answer.quiz_option.dosha.present?
+        dosha = answer.quiz_option.dosha.downcase.to_sym
+        scores[dosha] += 1 if scores.key?(dosha)
+      end
     end
     
-    # Determine primary and secondary doshas
-    primary = scores.max_by { |_, v| v }[0].to_s
-    secondary = scores.sort_by { |_, v| -v }[1][0].to_s
+    # Sort scores to determine primary and secondary doshas
+    sorted_scores = scores.sort_by { |_, v| -v }
     
-    # Update the results
-    update!(
-      results: {
-        scores: scores,
-        primary_dosha: primary,
-        secondary_dosha: secondary
-      },
-      completed_at: Time.current
-    )
+    # Ensure we have at least one score before proceeding
+    if sorted_scores.any? { |_, score| score > 0 }
+      primary = sorted_scores[0][0].to_s
+      secondary = sorted_scores[1][0].to_s
+      
+      # Update the results
+      update!(
+        results: {
+          scores: scores,
+          primary_dosha: primary,
+          secondary_dosha: secondary
+        },
+        completed_at: Time.current
+      )
+    else
+      # If no valid answers, set default values
+      update!(
+        results: {
+          scores: scores,
+          primary_dosha: nil,
+          secondary_dosha: nil
+        },
+        completed_at: Time.current
+      )
+    end
   end
 end

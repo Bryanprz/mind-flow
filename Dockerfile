@@ -74,7 +74,7 @@
 # syntax=docker/dockerfile:1
 
 # Use Ruby 3.3 base image
-FROM ruby:3.3.0
+FROM ruby:3.3.0 AS base
 
 # Set working directory
 WORKDIR /app
@@ -84,20 +84,67 @@ RUN apt-get update -qq && \
     apt-get install -y build-essential libsqlite3-dev nodejs yarn && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy Gemfile and Gemfile.lock
-COPY Gemfile Gemfile.lock ./
+# Set production environment
+ENV RAILS_ENV=production \
+    BUNDLE_DEPLOYMENT=1 \
+    BUNDLE_PATH=/usr/local/bundle \
+    BUNDLE_WITHOUT=development
 
 # Install gems
-RUN bundle install
+COPY Gemfile Gemfile.lock ./
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
-# Copy the rest of the app
+# Copy application code
 COPY . .
 
-# Precompile assets for production (optional, but recommended)
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
 
-# Expose Rails default port
+# Create a non-root user and set up directories
+RUN useradd -m app
+
+# Create directories with correct permissions
+RUN mkdir -p /app /rails && \
+    chown -R app:app /app /rails && \
+    chmod -R 0755 /app /rails
+
+# Switch to app user for the rest of the build
+USER app:app
+
+# Set up application directory
+WORKDIR /app
+
+# Copy application files
+COPY --chown=app:app . .
+
+# Set up public directory structure and database
+RUN mkdir -p /app/public/assets /app/db && \
+    touch /app/db/cable.sqlite3 && \
+    chmod -R 0755 /app/public /app/db
+
+# Precompile assets for production
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile && \
+    # Ensure the assets and db directories have the correct permissions
+    chmod -R 0755 /app/public/assets /app/db
+
+# Set up Solid Cable database at runtime through an entrypoint script
+
+# Copy entrypoint script
+COPY --chown=app:app docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Create a symlink from /rails to /app for compatibility
+USER root
+RUN ln -sf /app /rails && \
+    chown -R app:app /rails
+USER app:app
+
+# Expose port 3000
 EXPOSE 3000
 
-# Default command to start Rails server
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# Set the entrypoint
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# Start the main process
+CMD ["./bin/rails", "server", "-b", "0.0.0.0"]

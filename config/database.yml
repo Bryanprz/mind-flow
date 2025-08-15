@@ -16,3 +16,9 @@ production:
   database: db/production.sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
+
+cable:
+  adapter: sqlite3
+  database: db/cable.sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000

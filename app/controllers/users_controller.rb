@@ -14,6 +14,23 @@ class UsersController < ApplicationController
         symptoms: ['']
       }
     end
+    
+    # Ensure we have the most recent quiz submission for the user
+    if current_user
+      @recent_submission = current_user.quiz_submissions.completed.order(completed_at: :desc).first
+      if @recent_submission
+        @dosha_scores = @recent_submission.dosha_scores
+        @primary_dosha_name = @recent_submission.primary_dosha&.name
+        @secondary_dosha_name = @recent_submission.secondary_dosha&.name
+        
+        # Calculate percentages
+        total = @dosha_scores.values.sum.to_f
+        @dosha_percentages = {}
+        @dosha_scores.each do |dosha, score|
+          @dosha_percentages[dosha.to_s.capitalize] = total > 0 ? ((score / total) * 100).round : 0
+        end
+      end
+    end
 
     respond_to do |format|
       format.html
@@ -110,44 +127,55 @@ class UsersController < ApplicationController
   private
 
   def load_quiz_results
+    # Try to get results from session first
     if session[:recent_quiz_results].present?
       @recent_quiz_results = session.delete(:recent_quiz_results).with_indifferent_access
-      @primary_dosha_name = @recent_quiz_results[:primary_dosha]
-      @dosha_scores = @recent_quiz_results[:dosha_scores] || {}
       
-      # Safely handle primary_dosha_name being nil
-      if @primary_dosha_name.present?
-        @primary_dosha = Dosha.find_by(name: @primary_dosha_name.to_s.downcase)
-      end
-
+      # Ensure we have the basic structure
+      @recent_quiz_results[:dosha_scores] ||= {}
+      @recent_quiz_results[:primary_dosha] ||= nil
+      @recent_quiz_results[:secondary_dosha] ||= nil
+      
+      # Set instance variables from session
+      @dosha_scores = @recent_quiz_results[:dosha_scores].transform_keys(&:to_s.downcase.to_sym)
+      @primary_dosha_name = @recent_quiz_results[:primary_dosha]&.to_s
+      @secondary_dosha_name = @recent_quiz_results[:secondary_dosha]&.to_s
+      
       # Parse completed_at if it's a string
       if @recent_quiz_results[:completed_at].is_a?(String)
-        @recent_quiz_results[:completed_at] = Time.parse(@recent_quiz_results[:completed_at])
+        @recent_quiz_results[:completed_at] = Time.zone.parse(@recent_quiz_results[:completed_at])
       end
 
-      # Calculate dosha percentages if we have scores
-      if @dosha_scores.present? && @dosha_scores.any?
-        total_score = @dosha_scores.values.sum.to_f
-        @dosha_percentages = {}
-        
-        if total_score > 0
-          @dosha_scores.each do |dosha, score|
-            @dosha_percentages[dosha] = (score / total_score * 100).round
-          end
-        else
-          @dosha_percentages = { 'vata' => 0, 'pitta' => 0, 'kapha' => 0 }
-        end
-
-        # Find secondary dosha if we have at least 2 scores
+      # Calculate dosha percentages
+      total = @dosha_scores.values.sum.to_f
+      @dosha_percentages = {}
+      @dosha_scores.each do |dosha, score|
+        @dosha_percentages[dosha.to_s.capitalize] = total > 0 ? ((score / total) * 100).round : 0
+      end
+      
+      # Store percentages in session for consistency
+      @recent_quiz_results[:dosha_percentages] = @dosha_percentages
+      
+      # Find dosha records if they exist
+      if @primary_dosha_name.present?
+        @primary_dosha = Dosha.find_by('LOWER(name) = ?', @primary_dosha_name.downcase)
+      end
+      
+      if @secondary_dosha_name.present?
+        @secondary_dosha = Dosha.find_by('LOWER(name) = ?', @secondary_dosha_name.downcase)
+      end
+      
+      # If we don't have a secondary dosha but have scores, find the second highest
+      if @secondary_dosha.blank? && @dosha_scores.present? && @dosha_scores.size > 1
         sorted_scores = @dosha_scores.sort_by { |_, v| -v }
-        if sorted_scores.length > 1 && sorted_scores[1].present?
-          @secondary_dosha_name = sorted_scores[1].first
-          @secondary_dosha = Dosha.find_by(name: @secondary_dosha_name.to_s.downcase)
+        if sorted_scores[1].present?
+          @secondary_dosha_name = sorted_scores[1][0].to_s.capitalize
+          @secondary_dosha = Dosha.find_by('LOWER(name) = ?', @secondary_dosha_name.downcase)
         end
-      else
-        # Default values if no scores
-        @dosha_percentages = { 'vata' => 0, 'pitta' => 0, 'kapha' => 0 }
       end
+      
+      # Ensure we have default values
+      @dosha_percentages = { 'Vata' => 0, 'Pitta' => 0, 'Kapha' => 0 } if @dosha_percentages.blank?
     end
   end
 

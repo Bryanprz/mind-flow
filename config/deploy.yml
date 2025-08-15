@@ -43,6 +43,8 @@ env:
     RAILS_ENV: production
     RAILS_MASTER_KEY: ""
     RAILS_LOG_TO_STDOUT: true
+    # Solid Cable configuration
+    SOLID_CABLE_DATABASE_URL: sqlite3:db/cable.sqlite3
 
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 3
@@ -74,11 +76,13 @@ volumes:
 # Bridge fingerprinted assets, like JS and CSS, between versions to avoid
 # hitting 404 on in-flight requests. Combines all files from new and old
 # version inside the asset_path.
-asset_path: /rails/public/assets
+asset_path: /app/public/assets
+
+# Configure the image builder
+builder: &builder
+  arch: amd64
 
 # Configure the image builder.
-builder:
-  arch: amd64
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
   # remote: ssh://docker@docker-builder-server
@@ -99,7 +103,6 @@ builder:
 #   db:
 #     image: mysql:8.0
 #     host: 192.168.0.2
-#     # Change to 3306 to expose port to the world instead of just local network.
 #     port: "127.0.0.1:3306:3306"
 #     env:
 #       clear:
@@ -111,9 +114,3 @@ builder:
 #       - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
 #     directories:
 #       - data:/var/lib/mysql
-#   redis:
-#     image: redis:7.0
-#     host: 192.168.0.2
-#     port: 6379
-#     directories:
-#       - data:/data
