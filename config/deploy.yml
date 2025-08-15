@@ -30,4 +30,4 @@ proxy:
   healthcheck:
     path: /up
     interval: 10
-    port: 3000
+    timeout: 5
