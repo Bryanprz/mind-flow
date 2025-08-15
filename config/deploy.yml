@@ -5,10 +5,6 @@ servers:
   web:
     hosts:
       - 162.243.220.201
-    options:
-      healthcheck:
-        path: /up
-        port: 3000
 
 registry:
   username: bryanprz00
@@ -28,3 +24,7 @@ env:
     RAILS_LOG_TO_STDOUT: true
   secret:
     - RAILS_MASTER_KEY
+
+healthcheck:
+  path: /up
+  port: 3000
