@@ -37,7 +37,7 @@
 !/app/assets/builds/.keep
 
 # Ignore SQLite databases in the db directory
-/db/*.sqlite3
+/db/*.sqlite3*
 
 # Ignore Kamal secrets
 /.kamal/secrets
