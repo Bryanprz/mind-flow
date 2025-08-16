@@ -27,6 +27,9 @@ COPY . .
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
+# Build Tailwind CSS
+RUN bundle exec rails tailwindcss:build
+
 # Precompile assets with dummy secret
 RUN RAILS_ENV=production SECRET_KEY_BASE=dummy_secret bundle exec rails assets:precompile
 
