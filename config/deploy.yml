@@ -31,5 +31,5 @@ proxy:
     path: /up
     interval: 10
     timeout: 10
-  deploy_timeout: 120
-  boot_wait: 10
+
+readiness_delay: 15
