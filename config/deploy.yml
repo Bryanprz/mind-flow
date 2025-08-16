@@ -11,9 +11,6 @@ registry:
   password:
     - KAMAL_REGISTRY_PASSWORD
 
-builder:
-  multiarch: true
-
 volumes:
   - "/var/lib/ancientherb/storage:/rails/storage"
 
