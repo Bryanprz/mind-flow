@@ -29,9 +29,6 @@ env:
 
 proxy:
   app_port: 3000
-  deploy_timeout: 60
-  health_check_timeout: 15
-  health_check_interval: 5
   healthcheck:
     path: /up
     interval: 10
