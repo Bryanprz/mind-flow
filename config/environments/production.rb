@@ -80,10 +80,15 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  config.hosts = [
-    "162.243.220.201"
-  ]
-  #
-  # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  # When running behind a trusted proxy (like Kamal), it's common to allow all hosts
+  # for internal communication, as the proxy handles external host validation.
+  if ENV["RAILS_SERVE_STATIC_FILES"].present?
+    config.hosts.clear # Allow all hosts for internal communication with the proxy
+  else
+    # If not serving static files (e.g., not in a Docker container behind a proxy),
+    # explicitly list allowed public hosts/IPs.
+    config.hosts = [
+      "162.243.220.201" # Your public IP address
+    ]
+  end
 end
