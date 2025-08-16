@@ -29,22 +29,8 @@ env:
 
 proxy:
   app_port: 3000
-  deploy_timeout: 60s     # Add this
-  drain_timeout: 30s      # Add this
   healthcheck:
     path: /up
-    interval: 10s         # Add 's' suffix
-    timeout: 10s          # Add 's' suffix
-    max_attempts: 6       # Add this
-readiness_delay: 30s      # Add 's' suffix and increase from 15
-
-
-
-# proxy:
-#   app_port: 3000
-#   healthcheck:
-#     path: /up
-#     interval: 10
-#     timeout: 10
-#
-# readiness_delay: 15
+    interval: 10
+    timeout: 10
+readiness_delay: 30      # Add 's' suffix and increase from 15
