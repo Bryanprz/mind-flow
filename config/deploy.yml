@@ -30,4 +30,6 @@ proxy:
   healthcheck:
     path: /up
     interval: 10
-    timeout: 5
+    timeout: 10
+  deploy_timeout: 120
+  boot_wait: 10
