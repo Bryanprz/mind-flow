@@ -10,7 +10,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 
 # Set working directory
-WORKDIR /app
+WORKDIR /rails
 
 # Set production environment
 ENV RAILS_ENV=production \
