@@ -27,8 +27,8 @@ COPY . .
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
-# Precompile assets
-RUN bundle exec rails assets:precompile
+# Precompile assets with dummy secret
+RUN SECRET_KEY_BASE=dummy_secret bundle exec rails assets:precompile
 
 # Start the server
 CMD ["bin/rails", "server"]
