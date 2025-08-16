@@ -12,7 +12,7 @@ registry:
     - KAMAL_REGISTRY_PASSWORD
 
 builder:
-  arch: amd64
+  multiarch: true
 
 volumes:
   - "/var/lib/ancientherb/storage:/rails/storage"
