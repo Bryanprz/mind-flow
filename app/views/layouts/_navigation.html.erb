@@ -61,7 +61,7 @@
           </a>
         </li>
         <li><a>Settings</a></li>
-        <li><a>Logout</a></li>
+        <li><%= button_to "Logout", session_path, method: :delete, class: "link-button" %></li>
       </ul>
     </div>
   </div>
