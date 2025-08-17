@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@source "../../views/**/*.html.erb";
+@source "../../helpers/**/*.rb";
+@source "../../components/**/*.{rb,html.erb}";
+@source "../../../app/**/*.html.erb";
 
 /* @plugin "./daisyui.js"; */
 @plugin "./daisyui.js" {
@@ -18,13 +22,4 @@
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-/* Force include missing utilities - temporary fix */
-@layer utilities {
-  .w-4 { width: 1rem !important; }
-  .h-4 { height: 1rem !important; } 
-  .p-4 { padding: 1rem !important; }
-  .m-4 { margin: 1rem !important; }
-  .mt-20 { margin-top: 5rem !important; }
 }
