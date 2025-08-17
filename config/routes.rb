@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :posts
   resource :session
   resources :passwords, param: :token
   resources :lifestyle_plans

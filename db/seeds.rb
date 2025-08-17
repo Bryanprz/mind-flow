@@ -1,4 +1,14 @@
-require_relative 'seeds_data.rb'
+# Create a first admin user
+if User.find_by(email: 'admin@test.com').nil?
+  User.create!(
+    email: 'admin@test.com',
+    password: 'password',
+    password_confirmation: 'password',
+    admin: true
+  )
+end
+
+require_relative 'seeds_data.rb' 
 
 Quiz.find_or_create_by!(category: :vikruti) do |quiz|
   quiz.title = 'Vikruti Quiz'
