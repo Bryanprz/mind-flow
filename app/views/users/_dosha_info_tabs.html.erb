@@ -8,7 +8,7 @@
       Vata
     </span>
   </label>
-  <div class="tab-content p-0 pb-5">
+  <div class="tab-content p-0 pb-5" data-tab="vata">
     <%= render 'shared/vata_info' %>
   </div>
 
@@ -21,7 +21,7 @@
       Pitta
     </span>
   </label>
-  <div class="tab-content p-0">
+  <div class="tab-content p-0" data-tab="pitta">
     <%= render 'shared/pitta_info' %>
   </div>
 
@@ -34,24 +34,7 @@
       Kapha
     </span>
   </label>
-  <div class="tab-content p-0">
+  <div class="tab-content p-0" data-tab="kapha">
     <%= render 'shared/kapha_info' %>
   </div>
 </div>
-
-<style>
-  /* Custom styles to handle active tab state */
-  .tabs input[type="radio"]:checked + span {
-    @apply font-bold;
-  }
-  
-  /* Ensure consistent border radius */
-  .tabs > .tab {
-    @apply rounded-t-2xl;
-  }
-  
-  /* Remove default tab content padding since we handle it in the partials */
-  .tab-content {
-    @apply rounded-b-2xl overflow-hidden;
-  }
-</style>
