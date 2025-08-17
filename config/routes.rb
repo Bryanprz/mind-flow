@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resource :session
+  resources :passwords, param: :token
   resources :lifestyle_plans
   resources :cures
   resources :herbs

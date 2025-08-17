@@ -1,7 +1,7 @@
 class CreateUsers < ActiveRecord::Migration[8.0]
   def change
     create_table :users do |t|
-      t.string :email, null: false
+      t.string :email_address, null: false
       t.string :first_name
       t.string :last_name
       t.string :password_digest, null: false
@@ -11,10 +11,11 @@ class CreateUsers < ActiveRecord::Migration[8.0]
       t.bigint :vikruti_id
       t.string :authentication_token
       t.timestamps
-      t.index :email, unique: true
+      t.index :email_address, unique: true
       t.index :authentication_token
       t.index :prakruti_id
       t.index :vikruti_id
     end
+    add_index :users, :email_address, unique: true
   end
 end
