@@ -17,7 +17,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create user" do
     assert_difference("User.count") do
-      post users_url, params: { user: { dob: @user.dob, email: @user.email, name: @user.name, prakruti: @user.prakruti, vikruti: @user.vikruti } }
+      post users_url, params: { user: { dob: @user.dob, email: @user.email, name: @user.full_name, prakruti: @user.prakruti, vikruti: @user.vikruti } }
     end
 
     assert_redirected_to user_url(User.last)
