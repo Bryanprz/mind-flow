@@ -41,3 +41,4 @@
 
 # Ignore Kamal secrets
 /.kamal/secrets
+node_modules/
