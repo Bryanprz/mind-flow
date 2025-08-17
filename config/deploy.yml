@@ -31,15 +31,14 @@ proxy:
   ssl: true
   host: app.ancientherb.health
   app_port: 3000
-  readiness_delay: 30
   healthcheck:
     path: /up
     interval: 10
     timeout: 10
+  readiness_delay: 30
 
 # Commands to run after the app is deployed
 on:
   deploy:
     - exec: bundle exec rails db:migrate
     - exec: bundle exec rails db:seed
-
