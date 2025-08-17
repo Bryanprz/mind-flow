@@ -22,10 +22,13 @@ volumes:
 env:
   clear:
     RAILS_ENV: production
+    RAILS_SERVE_STATIC_FILES: true
+    RAILS_LOG_TO_STDOUT: true
   secret:
     - RAILS_MASTER_KEY
 
 proxy:
+  ssl: true
   host: app.ancientherb.health
   app_port: 3000
   healthcheck:
