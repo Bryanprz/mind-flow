@@ -1,8 +1,5 @@
 @import "tailwindcss";
-@source "../../views/**/*.html.erb";
-@source "../../helpers/**/*.rb";
-@source "../../components/**/*.{rb,html.erb}";
-@source "../../../app/**/*.html.erb";
+@import "tailwindcss/utilities" layer(utilities);
 
 /* @plugin "./daisyui.js"; */
 @plugin "./daisyui.js" {
