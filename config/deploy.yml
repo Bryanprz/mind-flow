@@ -37,9 +37,9 @@ proxy:
     timeout: 10
 readiness_delay: 30      # Add 's' suffix and increase from 15
 
-# Run database migrations and seeds after deployment
-commands:
-  after_pull: |
-    bin/rails db:migrate
-    bin/rails db:seed
+# Commands to run after the app is deployed
+on:
+  deploy:
+    - exec: bundle exec rails db:migrate
+    - exec: bundle exec rails db:seed
 
