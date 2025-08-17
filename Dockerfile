@@ -27,11 +27,26 @@ COPY . .
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
-# Build Tailwind CSS
-RUN RAILS_ENV=production SECRET_KEY_BASE=dummy_secret bundle exec rails tailwindcss:build
+
+# DEBUG: Show Tailwind version and environment
+RUN bundle exec rails tailwindcss:version || echo "No version command"
+RUN echo "NODE_ENV: $NODE_ENV, RAILS_ENV: $RAILS_ENV"
+
+# Build Tailwind CSS in DEVELOPMENT MODE
+RUN NODE_ENV=development RAILS_ENV=production SECRET_KEY_BASE=dummy_secret bundle exec rails tailwindcss:build
+
+# DEBUG: Check what was actually built
+RUN ls -la app/assets/builds/
+RUN head -50 app/assets/builds/tailwind.css
+RUN grep -c "\.w-4\|\.h-4\|\.mt-20" app/assets/builds/tailwind.css || echo "Target classes NOT found"
+RUN wc -l app/assets/builds/tailwind.css
+
 
 # Precompile assets with dummy secret
 RUN RAILS_ENV=production SECRET_KEY_BASE=dummy_secret bundle exec rails assets:precompile
+
+# DEBUG: Check final compiled assets
+RUN find public/assets -name "*tailwind*" -exec wc -l {} \;
 
 # Start the server
 CMD ["bin/rails", "server"]
