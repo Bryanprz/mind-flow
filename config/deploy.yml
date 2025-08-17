@@ -34,4 +34,4 @@ proxy:
     path: /up
     interval: 10
     timeout: 10
-  readiness_delay: 30
+readiness_delay: 30
