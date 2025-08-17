@@ -87,8 +87,11 @@ Rails.application.configure do
   else
     # If not serving static files (e.g., not in a Docker container behind a proxy),
     # explicitly list allowed public hosts/IPs.
-    config.hosts = [
-      "162.243.220.201" # Your public IP address
-    ]
+    # config.hosts = [
+    #   "162.243.220.201", # Your public IP address
+    #   "app.ancientherb.health", # Your domain
+    # ]
+    config.hosts << "162.243.220.201"
+    config.hosts << "app.ancientherb.health"
   end
 end
