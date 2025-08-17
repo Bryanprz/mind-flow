@@ -28,7 +28,9 @@ env:
     - RAILS_MASTER_KEY
 
 proxy:
-  ssl: true
+  ssl:
+    cert: /etc/letsencrypt/live/app.ancientherb.health/fullchain.pem
+    key: /etc/letsencrypt/live/app.ancientherb.health/privkey.pem
   host: app.ancientherb.health
   app_port: 3000
   healthcheck:
