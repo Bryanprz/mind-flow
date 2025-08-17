@@ -37,7 +37,7 @@ proxy:
     timeout: 10
 readiness_delay: 30      # Add 's' suffix and increase from 15
 
-hooks:
-  post-deploy:
-    - cmd: bin/rails db:migrate
-    - cmd: bin/rails db:seed
+# Run commands on the server after deployment
+run:
+  - "bin/rails db:migrate"
+  - "bin/rails db:seed"
