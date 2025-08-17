@@ -28,6 +28,7 @@ env:
     - RAILS_MASTER_KEY
 
 proxy:
+  ssl: true
   host: app.ancientherb.health
   app_port: 3000
   healthcheck:
