@@ -1,9 +1,9 @@
 # Create a first admin user
-if User.find_by(email: 'admin@test.com').nil?
+if User.find_by(email_address: 'b@b.com').nil?
   User.create!(
-    email: 'admin@test.com',
-    password: 'password',
-    password_confirmation: 'password',
+    email_address: 'b@b.com',
+    password: 'asdf',
+    password_confirmation: 'asdf',
     admin: true
   )
 end
