@@ -21,7 +21,8 @@ module.exports = {
     require('daisyui'),
   ],
   daisyui: {
-    themes: "all",
+    themes: ["lemonade"],
+    defaultTheme: "lemonade",
     logs: true
   }
 }
