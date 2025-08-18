@@ -9,10 +9,10 @@ module ApplicationHelper
     end
   end
 
-  def quiz_progress_percentage(question, quiz_submission)
-    quiz_questions = quiz_submission.quiz.questions.order(:id)
-    current_index = quiz_questions.index(question)
-    total_questions = quiz_questions.count
+  def assessment_progress_percentage(question, assessment_submission)
+    assessment_questions = assessment_submission.health_assessment.assessment_questions.order(:id)
+    current_index = assessment_questions.index(question)
+    total_questions = assessment_questions.count
 
     if total_questions > 0
       ((current_index + 1).to_f / total_questions * 100).to_i

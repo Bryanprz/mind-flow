@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Handles the quiz question submission with a delay for visual feedback.
+// Handles the assessment question submission with a delay for visual feedback.
 export default class extends Controller {
   // Delays form submission to allow the user to see the selected state.
   select() {

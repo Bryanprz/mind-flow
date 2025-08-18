@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     
     # Ensure we have the most recent quiz submission for the user
     if current_user
-      @recent_submission = current_user.quiz_submissions.completed.order(completed_at: :desc).first
+      @recent_submission = current_user.assessment_submissions.completed.order(completed_at: :desc).first
       if @recent_submission
         @dosha_scores = @recent_submission.dosha_scores
         @primary_dosha_name = @recent_submission.primary_dosha&.name

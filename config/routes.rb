@@ -6,10 +6,10 @@ Rails.application.routes.draw do
   resources :herbs
   resources :foods
   resources :users, except: [:show]
-  post 'users/create_from_quiz', to: 'users#create_from_quiz', as: :create_user_from_quiz
-  post 'what_is_my_original_nature', to: 'quizzes#start_prakruti_quiz', as: :start_prakruti_quiz
-  post 'quiz/answer', to: 'quizzes#answer_question', as: :answer_quiz_question
-  post 'quiz/back', to: 'quizzes#go_back_question', as: :go_back_quiz_question
+  post 'users/create_from_assessment', to: 'users#create_from_assessment', as: :create_user_from_assessment
+  post 'what_is_my_original_nature', to: 'health_assessments#start_prakruti_assessment', as: :start_prakruti_assessment
+  post 'assessment/answer', to: 'health_assessments#answer_question', as: :answer_assessment_question
+  post 'assessment/back', to: 'health_assessments#go_back_question', as: :go_back_assessment_question
 
   # Profile route (works for both guests and logged-in users)
   get 'self', to: 'users#show', as: :self_profile

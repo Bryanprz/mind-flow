@@ -1,7 +1,6 @@
-class QuizEntry < ApplicationRecord
-  belongs_to :quiz
+class AssessmentEntry < ApplicationRecord
+  belongs_to :health_assessment
   belongs_to :user, optional: true
-  has_many :quiz_answers, dependent: :destroy
 
   scope :completed, -> { where.not(completed_at: nil) }
   scope :incomplete, -> { where(completed_at: nil) }
@@ -29,7 +28,7 @@ class QuizEntry < ApplicationRecord
   # It tallies scores based on the selected quiz options' dosha enum.
   def calculate_primary_doshas
     # Step 1: Get all selected doshas for this quiz entry.
-    selected_doshas = self.quiz_answers.joins(quiz_option: :question).pluck('quiz_options.dosha')
+    selected_doshas = self.assessment_answers.joins(assessment_option: :assessment_question).pluck('assessment_options.dosha')
 
     # Step 2: Count the occurrences of each dosha.
     dosha_scores = { "Vata" => 0, "Pitta" => 0, "Kapha" => 0 }

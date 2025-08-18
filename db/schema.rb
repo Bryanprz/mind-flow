@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_17_213602) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_18_025447) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -47,6 +47,57 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_17_213602) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "assessment_answers", force: :cascade do |t|
+    t.integer "assessment_submission_id", null: false
+    t.integer "assessment_option_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assessment_option_id"], name: "index_assessment_answers_on_assessment_option_id"
+    t.index ["assessment_submission_id"], name: "index_assessment_answers_on_assessment_submission_id"
+  end
+
+  create_table "assessment_entries", force: :cascade do |t|
+    t.integer "health_assessment_id", null: false
+    t.integer "user_id"
+    t.datetime "completed_at"
+    t.json "results", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["health_assessment_id"], name: "index_assessment_entries_on_health_assessment_id"
+    t.index ["user_id"], name: "index_assessment_entries_on_user_id"
+  end
+
+  create_table "assessment_options", force: :cascade do |t|
+    t.integer "assessment_question_id", null: false
+    t.string "text"
+    t.integer "dosha"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assessment_question_id"], name: "index_assessment_options_on_assessment_question_id"
+  end
+
+  create_table "assessment_questions", force: :cascade do |t|
+    t.integer "health_assessment_id", null: false
+    t.string "category"
+    t.string "kosha"
+    t.text "text"
+    t.integer "points"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["health_assessment_id"], name: "index_assessment_questions_on_health_assessment_id"
+  end
+
+  create_table "assessment_submissions", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "health_assessment_id", null: false
+    t.datetime "completed_at"
+    t.text "results", default: "{}"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["health_assessment_id"], name: "index_assessment_submissions_on_health_assessment_id"
+    t.index ["user_id"], name: "index_assessment_submissions_on_user_id"
   end
 
   create_table "cures", force: :cascade do |t|
@@ -92,58 +143,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_17_213602) do
     t.index ["name"], name: "index_doshas_on_name", unique: true
   end
 
-  create_table "questions", force: :cascade do |t|
-    t.integer "quiz_id", null: false
-    t.string "category"
-    t.string "kosha"
-    t.text "text"
-    t.integer "points"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
-  end
-
-  create_table "quiz_answers", force: :cascade do |t|
-    t.integer "quiz_submission_id", null: false
-    t.integer "quiz_option_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["quiz_option_id"], name: "index_quiz_answers_on_quiz_option_id"
-    t.index ["quiz_submission_id"], name: "index_quiz_answers_on_quiz_submission_id"
-  end
-
-  create_table "quiz_entries", force: :cascade do |t|
-    t.integer "quiz_id", null: false
-    t.integer "user_id"
-    t.datetime "completed_at"
-    t.json "results", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["quiz_id"], name: "index_quiz_entries_on_quiz_id"
-    t.index ["user_id"], name: "index_quiz_entries_on_user_id"
-  end
-
-  create_table "quiz_options", force: :cascade do |t|
-    t.integer "question_id", null: false
-    t.string "text"
-    t.integer "dosha"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["question_id"], name: "index_quiz_options_on_question_id"
-  end
-
-  create_table "quiz_submissions", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "quiz_id", null: false
-    t.datetime "completed_at"
-    t.text "results", default: "{}"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["quiz_id"], name: "index_quiz_submissions_on_quiz_id"
-    t.index ["user_id"], name: "index_quiz_submissions_on_user_id"
-  end
-
-  create_table "quizzes", force: :cascade do |t|
+  create_table "health_assessments", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.integer "category"
@@ -182,11 +182,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_17_213602) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "questions", "quizzes"
-  add_foreign_key "quiz_answers", "quiz_options"
-  add_foreign_key "quiz_answers", "quiz_submissions"
-  add_foreign_key "quiz_entries", "quizzes"
-  add_foreign_key "quiz_entries", "users"
-  add_foreign_key "quiz_options", "questions"
+  add_foreign_key "assessment_answers", "assessment_options"
+  add_foreign_key "assessment_answers", "assessment_submissions"
+  add_foreign_key "assessment_entries", "health_assessments"
+  add_foreign_key "assessment_entries", "users"
+  add_foreign_key "assessment_options", "assessment_questions"
+  add_foreign_key "assessment_questions", "health_assessments"
   add_foreign_key "sessions", "users"
 end

@@ -1,9 +1,15 @@
-class QuizSubmission < ApplicationRecord
+class AssessmentSubmission < ApplicationRecord
   belongs_to :user, optional: true
-  belongs_to :quiz
-  has_many :quiz_answers, dependent: :destroy
-  has_many :quiz_options, through: :quiz_answers
-  has_many :questions, through: :quiz_options
+  belongs_to :health_assessment
+  # Original relations with aliases for convenience
+  has_many :answers, class_name: 'AssessmentAnswer', foreign_key: 'assessment_submission_id', dependent: :destroy
+  has_many :options, through: :answers, source: :assessment_option
+  has_many :questions, through: :options, source: :assessment_question
+  
+  # Keep original relations for backward compatibility
+  has_many :assessment_answers, dependent: :destroy
+  has_many :assessment_options, through: :assessment_answers
+  has_many :assessment_questions, through: :assessment_options
 
   # Store results as a serialized hash (Rails 7+ syntax)
   serialize :results, type: Hash, coder: JSON
@@ -39,9 +45,9 @@ class QuizSubmission < ApplicationRecord
     scores = { vata: 0, pitta: 0, kapha: 0 }
     
     # Calculate scores based on answers
-    quiz_answers.includes(:quiz_option).each do |answer|
-      if answer.quiz_option && answer.quiz_option.dosha.present?
-        dosha = answer.quiz_option.dosha.downcase.to_sym
+    assessment_answers.includes(:assessment_option).each do |answer|
+      if answer.assessment_option && answer.assessment_option.dosha.present?
+        dosha = answer.assessment_option.dosha.downcase.to_sym
         scores[dosha] += 1 if scores.key?(dosha)
       end
     end
