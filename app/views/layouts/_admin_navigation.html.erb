@@ -1,0 +1,15 @@
+<div class="navbar bg-neutral text-neutral-content">
+  <button class="btn btn-ghost text-xl">admin ui</button>
+
+  <div class="navbar-center hidden lg:flex ">
+    <ul class="menu menu-horizontal">
+      <li><%= link_to "Intake", self_profile_path, class: "#{nav_link_class(self_profile_path)} text-neutral-content" %></li>
+      <li><%= link_to "Quest", "#", class: "#{nav_link_class("#")} text-neutral-content" %></li>
+      <li><%= link_to "Food", foods_path, class: "#{nav_link_class(foods_path)} text-neutral-content" %></li>
+      <li><%= link_to "Herbs", herbs_path, class:"#{nav_link_class(herbs_path)} text-neutral-content" %></li>
+      <li><%= link_to "Cures", cures_path, class: "#{nav_link_class(cures_path)} text-neutral-content" %></li>
+      <li><%= link_to "Lifestyle", lifestyle_plans_path, class: "#{nav_link_class(lifestyle_plans_path)} text-neutral-content" %></li>
+      <li><%= link_to "Knowledge", "#", class: "#{nav_link_class("#")} text-neutral-content" %></li>
+    </ul>
+  </div>
+</div>
