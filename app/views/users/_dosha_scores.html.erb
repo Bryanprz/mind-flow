@@ -14,17 +14,6 @@
 %>
 
 <% if dosha_scores.present? && dosha_percentages.present? %>
-  <!-- Debug Output -->
-  <div class="bg-yellow-50 p-4 mb-4 rounded-lg border border-yellow-200">
-    <h3 class="font-bold text-yellow-800 mb-2">Debug Information:</h3>
-    <pre class="text-xs text-gray-700 overflow-auto">
-      dosha_scores: <%= dosha_scores.inspect %>
-      dosha_percentages: <%= dosha_percentages.inspect %>
-      primary_dosha_name: <%= primary_dosha_name.inspect %>
-      @recent_quiz_results: <%= @recent_quiz_results.inspect %>
-      @recent_submission: <%= @recent_submission&.inspect %>
-    </pre>
-  </div>
   <div class="card card-border bg-base-100 border-base-300">
     <figure>
       <%= image_tag 'elements.png', class: 'rounded-t-xl h-auto max-h-64 w-full object-cover' %>

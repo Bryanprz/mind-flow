@@ -35,7 +35,7 @@ class HealthAssessmentsController < ApplicationController
 
   def answer_question
     @assessment_question = AssessmentQuestion.find(params[:question_id])
-    @assessment_option = AssessmentOption.find(params[:quiz_option_id])
+    @assessment_option = AssessmentOption.find(params[:assessment_option_id])
 
     # Create the answer associated with the submission
     @assessment_submission.assessment_answers.create!(

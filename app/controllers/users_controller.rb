@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :require_authentication, only: %i[new create]
   before_action :set_user, only: %i[show edit update destroy]
-  before_action :load_quiz_results, only: [:show]
+  before_action :load_assessment_results, only: [:show]
 
   # GET /self - Shows the current user's profile or guest quiz results
   def show
@@ -127,24 +127,24 @@ class UsersController < ApplicationController
 
   private
 
-  def load_quiz_results
+  def load_assessment_results
     # Try to get results from session first
-    if session[:recent_quiz_results].present?
-      @recent_quiz_results = session.delete(:recent_quiz_results).with_indifferent_access
+    if session[:recent_assessment_results].present?
+      @recent_assessment_results = session.delete(:recent_assessment_results).with_indifferent_access
       
       # Ensure we have the basic structure
-      @recent_quiz_results[:dosha_scores] ||= {}
-      @recent_quiz_results[:primary_dosha] ||= nil
-      @recent_quiz_results[:secondary_dosha] ||= nil
+      @recent_assessment_results[:dosha_scores] ||= {}
+      @recent_assessment_results[:primary_dosha] ||= nil
+      @recent_assessment_results[:secondary_dosha] ||= nil
       
       # Set instance variables from session
-      @dosha_scores = @recent_quiz_results[:dosha_scores].transform_keys(&:to_s.downcase.to_sym)
-      @primary_dosha_name = @recent_quiz_results[:primary_dosha]&.to_s
-      @secondary_dosha_name = @recent_quiz_results[:secondary_dosha]&.to_s
+      @dosha_scores = @recent_assessment_results[:dosha_scores].transform_keys(&:to_s.downcase.to_sym)
+      @primary_dosha_name = @recent_assessment_results[:primary_dosha]&.to_s
+      @secondary_dosha_name = @recent_assessment_results[:secondary_dosha]&.to_s
       
       # Parse completed_at if it's a string
-      if @recent_quiz_results[:completed_at].is_a?(String)
-        @recent_quiz_results[:completed_at] = Time.zone.parse(@recent_quiz_results[:completed_at])
+      if @recent_assessment_results[:completed_at].is_a?(String)
+        @recent_assessment_results[:completed_at] = Time.zone.parse(@recent_assessment_results[:completed_at])
       end
 
       # Calculate dosha percentages
@@ -155,7 +155,7 @@ class UsersController < ApplicationController
       end
       
       # Store percentages in session for consistency
-      @recent_quiz_results[:dosha_percentages] = @dosha_percentages
+      @recent_assessment_results[:dosha_percentages] = @dosha_percentages
       
       # Find dosha records if they exist
       if @primary_dosha_name.present?
