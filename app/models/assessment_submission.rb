@@ -43,7 +43,7 @@ class AssessmentSubmission < ApplicationRecord
   def calculate_results
     # Initialize scores with all doshas set to 0
     scores = { vata: 0, pitta: 0, kapha: 0 }
-    
+
     # Calculate scores based on answers
     assessment_answers.includes(:assessment_option).each do |answer|
       if answer.assessment_option && answer.assessment_option.dosha.present?
@@ -51,34 +51,26 @@ class AssessmentSubmission < ApplicationRecord
         scores[dosha] += 1 if scores.key?(dosha)
       end
     end
-    
+
     # Sort scores to determine primary and secondary doshas
     sorted_scores = scores.sort_by { |_, v| -v }
-    
-    # Ensure we have at least one score before proceeding
+
+    # Return the results hash
     if sorted_scores.any? { |_, score| score > 0 }
       primary = sorted_scores[0][0].to_s
       secondary = sorted_scores[1][0].to_s
-      
-      # Update the results
-      update!(
-        results: {
-          scores: scores,
-          primary_dosha: primary,
-          secondary_dosha: secondary
-        },
-        completed_at: Time.current
-      )
+      {
+        scores: scores,
+        primary_dosha: primary,
+        secondary_dosha: secondary
+      }
     else
-      # If no valid answers, set default values
-      update!(
-        results: {
-          scores: scores,
-          primary_dosha: nil,
-          secondary_dosha: nil
-        },
-        completed_at: Time.current
-      )
+      # If no valid answers, return default values
+      {
+        scores: scores,
+        primary_dosha: nil,
+        secondary_dosha: nil
+      }
     end
   end
 end

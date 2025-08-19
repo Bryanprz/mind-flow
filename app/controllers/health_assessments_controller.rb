@@ -12,7 +12,7 @@ class HealthAssessmentsController < ApplicationController
       user: current_user,  # Will be nil for guests
       health_assessment: @health_assessment
     )
-    
+
     # Store the submission ID in the session
     session[:assessment_submission_id] = @assessment_submission.id
     @assessment_question = @health_assessment.assessment_questions.order(:id).first
@@ -44,7 +44,7 @@ class HealthAssessmentsController < ApplicationController
 
     # Reload to ensure we have the latest data
     @assessment_submission.reload
-    
+
     all_assessment_questions = @assessment_submission.health_assessment.assessment_questions.order(:id)
     current_question_index = all_assessment_questions.index(@assessment_question)
     @next_assessment_question = all_assessment_questions[current_question_index + 1] if current_question_index
@@ -65,8 +65,9 @@ class HealthAssessmentsController < ApplicationController
           # Mark the submission as completed
           @assessment_submission.update!(
             completed_at: Time.current,
-            results: calculate_results
+            results: @assessment_submission.calculate_results
           )
+          @assessment_submission.reload # Ensure results are reloaded and deserialized
 
           # Store the results in the session
           session[:recent_assessment_results] = {
@@ -92,10 +93,10 @@ class HealthAssessmentsController < ApplicationController
 
     all_assessment_questions = @assessment_submission.health_assessment.assessment_questions.order(:id)
     @assessment_question = if @assessment_submission.assessment_answers.empty?
-                  all_assessment_questions.first
-                else
-                  @assessment_submission.assessment_answers.order(created_at: :desc).first.assessment_option.assessment_question
-                end
+                             all_assessment_questions.first
+                           else
+                             @assessment_submission.assessment_answers.order(created_at: :desc).first.assessment_option.assessment_question
+                           end
 
     current_question_index = all_assessment_questions.index(@assessment_question)
     has_previous_question = current_question_index > 0
@@ -121,10 +122,10 @@ class HealthAssessmentsController < ApplicationController
       @assessment_submission.calculate_results
       @assessment_submission.reload
     end
-    
+
     @primary_dosha = @assessment_submission.primary_dosha
     @secondary_dosha = @assessment_submission.secondary_dosha
-    
+
     # Store results in session for the user profile
     session[:recent_assessment_results] = {
       primary_dosha: @primary_dosha&.name,
@@ -155,29 +156,20 @@ class HealthAssessmentsController < ApplicationController
   def set_assessment_submission
     submission_id = params[:assessment_submission_id] || params[:id] || session[:assessment_submission_id]
     @assessment_submission = AssessmentSubmission.find_by(id: submission_id)
-    
+
     # Allow access if:
     # 1. The submission exists AND
     # 2. Either the session matches OR the user owns the submission
     unless @assessment_submission && 
-           (session[:assessment_submission_id].to_i == @assessment_submission.id || 
-            (current_user && @assessment_submission.user_id == current_user.id) ||
-            @assessment_submission.user_id.nil?)  # Allow if submission has no user (guest)
-      redirect_to root_path, alert: "Assessment session expired or invalid. Please start again."
-      return
+        (session[:assessment_submission_id].to_i == @assessment_submission.id || 
+         (current_user && @assessment_submission.user_id == current_user.id) ||
+         @assessment_submission.user_id.nil?)  # Allow if submission has no user (guest)
+    redirect_to root_path, alert: "Assessment session expired or invalid. Please start again."
+    return
     end
-    
+
     # Update the session to the current submission ID
     session[:assessment_submission_id] = @assessment_submission.id
   end
 
-  def calculate_results
-    # Implement your dosha calculation logic here
-    # This is a placeholder - replace with your actual calculation
-    {
-      scores: { vata: 0, pitta: 0, kapha: 0 },  # Calculate these
-      primary_dosha: 'vata',  # Calculate this
-      secondary_dosha: 'pitta'  # Calculate this
-    }
-  end
 end
