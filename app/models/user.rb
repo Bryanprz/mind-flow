@@ -2,11 +2,22 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :sessions, dependent: :destroy
-  has_many :quiz_entries, dependent: :destroy
   has_many :assessment_entries, dependent: :destroy
   belongs_to :prakruti, class_name: 'Dosha', optional: true
   belongs_to :vikruti, class_name: 'Dosha', optional: true
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, presence: true, length: { minimum: 6 }, on: :create
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+
+  attr_accessor :receive_health_report
+
+  def receive_health_report=(value)
+    puts "Receive Health Report: #{value}"
+    @receive_health_report = value
+  end
 
   # 1. The "getter" method for the virtual attribute "full_name", lets you call `user.full_name`
   def full_name

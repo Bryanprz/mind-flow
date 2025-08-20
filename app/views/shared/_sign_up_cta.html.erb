@@ -1,21 +1,24 @@
-<div class="w-full card card-border bg-primary border-base-300">
-  <div class="card-body flex flex-col">
-    <div class="text-center">
-      <h3 class="mt-2 text-xl font-black text-white tracking-wider">Save Your Results</h3>
-      <p class="text-md mt-3 text-white">Sign up with an email and password to save your health results.</p>
-    </div>
-    <div class="flex flex-col gap-2 mt-3 w-full">
-      <input type="email" class="input input-bordered w-full" placeholder="Email" />
-      <input type="password" class="input input-bordered w-full mt-3" placeholder="Password" />
-
-      <div class="form-control mt-3">
-        <label class="label cursor-pointer">
-          <span class="label-text text-white">Send me my health report.</span>
-          <input type="checkbox" checked="checked" class="checkbox checkbox-primary" />
-        </label>
+<%= form_with(model: User.new, url: users_path, local: true) do |f| %>
+  <div class="w-full card card-border bg-primary border-base-300">
+    <div class="card-body flex flex-col">
+      <div class="text-center">
+        <h3 class="mt-2 text-xl font-black text-white tracking-wider">Save Your Results</h3>
+        <p class="text-md mt-3 text-white">Sign up with an email and password to save your health results.</p>
       </div>
+      <div class="flex flex-col gap-2 mt-3 w-full">
+        <%= f.text_field :full_name, class: "input input-bordered w-full", placeholder: "Full name" %>
+        <%= f.email_field :email_address, class: "input input-bordered w-full", placeholder: "Email" %>
+        <%= f.password_field :password, class: "input input-bordered w-full mt-3", placeholder: "Password" %>
 
-      <button class="btn btn-accent w-full mt-3" type="button">Sign up</button>
+        <div class="form-control mt-3">
+          <label class="label cursor-pointer">
+            <span class="label-text text-white">Send me my health report.</span>
+            <%= f.check_box :receive_health_report, class: "checkbox checkbox-primary" %>
+          </label>
+        </div>
+
+        <%= f.submit "Sign up", class: "btn btn-accent w-full mt-3" %>
+      </div>
     </div>
   </div>
-</div>
+<% end %>
