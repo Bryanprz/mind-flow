@@ -3,6 +3,11 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
   before_action :load_assessment_results, only: [:show]
 
+  # GET /users/new
+  def new
+    @user = User.new
+  end
+
   # GET /self - Shows the current user's profile or guest quiz results
   def show
     @symptoms = []
@@ -50,11 +55,6 @@ class UsersController < ApplicationController
   # GET /users or /users.json
   def index
     @users = User.all
-  end
-
-  # GET /users/new
-  def new
-    @user = User.new
   end
 
   # GET /users/1/edit

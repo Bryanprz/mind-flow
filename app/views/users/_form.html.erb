@@ -11,32 +11,17 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
+  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+    <legend class="fieldset-legend">Sign Up</legend>
+    <%= form.label :name, class: "label" %>
     <%= form.text_field :name %>
-  </div>
 
-  <div>
-    <%= form.label :email, style: "display: block" %>
-    <%= form.text_field :email %>
-  </div>
+    <%= form.label :email, class: "label" %>
+    <%= form.text_field :email, class: "input" %>
 
-  <div>
-    <%= form.label :dob, style: "display: block" %>
-    <%= form.date_field :dob %>
-  </div>
+    <%= form.label :password, class: "label" %>
+    <%= form.password_field :password, class: "input" %>
 
-  <div>
-    <%= form.label :prakruti, style: "display: block" %>
-    <%= form.number_field :prakruti %>
-  </div>
-
-  <div>
-    <%= form.label :vikruti, style: "display: block" %>
-    <%= form.number_field :vikruti %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+    <%= form.submit "Login", class: "btn btn-neutral mt-4"%>
+  </fieldset>
 <% end %>
