@@ -1,19 +1,4 @@
-<% # Use either the user's quiz submission or the session-based results
-   dosha_scores = @dosha_scores || (@recent_quiz_results && @recent_quiz_results[:dosha_scores])
-   dosha_percentages = @dosha_percentages || (@recent_quiz_results && @recent_quiz_results[:dosha_percentages])
-   primary_dosha_name = @primary_dosha_name || (@recent_quiz_results && @recent_quiz_results[:primary_dosha])
-   
-   # If we have scores but no percentages, calculate them
-   if dosha_scores.present? && dosha_percentages.blank?
-     total = dosha_scores.values.sum.to_f
-     dosha_percentages = {}
-     dosha_scores.each do |dosha, score|
-       dosha_percentages[dosha.to_s.capitalize] = total > 0 ? ((score / total) * 100).round : 0
-     end
-   end
-%>
-
-<% if dosha_scores.present? && dosha_percentages.present? %>
+<% if @dosha_percentages.present? %>
   <div class="card card-border bg-base-100 border-base-300">
     <figure>
       <%= image_tag 'elements.png', class: 'rounded-t-xl h-auto max-h-64 w-full object-cover' %>
@@ -28,7 +13,7 @@
       <div class="flex justify-around items-center">
         <!-- Vata Score -->
         <div class="flex flex-col items-center space-y-2">
-          <% vata_score = dosha_percentages['Vata'] || dosha_percentages[:vata] || dosha_percentages['vata'] || 0 %>
+          <% vata_score = @dosha_percentages['Vata'] || @dosha_percentages[:vata] || @dosha_percentages['vata'] || 0 %>
           <div class="radial-progress text-blue-500" style="--value:<%= vata_score %>; --size:8rem; --thickness: 0.5rem;" role="progressbar">
             <span class="text-xl font-bold text-shadow"><%= vata_score %>%</span>
           </div>
@@ -40,7 +25,7 @@
 
         <!-- Pitta Score -->
         <div class="flex flex-col items-center space-y-1">
-          <% pitta_score = dosha_percentages['Pitta'] || dosha_percentages[:pitta] || dosha_percentages['pitta'] || 0 %>
+          <% pitta_score = @dosha_percentages['Pitta'] || @dosha_percentages[:pitta] || @dosha_percentages['pitta'] || 0 %>
           <div class="radial-progress text-red-500" style="--value:<%= pitta_score %>; --size:8rem; --thickness: 0.5rem;" role="progressbar">
             <span class="text-xl font-bold text-shadow"><%= pitta_score %>%</span>
           </div>
@@ -50,7 +35,7 @@
 
         <!-- Kapha Score -->
         <div class="flex flex-col items-center space-y-1">
-          <% kapha_score = dosha_percentages['Kapha'] || dosha_percentages[:kapha] || dosha_percentages['kapha'] || 0 %>
+          <% kapha_score = @dosha_percentages['Kapha'] || @dosha_percentages[:kapha] || @dosha_percentages['kapha'] || 0 %>
           <div class="radial-progress text-green-500" style="--value:<%= kapha_score %>; --size:8rem; --thickness: 0.5rem;" role="progressbar">
             <span class="text-xl font-bold text-shadow"><%= kapha_score %>%</span>
           </div>

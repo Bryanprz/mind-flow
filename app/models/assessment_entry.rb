@@ -1,59 +1,30 @@
 class AssessmentEntry < ApplicationRecord
-  belongs_to :health_assessment
   belongs_to :user, optional: true
+  belongs_to :health_assessment
 
-  scope :completed, -> { where.not(completed_at: nil) }
-  scope :incomplete, -> { where(completed_at: nil) }
+  # Original relations with aliases for convenience
+  has_many :answers, class_name: 'AssessmentAnswer', foreign_key: 'assessment_entry_id', dependent: :destroy
+  has_many :options, through: :answers, source: :assessment_option
+  has_many :questions, through: :options, source: :assessment_question
+  
+  # Keep original relations for backward compatibility
+  has_many :assessment_answers, dependent: :destroy
+  has_many :assessment_options, through: :assessment_answers
+  has_many :assessment_questions, through: :assessment_options
 
-  def dosha_scores
-    calculate_primary_doshas[:scores]
+  def results
+    result_data = Hash.new(0)
+    options.each {|option| result_data[option.dosha] += 1 }
+    result_data
   end
 
-  def update_user_prakruti!
-    return unless user && completed_at?
-
-    results = calculate_primary_doshas
-    primary_dosha_name = results[:primary_dosha]
-    secondary_dosha_name = results[:secondary_dosha]
-
-    # Find the Dosha records from the database
-    primary_dosha = Dosha.find_by(name: primary_dosha_name) if primary_dosha_name
-    secondary_dosha = Dosha.find_by(name: secondary_dosha_name) if secondary_dosha_name
-
-    # Update the user's prakruti
-    user.update!(prakruti: primary_dosha)
+  def primary_dosha
+    dosha_highest_value = results.max_by { |_, value| value }.first
+    Dosha.find_by(name: dosha_highest_value)
   end
-
-  # This is the main method for calculating quiz results.
-  # It tallies scores based on the selected quiz options' dosha enum.
-  def calculate_primary_doshas
-    # Step 1: Get all selected doshas for this quiz entry.
-    selected_doshas = self.assessment_answers.joins(assessment_option: :assessment_question).pluck('assessment_options.dosha')
-
-    # Step 2: Count the occurrences of each dosha.
-    dosha_scores = { "Vata" => 0, "Pitta" => 0, "Kapha" => 0 }
-    selected_doshas.each do |dosha_enum_value|
-      case dosha_enum_value
-      when 'vata'
-        dosha_scores["Vata"] += 1
-      when 'pitta'
-        dosha_scores["Pitta"] += 1
-      when 'kapha'
-        dosha_scores["Kapha"] += 1
-      end
-    end
-
-    # Step 3: Sort the doshas by score to find the primary and secondary.
-    sorted_doshas = dosha_scores.sort_by { |_, score| -score }
-
-    primary_dosha_name = sorted_doshas[0][0]
-    secondary_dosha_name = sorted_doshas[1][0]
-
-    # Step 4: Return the results.
-    {
-      primary_dosha: primary_dosha_name,
-      secondary_dosha: secondary_dosha_name,
-      scores: dosha_scores
-    }
+  
+  def secondary_dosha
+    second_highest_dosha = results.sort_by { |_, value| value }[-2]&.first
+    Dosha.find_by(name: second_highest_dosha)
   end
 end

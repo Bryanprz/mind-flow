@@ -20,7 +20,7 @@
   setTimeout(() => {
     // For logged-in users, redirect to their profile
     // For guests, show results in the current page
-    const url = "<%= self_profile_path %>";
+    const url = "<%= self_profile_path(assessment_entry_id: assessment_entry.id) %>";
     window.location.href = url;
   }, 3000);
 </script>

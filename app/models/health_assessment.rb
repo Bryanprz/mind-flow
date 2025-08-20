@@ -4,7 +4,6 @@ class HealthAssessment < ApplicationRecord
 
   has_many :assessment_questions, dependent: :destroy
   has_many :assessment_entries, dependent: :destroy
-  has_many :assessment_submissions, dependent: :destroy
   
   # Scopes
   scope :prakruti_assessments, -> { where(category: :prakruti) }

@@ -17,25 +17,30 @@ class UsersController < ApplicationController
     end
     
     # Ensure we have the most recent quiz submission for the user
-    if current_user
-      @recent_submission = current_user.assessment_submissions.completed.order(completed_at: :desc).first
-      if @recent_submission
-        @dosha_scores = @recent_submission.dosha_scores
-        @primary_dosha_name = @recent_submission.primary_dosha&.name
-        @secondary_dosha_name = @recent_submission.secondary_dosha&.name
-        
-        # Calculate percentages
-        total = @dosha_scores.values.sum.to_f
-        @dosha_percentages = {}
-        @dosha_scores.each do |dosha, score|
-          @dosha_percentages[dosha.to_s.capitalize] = total > 0 ? ((score / total) * 100).round : 0
-        end
+    @assessment_entry = nil # Initialize to nil
+
+    if params[:assessment_entry_id].present?
+      # Prioritize the specific assessment_submission passed in the URL
+      @assessment_entry = AssessmentEntry.find_by(id: params[:assessment_entry_id])
+    # elsif current_user
+    #   # Fallback for logged-in users: get their most recent completed submission
+    #   @assessment_submission = current_user.assessment_submissions.completed.order(completed_at: :desc).first
+    end
+
+    if @assessment_entry
+      @primary_dosha_name = @assessment_entry.primary_dosha&.name
+      @secondary_dosha_name = @assessment_entry.secondary_dosha&.name
+      
+      # Calculate percentages
+      total = @assessment_entry.results.values.sum.to_f
+      @dosha_percentages = {}
+      @assessment_entry.results.each do |dosha, score|
+        @dosha_percentages[dosha.to_s.capitalize] = total > 0 ? ((score / total) * 100).round : 0
       end
     end
 
     respond_to do |format|
       format.html
-      
       format.turbo_stream do
         # This will render users/self.turbo_stream.erb
       end
@@ -128,55 +133,9 @@ class UsersController < ApplicationController
   private
 
   def load_assessment_results
-    # Try to get results from session first
-    if session[:recent_assessment_results].present?
-      @recent_assessment_results = session.delete(:recent_assessment_results).with_indifferent_access
-      
-      # Ensure we have the basic structure
-      @recent_assessment_results[:dosha_scores] ||= {}
-      @recent_assessment_results[:primary_dosha] ||= nil
-      @recent_assessment_results[:secondary_dosha] ||= nil
-      
-      # Set instance variables from session
-      @dosha_scores = @recent_assessment_results[:dosha_scores].transform_keys(&:to_s.downcase.to_sym)
-      @primary_dosha_name = @recent_assessment_results[:primary_dosha]&.to_s
-      @secondary_dosha_name = @recent_assessment_results[:secondary_dosha]&.to_s
-      
-      # Parse completed_at if it's a string
-      if @recent_assessment_results[:completed_at].is_a?(String)
-        @recent_assessment_results[:completed_at] = Time.zone.parse(@recent_assessment_results[:completed_at])
-      end
-
-      # Calculate dosha percentages
-      total = @dosha_scores.values.sum.to_f
-      @dosha_percentages = {}
-      @dosha_scores.each do |dosha, score|
-        @dosha_percentages[dosha.to_s.capitalize] = total > 0 ? ((score / total) * 100).round : 0
-      end
-      
-      # Store percentages in session for consistency
-      @recent_assessment_results[:dosha_percentages] = @dosha_percentages
-      
-      # Find dosha records if they exist
-      if @primary_dosha_name.present?
-        @primary_dosha = Dosha.find_by('LOWER(name) = ?', @primary_dosha_name.downcase)
-      end
-      
-      if @secondary_dosha_name.present?
-        @secondary_dosha = Dosha.find_by('LOWER(name) = ?', @secondary_dosha_name.downcase)
-      end
-      
-      # If we don't have a secondary dosha but have scores, find the second highest
-      if @secondary_dosha.blank? && @dosha_scores.present? && @dosha_scores.size > 1
-        sorted_scores = @dosha_scores.sort_by { |_, v| -v }
-        if sorted_scores[1].present?
-          @secondary_dosha_name = sorted_scores[1][0].to_s.capitalize
-          @secondary_dosha = Dosha.find_by('LOWER(name) = ?', @secondary_dosha_name.downcase)
-        end
-      end
-      
-      # Ensure we have default values
-      @dosha_percentages = { 'Vata' => 0, 'Pitta' => 0, 'Kapha' => 0 } if @dosha_percentages.blank?
+    if session[:assessment_entry_id].present?
+      @assessment_entry = AssessmentEntry.find_by(id: session[:assessment_entry_id])
+      session.delete(:assessment_entry_id) # Clear the session after loading
     end
   end
 
