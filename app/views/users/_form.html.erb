@@ -1,3 +1,5 @@
+<%# TODO fix this form so that it submits and creates user properly %>
+<div class="flex justify-center mx-auto mt-11">
 <%= form_with(model: user) do |form| %>
   <% if user.errors.any? %>
     <div style="color: red">
@@ -11,17 +13,19 @@
     </div>
   <% end %>
 
-  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+  <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-lg border p-4">
     <legend class="fieldset-legend">Sign Up</legend>
     <%= form.label :name, class: "label" %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, class: "input" %>
 
-    <%= form.label :email, class: "label" %>
-    <%= form.text_field :email, class: "input" %>
+    <%= form.label :email_address, class: "label" %>
+    <%= form.text_field :email_address, class: "input" %>
 
     <%= form.label :password, class: "label" %>
     <%= form.password_field :password, class: "input" %>
 
+    <br />
     <%= form.submit "Login", class: "btn btn-neutral mt-4"%>
   </fieldset>
 <% end %>
+</div>
