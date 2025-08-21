@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_20_045343) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_20_202804) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -86,6 +86,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_045343) do
     t.integer "points"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "question_group"
     t.index ["health_assessment_id"], name: "index_assessment_questions_on_health_assessment_id"
   end
 
@@ -133,7 +134,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_045343) do
   end
 
   create_table "health_assessments", force: :cascade do |t|
-    t.string "title"
+    t.string "name"
     t.text "description"
     t.integer "category"
     t.datetime "created_at", null: false
