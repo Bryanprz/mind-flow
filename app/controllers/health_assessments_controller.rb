@@ -1,5 +1,5 @@
 class HealthAssessmentsController < ApplicationController
-  before_action :authenticate_user!, except: [:start_prakruti_assessment, :answer_question, :go_back_question, :show_results]
+  allow_unauthenticated_access
   before_action :set_assessment_submission, only: [:answer_question, :go_back_question, :show_results]
 
   def start_prakruti_assessment
