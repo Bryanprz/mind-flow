@@ -40,7 +40,7 @@
             <%= link_to "Back", 
                         go_back_assessment_question_path(assessment_entry_id: @assessment_entry.id, question_id: question.id), 
                         data: { turbo_method: :post, turbo_stream: true },
-                        class: "rounded-md bg-gray-200 text-gray-700 px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
+                        class: "rounded-md bg-base-500 text-white px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
           <% else %>
             <div class="w-1/2"></div> <%# Placeholder for alignment %>
           <% end %>
