@@ -14,8 +14,6 @@ class HealthAssessmentsController < ApplicationController
     start_assessment(:chronic_issues)
   end
 
-  private
-
   def start_assessment(assessment_type)
     @health_assessment = HealthAssessment.find_by(category: assessment_type)
     raise ActiveRecord::RecordNotFound, "No '#{assessment_type.to_s.humanize}' assessment found." unless @health_assessment
@@ -50,16 +48,26 @@ class HealthAssessmentsController < ApplicationController
   def answer_question
     @assessment_question = AssessmentQuestion.find(params[:question_id])
     @assessment_option = AssessmentOption.find(params[:assessment_option_id])
-
-    # Create the answer associated with the entry
-    @assessment_entry.assessment_answers.create!(
-      assessment_option: @assessment_option
-    )
-
-    all_assessment_questions = @assessment_entry.health_assessment.assessment_questions.order(:id)
+  
+    # Find or initialize the answer for this question
+    answer = @assessment_entry.assessment_answers
+      .joins(:assessment_option)
+      .find_by(assessment_options: { assessment_question_id: @assessment_question.id })
+  
+    if answer
+      # Update existing answer
+      answer.update!(assessment_option: @assessment_option)
+    else
+      # Create new answer
+      @assessment_entry.assessment_answers.create!(
+        assessment_option: @assessment_option
+      )
+    end
+  
+    all_assessment_questions = @assessment_entry.questions.order(:id)
     current_question_index = all_assessment_questions.index(@assessment_question)
     @next_assessment_question = all_assessment_questions[current_question_index + 1] if current_question_index
-
+  
     respond_to do |format|
       format.turbo_stream do
         if @next_assessment_question.present?
@@ -77,11 +85,8 @@ class HealthAssessmentsController < ApplicationController
           @assessment_entry.update!(
             completed_at: Time.current
           )
-          @assessment_entry.reload # Ensure results are reloaded and deserialized
-
-          # Store the results in the session
-          session[:assessment_entry_id] = @assessment_entry.id
-
+          @assessment_entry.reload
+  
           render turbo_stream: turbo_stream.replace(
             'main_content_area',
             partial: 'health_assessments/analyzing',
@@ -93,19 +98,12 @@ class HealthAssessmentsController < ApplicationController
   end
 
   def go_back_question
-    last_answer = @assessment_entry.assessment_answers.order(created_at: :desc).first
-    last_answer&.destroy
-
-    all_assessment_questions = @assessment_entry.health_assessment.assessment_questions.order(:id)
-    @assessment_question = if @assessment_entry.assessment_answers.empty?
-                             all_assessment_questions.first
-                           else
-                             @assessment_entry.assessment_answers.order(created_at: :desc).first.assessment_option.assessment_question
-                           end
-
-    current_question_index = all_assessment_questions.index(@assessment_question)
-    has_previous_question = current_question_index > 0
-
+    all_questions = @assessment_entry.questions.order(:id)
+    current_question = AssessmentQuestion.find_by(id: params[:question_id])
+    current_index = current_question ? all_questions.find_index(current_question) : 0
+    
+    @assessment_question = current_index.positive? ? all_questions[current_index - 1] : all_questions.first
+  
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
@@ -113,8 +111,8 @@ class HealthAssessmentsController < ApplicationController
           partial: "health_assessments/question",
           locals: { 
             question: @assessment_question, 
-            assessment_submission: @assessment_entry, 
-            has_previous_question: has_previous_question 
+            assessment_entry: @assessment_entry, 
+            has_previous_question: current_index > 1
           }
         )
       end
@@ -140,7 +138,7 @@ class HealthAssessmentsController < ApplicationController
           "main_content_area",
           partial: "health_assessments/results",
           locals: { 
-            assessment_submission: @assessment_entry,
+            assessment_entry: @assessment_entry,
             primary_dosha: @primary_dosha, 
             secondary_dosha: @secondary_dosha,
             current_user: current_user

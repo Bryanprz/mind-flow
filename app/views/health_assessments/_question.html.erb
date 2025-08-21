@@ -12,11 +12,11 @@
 
       <h2 class="text-2xl font-bold mb-8 mt-5 text-center"><%= question.text %></h2>
 
-      <%= form_with url: answer_assessment_question_path, method: :post, data: { turbo_frame: "main_content_area" } do |form| %>
+      <%= form_with url: answer_assessment_question_path, method: :post, data: { turbo_frame: "main_content_area", controller: "assessment-question", assessment_question_target: "form" } do |form| %>
         <%= form.hidden_field :assessment_entry_id, value: @assessment_entry.id %>
         <%= form.hidden_field :question_id, value: question.id %>
 
-        <div class="grid grid-cols-1 gap-4" data-controller="assessment-question">
+        <div class="grid grid-cols-1 gap-4">
           <% question.assessment_options.each do |option| %>
             <label class="block cursor-pointer">
               <%= form.radio_button :assessment_option_id, option.id,
@@ -37,11 +37,10 @@
 
         <div class="flex justify-between items-center mt-6">
           <% if has_previous_question %>
-            <%= form_with url: go_back_assessment_question_path, method: :post, data: { turbo_frame: "main_content_area" } do |form| %>
-              <%= form.hidden_field :assessment_entry_id, value: @assessment_entry.id %>
-              <%= form.hidden_field :question_id, value: question.id %>
-              <%= form.submit "Back", class: "rounded-md bg-gray-200 text-gray-700 px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
-            <% end %>
+            <%= link_to "Back", 
+                        go_back_assessment_question_path(assessment_entry_id: @assessment_entry.id, question_id: question.id), 
+                        data: { turbo_method: :post, turbo_stream: true },
+                        class: "rounded-md bg-gray-200 text-gray-700 px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
           <% else %>
             <div class="w-1/2"></div> <%# Placeholder for alignment %>
           <% end %>

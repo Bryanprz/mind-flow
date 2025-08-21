@@ -5,7 +5,7 @@ class AssessmentEntry < ApplicationRecord
   # Original relations with aliases for convenience
   has_many :answers, class_name: 'AssessmentAnswer', foreign_key: 'assessment_entry_id', dependent: :destroy
   has_many :options, through: :answers, source: :assessment_option
-  has_many :questions, through: :options, source: :assessment_question
+  has_many :questions, through: :health_assessment, source: :assessment_questions
   
   # Keep original relations for backward compatibility
   has_many :assessment_answers, dependent: :destroy
