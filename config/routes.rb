@@ -5,9 +5,12 @@ Rails.application.routes.draw do
   resources :cures
   resources :herbs
   resources :foods
-  resources :users, except: [:show]
+  resources :users
   post 'users/create_from_assessment', to: 'users#create_from_assessment', as: :create_user_from_assessment
+  # Assessment routes
   post 'what_is_my_original_nature', to: 'health_assessments#start_prakruti_assessment', as: :start_prakruti_assessment
+  post 'what_is_my_current_state', to: 'health_assessments#start_vikruti_assessment', as: :start_vikruti_assessment
+  post 'chronic_issues_assessment', to: 'health_assessments#start_chronic_issues_assessment', as: :start_chronic_issues_assessment
   post 'assessment/answer', to: 'health_assessments#answer_question', as: :answer_assessment_question
   post 'assessment/back', to: 'health_assessments#go_back_question', as: :go_back_assessment_question
 

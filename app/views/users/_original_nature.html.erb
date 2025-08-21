@@ -1,3 +1,4 @@
+  <% if current_user && @assessment_entry && @assessment_entry.respond_to?(:get_elements) %>
   <!-- Original Nature Card -->
   <div class="card card-side card-border bg-base-100 border-base-300">
   <figure>
@@ -22,10 +23,10 @@
         {name: 'Water', icon: '💧'},
         {name: 'Earth', icon: '🌍'}
       ] %>
-    <% user_strong_elements = @user&.strong_elements || ['Fire', 'Air'] %>
+    <% strong_elements = @assessment_entry.get_elements %>
     <% elements.each do |el| %>
       <div class="tooltip" data-tip="<%= el[:name] %>">
-        <span class="text-3xl <%= user_strong_elements.include?(el[:name]) ? 'ring-2 ring-primary rounded-full' : 'opacity-60' %>"><%= el[:icon] %></span>
+        <span class="text-3xl <%= strong_elements.include?(el[:name]) ? 'ring-2 ring-primary rounded-full' : 'opacity-60' %>"><%= el[:icon] %></span>
       </div>
     <% end %>
     </div>
@@ -34,4 +35,49 @@
     </div>
   </div>
 </div>
+<% else %>
+  <div class="flex flex-wrap justify-center gap-4 mt-4">
+    <!-- Original Nature Assessment Card -->
+    <div class="card card-side card-border bg-base-100 border-base-300 w-full">
+      <figure>
+        <img src="https://via.placeholder.com/150" alt="Original Nature Assessment Icon" />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title text-lg font-semibold">Original Nature Assessment</h2>
+        <p>Discover your unique Ayurvedic energetic blueprint.</p>
+        <div class="card-actions justify-end">
+          <a href="#" class="btn btn-accent text-sm font-bold">Start Assessment</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Imbalance Assessment Card -->
+    <div class="card card-side card-border bg-base-100 border-base-300 w-full">
+      <div class="card-body">
+        <h2 class="card-title text-lg font-semibold">Current Imbalance Assessment</h2>
+        <p>Identify current imbalances and their root causes.</p>
+        <div class="card-actions justify-end">
+          <a href="#" class="btn btn-accent text-sm font-bold">Start Assessment</a>
+        </div>
+      </div>
+      <figure>
+        <img src="https://via.placeholder.com/150" alt="Current Imbalance Assessment Icon" />
+      </figure>
+    </div>
+
+    <!-- Chronic Illness Manager Card -->
+    <div class="card card-side card-border bg-base-100 border-base-300 w-full">
+      <figure>
+        <img src="https://via.placeholder.com/150" alt="Chronic Illness Manager Icon" />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title text-lg font-semibold">Chronic Illness Manager</h2>
+        <p>Manage chronic conditions with personalized Ayurvedic insights.</p>
+        <div class="card-actions justify-end">
+          <a href="#" class="btn btn-accent text-sm font-bold">Start Manager</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
 

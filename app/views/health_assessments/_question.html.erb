@@ -1,8 +1,10 @@
 <turbo-frame id="main_content_area" class="transition-opacity duration-500 ease-in-out opacity-0" data-controller="transition">
 
+  <% current_question_answer = @assessment_entry.assessment_answers.joins(:assessment_option).find_by(assessment_options: { assessment_question_id: question.id }) %>
+
   <div class="flex flex-col items-center justify-center min-h-[calc(100vh-80rem)] px-4 py-8">
     <div class="card card-border w-full max-w-2xl bg-neutral p-8" style="color:#d2d3c8;">
-      <% progress_percentage = assessment_progress_percentage(question, assessment_entry) %>
+      <% progress_percentage = assessment_progress_percentage(question, @assessment_entry) %>
       <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
         <div class="bg-primary h-2.5 rounded-full" style="width: <%= progress_percentage %>%"></div>
       </div>
@@ -10,14 +12,17 @@
 
       <h2 class="text-2xl font-bold mb-8 mt-5 text-center"><%= question.text %></h2>
 
-      <%= form_with url: answer_assessment_question_path, method: :post, data: { controller: "assessment-question", turbo_frame: "main_content_area" } do |form| %>
-        <%= form.hidden_field :assessment_entry_id, value: assessment_entry.id %>
+      <%= form_with url: answer_assessment_question_path, method: :post, data: { turbo_frame: "main_content_area" } do |form| %>
+        <%= form.hidden_field :assessment_entry_id, value: @assessment_entry.id %>
         <%= form.hidden_field :question_id, value: question.id %>
 
-        <div class="grid grid-cols-1 gap-4">
+        <div class="grid grid-cols-1 gap-4" data-controller="assessment-question">
           <% question.assessment_options.each do |option| %>
             <label class="block cursor-pointer">
-              <%= form.radio_button :assessment_option_id, option.id, class: "hidden peer", data: { action: "change->assessment-question#select" } %>
+              <%= form.radio_button :assessment_option_id, option.id,
+                                    class: "hidden peer",
+                                    data: { action: "change->assessment-question#select" },
+                                    checked: current_question_answer.present? && current_question_answer.assessment_option_id == option.id %>
               <div class="p-4 border-2 border-gray-200 rounded-lg text-left transition-all duration-200 ease-in-out
                           hover:border-primary hover:bg-primary hover:text-white
                           peer-checked:border-primary peer-checked:bg-primary peer-checked:shadow-md flex justify-between items-center">
@@ -29,16 +34,23 @@
             </label>
           <% end %>
         </div>
-      <% end %>
 
-      <% if has_previous_question %>
-        <%= form_with url: go_back_assessment_question_path, method: :post, data: { turbo_frame: "main_content_area" } do |form| %>
-          <%= form.hidden_field :assessment_entry_id, value: assessment_entry.id %>
-          <%= form.hidden_field :question_id, value: question.id %>
-          <%= form.submit "Back", class: "mt-6 rounded-md bg-primary text-white px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
-        <% end %>
-      <% else %>
-        <div class="mt-6 h-10"></div>
+        <div class="flex justify-between items-center mt-6">
+          <% if has_previous_question %>
+            <%= form_with url: go_back_assessment_question_path, method: :post, data: { turbo_frame: "main_content_area" } do |form| %>
+              <%= form.hidden_field :assessment_entry_id, value: @assessment_entry.id %>
+              <%= form.hidden_field :question_id, value: question.id %>
+              <%= form.submit "Back", class: "rounded-md bg-gray-200 text-gray-700 px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400" %>
+            <% end %>
+          <% else %>
+            <div class="w-1/2"></div> <%# Placeholder for alignment %>
+          <% end %>
+
+          <%= form.submit "Next",
+                          class: "rounded-md bg-primary text-white px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed",
+                          data: { "assessment-question-target": "nextButton" },
+                          disabled: !current_question_answer.present? %>
+        </div>
       <% end %>
     </div>
   </div>

@@ -1,6 +1,6 @@
 class HealthAssessment < ApplicationRecord
   attribute :category, :integer
-  enum :category, { prakruti: 0, vikruti: 1 }, prefix: true
+  enum :category, { prakruti: 0, vikruti: 1, chronic_issues: 2 }, prefix: true
 
   has_many :assessment_questions, dependent: :destroy
   has_many :assessment_entries, dependent: :destroy

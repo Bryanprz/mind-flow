@@ -3,8 +3,7 @@
 <% password_digest = BCrypt::Password.create("password") %>
 
 one:
-  first_name: MyString
-  last_name: MyString
+  name: MyString
   email_address: one@example.com
   password_digest: <%= password_digest %>
   date_of_birth: 2025-07-25
@@ -12,8 +11,7 @@ one:
   vikruti: vata
 
 two:
-  first_name: MyString
-  last_name: MyString
+  name: MyString
   email_address: two@example.com
   password_digest: <%= password_digest %>
   date_of_birth: 2025-07-25

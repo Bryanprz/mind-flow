@@ -3,9 +3,23 @@ class HealthAssessmentsController < ApplicationController
   before_action :set_assessment_submission, only: [:answer_question, :go_back_question, :show_results]
 
   def start_prakruti_assessment
-    @health_assessment = HealthAssessment.find_by(category: :prakruti)  # Using symbol for enum
-    raise ActiveRecord::RecordNotFound, "No 'Prakruti' assessment found." unless @health_assessment
-    raise ActiveRecord::RecordNotFound, "The 'Prakruti' assessment has no questions." if @health_assessment.assessment_questions.empty?
+    start_assessment(:prakruti)
+  end
+
+  def start_vikruti_assessment
+    start_assessment(:vikruti)
+  end
+
+  def start_chronic_issues_assessment
+    start_assessment(:chronic_issues)
+  end
+
+  private
+
+  def start_assessment(assessment_type)
+    @health_assessment = HealthAssessment.find_by(category: assessment_type)
+    raise ActiveRecord::RecordNotFound, "No '#{assessment_type.to_s.humanize}' assessment found." unless @health_assessment
+    raise ActiveRecord::RecordNotFound, "The '#{assessment_type.to_s.humanize}' assessment has no questions." if @health_assessment.assessment_questions.empty?
 
     # Create a new submission for this assessment
     @assessment_entry = AssessmentEntry.create!(

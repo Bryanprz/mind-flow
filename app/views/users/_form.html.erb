@@ -1,6 +1,5 @@
-<%# TODO fix this form so that it submits and creates user properly %>
 <div class="flex justify-center mx-auto mt-11">
-<%= form_with(model: user) do |form| %>
+<%= form_with(model: user, data: { turbo_action: "replace" }) do |form| %>
   <% if user.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>

@@ -1,8 +1,8 @@
+
 # Create a first admin user
 if User.find_by(email_address: 'b@b.com').nil?
   User.create!(
-    first_name: 'Bryan',
-    last_name: 'Perez',
+    name: 'Bryan Perez',
     email_address: 'b@b.com',
     password: 'asdf',
     password_confirmation: 'asdf',
@@ -11,25 +11,35 @@ if User.find_by(email_address: 'b@b.com').nil?
 end
 
 require_relative 'seeds_data.rb' 
+require_relative '../app/models/assessment_question'
+require_relative '../app/models/assessment_option' 
 
-Quiz.find_or_create_by!(category: :vikruti) do |quiz|
-  quiz.title = 'Vikruti Quiz'
-  quiz.description = 'Vikruti (current elemental imbalance) self-assessment quiz'
+HealthAssessment.find_or_create_by!(category: :vikruti) do |health_assessment|
+  health_assessment.title = 'Vikruti Assessment'
+  health_assessment.description = 'Vikruti (current elemental imbalance) self-assessment'
 end
 
-prakruti_quiz = Quiz.find_or_create_by!(category: :prakruti) do |quiz|
-  quiz.title = 'Prakruti Quiz'
-  quiz.description = 'Prakruti (original elemental nature) self-assessment quiz'
+prakruti_health_assessment = HealthAssessment.find_or_create_by!(category: :prakruti) do |health_assessment|
+  health_assessment.title = 'Prakruti Assessment'
+  health_assessment.description = 'Prakruti (original elemental nature) self-assessment'
 end
 
-if prakruti_quiz.questions.none?
+HealthAssessment.find_or_create_by!(category: :chronic_issues) do |health_assessment|
+  health_assessment.title = 'Chronic Issues Assessment'
+  health_assessment.description = 'Assessment for chronic health issues.'
+end
+
+if prakruti_health_assessment.assessment_questions.none?
   PRAKRUTI_QUESTIONS_DATA.each do |question_data|
-    question = Question.create!(quiz: prakruti_quiz, text: question_data[:text], points: question_data[:points])
+    question = AssessmentQuestion.create!(health_assessment: prakruti_health_assessment, text: question_data[:text], points: question_data[:points])
     question_data[:options].each do |option_data|
-      QuizOption.create!(question: question, text: option_data[:text], dosha: option_data[:dosha])
+      AssessmentOption.create!(assessment_question: question, text: option_data[:text], dosha: option_data[:dosha])
     end
   end
 end
+
+HealthAssessment.find_or_create_by!(category: :vikruti)
+HealthAssessment.find_or_create_by!(category: :chronic_issues)
 
 # Populate Dosha details from Chapter 4 of the PDF
 Dosha.find_or_create_by!(name: 'vata') do |dosha|

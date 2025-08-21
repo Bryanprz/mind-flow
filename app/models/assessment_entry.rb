@@ -27,4 +27,15 @@ class AssessmentEntry < ApplicationRecord
     second_highest_dosha = results.sort_by { |_, value| value }[-2]&.first
     Dosha.find_by(name: second_highest_dosha)
   end
+
+  def get_elements
+    case primary_dosha.name
+    when 'vata'
+      return 'Space & Air'
+    when 'pitta'
+      return 'Fire & Water'
+    when 'kapha'
+      return 'Earth & Water'
+    end
+  end
 end
