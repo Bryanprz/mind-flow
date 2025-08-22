@@ -121,6 +121,7 @@ class HealthAssessmentsController < ApplicationController
 
   def show_results
     # Calculate results if not already done
+    binding.pry
     if @assessment_entry.completed_at.nil?
       @assessment_entry.calculate_results
       @assessment_entry.reload
@@ -145,7 +146,14 @@ class HealthAssessmentsController < ApplicationController
           }
         )
       end
-      format.html
+      format.html do
+        render "health_assessments/results", locals: {
+          assessment_entry: @assessment_entry,
+          primary_dosha: @primary_dosha,
+          secondary_dosha: @secondary_dosha,
+          current_user: current_user
+        }
+      end
     end
   end
 

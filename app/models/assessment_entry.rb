@@ -18,6 +18,8 @@ class AssessmentEntry < ApplicationRecord
     result_data
   end
 
+  alias_method :dosha_scores, :results
+
   def primary_dosha
     dosha_highest_value = results.max_by { |_, value| value }.first
     Dosha.find_by(name: dosha_highest_value)

@@ -1,4 +1,4 @@
-<div class="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] px-4 py-8">
+<div data-controller="analyzing" class="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] px-4 py-8">
   <div class="w-full max-w-2xl text-center">
     <h2 class="text-3xl font-bold text-gray-800 mb-4">Analyzing your responses...</h2>
     <p class="text-lg text-gray-600 mb-8">Determining your mind-body constitution...</p>
@@ -14,13 +14,3 @@
     <p class="text-sm text-gray-500">Please wait a moment while we process your results.</p>
   </div>
 </div>
-
-<script type="module">
-  // Show loading animation for 3 seconds, then show results
-  setTimeout(() => {
-    // For logged-in users, redirect to their profile
-    // For guests, show results in the current page
-    const url = "<%= self_profile_path(assessment_entry_id: assessment_entry.id) %>";
-    window.location.href = url;
-  }, 3000);
-</script>
