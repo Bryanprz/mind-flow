@@ -20,4 +20,17 @@ module ApplicationHelper
       0
     end
   end
+
+  def dosha_classes(dosha_name)
+    case dosha_name.to_s.downcase
+    when 'vata'
+      'text-blue-500'
+    when 'pitta'
+      'text-red-500'
+    when 'kapha'
+      'text-primary'
+    else
+      'text-gray-500'
+    end
+  end
 end
