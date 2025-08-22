@@ -120,62 +120,24 @@ class HealthAssessmentsController < ApplicationController
   end
 
   def show_results
-    # Calculate results if not already done
-    binding.pry
-    if @assessment_entry.completed_at.nil?
-      @assessment_entry.calculate_results
-      @assessment_entry.reload
-    end
-
-    @primary_dosha = @assessment_entry.primary_dosha
-    @secondary_dosha = @assessment_entry.secondary_dosha
-
-    # Store results in session for the user profile
-    session[:assessment_entry_id] = @assessment_entry.id
-
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
-          "main_content_area",
-          partial: "health_assessments/results",
-          locals: { 
-            assessment_entry: @assessment_entry,
-            primary_dosha: @primary_dosha, 
-            secondary_dosha: @secondary_dosha,
-            current_user: current_user
-          }
-        )
-      end
-      format.html do
-        render "health_assessments/results", locals: {
-          assessment_entry: @assessment_entry,
-          primary_dosha: @primary_dosha,
-          secondary_dosha: @secondary_dosha,
-          current_user: current_user
-        }
-      end
-    end
+    render "health_assessments/results", locals: {
+      assessment_entry: @assessment_entry,
+      primary_dosha: @assessment_entry.primary_dosha, 
+      secondary_dosha: @assessment_entry.secondary_dosha,
+      current_user: current_user
+    }
   end
 
   private
 
   def set_assessment_submission
-    submission_id = params[:assessment_entry_id] || params[:id] || session[:assessment_entry_id]
-    @assessment_entry = AssessmentEntry.find_by(id: submission_id)
+    @assessment_entry = AssessmentEntry.find_by(id: session[:assessment_entry_id])
 
-    # Allow access if:
-    # 1. The submission exists AND
-    # 2. Either the session matches OR the user owns the submission
-    unless @assessment_entry && 
-        (session[:assessment_entry_id].to_i == @assessment_entry.id || 
-         (current_user && @assessment_entry.user_id == current_user.id) ||
-         @assessment_entry.user_id.nil?)  # Allow if submission has no user (guest)
-    redirect_to root_path, alert: "Assessment session expired or invalid. Please start again."
-    return
+    unless @assessment_entry
+      redirect_to root_path, 
+        alert: "Assessment session expired or invalid. Please start again."
+      return
     end
-
-    # Update the session to the current submission ID
-    session[:assessment_entry_id] = @assessment_entry.id
   end
 
 end
