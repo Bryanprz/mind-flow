@@ -3,16 +3,16 @@
   <% current_question_answer = @assessment_entry.assessment_answers.joins(:assessment_option).find_by(assessment_options: { assessment_question_id: question.id }) %>
 
   <div class="flex flex-col items-center justify-center min-h-[calc(100vh-80rem)] px-4 py-8">
-    <div class="card card-border w-full max-w-2xl bg-neutral p-8" style="color:#d2d3c8;">
+    <div class="card card-border w-full max-w-2xl bg-neutral p-8 min-h-[38rem] flex flex-col" style="color:#d2d3c8;">
       <% progress_percentage = assessment_progress_percentage(question, @assessment_entry) %>
       <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
         <div class="bg-primary h-2.5 rounded-full" style="width: <%= progress_percentage %>%"></div>
       </div>
       <p class="text-sm text-right mb-4"><%= progress_percentage %>% Complete</p>
 
-      <h2 class="text-2xl font-bold mb-8 mt-5 text-center"><%= question.text %></h2>
+      <h2 class="text-2xl font-bold mb-8 mt-5 text-center min-h-20"><%= question.text %></h2>
 
-      <%= form_with url: answer_assessment_question_path, method: :post, data: { turbo_frame: "main_content_area", controller: "assessment-question", assessment_question_target: "form" } do |form| %>
+      <%= form_with url: answer_assessment_question_path, method: :post, data: { turbo_frame: "main_content_area", controller: "assessment-question", assessment_question_target: "form" }, class: "flex flex-col flex-grow" do |form| %>
         <%= form.hidden_field :assessment_entry_id, value: @assessment_entry.id %>
         <%= form.hidden_field :question_id, value: question.id %>
 
@@ -35,7 +35,7 @@
           <% end %>
         </div>
 
-        <div class="flex justify-between items-center mt-6">
+        <div class="flex justify-between items-center mt-auto">
           <% if has_previous_question %>
             <%= link_to "Back", 
                         go_back_assessment_question_path(assessment_entry_id: @assessment_entry.id, question_id: question.id), 
