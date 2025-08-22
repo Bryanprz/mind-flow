@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  skip_before_action :require_authentication, only: %i[new show create]
+  skip_before_action :require_authentication, only: %i[new create]
   before_action :set_user, only: %i[show edit update destroy]
-  before_action :load_assessment_results, only: [:show, :create]
+  before_action :set_assessment_entry, only: [:create]
 
   # GET /users/new
   def new
@@ -10,6 +10,11 @@ class UsersController < ApplicationController
 
   # GET /self - Shows the current user's profile or guest quiz results
   def show
+    # user should only be allowed to go to show action if they are logged in 
+    # in that case the assessment entry should be grabbed from teh db since its 
+    # already been registered to them, and the session assessment_entry_id should
+    # be ignored
+
     @symptoms = []
 
     DiseaseStage.all.each do |disease_stage|
@@ -20,23 +25,20 @@ class UsersController < ApplicationController
         symptoms: ['']
       }
     end
-    
-    # Ensure we have the most recent quiz submission for the user
-    @assessment_entry = nil # Initialize to nil
 
-    if params[:assessment_entry_id].present?
-      # Prioritize the specific assessment_submission passed in the URL
-      @assessment_entry = AssessmentEntry.find_by(id: params[:assessment_entry_id])
-    # elsif current_user
-    #   # Fallback for logged-in users: get their most recent completed submission
-    #   @assessment_submission = current_user.assessment_submissions.completed.order(completed_at: :desc).first
+    # Set primary and secondary dosha from user's prakruti/vikruti if available
+    if @user
+      @primary_dosha = @user.prakruti
+      @secondary_dosha = @user.vikruti
     end
 
+    # Retrieve assessment entry for detailed results and percentages
+    if @user && @user.assessment_entries.any?
+      @assessment_entry = @user.assessment_entries.order(created_at: :desc).first
+    end
+
+    # Calculate percentages only if assessment_entry is present
     if @assessment_entry
-      @primary_dosha_name = @assessment_entry.primary_dosha&.name
-      @secondary_dosha_name = @assessment_entry.secondary_dosha&.name
-      
-      # Calculate percentages
       total = @assessment_entry.results.values.sum.to_f
       @dosha_percentages = {}
       @assessment_entry.results.each do |dosha, score|
@@ -64,13 +66,25 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
+    @user.prakruti = @assessment_entry.primary_dosha if @assessment_entry
+    @primary_dosha = @user.prakruti
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: "User was successfully created." }
+        start_new_session_for(@user) # Log in the user using the Authentication concern
+        @assessment_entry.update(user: @user) # Associate assessment with user
+        session.delete(:assessment_entry_id) # Clear session
+
+        if params[:receive_health_report] == "1"
+          # Logic to send health report, e.g., send an email
+          # UserMailer.health_report(@user).deliver_now
+        end
+
+        format.html { redirect_to @user, notice: "Account created successfully!" }
         format.json { render :show, status: :created, location: @user }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_entity } # Fallback for non-Turbo requests
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("main_content_area", partial: "shared/sign_up_modal_form", locals: { user: @user }), status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -101,20 +115,22 @@ class UsersController < ApplicationController
 
   private
 
-  def load_assessment_results
+  def set_assessment_entry
     if session[:assessment_entry_id].present?
       @assessment_entry = AssessmentEntry.find_by(id: session[:assessment_entry_id])
       session.delete(:assessment_entry_id) # Clear the session after loading
     end
   end
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_user
-    @user = User.find(params[:id]) if params[:id].present?
+    if Current.user # If a user is logged in via Current.user
+      @user = Current.user
+    elsif params[:id].present? # Otherwise, try to find by ID from params
+      @user = User.find(params[:id])
+    end
   end
 
-  # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:name, :email_address, :password, :receive_health_report)
+    params.require(:user).permit(:name, :email_address, :password)
   end
 end

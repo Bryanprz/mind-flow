@@ -1,6 +1,7 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
 import "controllers"
+import "turbo_stream_actions"
 
 // // Set a cookie with the browser's time zone
 // // This will be sent with every subsequent request

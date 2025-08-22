@@ -1,0 +1,9 @@
+<!-- Open the modal using ID.showModal() method -->
+<dialog id="sign_up_modal" class="modal modal-bottom sm:modal-middle" data-modal-target="modal">
+
+  <div class="modal-box bg-neutral text-neutral-content flex flex-col justify-center text-center">
+    <div class="modal-action">
+        <%= render "shared/sign_up_modal_form", user: User.new %>
+    </div>
+  </div>
+</dialog>

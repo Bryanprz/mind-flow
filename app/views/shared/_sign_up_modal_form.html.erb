@@ -1,0 +1,36 @@
+<%= turbo_frame_tag "main_content_area" do %>
+  <%= form_with(model: user, url: users_path, local: true) do |f| %>
+    <% if user.errors.any? %>
+      <div id="error_explanation" class="text-red-500 mb-4">
+        <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <ul>
+          <% user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="flex flex-col">
+      <div class="text-center">
+        <h3 class="text-2xl font-black text-white tracking-wider">Create Your Account</h3>
+        <p class="text-md mt-7 text-white">Sign up with an email and password to save your health results.</p>
+      </div>
+
+      <div class="flex flex-col gap-6 mt-9 w-full">
+        <%= f.text_field :name, class: "input text-black input-bordered w-full", placeholder: "Name" %>
+        <%= f.email_field :email_address, class: "text-black input input-bordered w-full", placeholder: "Email" %>
+        <%= f.password_field :password, class: "input text-black input-bordered w-full", placeholder: "Password" %>
+
+        <div class="form-control mt-3">
+          <label class="label cursor-pointer">
+            <span class="label-text text-white">Send me my health report.</span>
+            <%= check_box_tag :receive_health_report, "1", false, class: "checkbox checkbox-accent" %>
+          </label>
+        </div>
+
+        <%= f.submit "Sign up", class: "btn btn-accent w-full mt-3 text-lg font-bold" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
