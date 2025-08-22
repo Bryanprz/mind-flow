@@ -6,6 +6,13 @@ Turbo.StreamActions.update_url = function() {
   const url = this.getAttribute("url")
   if (url) {
     console.log("Custom Turbo Stream action: Updating URL to:", url);
-    Turbo.history.push(url);
+    // Ensure Turbo.history is available before calling push
+    if (Turbo.history && typeof Turbo.history.push === 'function') {
+      Turbo.history.push(url);
+    } else {
+      console.warn("Turbo.history not available, falling back to Turbo.visit:", url);
+      // Fallback: force a full visit if history is not ready
+      Turbo.visit(url);
+    }
   }
 }
