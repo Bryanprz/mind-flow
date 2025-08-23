@@ -58,7 +58,7 @@
         </ul>
       </div>
     <% else %>
-      <%= link_to "Join →", new_user_path, class: "btn btn-accent" %>
+      <button class="btn btn-accent" data-action="click->modal#open">Join -></button>
     <% end %>
   </div>
 

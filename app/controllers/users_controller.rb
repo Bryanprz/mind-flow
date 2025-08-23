@@ -72,7 +72,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         start_new_session_for(@user) # Log in the user using the Authentication concern
-        @assessment_entry.update(user: @user) # Associate assessment with user
+        @assessment_entry&.update(user: @user) # Associate assessment with user
         session.delete(:assessment_entry_id) # Clear session
 
         if params[:receive_health_report] == "1"
