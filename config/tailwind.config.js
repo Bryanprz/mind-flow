@@ -24,5 +24,11 @@ module.exports = {
     themes: ["light", "dark", "cupcake", "forest", "silk", "lemonade"],
     defaultTheme: "lemonade",
     logs: true
-  }
+  },
+  safelist: [
+    "alert-success",
+    {
+      pattern: /(alert|btn|badge|text|bg)-(success|error|warning|info|primary|secondary|accent|neutral)/,
+    },
+  ]
 }
