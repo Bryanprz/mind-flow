@@ -1,7 +1,7 @@
 class HealthAssessmentsController < ApplicationController
   allow_unauthenticated_access
-  before_action :ensure_current_session_is_resumed, only: %i[start_prakruti_assessment start_vikruti_assessment start_chronic_issues_assessment answer_question show_results go_back_question]
-  before_action :set_assessment_entry, only: [:answer_question, :go_back_question, :show_results]
+  before_action :ensure_current_session_is_resumed, only: %i[start_prakruti_assessment start_vikruti_assessment start_chronic_issues_assessment submit_answers show_results]
+  before_action :set_assessment_entry, only: [:submit_answers, :show_results]
 
   def ensure_current_session_is_resumed
     resume_session
@@ -30,100 +30,74 @@ class HealthAssessmentsController < ApplicationController
 
     # Store the submission ID in the session
     session[:assessment_entry_id] = @assessment_entry.id
-    @assessment_question = @health_assessment.assessment_questions.order(:id).first
+
+    # Eager load all questions and their options to avoid N+1 queries
+    @questions = @health_assessment.assessment_questions.includes(:assessment_options).order(:id)
 
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
           "main_content_area",
-          partial: "health_assessments/question",
+          partial: "health_assessments/assessment",
           locals: { 
-            question: @assessment_question, 
-            assessment_entry: @assessment_entry, 
-            has_previous_question: false 
+            questions: @questions,
+            assessment_entry: @assessment_entry
           }
         )
+      end
+      format.json do
+        render json: {
+          questions: @questions.as_json(include: :assessment_options)
+        }
       end
       format.html
     end
   end
 
-  def answer_question
-    @assessment_question = AssessmentQuestion.find(params[:question_id])
-    @assessment_option = AssessmentOption.find(params[:assessment_option_id])
-  
-    # Find or initialize the answer for this question
-    answer = @assessment_entry.assessment_answers
-      .joins(:assessment_option)
-      .find_by(assessment_options: { assessment_question_id: @assessment_question.id })
-  
-    if answer
-      # Update existing answer
-      answer.update!(assessment_option: @assessment_option)
-    else
-      # Create new answer
-      @assessment_entry.assessment_answers.create!(
-        assessment_option: @assessment_option
-      )
+  def submit_answers
+    # Parse the JSON string if it's a string, otherwise use as is
+    answers_param = params.require(:answers)
+    answers = if answers_param.is_a?(String)
+                JSON.parse(answers_param, symbolize_names: true)
+              else
+                answers_param.map { |a| a.permit(:question_id, :option_id).to_h.symbolize_keys }
+              end
+
+    # Prepare all answers for a single bulk insert
+    answers_to_insert = answers.map do |answer|
+      {
+        assessment_entry_id: @assessment_entry.id,
+        assessment_option_id: answer[:option_id],
+        created_at: Time.current,
+        updated_at: Time.current
+      }
     end
-  
-    all_assessment_questions = @assessment_entry.questions.order(:id)
-    current_question_index = all_assessment_questions.index(@assessment_question)
-    @next_assessment_question = all_assessment_questions[current_question_index + 1] if current_question_index
-  
+    AssessmentAnswer.insert_all(answers_to_insert) if answers_to_insert.any?
+
+    # Mark the entry as completed
+    @assessment_entry.update!(completed_at: Time.current)
+    @assessment_entry.reload
+
     respond_to do |format|
       format.turbo_stream do
-        if @next_assessment_question.present?
-          render turbo_stream: turbo_stream.replace(
-            "main_content_area",
-            partial: "health_assessments/question",
-            locals: { 
-              question: @next_assessment_question, 
-              assessment_entry: @assessment_entry, 
-              has_previous_question: true 
-            }
-          )
-        else
-          # Mark the entry as completed
-          @assessment_entry.update!(completed_at: Time.current)
-          @assessment_entry.reload
-  
-          render turbo_stream: turbo_stream.replace(
-            'main_content_area',
+        render turbo_stream: [
+          turbo_stream.replace('main_content_area', 
             partial: 'health_assessments/analyzing',
             locals: { 
               assessment_entry: @assessment_entry,
               assessment_type: @assessment_entry.health_assessment.category
             }
-          )
-        end
+          ),
+        ]
       end
-    end
-  end
-
-  def go_back_question
-    all_questions = @assessment_entry.questions.order(:id)
-    current_question = AssessmentQuestion.find_by(id: params[:question_id])
-    current_index = current_question ? all_questions.find_index(current_question) : 0
-    
-    @assessment_question = current_index.positive? ? all_questions[current_index - 1] : all_questions.first
-  
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
-          "main_content_area",
-          partial: "health_assessments/question",
-          locals: { 
-            question: @assessment_question, 
-            assessment_entry: @assessment_entry, 
-            has_previous_question: current_index > 1
-          }
-        )
-      end
+      format.html { redirect_to assessment_results_path(@assessment_entry.id) }
     end
   end
 
   def show_results
+    # Find the assessment entry by ID from params
+    @assessment_entry = AssessmentEntry.find(params[:entry_id])
+    
     render "health_assessments/results", locals: {
       assessment_entry: @assessment_entry,
       primary_dosha: @assessment_entry.primary_dosha, 
@@ -143,5 +117,4 @@ class HealthAssessmentsController < ApplicationController
       return
     end
   end
-
 end

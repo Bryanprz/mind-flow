@@ -1,0 +1,53 @@
+<turbo-frame id="main_content_area" class="transition-opacity duration-500 ease-in-out opacity-0" data-controller="transition">
+  <div class="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] px-4 py-8">
+    <div class="card card-border w-full max-w-2xl bg-neutral p-8 min-h-[38rem] flex flex-col" style="color:#d2d3c8;"
+         data-controller="assessment"
+         data-assessment-questions-value="<%= questions.to_json(include: :assessment_options) %>"
+         data-assessment-answers-value="[]">
+         
+      <!-- Progress Bar -->
+      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+        <div class="bg-primary h-2.5 rounded-full" data-assessment-target="progressBar"></div>
+      </div>
+      <p class="text-sm text-right mb-4" data-assessment-target="progressText"></p>
+
+      <!-- Question Area -->
+      <div data-assessment-target="questionContainer">
+        <h2 class="text-2xl font-bold mb-8 mt-5 text-center min-h-20" data-assessment-target="questionText"></h2>
+        <div class="grid grid-cols-1 gap-4" data-assessment-target="optionsContainer">
+          <!-- Options will be rendered here by Stimulus -->
+        </div>
+      </div>
+
+      <!-- Form for submission -->
+      <%= form_with(
+        url: submit_assessment_answers_path,
+        method: :post,
+        class: "flex flex-col flex-grow",
+        data: { turbo_frame: "main_content_area", turbo: true },
+        format: :turbo_stream
+      ) do |form| %>
+        <%= form.hidden_field :answers, data: { assessment_target: "answersField" } %>
+        <%= form.hidden_field :assessment_entry_id, value: assessment_entry.id %>
+      <% end %>
+
+      <!-- Navigation -->
+      <div class="flex justify-end items-center mt-auto">
+        <div class="flex-1">
+          <button data-action="click->assessment#back" 
+                  data-assessment-target="backButton" 
+                  class="rounded-md bg-base-500 text-white px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 hidden">
+            Back
+          </button>
+        </div>
+        
+        <button data-action="click->assessment#next" 
+                data-assessment-target="nextButton" 
+                class="ml-4 rounded-md bg-primary text-white px-3.5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed" 
+                disabled>
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</turbo-frame>
