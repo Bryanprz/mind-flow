@@ -19,7 +19,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('Assessment controller connected')
     this.currentIndex = 0
     
     // Initialize answers if not already set
@@ -27,33 +26,24 @@ export default class extends Controller {
       this.answersValue = []
     }
     
-    // Log initial state for debugging
-    console.log('Questions:', this.questionsValue)
-    console.log('Initial answers:', this.answersValue)
-    
     // Render the first question
     this.renderQuestion()
   }
 
   next() {
     try {
-      console.log('Next button clicked. Current index:', this.currentIndex, 'Total questions:', this.questionsValue?.length)
-      
       if (!this.questionsValue || this.questionsValue.length === 0) {
-        console.error('No questions available')
         return
       }
       
       if (this.currentIndex < this.questionsValue.length - 1) {
         this.currentIndex++
-        console.log('Moving to question index:', this.currentIndex)
         this.renderQuestion()
       } else {
-        console.log('Reached the last question, submitting...')
         this.submit()
       }
     } catch (error) {
-      console.error('Error in next method:', error)
+      // Silently handle error
     }
   }
 
@@ -67,11 +57,9 @@ export default class extends Controller {
   selectOption(event) {
     try {
       event.preventDefault()
-      console.log('Option selected:', event.currentTarget.dataset)
       
       const { questionId, optionId } = event.currentTarget.dataset
       if (!questionId || !optionId) {
-        console.error('Missing questionId or optionId in dataset')
         return
       }
       
@@ -81,7 +69,6 @@ export default class extends Controller {
         { question_id: questionId, option_id: optionId }
       ]
       
-      console.log('Updated answers:', newAnswers)
       this.answersValue = newAnswers
       
       // Update the hidden field with the latest answers
@@ -95,15 +82,12 @@ export default class extends Controller {
       // If this is the last question, submit the form
       // Otherwise, move to the next question
       if (this.currentIndex === this.questionsValue.length - 1) {
-        console.log('Last question answered, submitting form...')
         setTimeout(() => this.submit(), 300) // Small delay for better UX
       } else {
         setTimeout(() => this.next(), 300) // Small delay for better UX
       }
-      
-      console.log('Answer selected:', { questionId, optionId })
     } catch (error) {
-      console.error('Error in selectOption:', error)
+      // Silently handle error
     }
   }
 
@@ -166,7 +150,6 @@ export default class extends Controller {
 
   updateProgress() {
     if (!this.questionsValue || this.questionsValue.length === 0) {
-      console.error('Cannot update progress: No questions available')
       return
     }
 
@@ -181,14 +164,8 @@ export default class extends Controller {
       if (this.hasProgressTextTarget) {
         this.progressTextTarget.textContent = `${roundedProgress}% Complete`
       }
-      
-      console.log('Progress updated:', { 
-        currentIndex: this.currentIndex, 
-        totalQuestions: this.questionsValue.length,
-        progress: roundedProgress 
-      })
     } catch (error) {
-      console.error('Error updating progress:', error)
+      // Silently handle error
     }
   }
 
@@ -211,13 +188,6 @@ export default class extends Controller {
     // Update next button state and text
     this.nextButtonTarget.disabled = !hasAnswer
     this.nextButtonTarget.textContent = this.currentIndex === this.questionsValue.length - 1 ? "Finish" : "Next"
-    
-    console.log('Button visibility updated:', { 
-      currentIndex: this.currentIndex, 
-      totalQuestions: this.questionsValue.length,
-      hasAnswer,
-      currentQuestionId
-    })
   }
 
   submit() {

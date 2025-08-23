@@ -7,8 +7,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('Analyzing controller connected with type:', this.assessmentTypeValue);
-    
     // Get the entry ID from the URL or data attribute
     const entryId = this.entryIdValue || window.location.pathname.split('/').pop();
     
@@ -26,10 +24,8 @@ export default class extends Controller {
           url = '/health_assessments';
         }
         
-        console.log('Redirecting to:', url);
         window.location.href = url;
       } catch (error) {
-        console.error('Error during redirect:', error);
         // Fallback to a safe URL
         window.location.href = '/health_assessments';
       }
