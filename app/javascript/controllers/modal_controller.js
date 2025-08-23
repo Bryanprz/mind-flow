@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="modal"
-export default class extends Controller {
+export default class ModalController extends Controller {
   static targets = ["modal"]
 
   connect() {

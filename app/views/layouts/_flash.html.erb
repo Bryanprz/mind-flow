@@ -1,5 +1,5 @@
 <% flash.each do |type, msg| %>
-  <div role="alert" class="max-w-md mx-auto px-5 alert alert-<%= type == 'notice' ? 'success' : 'error' %> shadow-lg">
+  <div role="alert" data-controller="flash" data-action="transitionend->flash#remove" class="max-w-md mx-auto px-5 alert alert-<%= type == 'notice' ? 'success' : 'error' %> shadow-lg transition-opacity duration-1000 ease-out">
     <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
     <span><%= msg %></span>
   </div>
