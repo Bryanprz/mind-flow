@@ -28,7 +28,6 @@
         format: :turbo_stream
       ) do |form| %>
         <%= form.hidden_field :answers, data: { assessment_target: "answersField" } %>
-        <%= form.hidden_field :assessment_entry_id, value: assessment_entry.id %>
       <% end %>
 
       <!-- Navigation -->
