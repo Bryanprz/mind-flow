@@ -1,4 +1,3 @@
-
 # Create a first admin user
 if User.find_by(email_address: 'b@b.com').nil?
   User.create!(
@@ -9,12 +8,11 @@ if User.find_by(email_address: 'b@b.com').nil?
     admin: true
   )
 end
-
  
 require_relative '../app/models/assessment_question'
 require_relative '../app/models/assessment_option' 
 
-HealthAssessment.find_or_create_by!(category: :vikruti) do |health_assessment|
+vikruti_health_assessment = HealthAssessment.find_or_create_by!(category: :vikruti) do |health_assessment|
   health_assessment.name = 'Vikruti Assessment'
   health_assessment.description = 'Vikruti (current elemental imbalance) self-assessment'
 end
@@ -24,7 +22,7 @@ prakruti_health_assessment = HealthAssessment.find_or_create_by!(category: :prak
   health_assessment.description = 'Prakruti (original elemental nature) self-assessment'
 end
 
-HealthAssessment.find_or_create_by!(category: :chronic_issues) do |health_assessment|
+chronic_issues_health_assessment = HealthAssessment.find_or_create_by!(category: :chronic_issues) do |health_assessment|
   health_assessment.name = 'Chronic Issues Assessment'
   health_assessment.description = 'Assessment for chronic health issues.'
 end
@@ -34,8 +32,10 @@ if prakruti_health_assessment.assessment_questions.none?
   Rake::Task['import:prakruti_questions'].invoke
 end
 
-HealthAssessment.find_or_create_by!(category: :vikruti)
-HealthAssessment.find_or_create_by!(category: :chronic_issues)
+if vikruti_health_assessment.assessment_questions.none?
+  puts "Importing Vikruti questions..."
+  Rake::Task['import:vikruti_questions'].invoke
+end
 
 # Populate Dosha details from Chapter 4 of the PDF
 Dosha.find_or_create_by!(name: 'vata') do |dosha|
