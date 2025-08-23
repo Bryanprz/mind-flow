@@ -9,8 +9,8 @@ module ApplicationHelper
     end
   end
 
-  def assessment_progress_percentage(question, assessment_submission)
-    assessment_questions = assessment_submission.health_assessment.assessment_questions.order(:id)
+  def assessment_progress_percentage(question, assessment_entry)
+    assessment_questions = assessment_entry.health_assessment.assessment_questions.order(:id)
     current_index = assessment_questions.index(question)
     total_questions = assessment_questions.count
 

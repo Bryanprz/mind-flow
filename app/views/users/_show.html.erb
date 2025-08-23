@@ -55,8 +55,10 @@ forced to the full height of the padded area.
       <% else %>
         <p class="text-lg font-semibold mt-7">No assessment results found for this user.</p>
       <% end %>
-    </div>
 
-    <%= render 'shared/sign_up_modal' %>
+      <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
+        <%= button_tag "Current Imbalance Assessment", class: "btn btn-primary text-white text-lg" %>
+      <% end %>
+    </div>
   </div>
 

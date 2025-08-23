@@ -1,6 +1,6 @@
 class HealthAssessmentsController < ApplicationController
   allow_unauthenticated_access
-  before_action :set_assessment_submission, only: [:answer_question, :go_back_question, :show_results]
+  before_action :set_assessment_entry, only: [:answer_question, :go_back_question, :show_results]
 
   def start_prakruti_assessment
     start_assessment(:prakruti)
@@ -82,7 +82,9 @@ class HealthAssessmentsController < ApplicationController
           )
         else
           # Mark the entry as completed
+          binding.pry
           @assessment_entry.update!(
+            user: Current.user,
             completed_at: Time.current
           )
           @assessment_entry.reload
@@ -90,7 +92,10 @@ class HealthAssessmentsController < ApplicationController
           render turbo_stream: turbo_stream.replace(
             'main_content_area',
             partial: 'health_assessments/analyzing',
-            locals: { assessment_entry: @assessment_entry }
+            locals: { 
+              assessment_entry: @assessment_entry,
+              assessment_type: @assessment_entry.health_assessment.category
+            }
           )
         end
       end
@@ -130,7 +135,7 @@ class HealthAssessmentsController < ApplicationController
 
   private
 
-  def set_assessment_submission
+  def set_assessment_entry
     @assessment_entry = AssessmentEntry.find_by(id: session[:assessment_entry_id])
 
     unless @assessment_entry
