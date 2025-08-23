@@ -38,7 +38,7 @@ class HealthAssessmentsController < ApplicationController
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
           "main_content_area",
-          partial: "health_assessments/assessment",
+          partial: "health_assessments/question",
           locals: { 
             questions: @questions,
             assessment_entry: @assessment_entry
