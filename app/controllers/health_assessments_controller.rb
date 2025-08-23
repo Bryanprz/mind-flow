@@ -1,6 +1,11 @@
 class HealthAssessmentsController < ApplicationController
   allow_unauthenticated_access
+  before_action :ensure_current_session_is_resumed, only: %i[start_prakruti_assessment start_vikruti_assessment start_chronic_issues_assessment answer_question show_results go_back_question]
   before_action :set_assessment_entry, only: [:answer_question, :go_back_question, :show_results]
+
+  def ensure_current_session_is_resumed
+    resume_session
+  end
 
   def start_prakruti_assessment
     start_assessment(:prakruti)
@@ -16,12 +21,10 @@ class HealthAssessmentsController < ApplicationController
 
   def start_assessment(assessment_type)
     @health_assessment = HealthAssessment.find_by(category: assessment_type)
-    raise ActiveRecord::RecordNotFound, "No '#{assessment_type.to_s.humanize}' assessment found." unless @health_assessment
-    raise ActiveRecord::RecordNotFound, "The '#{assessment_type.to_s.humanize}' assessment has no questions." if @health_assessment.assessment_questions.empty?
 
     # Create a new submission for this assessment
     @assessment_entry = AssessmentEntry.create!(
-      user: current_user,  # Will be nil for guests
+      user: Current.user,  # Will be nil for guests
       health_assessment: @health_assessment
     )
 
@@ -82,11 +85,7 @@ class HealthAssessmentsController < ApplicationController
           )
         else
           # Mark the entry as completed
-          binding.pry
-          @assessment_entry.update!(
-            user: Current.user,
-            completed_at: Time.current
-          )
+          @assessment_entry.update!(completed_at: Time.current)
           @assessment_entry.reload
   
           render turbo_stream: turbo_stream.replace(

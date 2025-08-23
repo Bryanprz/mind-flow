@@ -9,7 +9,7 @@ export default class extends Controller {
     setTimeout(() => {
       const url = this.assessmentTypeValue === 'prakruti' 
         ? '/assessment/results' 
-        : '/users/show';
+        : '/self';
       window.location.href = url;
     }, 3000);
   }

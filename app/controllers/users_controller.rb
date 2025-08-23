@@ -115,18 +115,18 @@ class UsersController < ApplicationController
 
   private
 
-  def set_assessment_entry
-    if session[:assessment_entry_id].present?
-      @assessment_entry = AssessmentEntry.find_by(id: session[:assessment_entry_id])
-      session.delete(:assessment_entry_id) # Clear the session after loading
-    end
-  end
-
   def set_user
     if Current.user # If a user is logged in via Current.user
       @user = Current.user
     elsif params[:id].present? # Otherwise, try to find by ID from params
       @user = User.find(params[:id])
+    end
+  end
+
+  def set_assessment_entry
+    if session[:assessment_entry_id].present?
+      @assessment_entry = AssessmentEntry.find_by(id: session[:assessment_entry_id])
+      session.delete(:assessment_entry_id) # Clear the session after loading
     end
   end
 

@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
 
+  # TODO clean this up
   def current_user
     @current_user ||= Current.session&.user
   end
