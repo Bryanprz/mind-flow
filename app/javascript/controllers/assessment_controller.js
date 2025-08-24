@@ -83,7 +83,7 @@ export default class extends Controller {
       if (this.currentIndex === this.questionsValue.length - 1) {
         setTimeout(() => this.submit(), 300) // Small delay for better UX
       } else {
-        setTimeout(() => this.next(), 300) // Small delay for better UX
+        this.next()
       }
     } catch (error) {
       // Silently handle error

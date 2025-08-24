@@ -1,3 +1,16 @@
+<%# TODO 
+make the dashboard diverse in its presentation of data
+
+add instance vars
+  - primary dosha
+  - secondary dosha (fix how its calculated)
+  - chronic conditions (future) (show list)
+  - food (for recommending) (list or other)
+  - herbs (for recommending)
+  - cures (for recommending)
+  - lifestyle (for recommending)
+
+%>
 <% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
 
 <div class="w-full max-w-7xl mx-auto space-y-6 flex flex-col" data-controller="modal">
@@ -6,8 +19,8 @@
     <!-- Card 1: User Profile -->
     <div class="card bg-base-100 border border-gray-300">
       <div class="card-body">
-        <h2 class="card-title">Your Profile</h2>
-        <p class="text-lg">
+        <h2 class="card-title text-lg">Your Ayurvedic Blueprint</h2>
+        <p class="text-md">
           Your original nature is 
           <span class="font-bold text-primary">Vata</span>
         </p>
@@ -17,8 +30,8 @@
     <!-- Card 2: About Vata -->
     <div class="card bg-base-100 border border-gray-300">
       <div class="card-body">
-        <h2 class="card-title">About Vata</h2>
-        <p class="text-lg">
+        <h2 class="card-title text-lg">About Vata</h2>
+        <p class="text-md">
           Vata is the energy of movement and the force behind all biological activity. It's often associated with wind and the elements of air and space.
         </p>
       </div>
@@ -27,7 +40,7 @@
     <!-- Card 3: Quick Actions -->
     <div class="card bg-base-100 border border-gray-300">
       <div class="card-body flex flex-col">
-        <h2 class="card-title">Quick Actions</h2>
+        <h2 class="card-title text-lg">Quick Actions</h2>
         <p class="flex-grow">Take an assessment or view your history.</p>
         <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
           <%= button_tag "Current Imbalance Assessment", class: "btn btn-primary w-full" %>
@@ -41,7 +54,7 @@
     <!-- Card 4: Key Characteristics -->
     <div class="card bg-base-100 border border-gray-300">
       <div class="card-body">
-        <h2 class="card-title">Key Characteristics</h2>
+        <h2 class="card-title text-lg">Key Characteristics</h2>
         <ul class="list-disc pl-5 space-y-2">
           <li>Light, thin build</li>
           <li>Energy comes in bursts</li>
@@ -55,14 +68,14 @@
     <!-- Card 5: Balanced State -->
     <div class="card bg-base-100 border border-gray-300">
       <div class="card-body">
-        <h2 class="card-title">Balanced State</h2>
+        <h2 class="card-title text-lg">Balanced State</h2>
         <div class="grid grid-cols-1 gap-4">
           <div>
-            <h3 class="font-semibold text-lg">When in Balance</h3>
+            <h3 class="font-semibold text-md">When in Balance</h3>
             <p>When Vata is in balance, you feel energetic, creative, and enthusiastic. You sleep well, have regular digestion, and maintain a healthy weight.</p>
           </div>
           <div>
-            <h3 class="font-semibold text-lg">When Unbalanced</h3>
+            <h3 class="font-semibold text-md">When Unbalanced</h3>
             <p>When Vata is out of balance, you may experience anxiety, insomnia, dry skin, constipation, and difficulty focusing.</p>
           </div>
         </div>

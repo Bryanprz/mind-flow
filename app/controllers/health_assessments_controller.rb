@@ -1,5 +1,5 @@
 class HealthAssessmentsController < ApplicationController
-  allow_unauthenticated_access
+  allow_unauthenticated_access only: [:start_prakruti_assessment]
   before_action :set_health_assessment, only: [:submit_answers]
   before_action :set_assessment_entry, only: [:show_results]
 
