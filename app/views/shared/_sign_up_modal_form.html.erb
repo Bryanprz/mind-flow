@@ -1,4 +1,4 @@
-<div class="flex-1 flex flex-col">
+<div class="flex flex-col h-full">
   <%= form_with(model: user, url: users_path, local: true, class: "flex-1 flex flex-col") do |f| %>
     <% if user.errors.any? %>
       <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mb-4">
@@ -12,7 +12,7 @@
     <% end %>
 
     <div class="text-center mb-6">
-      <h3 class="text-2xl font-bold text-neutral-content">Create Your Account</h3>
+      <h3 class="mt-7 text-2xl font-bold text-neutral-content">Create Your Account</h3>
       <p class="text-gray-300 mt-2">Sign up with your email and password</p>
     </div>
 

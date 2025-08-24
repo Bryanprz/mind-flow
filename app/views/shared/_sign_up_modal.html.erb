@@ -11,13 +11,14 @@
     </div>
     
     <div class="p-6 flex-1 flex flex-col overflow-y-auto">
+      <div id="signin" class="tab-pane hidden flex-1 flex flex-col" data-tabs-target="pane">
+        <%= render "shared/sign_in_modal_form" %>
+      </div>
+
       <div id="signup" class="tab-pane flex-1 flex flex-col" data-tabs-target="pane">
         <%= render "shared/sign_up_modal_form", user: User.new, tab: "email" %>
       </div>
       
-      <div id="signin" class="tab-pane hidden flex-1 flex flex-col" data-tabs-target="pane">
-        <%= render "shared/sign_in_modal_form" %>
-      </div>
     </div>
   </div>
 </dialog>
