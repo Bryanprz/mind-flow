@@ -1,0 +1,30 @@
+<div class="flex-1 flex flex-col">
+  <%= form_with(model: User.new, url: session_path, local: true, class: "flex-1 flex flex-col") do |f| %>
+    <div class="text-center mb-6">
+      <h3 class="text-2xl font-bold text-neutral-content">Login</h3>
+      <p class="text-gray-300 mt-2">Login in with your email and password</p>
+    </div>
+
+    <div class="space-y-4 flex-1">
+      <div class="form-control">
+        <%= f.email_field :email_address, 
+          class: "input input-bordered w-full bg-white text-gray-800", 
+          placeholder: "Email",
+          required: true,
+          autocomplete: "email" %>
+      </div>
+
+      <div class="form-control mt-2">
+        <%= f.password_field :password, 
+          class: "input input-bordered w-full bg-white text-gray-800", 
+          placeholder: "Password",
+          required: true,
+          autocomplete: "current-password" %>
+      </div>
+
+      <div class="form-control mt-auto">
+        <%= f.submit "Login", class: "btn btn-primary w-full" %>
+      </div>
+    </div>
+  <% end %>
+</div>

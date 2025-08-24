@@ -1,36 +1,68 @@
-<%= turbo_frame_tag "main_content_area" do %>
-  <%= form_with(model: user, url: users_path, local: true) do |f| %>
+<div class="flex-1 flex flex-col">
+  <%= form_with(model: user, url: users_path, local: true, class: "flex-1 flex flex-col") do |f| %>
     <% if user.errors.any? %>
-      <div id="error_explanation" class="text-red-500 mb-4">
-        <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
-        <ul>
+      <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mb-4">
+        <h2 class="font-bold"><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <ul class="list-disc pl-5 mt-2">
           <% user.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
+            <li class="text-sm"><%= msg %></li>
           <% end %>
         </ul>
       </div>
     <% end %>
 
-    <div class="flex flex-col">
-      <div class="text-center">
-        <h3 class="text-2xl font-black text-white tracking-wider">Create Your Account</h3>
-        <p class="text-md mt-7 text-white">Sign up with an email and password to save your health results.</p>
-      </div>
+    <div class="text-center mb-6">
+      <h3 class="text-2xl font-bold text-neutral-content">Create Your Account</h3>
+      <p class="text-gray-300 mt-2">Sign up with your email and password</p>
+    </div>
 
-      <div class="flex flex-col gap-6 mt-9 w-full">
-        <%= f.text_field :name, class: "input text-black input-bordered w-full", placeholder: "Name" %>
-        <%= f.email_field :email_address, class: "text-black input input-bordered w-full", placeholder: "Email" %>
-        <%= f.password_field :password, class: "input text-black input-bordered w-full", placeholder: "Password" %>
+    <div class="space-y-4 flex-1">
+        <div class="form-control">
+          <%= f.text_field :name, 
+              class: "input input-bordered w-full bg-white text-gray-800", 
+              placeholder: "Name",
+              required: true %>
+        </div>
 
-        <div class="form-control mt-3">
-          <label class="label cursor-pointer">
-            <span class="label-text text-white">Send me my health report.</span>
-            <%= check_box_tag :receive_health_report, "1", false, class: "checkbox checkbox-accent" %>
+        <div class="form-control">
+          <%= f.email_field :email_address, 
+              class: "input input-bordered w-full bg-white text-gray-800", 
+              placeholder: "Email Address",
+              required: true %>
+        </div>
+
+        <div class="form-control">
+          <%= f.password_field :password, 
+              class: "input input-bordered w-full bg-white text-gray-800", 
+              placeholder: "Password",
+              required: true %>
+        </div>
+
+        <div class="form-control mt-4">
+          <label class="label cursor-pointer justify-start gap-3">
+            <%= check_box_tag :receive_health_report, 
+                "1", 
+                false, 
+                class: "checkbox checkbox-primary" %>
+            <span class="label-text text-neutral-content">Send me my health report</span>
           </label>
         </div>
 
-        <%= f.submit "Sign up", class: "btn btn-accent w-full mt-3 text-lg font-bold" %>
+        <div class="form-control mt-auto">
+          <%= f.submit "Sign up", class: "btn btn-primary w-full" %>
+        </div>
+
+        <div class="divider text-gray-400 text-sm mt-4">OR</div>
+
+        <div class="text-center pt-2">
+          <p class="text-gray-300">
+            Already have an account? 
+            <%= link_to "Sign in", "#", 
+                class: "text-primary hover:underline font-medium",
+                data: { action: "click->tabs#showTab", "tabs-tab-param": "signin" } %>
+          </p>
+        </div>
       </div>
     </div>
   <% end %>
-<% end %>
+</div>

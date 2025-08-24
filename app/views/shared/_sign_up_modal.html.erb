@@ -1,11 +1,23 @@
 <!-- Open the modal using ID.showModal() method -->
-<dialog id="sign_up_modal" class="modal modal-bottom sm:modal-middle" data-modal-target="modal">
-  <div class="modal-box bg-neutral text-neutral-content">
+<dialog id="sign_up_modal" class="modal modal-bottom sm:modal-middle" data-modal-target="modal" data-controller="tabs">
+  <div class="modal-box bg-neutral text-neutral-content p-0 w-full max-w-md h-[600px] flex flex-col overflow-hidden">
     <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
     </form>
-    <div class="modal-action flex flex-col justify-center text-center">
-      <%= render "shared/sign_up_modal_form", user: User.new %>
+    
+    <div class="tabs tabs-boxed bg-neutral p-2 m-0">
+      <a role="tab" class="tab tab-active text-neutral-content" data-tab="signup" data-action="click->tabs#switchTab" data-tabs-target="tab">Sign Up</a>
+      <a role="tab" class="tab text-neutral-content" data-tab="signin" data-action="click->tabs#switchTab" data-tabs-target="tab">Sign In</a>
+    </div>
+    
+    <div class="p-6 flex-1 flex flex-col overflow-y-auto">
+      <div id="signup" class="tab-pane flex-1 flex flex-col" data-tabs-target="pane">
+        <%= render "shared/sign_up_modal_form", user: User.new, tab: "email" %>
+      </div>
+      
+      <div id="signin" class="tab-pane hidden flex-1 flex flex-col" data-tabs-target="pane">
+        <%= render "shared/sign_in_modal_form" %>
+      </div>
     </div>
   </div>
 </dialog>
