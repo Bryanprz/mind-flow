@@ -26,7 +26,11 @@ module.exports = {
     logs: true
   },
   safelist: [
-    "alert-success",
+    'alert-success',
+    'grid-cols-3',
+    'grid-cols-4',
+    'grid-cols-5',
+    'grid-cols-6',
     {
       pattern: /(alert|btn|badge|text|bg)-(success|error|warning|info|primary|secondary|accent|neutral)/,
     },

@@ -1,0 +1,73 @@
+<% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
+
+<div class="w-full max-w-7xl mx-auto space-y-6 flex flex-col" data-controller="modal">
+  <!-- First Row - 3 equal columns -->
+  <div class="grid grid-cols-3 md:grid-cols-3 gap-6 h-full">
+    <!-- Card 1: User Profile -->
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <h2 class="card-title">Your Profile</h2>
+        <p class="text-lg">
+          Your original nature is 
+          <span class="font-bold text-primary">Vata</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 2: About Vata -->
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <h2 class="card-title">About Vata</h2>
+        <p class="text-lg">
+          Vata is the energy of movement and the force behind all biological activity. It's often associated with wind and the elements of air and space.
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 3: Quick Actions -->
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body flex flex-col">
+        <h2 class="card-title">Quick Actions</h2>
+        <p class="flex-grow">Take an assessment or view your history.</p>
+        <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
+          <%= button_tag "Current Imbalance Assessment", class: "btn btn-primary w-full" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Row - 2 equal columns -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+    <!-- Card 4: Key Characteristics -->
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <h2 class="card-title">Key Characteristics</h2>
+        <ul class="list-disc pl-5 space-y-2">
+          <li>Light, thin build</li>
+          <li>Energy comes in bursts</li>
+          <li>Lively, creative, and enthusiastic</li>
+          <li>Quick to learn and grasp new knowledge</li>
+          <li>Responds to stress with fear, worry, and anxiety</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Card 5: Balanced State -->
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <h2 class="card-title">Balanced State</h2>
+        <div class="grid grid-cols-1 gap-4">
+          <div>
+            <h3 class="font-semibold text-lg">When in Balance</h3>
+            <p>When Vata is in balance, you feel energetic, creative, and enthusiastic. You sleep well, have regular digestion, and maintain a healthy weight.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-lg">When Unbalanced</h3>
+            <p>When Vata is out of balance, you may experience anxiety, insomnia, dry skin, constipation, and difficulty focusing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
