@@ -9,13 +9,12 @@ export default class extends Controller {
     "progressText",
     "backButton",
     "nextButton",
-    "answersField"
+    "answers"
   ]
 
   static values = {
     questions: { type: Array, default: [] },
-    answers: { type: Array, default: [] },
-    entryId: { type: Number, default: null }
+    answers: { type: Array, default: [] }
   }
 
   connect() {
@@ -72,8 +71,8 @@ export default class extends Controller {
       this.answersValue = newAnswers
       
       // Update the hidden field with the latest answers
-      if (this.hasAnswersFieldTarget) {
-        this.answersFieldTarget.value = JSON.stringify(newAnswers)
+      if (this.hasAnswersTarget) {
+        this.answersTarget.value = JSON.stringify(newAnswers)
       }
       
       // Update UI
@@ -196,7 +195,7 @@ export default class extends Controller {
       // Use the form's submit method which is more widely supported
       const form = this.element.querySelector('form')
       if (form) {
-        form.submit()
+        form.requestSubmit()
       } else {
         console.error('No form found to submit')
         // Fallback to the element's submit method if available

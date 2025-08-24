@@ -59,8 +59,6 @@ class HealthAssessmentsController < ApplicationController
       user: Current.user,  # Will be nil for guests
       health_assessment: @health_assessment
     )
-    # Store the submission ID in the session
-    session[:assessment_entry_id] = @assessment_entry.id
 
     # Prepare all answers for a single bulk insert
     answers_to_insert = answers.map do |answer|
@@ -77,29 +75,31 @@ class HealthAssessmentsController < ApplicationController
     @assessment_entry.update!(completed_at: Time.current)
     @assessment_entry.reload
 
+    # Store the entry ID in the session for the results page to find.
+    session[:assessment_entry_id] = @assessment_entry.id
+
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.replace('main_content_area', 
-            partial: 'health_assessments/analyzing',
-            locals: { 
-              assessment_entry: @assessment_entry,
-              assessment_type: @assessment_entry.health_assessment.category
-            }
-          ),
-        ]
+        render turbo_stream: turbo_stream.replace('main_content_area',
+          partial: 'health_assessments/analyzing'
+        )
       end
       format.html { redirect_to assessment_results_path }
     end
   end
 
   def show_results
+    # @assessment_entry is loaded by the set_assessment_entry before_action
     render "health_assessments/results", locals: {
       assessment_entry: @assessment_entry,
       primary_dosha: @assessment_entry.primary_dosha, 
       secondary_dosha: @assessment_entry.secondary_dosha,
       current_user: current_user
     }
+
+    # Clean up session data after results have been shown
+    session.delete(:assessment_category)
+    session.delete(:assessment_entry_id)
   end
 
   private
@@ -111,5 +111,11 @@ class HealthAssessmentsController < ApplicationController
 
   def set_assessment_entry
     @assessment_entry = AssessmentEntry.find_by(id: session[:assessment_entry_id])
+
+    unless @assessment_entry
+      redirect_to root_path,
+        alert: "Assessment results not found or your session has expired. Please try again."
+      return
+    end
   end
 end
