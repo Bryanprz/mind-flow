@@ -1,5 +1,5 @@
-<turbo-frame id="main_content_area">
-  <div class="w-full">
+<turbo-frame id="main_content_area" class="w-1/2 mx-auto flex items-center justify-center">
+  <div class="flex flex-col">
     <% if notice.present? %>
       <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
     <% end %>
@@ -8,16 +8,21 @@
 
     <div class="flex justify-between items-center">
       <h1 class="font-bold text-4xl">Books</h1>
-      <%= link_to "New book", new_book_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
     </div>
 
     <div id="books" class="min-w-full">
       <% @books.each do |book| %>
-        <%= render book %>
-        <p>
-        <%= link_to "Show this book", book, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-        </p>
+        <div class="flex flex-row items-center">
+          <%= render book %>
+          <div class="card-actions justify-end">
+            <%= link_to "Show this book", book, class: "btn btn-sm btn-secondary text-sm" %>
+          </div>
+        </div>
       <% end %>
+    </div>
+
+    <div class="flex flex-row justify-center w-full mt-7">
+      <%= link_to "New book", new_book_path, class: "btn btn-primary text-white w-1/2" %>
     </div>
   </div>
 </turbo-frame>

@@ -1,12 +1,13 @@
 <div id="<%= dom_id book %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Title:</strong>
-    <%= book.title %>
-  </p>
+  <div class="card card-border bg-base-100 w-96">
+    <div class="card-body">
+      <h2 class="card-title"><%= book.title %></h2>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Category:</strong>
-    <%= book.category %>
-  </p>
+      <div class="flex flex-row items-center">
+        <small><span class="italic text-gray-500 text-sm">Category: <%= book.category %></span></small>
+        <p><%= book.description %></p>
 
+      </div>
+    </div>
+  </div>
 </div>
