@@ -3,7 +3,12 @@ class VersesController < ApplicationController
 
   # GET /verses or /verses.json
   def index
-    @verses = Verse.all
+    if params[:book_id]
+      @book = Book.find_by!(slug: params[:book_id])
+      @verses = @book.verses
+    else
+      @verses = Verse.all
+    end
   end
 
   # GET /verses/1 or /verses/1.json

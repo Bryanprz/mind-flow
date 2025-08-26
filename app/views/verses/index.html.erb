@@ -1,21 +1,25 @@
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <% content_for :title, "Verses" %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Verses</h1>
-    <%= link_to "New verse", new_verse_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
-  </div>
-
-  <div id="verses" class="min-w-full">
-    <% @verses.each do |verse| %>
-      <%= render verse %>
-      <p>
-        <%= link_to "Show this verse", verse, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      </p>
+<turbo-frame id="main_content_area">
+  <div class="flex flex-col mt-9">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
     <% end %>
+
+    <% content_for :title, "Verses" %>
+
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="font-bold text-4xl">Verses</h1>
+    </div>
+
+    <ul class="list bg-base-100 rounded-box shadow-md">
+      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Verses from <%= @verses.first.book.title if @verses.any? %></li>
+      <% @verses.each do |verse| %>
+        <%= render verse %>
+      <% end %>
+    </ul>
+
+    <div class="flex flex-row justify-center w-full mt-7">
+      <%= link_to "New verse", new_verse_path, class: "btn btn-primary text-white w-1/2" %>
+    </div>
+
   </div>
-</div>
+</turbo-frame>

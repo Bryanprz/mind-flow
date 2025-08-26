@@ -1,0 +1,22 @@
+<ul class="list bg-base-100 rounded-box shadow-md">
+
+  <li class="p-4 pb-2 text-xs opacity-60 tracking-wide"><%= book.title %> Verses</li>
+  <% book.verses.first(3).each do |verse| %>
+    <li class="list-row p-3">
+      <div>
+        <div><%= verse.verse_number %>. <%= "#{verse.text[0...10]...}" %></div>
+        <div class="text-xs uppercase font-semibold opacity-60"><%= verse.text_header %></div>
+      </div>
+
+      <p class="list-col-wrap text-xs">
+      <%= "#{verse.text[0...30]...}" %>
+      </p>
+
+      <button class="btn btn-square btn-ghost">
+        <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
+      </button>
+    </li>
+  <% end %>
+  </li>
+</ul>
+

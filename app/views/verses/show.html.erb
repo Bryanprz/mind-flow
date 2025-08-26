@@ -1,15 +1,21 @@
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-    <% end %>
+<turbo-frame id="main_content_area">
+  <div class="mx-auto md:w-2/3 w-full flex h-full">
+    <div class="mx-auto mt-9">
+      <% if notice.present? %>
+        <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+      <% end %>
 
-    <%= render @verse %>
+      <ul class="list bg-base-100 rounded-box shadow-md">
+        <%= render @verse %>
+      </ul>
 
-    <%= link_to "Edit this verse", edit_verse_path(@verse), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Back to verses", verses_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to "Destroy this verse", @verse, method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+      <div class="flex flex-row items-center w-full gap-x-2 mt-5">
+        <%= link_to "Edit this verse", edit_verse_path(@verse), class: "btn btn-sm btn-info" %>
+
+        <%= link_to "Back to verses", verses_path, class: "btn btn-sm btn-secondary btn-soft" %>
+
+        <%= button_to "Destroy this verse", @verse, method: :delete, class: "btn btn-sm btn-error" %>
+      </div>
     </div>
   </div>
-</div>
+</turbo-frame>
