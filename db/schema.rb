@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_21_061348) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_26_070824) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -88,6 +88,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_21_061348) do
     t.datetime "updated_at", null: false
     t.string "question_group"
     t.index ["health_assessment_id"], name: "index_assessment_questions_on_health_assessment_id"
+  end
+
+  create_table "books", force: :cascade do |t|
+    t.string "title"
+    t.integer "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "slug"
+    t.index ["category"], name: "index_books_on_category"
+    t.index ["slug"], name: "index_books_on_slug", unique: true
   end
 
   create_table "cures", force: :cascade do |t|
@@ -169,6 +179,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_21_061348) do
     t.index ["vikruti_id"], name: "index_users_on_vikruti_id"
   end
 
+  create_table "verses", force: :cascade do |t|
+    t.integer "book_id", null: false
+    t.integer "verse_number"
+    t.string "text_header"
+    t.text "text"
+    t.string "chapter_title"
+    t.integer "chapter"
+    t.integer "page_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_verses_on_book_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "assessment_answers", "assessment_entries"
@@ -176,4 +199,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_21_061348) do
   add_foreign_key "assessment_options", "assessment_questions"
   add_foreign_key "assessment_questions", "health_assessments"
   add_foreign_key "sessions", "users"
+  add_foreign_key "verses", "books"
 end

@@ -13,4 +13,11 @@ namespace :import do
     VikrutiQuestionImporter.new.call
     puts "Vikruti questions import finished."
   end
+
+  desc "Imports Books"
+  task books: :environment do
+    puts "Starting import of Charaka Samhita..."
+    BooksImporter.new.call
+    puts "Charaka Samhita import finished."
+  end
 end
