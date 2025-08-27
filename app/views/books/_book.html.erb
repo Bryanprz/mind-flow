@@ -1,5 +1,5 @@
 <div id="<%= dom_id book %>">
-  <div class="card card-border bg-base-100 w-96">
+  <div class="card border border-gray-300 bg-base-100 w-96 pb-3 pr-4">
     <div class="card-body">
       <h2 class="card-title"><%= book.title %></h2>
 
@@ -13,6 +13,10 @@
 
         <p><%= book.description %></p>
       </div>
+    </div>
+
+    <div class="card-actions justify-end">
+      <%= link_to "Show this book", book, class: "btn btn-sm btn-secondary text-sm" %>
     </div>
   </div>
 </div>

@@ -43,7 +43,7 @@ add instance vars
         <h2 class="card-title text-lg">Quick Actions</h2>
         <p class="flex-grow">Take an assessment or view your history.</p>
         <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
-          <%= button_tag "Current Imbalance Assessment", class: "btn btn-primary w-full" %>
+          <%= button_tag "Current Imbalance Assessment", class: "btn btn-primary w-full text-white" %>
         <% end %>
       </div>
     </div>

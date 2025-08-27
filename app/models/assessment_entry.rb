@@ -1,3 +1,5 @@
+# TODO problem is that user.prakruti is not being saved. this should be saved if user takes the prakruti assessment automatically. if user takes the assessment again, ??
+
 class AssessmentEntry < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :health_assessment
