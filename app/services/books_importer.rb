@@ -6,7 +6,9 @@ class BooksImporter
   end
 
   def call
-    book = Book.find_by(title: "Charaka Samhita")
+    book = Book.find_or_initialize_by(title: "Charaka Samhita")
+    book.category = 'classical'
+    book.save!
 
     # Ensure all operations are atomic: if one fails, all are rolled back.
     ActiveRecord::Base.transaction do
