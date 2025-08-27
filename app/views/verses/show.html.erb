@@ -1,12 +1,12 @@
 <turbo-frame id="main_content_area">
-  <div class="mx-auto md:w-2/3 w-full flex h-full">
+  <div class="mx-auto w-full flex h-full">
     <div class="mx-auto mt-9">
       <% if notice.present? %>
         <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
       <% end %>
 
-      <ul class="list bg-base-100 rounded-box shadow-md">
-        <%= render @verse %>
+      <ul class="list bg-base-100 rounded-box shadow-sm">
+        <%= render partial: "verse_show", locals: { verse: @verse } %>
       </ul>
 
       <div class="flex flex-row items-center w-full gap-x-2 mt-5">

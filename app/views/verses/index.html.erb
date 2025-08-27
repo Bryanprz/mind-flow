@@ -1,17 +1,17 @@
-<turbo-frame id="main_content_area">
-  <div class="flex flex-col mt-9">
+<turbo-frame id="main_content_area" class="flex min-h-screen">
+  <div class="flex flex-col w-2/3 items-center mt-5">
     <% if notice.present? %>
       <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
     <% end %>
 
     <% content_for :title, "Verses" %>
 
-    <div class="flex justify-between items-center mb-4">
+    <div class="flex justify-start w-2/3 mb-4">
       <h1 class="font-bold text-4xl">Verses</h1>
     </div>
 
-    <ul class="list bg-base-100 rounded-box shadow-md">
-      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Verses from <%= @verses.first.book.title if @verses.any? %></li>
+    <ul class="w-2/3 list bg-base-100 rounded-box shadow-sm border border-gray-300">
+      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide border-b">Verses from <%= @verses.first.book.title if @verses.any? %></li>
       <% @verses.each do |verse| %>
         <%= render verse %>
       <% end %>
