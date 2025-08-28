@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    resources :foods
+    resources :users
+    root "dashboard#index"
+  end
   resources :verses
   resources :books
   resource :dashboard, only: [:show]

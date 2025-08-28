@@ -16,6 +16,5 @@ class CreateUsers < ActiveRecord::Migration[8.0]
       t.index :prakruti_id
       t.index :vikruti_id
     end
-    add_index :users, :email_address, unique: true
   end
 end

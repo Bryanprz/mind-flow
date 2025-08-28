@@ -1,0 +1,38 @@
+<turbo-frame id="main_content_area">
+  <li class="list-row p-3 border-b">
+    <div class="flex justify-center mx-auto mt-11 w-full">
+      <%= form_with(model: user, class: "contents") do |form| %>
+        <% if user.errors.any? %>
+          <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+            <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+            <ul>
+              <% user.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-lg border p-4">
+          <legend class="fieldset-legend">Sign Up</legend>
+          <%= form.label :name, class: "label" %>
+          <%= form.text_field :name, class: "input" %>
+
+          <%= form.label :email_address, class: "label" %>
+          <%= form.text_field :email_address, class: "input" %>
+
+          <%= form.label :password, class: "label" %>
+          <%= form.password_field :password, class: "input" %>
+
+          <%= form.label :date_of_birth, class: "label" %>
+          <%= form.date_select :date_of_birth, start_year: 1900, end_year: Date.today.year, class: "input" %>
+        </fieldset>
+
+        <div class="inline">
+          <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  </li>
+</turbo-frame>
