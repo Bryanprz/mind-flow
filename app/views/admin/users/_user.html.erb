@@ -1,5 +1,8 @@
-<li class="list-row p-3 border-b">
-  <div id="<%= dom_id user %>">
-    <p><%= user.name %></p>
+<div id="<%= dom_id user %>" class="card w-full bg-base-100 shadow-md mb-4">
+  <div class="card-body flex-row justify-between items-center p-4">
+    <h2 class="card-title text-lg"><%= user.name %></h2>
+    <div class="card-actions">
+      <%= link_to "Show Details", [:admin, user], class: "btn btn-outline btn-primary btn-sm" %>
+    </div>
   </div>
-</li>
+</div>
