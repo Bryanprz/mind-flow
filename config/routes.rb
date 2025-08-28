@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   namespace :admin do
+    root "dashboard#index"
     resources :foods
     resources :users
-    root "dashboard#index"
+    resources :healing_plan_foods
+    resources :healing_plans
   end
   resources :verses
   resources :books

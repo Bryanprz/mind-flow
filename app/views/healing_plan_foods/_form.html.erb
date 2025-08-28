@@ -1,0 +1,27 @@
+<%= form_with(model: healing_plan_food, class: "contents") do |form| %>
+  <% if healing_plan_food.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+      <h2><%= pluralize(healing_plan_food.errors.count, "error") %> prohibited this healing_plan_food from being saved:</h2>
+
+      <ul>
+        <% healing_plan_food.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :healing_plan_id %>
+    <%= form.text_field :healing_plan_id, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :food_id %>
+    <%= form.text_field :food_id, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

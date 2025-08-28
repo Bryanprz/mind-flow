@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_28_054132) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_28_065522) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -164,6 +164,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_28_054132) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "healing_plan_foods", force: :cascade do |t|
+    t.integer "healing_plan_id", null: false
+    t.integer "food_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["food_id"], name: "index_healing_plan_foods_on_food_id"
+    t.index ["healing_plan_id"], name: "index_healing_plan_foods_on_healing_plan_id"
+  end
+
+  create_table "healing_plans", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_healing_plans_on_user_id"
+  end
+
   create_table "health_assessments", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -219,6 +237,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_28_054132) do
   add_foreign_key "assessment_answers", "assessment_options"
   add_foreign_key "assessment_options", "assessment_questions"
   add_foreign_key "assessment_questions", "health_assessments"
+  add_foreign_key "healing_plan_foods", "foods"
+  add_foreign_key "healing_plan_foods", "healing_plans"
+  add_foreign_key "healing_plans", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "verses", "books"
 end

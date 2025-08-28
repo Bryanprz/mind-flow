@@ -1,7 +1,13 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New user</h1>
-
-  <%= render "form", user: @user %>
-
-  <%= link_to "Back to users", users_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-</div>
+<turbo-frame id="main_content_area">
+  <div class="container mx-auto px-4 py-8">
+    <div class="card w-full max-w-lg mx-auto bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h1 class="card-title text-2xl">New User</h1>
+        <%= render "form", user: @user %>
+      </div>
+      <div class="card-actions justify-center p-4 border-t border-base-200">
+        <%= link_to "Back to Users", admin_users_path, class: "btn btn-ghost" %>
+      </div>
+    </div>
+  </div>
+</turbo-frame>

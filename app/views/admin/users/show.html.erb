@@ -22,7 +22,7 @@
         <div class="card-actions justify-end mt-6">
           <%= link_to "Edit", edit_admin_user_path(@user), class: "btn btn-secondary" %>
           <%= link_to "Back to Users", admin_users_path, class: "btn btn-ghost" %>
-          <%= link_to "Create Protocol", admin_users_path, class: "btn btn-ghost" %>
+          <%= link_to "Create Healing Plan", new_admin_healing_plan_path, class: "btn btn-ghost" %>
           <%= button_to "Destroy", [:admin, @user], method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this user?" }, class: "btn btn-error" %>
         </div>
       </div>

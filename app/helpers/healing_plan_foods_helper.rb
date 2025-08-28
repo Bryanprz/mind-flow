@@ -1,0 +1,2 @@
+module HealingPlanFoodsHelper
+end
