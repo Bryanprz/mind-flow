@@ -1,23 +1,42 @@
 <turbo-frame id="main_content_area">
-  <div class="w-full">
+  <div class="container mx-auto px-4 w-2/3">
     <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+      <div class="alert alert-success shadow-lg my-4">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <span><%= notice %></span>
+        </div>
+      </div>
     <% end %>
 
     <% content_for :title, "Users" %>
 
-    <div class="flex justify-between items-center mt-5">
-      <h1 class="font-bold text-4xl">Users</h1>
+    <div class="flex justify-between items-center my-6">
+      <h1 class="text-3xl font-bold">Users</h1>
+      <%= link_to "New user", new_admin_user_path, class: "btn btn-primary" %>
     </div>
 
-    <div id="admin_users" class="min-w-full flex flex-col items-start">
-      <ul class="w-2/3 list bg-base-100 rounded-box shadow-sm border border-gray-300">
-        <% @users.each do |user| %>
-          <%= render user %>
-          <%= link_to "Show this user", [:admin, user], class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-        <% end %>
-      </ul>
-      <%= link_to "New user", new_admin_user_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+    <div class="overflow-x-auto shadow-md rounded-lg">
+      <table class="table w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+          </tr>
+        </thead>
+        <tbody id="admin_users" class="bg-white">
+          <% @users.each do |user| %>
+            <tr id="<%= dom_id user %>" class="hover">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900"><%= user.name %></div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <%= link_to "Show", [:admin, user], class: "btn btn-ghost btn-sm" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
 </turbo-frame>
