@@ -9,7 +9,7 @@
       </div>
     <% end %>
 
-    <div class="card w-full max-w-lg mx-auto bg-base-100 shadow-xl">
+    <div class="card w-full max-w-lg mx-auto bg-base-100 border border-gray-300">
       <div class="card-body">
         <h2 class="card-title text-2xl mb-4"><%= @user.name %></h2>
         
@@ -19,11 +19,11 @@
           <p><strong>Member since:</strong> <%= @user.created_at.to_formatted_s(:long) %></p>
         </div>
 
-        <div class="card-actions justify-end mt-6">
-          <%= link_to "Edit", edit_admin_user_path(@user), class: "btn btn-secondary" %>
-          <%= link_to "Back to Users", admin_users_path, class: "btn btn-ghost" %>
-          <%= link_to "Healing Plan", new_admin_healing_plan_path, class: "btn btn-ghost" %>
-          <%= button_to "Destroy", [:admin, @user], method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this user?" }, class: "btn btn-error" %>
+        <div class="card-actions justify-end mt-6 flex-nowrap">
+          <%= link_to "Edit", edit_admin_user_path(@user), class: "btn btn-sm btn-secondary" %>
+          <%= link_to "Back", admin_users_path, class: "btn btn-sm btn-ghost" %>
+          <%= link_to "Health Plan", new_admin_healing_plan_path(user_id: @user.id), class: "btn btn-sm btn-accent" %>
+          <%= button_to "Destroy", [:admin, @user], method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this user?" }, class: "btn btn-sm btn-error" %>
         </div>
       </div>
     </div>
