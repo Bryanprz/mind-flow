@@ -15,10 +15,6 @@ class HealthAssessmentsController < ApplicationController
     start_assessment(:vikruti)
   end
 
-  def start_chronic_issues_assessment
-    start_assessment(:chronic_issues)
-  end
-
   def start_assessment(assessment_type)
     @health_assessment = HealthAssessment.find_by(assessment_type: assessment_type)
     session[:assessment_type] = assessment_type

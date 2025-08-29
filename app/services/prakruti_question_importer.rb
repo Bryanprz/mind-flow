@@ -6,7 +6,7 @@ class PrakrutiQuestionImporter
   end
 
   def call
-    prakruti_assessment = HealthAssessment.find_by(category: "prakruti")
+    prakruti_assessment = HealthAssessment.find_by(assessment_type: :prakruti)
 
     # Ensure all operations are atomic: if one fails, all are rolled back.
     ActiveRecord::Base.transaction do

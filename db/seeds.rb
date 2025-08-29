@@ -22,11 +22,6 @@ prakruti_health_assessment = HealthAssessment.find_or_create_by!(assessment_type
   health_assessment.description = 'Prakruti (original elemental nature) self-assessment'
 end
 
-chronic_issues_health_assessment = HealthAssessment.find_or_create_by!(assessment_type: :chronic_issues) do |health_assessment|
-  health_assessment.name = 'Chronic Issues Assessment'
-  health_assessment.description = 'Assessment for chronic health issues.'
-end
-
 if prakruti_health_assessment.assessment_questions.none?
   puts "Importing Prakruti questions..."
   Rake::Task['import:prakruti_questions'].invoke
