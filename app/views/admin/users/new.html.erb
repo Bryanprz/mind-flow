@@ -1,15 +1,13 @@
-<turbo-frame id="main_content_area">
-  <% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
+<% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
 
-  <div class="container mx-auto px-4 py-8">
-    <div class="card w-full max-w-lg mx-auto bg-base-100 shadow-xl">
-      <div class="card-body">
-        <h1 class="card-title text-2xl">New User</h1>
-        <%= render "form", user: @user %>
-      </div>
-      <div class="card-actions justify-center p-4 border-t border-base-200">
-        <%= link_to "Back to Users", admin_users_path, class: "btn btn-ghost" %>
-      </div>
+<div class="mx-auto px-4 py-8 ">
+  <div class="card w-96 mx-auto bg-base-100 border border-gray-300">
+    <div class="card-body">
+      <h1 class="card-title text-2xl">New User</h1>
+      <%= render "form", user: @user %>
+    </div>
+    <div class="card-actions justify-center p-4 border-t border-base-200">
+      <%= link_to "Back to Users", admin_users_path, class: "btn btn-ghost" %>
     </div>
   </div>
-</turbo-frame>
+</div>

@@ -1,4 +1,4 @@
-<%= form_with(model: healing_plan, class: "contents") do |form| %>
+<%= form_with(model: healing_plan, class: "contents", data: { turbo_frame: "_top" }) do |form| %>
   <% if healing_plan.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
       <h2><%= pluralize(healing_plan.errors.count, "error") %> prohibited this healing_plan from being saved:</h2>

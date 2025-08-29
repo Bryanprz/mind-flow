@@ -7,7 +7,7 @@ class Admin::HealingPlansController < ApplicationController
 
   def new
     if @user.healing_plan
-            redirect_to edit_admin_user_healing_plan_path(@user, @user.healing_plan)
+      redirect_to edit_admin_user_healing_plan_path(@user, @user.healing_plan)
     else
       @healing_plan = @user.build_healing_plan
     end
@@ -17,7 +17,7 @@ class Admin::HealingPlansController < ApplicationController
     @healing_plan = @user.build_healing_plan(healing_plan_params)
 
     if @healing_plan.save
-      redirect_to admin_user_healing_plans_path(@user, @healing_plan), notice: 'Healing plan was successfully created.'
+      redirect_to admin_user_healing_plan_path(@user, @healing_plan), notice: 'Healing plan was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
