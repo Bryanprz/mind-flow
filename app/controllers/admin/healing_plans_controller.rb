@@ -1,6 +1,6 @@
 class Admin::HealingPlansController < ApplicationController
-  before_action :set_user, only: [:new, :create, :show, :edit, :update]
-  before_action :set_healing_plan, only: [:show, :edit, :update]
+  before_action :set_user, only: [:new, :create, :show, :edit, :update, :destroy]
+  before_action :set_healing_plan, only: [:show, :edit, :update, :destroy]
 
   def show
   end
@@ -31,6 +31,15 @@ class Admin::HealingPlansController < ApplicationController
       redirect_to admin_user_healing_plan_path(@user, @healing_plan), notice: 'Healing plan was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @healing_plan.destroy!
+
+    respond_to do |format|
+      format.html { redirect_to admin_user_path(@user), status: :see_other, notice: "Healing Plan was successfully deleted." }
+      format.json { head :no_content }
     end
   end
 

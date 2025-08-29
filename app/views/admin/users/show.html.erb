@@ -9,6 +9,9 @@
         <p><strong>Email:</strong> <%= @user.email_address %></p>
         <p><strong>Admin:</strong> <%= @user.admin? ? 'Yes' : 'No' %></p>
         <p><strong>Member since:</strong> <%= @user.created_at.to_formatted_s(:long) %></p>
+        <% if @user.healing_plan %>
+          <p><strong>Healing Plan:</strong> <%= @user&.healing_plan&.title %></p>
+        <% end %>
       </div>
 
       <div class="card-actions justify-end mt-6 flex-wrap">
@@ -16,8 +19,12 @@
         <%= link_to "Vikruti", edit_admin_user_path(@user), class: "btn btn-sm btn-accent" %>
         <%= link_to "Edit", edit_admin_user_path(@user), class: "btn btn-sm btn-secondary" %>
         <%= link_to "Back", admin_users_path, class: "btn btn-sm btn-ghost" %>
-        <%= link_to "Health Plan", new_admin_user_healing_plan_path(user_id: @user.id), class: "btn btn-sm btn-accent" %>
-        <%= button_to "Destroy", [:admin, @user], method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this user?" }, class: "btn btn-sm btn-error" %>
+        <% if @user.healing_plan.present? %>
+          <%= link_to "Health Plan", admin_user_healing_plan_path(@user, @user.healing_plan), class: "btn btn-sm btn-accent" %>
+        <% else %>
+          <%= link_to "Health Plan", new_admin_user_healing_plan_path(@user), class: "btn btn-sm btn-accent" %>
+        <% end %>
+        <%= button_to "Delete", [:admin, @user], method: :delete, data: { turbo_confirm: "Are you sure you want to delete this user?" }, class: "btn btn-sm btn-error" %>
       </div>
     </div>
   </div>
