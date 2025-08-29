@@ -34,11 +34,7 @@
             tabindex="0"
             class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
           <li class="font-light menu-title italic"><span>Logged in as <%= Current.user.name %></span></li>
-          <li>
-            <a class="justify-between">
-              Profile
-            </a>
-          </li>
+          <li><%= link_to "Profile", profile_path %></li>
           <li><a>Settings</a></li>
           <li><%= button_to "Logout", session_path, method: :delete, class: "link-button" %></li>
         </ul>

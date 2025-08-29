@@ -28,8 +28,7 @@ Rails.application.routes.draw do
   post 'assessment/submit', to: 'health_assessments#submit_answers', as: :submit_assessment_answers
   get 'assessment/results', to: 'health_assessments#show_results', as: 'assessment_results'
 
-  # Profile route (works for both guests and logged-in users)
-  get 'self', to: 'users#show', as: :self_profile
+  get 'profile', to: 'users#show', as: :profile
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
