@@ -12,17 +12,17 @@ end
 require_relative '../app/models/assessment_question'
 require_relative '../app/models/assessment_option' 
 
-vikruti_health_assessment = HealthAssessment.find_or_create_by!(category: :vikruti) do |health_assessment|
+vikruti_health_assessment = HealthAssessment.find_or_create_by!(assessment_type: :vikruti) do |health_assessment|
   health_assessment.name = 'Vikruti Assessment'
   health_assessment.description = 'Vikruti (current elemental imbalance) self-assessment'
 end
 
-prakruti_health_assessment = HealthAssessment.find_or_create_by!(category: :prakruti) do |health_assessment|
+prakruti_health_assessment = HealthAssessment.find_or_create_by!(assessment_type: :prakruti) do |health_assessment|
   health_assessment.name = 'Prakruti Assessment'
   health_assessment.description = 'Prakruti (original elemental nature) self-assessment'
 end
 
-chronic_issues_health_assessment = HealthAssessment.find_or_create_by!(category: :chronic_issues) do |health_assessment|
+chronic_issues_health_assessment = HealthAssessment.find_or_create_by!(assessment_type: :chronic_issues) do |health_assessment|
   health_assessment.name = 'Chronic Issues Assessment'
   health_assessment.description = 'Assessment for chronic health issues.'
 end

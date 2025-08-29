@@ -20,8 +20,8 @@ class HealthAssessmentsController < ApplicationController
   end
 
   def start_assessment(assessment_type)
-    @health_assessment = HealthAssessment.find_by(category: assessment_type)
-    session[:assessment_category] = assessment_type
+    @health_assessment = HealthAssessment.find_by(assessment_type: assessment_type)
+    session[:assessment_type] = assessment_type
 
     # Eager load all questions and their options to avoid N+1 queries
     @questions = @health_assessment.assessment_questions.includes(:assessment_options).order(:id)
@@ -55,7 +55,16 @@ class HealthAssessmentsController < ApplicationController
               end
 
     # Create a new submission for this assessment
-    @assessment_entry = AssessmentEntry.create!(
+    assessment_entry_class = case session[:assessment_type]
+                             when :prakruti
+                               PrakrutiEntry
+                             when :vikruti
+                               VikrutiEntry
+                             else
+                               AssessmentEntry # Fallback or raise an error if unexpected
+                             end
+
+    @assessment_entry = assessment_entry_class.create!(
       user: Current.user,  # Will be nil for guests
       health_assessment: @health_assessment
     )
@@ -98,15 +107,15 @@ class HealthAssessmentsController < ApplicationController
     }
 
     # Clean up session data after results have been shown
-    session.delete(:assessment_category)
+    session.delete(:assessment_type)
     session.delete(:assessment_entry_id)
   end
 
   private
 
   def set_health_assessment
-    assessment_category = session[:assessment_category]
-    @health_assessment = HealthAssessment.find_by(category: assessment_category)
+    assessment_type = session[:assessment_type]
+    @health_assessment = HealthAssessment.find_by(assessment_type: assessment_type)
   end
 
   def set_assessment_entry

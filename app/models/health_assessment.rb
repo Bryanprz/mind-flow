@@ -1,19 +1,5 @@
 class HealthAssessment < ApplicationRecord
-  attribute :category, :integer
-  enum :category, { prakruti: 0, vikruti: 1, chronic_issues: 2 }, prefix: true
-
+  enum :assessment_type, { prakruti: 0, vikruti: 1 }
   has_many :assessment_questions, dependent: :destroy
   has_many :assessment_entries, dependent: :destroy
-  
-  # Scopes
-  scope :prakruti_assessments, -> { where(category: :prakruti) }
-  scope :vikruti_assessments, -> { where(category: :vikruti) }
-  
-  def self.prakruti
-    find_by(category: :prakruti)
-  end
-  
-  def self.vikruti
-    find_by(category: :vikruti)
-  end
 end

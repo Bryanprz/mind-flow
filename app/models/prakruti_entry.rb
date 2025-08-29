@@ -1,0 +1,2 @@
+class PrakrutiEntry < AssessmentEntry
+end

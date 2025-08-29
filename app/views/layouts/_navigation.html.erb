@@ -7,7 +7,7 @@
       <ul
           tabindex="0"
           class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li><a>Item 1</a></li>
+        <%= render "layouts/navigation_links" %>
       </ul>
     </div>
     <%= link_to raw("🌿Ancient<span class='text-secondary'>Herb</span>"), root_path, class: "btn btn-ghost text-2xl pl-8 text-primary tracking-tighter" %>
@@ -15,16 +15,7 @@
 
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
-      <li><%= link_to "Dashboard", dashboard_path, class: nav_link_class(dashboard_path) %></li>
-      <li><%= link_to "Food", foods_path, class: nav_link_class(foods_path) %></li>
-      <li><%= link_to "Herbs", herbs_path, class: nav_link_class(herbs_path) %></li>
-      <li><%= link_to "Cures", cures_path, class: nav_link_class(cures_path) %></li>
-      <li><%= link_to "Lifestyle", lifestyle_plans_path, class: nav_link_class(lifestyle_plans_path) %></li>
-      <li><%= link_to "Books", books_path, class: nav_link_class(books_path) %></li>
-
-      <% if Current.user&.admin? %>
-        <li class="text-info"><%= link_to "Admin", admin_root_path %></li>
-      <% end %>
+      <%= render "layouts/navigation_links" %>
     </ul>
   </div>
 

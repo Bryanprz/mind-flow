@@ -1,0 +1,2 @@
+class VikrutiEntry < AssessmentEntry
+end
