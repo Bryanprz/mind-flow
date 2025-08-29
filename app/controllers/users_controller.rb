@@ -80,8 +80,8 @@ class UsersController < ApplicationController
           # UserMailer.health_report(@user).deliver_now
         end
 
-        format.html { redirect_to self_profile_path, notice: "Account created successfully!" }
-        format.json { render :show, status: :created, location: self_profile_path }
+        format.html { redirect_to dashboard_path, notice: "Account created successfully!" }
+        format.json { render :show, status: :created, location: dashboard_path }
       else
         format.html { render :new, status: :unprocessable_entity } # Fallback for non-Turbo requests
         format.turbo_stream { render turbo_stream: turbo_stream.replace("main_content_area", partial: "shared/sign_up_modal_form", locals: { user: @user }), status: :unprocessable_entity }
