@@ -2,10 +2,12 @@ Rails.application.routes.draw do
   namespace :admin do
     root "dashboard#index"
     resources :foods
-    resources :users
-    resources :healing_plan_foods
-    resources :healing_plans
+    resources :users do
+      resources :healing_plans
+      resources :healing_plan_foods
+    end
   end
+
   resources :verses
   resources :books
   resource :dashboard, only: [:show]

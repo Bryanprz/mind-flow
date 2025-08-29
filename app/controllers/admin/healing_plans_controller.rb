@@ -1,5 +1,5 @@
 class Admin::HealingPlansController < ApplicationController
-  before_action :set_user, only: [:new, :show, :edit, :update, :create]
+  before_action :set_user, only: [:new, :create, :show, :edit, :update]
   before_action :set_healing_plan, only: [:show, :edit, :update]
 
   def show
@@ -7,7 +7,7 @@ class Admin::HealingPlansController < ApplicationController
 
   def new
     if @user.healing_plan
-      redirect_to edit_admin_healing_plan_path(@user.healing_plan)
+            redirect_to edit_admin_user_healing_plan_path(@user, @user.healing_plan)
     else
       @healing_plan = @user.build_healing_plan
     end
@@ -17,7 +17,7 @@ class Admin::HealingPlansController < ApplicationController
     @healing_plan = @user.build_healing_plan(healing_plan_params)
 
     if @healing_plan.save
-      redirect_to admin_healing_plan_path(@healing_plan), notice: 'Healing plan was successfully created.'
+      redirect_to admin_user_healing_plans_path(@user, @healing_plan), notice: 'Healing plan was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -28,7 +28,7 @@ class Admin::HealingPlansController < ApplicationController
 
   def update
     if @healing_plan.update(healing_plan_params)
-      redirect_to admin_healing_plan_path(@healing_plan), notice: 'Healing plan was successfully updated.'
+      redirect_to admin_user_healing_plan_path(@user, @healing_plan), notice: 'Healing plan was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end

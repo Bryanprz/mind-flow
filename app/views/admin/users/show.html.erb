@@ -1,31 +1,31 @@
-<turbo-frame id="main_content_area">
-  <div class="container mx-auto px-4 py-8">
-    <% if notice.present? %>
-      <div class="alert alert-success shadow-lg mb-5">
-        <div>
-          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          <span><%= notice %></span>
-        </div>
+<% content_for :main_container_class, 'bg-base-200' %>
+
+<div class="container mx-auto px-4 py-8">
+  <% if notice.present? %>
+    <div class="alert alert-success shadow-lg mb-5">
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span><%= notice %></span>
       </div>
-    <% end %>
+    </div>
+  <% end %>
 
-    <div class="card w-full max-w-lg mx-auto bg-base-100 border border-gray-300">
-      <div class="card-body">
-        <h2 class="card-title text-2xl mb-4"><%= @user.name %></h2>
-        
-        <div class="space-y-2">
-          <p><strong>Email:</strong> <%= @user.email_address %></p>
-          <p><strong>Admin:</strong> <%= @user.admin? ? 'Yes' : 'No' %></p>
-          <p><strong>Member since:</strong> <%= @user.created_at.to_formatted_s(:long) %></p>
-        </div>
+  <div class="card w-full max-w-lg mx-auto bg-base-100 border border-gray-300">
+    <div class="card-body">
+      <h2 class="card-title text-2xl mb-4"><%= @user.name %></h2>
 
-        <div class="card-actions justify-end mt-6 flex-nowrap">
-          <%= link_to "Edit", edit_admin_user_path(@user), class: "btn btn-sm btn-secondary" %>
-          <%= link_to "Back", admin_users_path, class: "btn btn-sm btn-ghost" %>
-          <%= link_to "Health Plan", new_admin_healing_plan_path(user_id: @user.id), class: "btn btn-sm btn-accent" %>
-          <%= button_to "Destroy", [:admin, @user], method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this user?" }, class: "btn btn-sm btn-error" %>
-        </div>
+      <div class="space-y-2">
+        <p><strong>Email:</strong> <%= @user.email_address %></p>
+        <p><strong>Admin:</strong> <%= @user.admin? ? 'Yes' : 'No' %></p>
+        <p><strong>Member since:</strong> <%= @user.created_at.to_formatted_s(:long) %></p>
+      </div>
+
+      <div class="card-actions justify-end mt-6 flex-nowrap">
+        <%= link_to "Edit", edit_admin_user_path(@user), class: "btn btn-sm btn-secondary" %>
+        <%= link_to "Back", admin_users_path, class: "btn btn-sm btn-ghost" %>
+        <%= link_to "Health Plan", new_admin_user_healing_plan_path(user_id: @user.id), class: "btn btn-sm btn-accent" %>
+        <%= button_to "Destroy", [:admin, @user], method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this user?" }, class: "btn btn-sm btn-error" %>
       </div>
     </div>
   </div>
-</turbo-frame>
+</div>
