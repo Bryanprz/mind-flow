@@ -1,26 +1,24 @@
 # config/initializers/database_shards.rb
-if Rails.env.production?
-  config = ActiveRecord::Base.configurations.configs_for(env_name: 'production')
+Rails.application.reloader.to_prepare do
+  configs = ActiveRecord::Base.configurations.configs_for(env_name: Rails.env)
   
   # Set up the primary shard (default)
-  primary_config = config.find { |c| c.name == 'primary' }&.configuration_hash
-  ActiveRecord::Base.connects_to(shards: { default: { writing: :primary } }) if primary_config
+  if (primary_config = configs.find { |c| c.name == 'primary' })
+    ActiveRecord::Base.connects_to(shards: { default: { writing: :primary } })
+  end
   
   # Set up the cache shard
-  cache_config = config.find { |c| c.name == 'cache' }&.configuration_hash
-  if cache_config
+  if (cache_config = configs.find { |c| c.name == 'cache' })
     ActiveRecord::Base.connects_to(shards: { cache: { writing: :cache } })
   end
   
   # Set up the queue shard
-  queue_config = config.find { |c| c.name == 'queue' }&.configuration_hash
-  if queue_config
+  if (queue_config = configs.find { |c| c.name == 'queue' })
     ActiveRecord::Base.connects_to(shards: { queue: { writing: :queue } })
   end
   
   # Set up the cable shard
-  cable_config = config.find { |c| c.name == 'cable' }&.configuration_hash
-  if cable_config
+  if (cable_config = configs.find { |c| c.name == 'cable' })
     ActiveRecord::Base.connects_to(shards: { cable: { writing: :cable } })
   end
 end
