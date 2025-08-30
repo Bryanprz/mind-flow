@@ -2,36 +2,45 @@ default: &default
   adapter: sqlite3
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
+# Development configuration
 development:
-  <<: *default
-  database: db/development.sqlite3
+  primary:
+    <<: *default
+    database: db/development_primary.sqlite3
+  cache:
+    <<: *default
+    database: db/development_cache.sqlite3
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: db/development_queue.sqlite3
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *default
+    database: db/development_cable.sqlite3
+    migrations_paths: db/cable_migrate
 
+# Test configuration
 test:
   <<: *default
   database: db/test.sqlite3
 
+# Production configuration
 production:
   primary:
-    adapter: sqlite3
-    database: /rails/storage/production.sqlite3
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    timeout: 5000
+    <<: *default
+    database: /rails/storage/production.sqlite3  # Changed from production_primary.sqlite3 to match actual file
   cache:
-    adapter: sqlite3
+    <<: *default
     database: /rails/storage/production_cache.sqlite3
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    timeout: 5000
     migrations_paths: db/cache_migrate
   queue:
-    adapter: sqlite3
+    <<: *default
     database: /rails/storage/production_queue.sqlite3
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    timeout: 5000
     migrations_paths: db/queue_migrate
   cable:
-    adapter: sqlite3
+    <<: *default
     database: /rails/storage/production_cable.sqlite3
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    timeout: 5000
     migrations_paths: db/cable_migrate
