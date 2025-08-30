@@ -29,7 +29,9 @@ env:
 
 proxy:
   ssl: true
-  host: app.ancientherb.health
+  host: 
+    - ancientherb.health
+    - www.ancientherb.health
   app_port: 3000
   healthcheck:
     path: /up
