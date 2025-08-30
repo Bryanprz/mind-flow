@@ -51,7 +51,7 @@ class HealthAssessmentsController < ApplicationController
               end
 
     # Create a new submission for this assessment
-    assessment_entry_class = case session[:assessment_type]
+    assessment_entry_class = case session[:assessment_type].to_sym
                              when :prakruti
                                PrakrutiEntry
                              when :vikruti
@@ -60,10 +60,16 @@ class HealthAssessmentsController < ApplicationController
                                AssessmentEntry # Fallback or raise an error if unexpected
                              end
 
-    @assessment_entry = assessment_entry_class.create!(
+    @assessment_entry = assessment_entry_class.find_or_initialize_by(
       user: Current.user,  # Will be nil for guests
       health_assessment: @health_assessment
     )
+
+    # If updating an existing entry, destroy the old answers before creating new ones.
+    @assessment_entry.answers.destroy_all if @assessment_entry.persisted?
+    
+    # Save the entry to ensure it has an ID before we add answers.
+    @assessment_entry.save!
 
     # Prepare all answers for a single bulk insert
     answers_to_insert = answers.map do |answer|

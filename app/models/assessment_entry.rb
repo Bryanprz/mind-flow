@@ -42,4 +42,19 @@ class AssessmentEntry < ApplicationRecord
       return 'Earth & Water'
     end
   end
+
+  after_save :update_user_dosha_results, if: :saved_change_to_completed_at?
+
+  private
+
+  def update_user_dosha_results
+    # Ensure we have a user and the assessment has been marked as completed.
+    return unless user.present? && completed_at.present?
+
+    if type == 'PrakrutiEntry'
+      user.update(prakruti: primary_dosha)
+    elsif type == 'VikrutiEntry'
+      user.update(vikruti: primary_dosha)
+    end
+  end
 end

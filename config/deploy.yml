@@ -4,7 +4,7 @@ image: bryanprz00/ancientherb
 servers:
   web:
     hosts:
-      - 162.243.220.201
+      - 138.197.45.148
 
 registry:
   username: bryanprz00
