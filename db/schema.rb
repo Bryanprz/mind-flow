@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_29_053236) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_30_035131) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -177,10 +177,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_053236) do
 
   create_table "healing_plans", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.string "title"
+    t.string "name"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "version"
+    t.string "lineage_id"
+    t.boolean "is_active"
     t.index ["user_id"], name: "index_healing_plans_on_user_id"
   end
 
@@ -205,6 +208,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_053236) do
     t.json "spiritual_practices_items"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "plan_items", force: :cascade do |t|
+    t.text "content"
+    t.boolean "completed", default: false
+    t.integer "ordering"
+    t.integer "plan_section_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["plan_section_id"], name: "index_plan_items_on_plan_section_id"
+  end
+
+  create_table "plan_sections", force: :cascade do |t|
+    t.string "name"
+    t.integer "ordering"
+    t.integer "healing_plan_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["healing_plan_id"], name: "index_plan_sections_on_healing_plan_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -257,6 +279,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_053236) do
   add_foreign_key "healing_plan_foods", "foods"
   add_foreign_key "healing_plan_foods", "healing_plans"
   add_foreign_key "healing_plans", "users"
+  add_foreign_key "plan_items", "plan_sections"
+  add_foreign_key "plan_sections", "healing_plans"
   add_foreign_key "sessions", "users"
   add_foreign_key "verses", "books"
 end

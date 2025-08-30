@@ -6,15 +6,11 @@ class Admin::HealingPlansController < ApplicationController
   end
 
   def new
-    if @user.healing_plan
-      redirect_to edit_admin_user_healing_plan_path(@user, @user.healing_plan)
-    else
-      @healing_plan = @user.build_healing_plan
-    end
+    @healing_plan = @user.healing_plans.build
   end
 
   def create
-    @healing_plan = @user.build_healing_plan(healing_plan_params)
+    @healing_plan = @user.healing_plans.build(healing_plan_params)
 
     if @healing_plan.save
       redirect_to admin_user_healing_plan_path(@user, @healing_plan), notice: 'Healing plan was successfully created.'
@@ -50,10 +46,10 @@ class Admin::HealingPlansController < ApplicationController
   end
 
   def set_healing_plan
-    @healing_plan = @user.healing_plan
+    @healing_plan = @user.healing_plans.find(params[:id])
   end
 
   def healing_plan_params
-    params.require(:healing_plan).permit(:title, :description)
+    params.require(:healing_plan).permit(:name, :description)
   end
 end

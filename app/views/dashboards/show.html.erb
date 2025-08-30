@@ -54,6 +54,7 @@ add instance vars
         <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
           <%= button_tag "Current Imbalance Assessment", class: "btn btn-primary w-full text-white" %>
         <% end %>
+        <%= link_to "Generate New Healing Plan", new_healing_plan_path, class: "btn btn-secondary w-full text-white mt-2" %>
       </div>
     </div>
   </div>

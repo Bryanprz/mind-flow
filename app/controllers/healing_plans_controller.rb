@@ -1,70 +1,70 @@
 class HealingPlansController < ApplicationController
   before_action :set_healing_plan, only: %i[ show edit update destroy ]
+  # TODO: Add a before_action to ensure a user is logged in, e.g.:
+  # before_action :authenticate_user!
 
-  # GET /healing_plans or /healing_plans.json
+  # GET /healing_plans
   def index
-    @healing_plans = HealingPlan.all
+    # Scope plans to the current user and order by version
+    @healing_plans = current_user.healing_plans.order(version: :desc)
   end
 
-  # GET /healing_plans/1 or /healing_plans/1.json
+  # GET /healing_plans/1
   def show
+    # Eager load sections and items to prevent N+1 queries
+    @plan_sections = @healing_plan.plan_sections.includes(:plan_items).order(:ordering)
   end
 
   # GET /healing_plans/new
   def new
-    @healing_plan = HealingPlan.new
+    # This action just renders the form where users select their goals.
+  end
+
+  # POST /healing_plans
+  def create
+    # Get goals from the form, provide a default empty array if none are selected.
+    goals = params.fetch(:goals, [])
+
+    # Use the service to generate the new plan.
+    # This assumes you have a `current_user` method for authentication.
+    @healing_plan = HealingPlanGeneratorService.new(current_user, goals).call
+
+    if @healing_plan.persisted?
+      redirect_to @healing_plan, notice: "Your new Healing Plan has been generated."
+    else
+      # If the service failed for some reason, render the new template again.
+      render :new, status: :unprocessable_entity
+    end
   end
 
   # GET /healing_plans/1/edit
   def edit
   end
 
-  # POST /healing_plans or /healing_plans.json
-  def create
-    @healing_plan = HealingPlan.new(healing_plan_params)
-
-    respond_to do |format|
-      if @healing_plan.save
-        format.html { redirect_to @healing_plan, notice: "Healing plan was successfully created." }
-        format.json { render :show, status: :created, location: @healing_plan }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @healing_plan.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /healing_plans/1 or /healing_plans/1.json
+  # PATCH/PUT /healing_plans/1
   def update
-    respond_to do |format|
-      if @healing_plan.update(healing_plan_params)
-        format.html { redirect_to @healing_plan, notice: "Healing plan was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @healing_plan }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @healing_plan.errors, status: :unprocessable_entity }
-      end
+    if @healing_plan.update(healing_plan_params)
+      redirect_to @healing_plan, notice: "Healing plan was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /healing_plans/1 or /healing_plans/1.json
+  # DELETE /healing_plans/1
   def destroy
     @healing_plan.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to healing_plans_path, notice: "Healing plan was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    redirect_to healing_plans_path, notice: "Healing plan was successfully destroyed."
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_healing_plan
-      @healing_plan = HealingPlan.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def healing_plan_params
-      params.expect(healing_plan: [ :user_id, :title, :description ])
-    end
+  def set_healing_plan
+    # Scope the find to the current user's plans for security.
+    @healing_plan = current_user.healing_plans.find(params[:id])
+  end
+
+  def healing_plan_params
+    # These params are used for the update action.
+    params.require(:healing_plan).permit(:name, :description)
+  end
 end

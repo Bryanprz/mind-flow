@@ -1,15 +1,35 @@
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-    <% end %>
+<% content_for :main_container_class, 'w-full flex-1 bg-base-200 p-8' %>
 
-    <%= render @healing_plan %>
+<div class="w-1/2 max-w-4xl mx-auto space-y-6">
+  <%# --- Plan Header --- %>
+  <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold"><%= @healing_plan.name %></h1>
+    <p class="text-lg text-gray-500">Version <%= @healing_plan.version %></p>
+    <%# TODO: Add "Create New Version" button here %>
+  </div>
 
-    <%= link_to "Edit this healing plan", edit_healing_plan_path(@healing_plan), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Back to healing plans", healing_plans_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to "Destroy this healing plan", @healing_plan, method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+  <%# --- Iterate through Sections and Items --- %>
+  <% @plan_sections.each do |section| %>
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <h2 class="card-title text-2xl mb-4"><%= section.name %></h2>
+        
+        <ul class="space-y-2">
+          <% section.plan_items.order(:ordering).each do |item| %>
+            <li class="flex items-center">
+              <%# TODO: Make this checkbox functional to update the item's 'completed' status %>
+              <input type="checkbox" <%= 'checked' if item.completed? %> class="checkbox checkbox-primary mr-4">
+              <span><%= item.content %></span>
+            </li>
+          <% end %>
+        </ul>
+
+        <%# TODO: Add form/button to add a new item to this section %>
+      </div>
     </div>
+  <% end %>
+
+  <div class="text-center mt-8">
+    <%= link_to "Back to All Plans", healing_plans_path, class: "btn btn-ghost" %>
   </div>
 </div>

@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
-  has_one :healing_plan, dependent: :destroy # Ayurvedic protocol
+  has_many :healing_plans, dependent: :destroy # Ayurvedic protocol
 
   has_many :sessions, dependent: :destroy
   has_many :assessment_entries, dependent: :destroy

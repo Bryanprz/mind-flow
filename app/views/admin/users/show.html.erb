@@ -1,5 +1,8 @@
 <% content_for :main_container_class, 'bg-base-200' %>
 
+<%# Define the active plan once at the top for clarity and efficiency %>
+<% active_plan = @user.healing_plans.find_by(is_active: true) %>
+
 <div class="container mx-auto px-4 py-8">
   <div class="card w-full max-w-lg mx-auto bg-base-100 border border-gray-300">
     <div class="card-body">
@@ -9,8 +12,8 @@
         <p><strong>Email:</strong> <%= @user.email_address %></p>
         <p><strong>Admin:</strong> <%= @user.admin? ? 'Yes' : 'No' %></p>
         <p><strong>Member since:</strong> <%= @user.created_at.to_formatted_s(:long) %></p>
-        <% if @user.healing_plan %>
-          <p><strong>Healing Plan:</strong> <%= @user&.healing_plan&.title %></p>
+        <% if active_plan %>
+          <p><strong>Active Healing Plan:</strong> <%= active_plan.name %></p>
         <% end %>
       </div>
 
@@ -19,8 +22,8 @@
         <%= link_to "Vikruti", edit_admin_user_path(@user), class: "btn btn-sm btn-accent" %>
         <%= link_to "Edit", edit_admin_user_path(@user), class: "btn btn-sm btn-secondary" %>
         <%= link_to "Back", admin_users_path, class: "btn btn-sm btn-ghost" %>
-        <% if @user.healing_plan.present? %>
-          <%= link_to "Health Plan", admin_user_healing_plan_path(@user, @user.healing_plan), class: "btn btn-sm btn-accent" %>
+        <% if active_plan %>
+          <%= link_to "Health Plan", admin_user_healing_plan_path(@user, active_plan), class: "btn btn-sm btn-accent" %>
         <% else %>
           <%= link_to "Health Plan", new_admin_user_healing_plan_path(@user), class: "btn btn-sm btn-accent" %>
         <% end %>
