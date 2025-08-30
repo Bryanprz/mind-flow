@@ -5,6 +5,9 @@ servers:
   web:
     hosts:
       - 138.197.45.148
+    hooks:
+      post-deploy:
+        - bundle exec rails migrate_all
 
 registry:
   username: bryanprz00
