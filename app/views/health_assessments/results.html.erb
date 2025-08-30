@@ -19,25 +19,29 @@ forced to the full height of the padded area.
     <div class="flex flex-col justify-between w-1/2 grow">
       <div class="text-lg font-semibold mt-7">
         Your original nature is 
-        <span class="font-bold <%= dosha_classes(primary_dosha.name) %>">
+        <span class="font-bold <%= dosha_color_class(primary_dosha) %>">
           <%= primary_dosha.name.titleize %>.
         </span> 
       </div>
 
       <div class="text-lg">
-        <%= dosha_description(primary_dosha.name) %>
+        <%= t("doshas.#{primary_dosha.name}.description") %>
       </div>
 
       <div class="text-lg font-semibold">
-        <%= render_dosha_bullet_points(primary_dosha.name) %>
+        <ul class="list-disc list-inside space-y-1">
+          <% t("doshas.#{primary_dosha.name}.bullet_points").each do |point| %>
+            <li><%= point %></li>
+          <% end %>
+        </ul>
       </div>
 
       <div class="text-lg">
-        <strong>Balanced:</strong> <%= render_dosha_in_balance_text(primary_dosha.name) %>
+        <strong>Balanced:</strong> <%= t("doshas.#{primary_dosha.name}.in_balance") %>
       </div>
 
       <div class="text-lg">
-        <strong>Unbalanced:</strong> <%= render_dosha_out_of_balance_text(primary_dosha.name) %>
+        <strong>Unbalanced:</strong> <%= t("doshas.#{primary_dosha.name}.out_of_balance") %>
       </div>
 
       <% if authenticated? %>

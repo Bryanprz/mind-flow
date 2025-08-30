@@ -15,24 +15,34 @@ add instance vars
 <div class="w-full mx-auto space-y-6 flex flex-col" data-controller="modal">
   <!-- First Row - 3 equal columns -->
   <div class="grid grid-cols-3 md:grid-cols-3 gap-6 h-full">
+
     <!-- Card 1: User Profile -->
     <div class="card bg-base-100 border border-gray-300">
       <div class="card-body">
         <h2 class="card-title text-lg">Your Ayurvedic Blueprint</h2>
         <p class="text-md">
           Your original nature is 
-          <span class="font-bold text-primary">Vata</span>
+          <span class="font-bold <%= dosha_color_class(Current.user.prakruti) %>"><%= Current.user.prakruti.name.titleize %></span>
         </p>
       </div>
     </div>
 
-    <!-- Card 2: About Vata -->
+    <!-- Card 2: About Prakruti Dosha -->
     <div class="card bg-base-100 border border-gray-300">
       <div class="card-body">
-        <h2 class="card-title text-lg">About Vata</h2>
-        <p class="text-md">
-          Vata is the energy of movement and the force behind all biological activity. It's often associated with wind and the elements of air and space.
-        </p>
+
+        <h2 class="card-title text-lg ">
+          About 
+          <span class="<%= dosha_color_class(Current.user.prakruti) %>">
+            <%= Current.user.prakruti.name.titleize %>
+          </span>
+        </h2>
+
+        <ul class="list-disc pl-5 space-y-2 text-md">
+          <% t("doshas.#{Current.user.prakruti.name}.bullet_points").each do |dosha_point| %>
+            <li><%= dosha_point %></li>
+          <% end %>
+        </ul>
       </div>
     </div>
 
@@ -71,7 +81,7 @@ add instance vars
         <div class="grid grid-cols-1 gap-4">
           <div>
             <h3 class="font-semibold text-md">When in Balance</h3>
-            <p>When Vata is in balance, you feel energetic, creative, and enthusiastic. You sleep well, have regular digestion, and maintain a healthy weight.</p>
+            <p><%= t("doshas.#{Current.user.prakruti.name}.balanced") %></p>
           </div>
           <div>
             <h3 class="font-semibold text-md">When Unbalanced</h3>

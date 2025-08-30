@@ -1,31 +1,27 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
   hello: "Hello world"
+  doshas:
+    vata:
+      description: "Vata is the energy of movement, like wind, governing the nervous system, circulation, and creativity."
+      bullet_points:
+        - "Governs movement, creativity, and the nervous system."
+        - "Prone to dryness, anxiety, and irregular routines."
+        - "Balances with warmth, routine, and grounding foods."
+      in_balance: 'When Vata is in balance, you feel creative, energetic, and enthusiastic. Your mind is clear, and you are adaptable and inspired.'
+      out_of_balance: 'When Vata is out of balance, you may experience anxiety, fear, and restlessness. You might have dry skin, constipation, and difficulty sleeping.'
+    pitta:
+      description: "Pitta is the energy of transformation, like fire, driving digestion, metabolism, and sharp thinking."
+      bullet_points:
+        - "Controls digestion, metabolism, and intelligence."
+        - "Can be fiery, irritable, and intense under stress."
+        - "Finds harmony with cooling foods and a calm environment."
+      in_balance: 'When Pitta is in balance, you are intelligent, focused, and a strong leader. You have a sharp wit, and a good appetite.'
+      out_of_balance: 'When Pitta is out of balance, you can become irritable, angry, and critical. You may suffer from indigestion, inflammation, and skin rashes.'
+    kapha:
+      description: "Kapha is the energy of stability, like earth and water, providing strength, immunity, and calmness."
+      bullet_points:
+        - "Provides stability, immunity, and structure."
+        - "May experience sluggishness, congestion, and attachment."
+        - "Thrives with stimulation, exercise, and light foods."
+      in_balance: 'When Kapha is in balance, you are calm, loving, and compassionate. You feel strong, stable, and have a robust immune system.'
+      out_of_balance: 'When Kapha is out of balance, you may feel lethargic, possessive, and resistant to change. You might experience congestion, weight gain, and excessive sleep.'
