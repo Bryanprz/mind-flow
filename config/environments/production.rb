@@ -91,7 +91,7 @@ Rails.application.configure do
     #   "162.243.220.201", # Your public IP address
     #   "app.ancientherb.health", # Your domain
     # ]
-    config.hosts << "162.243.220.201"
-    config.hosts << "app.ancientherb.health"
+    config.hosts << "138.197.45.148"
+    config.hosts << "ancientherb.health"
   end
 end
