@@ -3,7 +3,7 @@ if User.find_by(email_address: 'b@b.com').nil?
   User.create!(
     name: 'Bryan Perez',
     email_address: 'b@b',
-    password: 'b',
+    password: 'asdfasdf',
     password_confirmation: 'b',
     admin: true
   )
