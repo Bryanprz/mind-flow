@@ -1,3 +1,0 @@
-#!/bin/bash
-mkdir -p /var/lib/ancientherb/storage
-chmod 777 /var/lib/ancientherb/storage
