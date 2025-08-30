@@ -4,7 +4,7 @@ if User.find_by(email_address: 'b@b.com').nil?
     name: 'Bryan Perez',
     email_address: 'b@b',
     password: 'asdfasdf',
-    password_confirmation: 'b',
+    password_confirmation: 'asdfasdf',
     admin: true
   )
 end
