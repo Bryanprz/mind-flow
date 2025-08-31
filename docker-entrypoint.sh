@@ -1,32 +1,20 @@
 #!/bin/bash
 set -e
 
-# Set up the database if it doesn't already exist
-if [ ! -f /app/db/production.sqlite3 ]; then
-  echo "Setting up database..."
-  RAILS_ENV=production bundle exec rails db:create db:migrate
+# This script runs on every container start.
+# We check for the existence of the database files in the persistent volume.
+# If it doesn't exist, it's the first time the app is starting, so we prepare the databases.
+
+if [ ! -f /rails/storage/production.sqlite3 ] && \
+   [ ! -f /rails/storage/production_cache.sqlite3 ] && \
+   [ ! -f /rails/storage/production_queue.sqlite3 ] && \
+   [ ! -f /rails/storage/production_cable.sqlite3 ]; then
+  echo "Database not found. Preparing databases for the first time..."
+  # db:prepare creates the database, loads the schema, and runs pending migrations.
+  # It should handle all databases configured in database.yml.
+  RAILS_ENV=production bundle exec rails db:prepare
+else
+  echo "Database found. Skipping setup."
 fi
 
-# Set up the Solid Cable database
-if [ ! -f /app/db/production_cable.sqlite3 ]; then
-  echo "Setting up Solid Cable database..."
-  RAILS_ENV=production bundle exec rails solid_cable:setup
-fi
-
-# Set up the Solid Cache database
-if [ ! -f /app/db/production_cache.sqlite3 ]; then
-  echo "Setting up Solid Cache database..."
-  RAILS_ENV=production bundle exec rails solid_cache:setup
-fi
-
-# Set up the Solid Queue database
-if [ ! -f /app/db/production_queue.sqlite3 ]; then
-  echo "Setting up Solid Queue database..."
-  RAILS_ENV=production bundle exec rails solid_queue:setup
-fi
-
-# Run migrations for all databases
-RAILS_ENV=production bundle exec rails migrate_all
-
-# Execute the CMD from the Dockerfile
 exec "$@"
