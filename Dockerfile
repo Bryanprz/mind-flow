@@ -31,6 +31,9 @@ RUN npm install
 # Copy application code
 COPY . .
 
+echo "Running database preparation..."
+RUN RAILS_ENV=production bin/rails db:prepare
+
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
