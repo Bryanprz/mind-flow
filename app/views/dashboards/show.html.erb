@@ -13,96 +13,99 @@ add instance vars
 <% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
 
 <div class="w-full mx-auto space-y-6 flex flex-col" data-controller="modal">
-  <!-- First Row - 3 equal columns -->
-  <div class="grid grid-cols-3 md:grid-cols-3 gap-6 h-full">
+  <% if Current.user.prakruti %>
+    <!-- First Row - 3 equal columns -->
+    <div class="grid grid-cols-3 md:grid-cols-3 gap-6 h-full">
 
-    <!-- Card 1: User Profile -->
-    <div class="card bg-base-100 border border-gray-300">
-      <div class="card-body">
-        <h2 class="card-title text-lg">"Original Nature" Blueprint</h2>
-        <% if Current.user.prakruti %>
+      <!-- Card 1: User Profile -->
+      <div class="card bg-base-100 border border-gray-300">
+        <div class="card-body">
+          <h2 class="card-title text-lg">"Original Nature" Blueprint</h2>
           <p class="text-md">
             Your Original Nature is 
             <span class="font-bold <%= dosha_color_class(Current.user.prakruti) %>"><%= Current.user.prakruti.name.titleize %></span>
           </p>
-        <% else %>
-          <p class="text-md">
-            Your Original Nature is the KEY to understanding how to go from a state of chronic illness to a state of constant health. Ayurveda calls your "Original Nature" the energetic blueprint that forms the foundation for your body, mind, and soul.
-          </p>
+        </div>
+      </div>
 
-          <span class="font-bold tex-accent">Start your Original Nature Assessment</span>
+      <!-- Card 2: About Prakruti Dosha -->
+      <div class="card bg-base-100 border border-gray-300">
+        <div class="card-body">
+
+          <h2 class="card-title text-lg ">
+            About 
+            <span class="<%= dosha_color_class(Current.user.prakruti) %>">
+              <%= Current.user.prakruti.name.titleize %>
+            </span>
+          </h2>
+
+          <ul class="list-disc pl-5 space-y-2 text-md">
+            <% t("doshas.#{Current.user.prakruti.name}.bullet_points").each do |dosha_point| %>
+              <li><%= dosha_point %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 3: Quick Actions -->
+      <div class="card bg-base-100 border border-gray-300">
+        <div class="card-body flex flex-col">
+          <h2 class="card-title text-lg">Quick Actions</h2>
+          <p class="flex-grow">Take an assessment or view your history.</p>
           <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
-            <%= button_tag "What is my Original Nature?", class: "btn btn-primary w-full text-white" %>
+            <%= button_tag "Current Imbalance Assessment", class: "btn btn-primary w-full text-white" %>
           <% end %>
-        <% end %>
-
+          <%= link_to "Generate New Healing Plan", new_healing_plan_path, class: "btn btn-secondary w-full text-white mt-2" %>
+        </div>
       </div>
     </div>
 
-    <!-- Card 2: About Prakruti Dosha -->
-    <div class="card bg-base-100 border border-gray-300">
-      <div class="card-body">
-
-        <h2 class="card-title text-lg ">
-          About 
-          <span class="<%= dosha_color_class(Current.user.prakruti) %>">
-            <%= Current.user.prakruti.name.titleize %>
-          </span>
-        </h2>
-
-        <ul class="list-disc pl-5 space-y-2 text-md">
-          <% t("doshas.#{Current.user.prakruti.name}.bullet_points").each do |dosha_point| %>
-            <li><%= dosha_point %></li>
-          <% end %>
-        </ul>
+    <!-- Second Row - 2 equal columns -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+      <!-- Card 4: Key Characteristics -->
+      <div class="card bg-base-100 border border-gray-300">
+        <div class="card-body">
+          <h2 class="card-title text-lg">Key Characteristics</h2>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Light, thin build</li>
+            <li>Energy comes in bursts</li>
+            <li>Lively, creative, and enthusiastic</li>
+            <li>Quick to learn and grasp new knowledge</li>
+            <li>Responds to stress with fear, worry, and anxiety</li>
+          </ul>
+        </div>
       </div>
-    </div>
 
-    <!-- Card 3: Quick Actions -->
-    <div class="card bg-base-100 border border-gray-300">
-      <div class="card-body flex flex-col">
-        <h2 class="card-title text-lg">Quick Actions</h2>
-        <p class="flex-grow">Take an assessment or view your history.</p>
-        <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
-          <%= button_tag "Current Imbalance Assessment", class: "btn btn-primary w-full text-white" %>
-        <% end %>
-        <%= link_to "Generate New Healing Plan", new_healing_plan_path, class: "btn btn-secondary w-full text-white mt-2" %>
-      </div>
-    </div>
-  </div>
-
-  <!-- Second Row - 2 equal columns -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
-    <!-- Card 4: Key Characteristics -->
-    <div class="card bg-base-100 border border-gray-300">
-      <div class="card-body">
-        <h2 class="card-title text-lg">Key Characteristics</h2>
-        <ul class="list-disc pl-5 space-y-2">
-          <li>Light, thin build</li>
-          <li>Energy comes in bursts</li>
-          <li>Lively, creative, and enthusiastic</li>
-          <li>Quick to learn and grasp new knowledge</li>
-          <li>Responds to stress with fear, worry, and anxiety</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Card 5: Balanced State -->
-    <div class="card bg-base-100 border border-gray-300">
-      <div class="card-body">
-        <h2 class="card-title text-lg">Balanced State</h2>
-        <div class="grid grid-cols-1 gap-4">
-          <div>
-            <h3 class="font-semibold text-md">When in Balance</h3>
-            <p><%= t("doshas.#{Current.user.prakruti.name}.balanced") %></p>
-          </div>
-          <div>
-            <h3 class="font-semibold text-md">When Unbalanced</h3>
-            <p>When Vata is out of balance, you may experience anxiety, insomnia, dry skin, constipation, and difficulty focusing.</p>
+      <!-- Card 5: Balanced State -->
+      <div class="card bg-base-100 border border-gray-300">
+        <div class="card-body">
+          <h2 class="card-title text-lg">Balanced State</h2>
+          <div class="grid grid-cols-1 gap-4">
+            <div>
+              <h3 class="font-semibold text-md">When in Balance</h3>
+              <p><%= t("doshas.#{Current.user.prakruti.name}.balanced") %></p>
+            </div>
+            <div>
+              <h3 class="font-semibold text-md">When Unbalanced</h3>
+              <p>When Vata is out of balance, you may experience anxiety, insomnia, dry skin, constipation, and difficulty focusing.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  <% else %>
+    <div class="card w-full max-w-lg mx-auto bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <h2 class="card-title text-lg">"Original Nature" Blueprint</h2>
+        <p class="text-md">
+          Your Original Nature is the KEY to understanding how to go from a state of chronic illness to a state of constant health. Ayurveda calls your "Original Nature" the energetic blueprint that forms the foundation for your body, mind, and soul.
+        </p>
 
+        <span class="font-bold tex-accent">Start your Original Nature Assessment</span>
+        <%= form_with url: start_prakruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
+          <%= button_tag "What is my Original Nature?", class: "btn btn-primary w-full text-white" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
