@@ -34,4 +34,3 @@ class BooksImporter
     puts "Please check the CSV file format or the import logic."
   end
 end
-

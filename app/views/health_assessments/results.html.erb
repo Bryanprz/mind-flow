@@ -44,6 +44,11 @@ forced to the full height of the padded area.
         <strong>Unbalanced:</strong> <%= t("doshas.#{primary_dosha.name.downcase}.out_of_balance") %>
       </div>
 
+      <div class="text-lg">
+        <strong>View Your Personalized Healing Plan</strong>
+      </div>
+        <%= link_to "Healing Plan", dashboard_path, class: "btn btn-accent font-semibold text-black text-lg w-1/2" %>
+
       <% if authenticated? %>
         <%= link_to "Dashboard", dashboard_path, class: "btn btn-primary font-semibold text-white text-lg w-1/2", data: { turbo: false } %>
     <% else %>
