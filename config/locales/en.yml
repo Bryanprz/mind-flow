@@ -15,6 +15,7 @@ en:
         - "Responds to stress with fear, worry, and anxiety"
       in_balance: 'When Vata is in balance, you feel creative, energetic, and enthusiastic. Your mind is clear, and you are adaptable and inspired.'
       out_of_balance: 'When Vata is out of balance, you may experience anxiety, fear, and restlessness. You might have dry skin, constipation, and difficulty sleeping.'
+      healing_plan_description: 'To balance Vata, focus on establishing a consistent daily routine with regular meals and sleep times. Favor warm, nourishing, and slightly oily foods while incorporating calming activities like meditation and gentle yoga to ground your energy.'
     pitta:
       description: "Pitta is the energy of transformation, like fire, driving digestion, metabolism, and sharp thinking."
       bullet_points:
@@ -29,6 +30,7 @@ en:
         - "Responds to stress with anger, irritability, and impatience"
       in_balance: 'When Pitta is in balance, you are intelligent, focused, and a strong leader. You have a sharp wit, and a good appetite.'
       out_of_balance: 'When Pitta is out of balance, you can become irritable, angry, and critical. You may suffer from indigestion, inflammation, and skin rashes.'
+      healing_plan_description: 'For Pitta, emphasize cooling and moderation in all aspects of life. Consume fresh, cooling foods while avoiding spicy, fried, and sour items, and practice calming, non-competitive activities like swimming or walking in nature.'
     kapha:
       description: "Kapha is the energy of stability, like earth and water, providing strength, immunity, and calmness."
       bullet_points:
@@ -43,3 +45,4 @@ en:
         - "Responds to stress with withdrawal, lethargy, and possessiveness"
       in_balance: 'When Kapha is in balance, you are calm, loving, and compassionate. You feel strong, stable, and have a robust immune system.'
       out_of_balance: 'When Kapha is out of balance, you may feel lethargic, possessive, and resistant to change. You might experience congestion, weight gain, and excessive sleep.'
+      healing_plan_description: 'A Kapha-balancing plan prioritizes stimulation and regular movement to counteract sluggishness. Eat light, warm, and spicy foods, engage in vigorous daily exercise, and actively seek out new and exciting experiences.'

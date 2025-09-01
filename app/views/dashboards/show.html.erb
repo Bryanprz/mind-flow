@@ -23,16 +23,27 @@ add instance vars
           <h2 class="card-title text-lg">"Original Nature" Blueprint</h2>
           <p class="text-md">
             Your Original Nature is 
-            <span class="font-bold <%= dosha_color_class(Current.user.prakruti) %>"><%= Current.user.prakruti.name.titleize %></span>
+            <span class="font-bold <%= dosha_color_class(Current.user.prakruti) %>"><%= Current.user.prakruti.name.titleize %>.</span>
           </p>
-
-          <p class="text-md">
+          <p>
             <%= t("doshas.#{Current.user.prakruti.name}.description") %>
           </p>
         </div>
       </div>
 
-      <!-- Card 2: About Prakruti Dosha -->
+      <!-- Card 2: Quick Actions -->
+      <div class="card bg-base-100 border border-gray-300">
+        <div class="card-body flex flex-col">
+          <h2 class="card-title text-lg">Healing Plan</h2>
+          <p class="flex-grow mb-4 mt-4"><%= t("doshas.#{Current.user.prakruti.name}.healing_plan_description") %></p>
+          <%= link_to "Healing Plan", new_healing_plan_path, class: "btn btn-secondary w-full text-black mt-2 font-semibold" %>
+          <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
+            <%= button_tag "Current Imbalance Assessment", class: "btn btn-primary w-full text-white" %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Card 3: About Prakruti Dosha -->
       <div class="card bg-base-100 border border-gray-300">
         <div class="card-body">
 
@@ -50,19 +61,9 @@ add instance vars
           </ul>
         </div>
       </div>
-
-      <!-- Card 3: Quick Actions -->
-      <div class="card bg-base-100 border border-gray-300">
-        <div class="card-body flex flex-col">
-          <h2 class="card-title text-lg">Quick Actions</h2>
-          <p class="flex-grow">Take an assessment or view your history.</p>
-          <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
-            <%= button_tag "Current Imbalance Assessment", class: "btn btn-primary w-full text-white" %>
-          <% end %>
-          <%= link_to "Generate New Healing Plan", new_healing_plan_path, class: "btn btn-secondary w-full text-white mt-2" %>
-        </div>
-      </div>
     </div>
+
+
 
     <!-- Second Row - 2 equal columns -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
