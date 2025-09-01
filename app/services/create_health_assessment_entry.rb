@@ -22,8 +22,8 @@ class CreateHealthAssessmentEntry
 
   # main logic goes here
   def call
-    # If updating an existing entry, destroy the old answers before creating new ones.
-    assessment_entry.answers.destroy_all if assessment_entry.persisted?
+    # If updating an existing entry, delete the old answers before creating new ones.
+    assessment_entry.answers.delete_all if assessment_entry.persisted?
 
     # Save the entry to ensure it has an ID before we add answers.
     assessment_entry.save!

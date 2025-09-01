@@ -1,35 +1,37 @@
 class HealingProtocolManager
-  def initialize(user, assessment_type = nil)
+  def initialize(user, health_assessment)
     @user = user
-    @assessment_type = assessment_type # Optional: if manager needs to know what triggered it
+    @health_assessment = health_assessment
   end
 
   def determine_and_apply_protocol
-    # 1. Determine the appropriate template based on user's state
     template = determine_template_for_user
 
-    # 2. Apply the protocol using the service
-    if template
-      CreateHealingPlanService.new(@user, template).call
-    else
-      # Handle case where no template can be determined (e.g., log, alert)
-      Rails.logger.warn "Could not determine healing plan template for user #{@user.id}"
+    unless template
+      Rails.logger.warn "Could not determine healing plan template for user #{user.id}"
+      return
+    end
+
+    case health_assessment.assessment_type.to_sym
+    when :prakruti
+      PrakrutiPlan.create(user: user, healing_plan_template: template)
+    when :vikruti
+      VikrutiPlan.create(user: user, healing_plan_template: template)
     end
   end
 
   private
 
   def determine_template_for_user
-    # This is where the "order and intensity" logic lives
-    # Initial simple logic: Vikruti takes precedence if present, otherwise Prakruti
-    if @user.vikruti.present?
-      # For now, assume Vikruti-based templates are named "Dosha Balancing Plan"
-      # We might need more specific Vikruti templates later (e.g., "Vata Vikruti Balancing Plan")
-      HealingPlanTemplate.find_by(dosha: @user.vikruti)
-    elsif @user.prakruti.present?
+    case health_assessment.assessment_type.to_sym
+    when :prakruti
       HealingPlanTemplate.find_by(dosha: @user.prakruti)
+    when :vikruti
+      HealingPlanTemplate.find_by(dosha: @user.vikruti)
     else
-      nil # No Dosha information to determine a plan
+      nil # Or you could raise an error for an unknown assessment type
     end
   end
+
+  attr_reader :user, :health_assessment
 end

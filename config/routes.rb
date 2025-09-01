@@ -18,7 +18,8 @@ Rails.application.routes.draw do
   resources :herbs
   resources :foods
   resources :users
-  resources :healing_plans, except: [:new]
+  resources :healing_plans, except: [:new, :show]
+  resource :healing_plan, only: [:show], as: :my_healing_plan
 
   # Assessment routes
   post 'original_nature_assessment', to: 'health_assessments#start_prakruti_assessment', as: :start_prakruti_assessment

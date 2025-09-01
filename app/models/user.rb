@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :healing_plans, dependent: :destroy # Ayurvedic protocol
+  has_one :prakruti_plan, class_name: 'PrakrutiPlan'
+  has_many :vikruti_plans, class_name: 'VikrutiPlan'
 
   has_many :sessions, dependent: :destroy
   has_many :assessment_entries, dependent: :destroy
@@ -17,5 +19,9 @@ class User < ApplicationRecord
 
   def first_name
     name.to_s.split(' ').first
+  end
+
+  def active_healing_plan
+    healing_plans.find_by(is_active: true)
   end
 end

@@ -1,5 +1,5 @@
 class HealingPlansController < ApplicationController
-  before_action :set_healing_plan, only: %i[ show edit update destroy ]
+  before_action :set_healing_plan, only: %i[ edit update destroy ]
   before_action :require_admin, only: [:index, :new]
   # TODO: Add a before_action to ensure a user is logged in, e.g.:
   # before_action :authenticate_user!
@@ -10,10 +10,10 @@ class HealingPlansController < ApplicationController
     @healing_plans = Current.user.healing_plans.order(version: :desc)
   end
 
-  # GET /healing_plans/1
+  # GET /healing_plan
   def show
-    # Eager load sections and items to prevent N+1 queries
-    @plan_sections = @healing_plan.plan_sections.includes(:plan_items).order(:ordering)
+    @healing_plans = Current.user.healing_plans.order(version: :desc)
+    @plan_sections = Current.user.prakruti_plan.plan_sections
   end
 
   # GET /healing_plans/new
@@ -39,7 +39,7 @@ class HealingPlansController < ApplicationController
     end
 
     # Use the service to generate the new plan.
-    @healing_plan = CreateHealingPlanService.new(Current.user, healing_plan_template).call
+    @healing_plan = CreateHealingPlan.new(Current.user, healing_plan_template).call
 
     if @healing_plan.persisted?
       redirect_to @healing_plan, notice: "Your new Healing Plan has been generated."

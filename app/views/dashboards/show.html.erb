@@ -37,7 +37,7 @@ add instance vars
           <h2 class="card-title text-lg">Healing Plan</h2>
           <p class="flex-grow mb-4 mt-4"><%= t("doshas.#{Current.user.prakruti.name.downcase}.healing_plan_description") %></p>
           <% if Current.user.healing_plans.any? %>
-            <%= link_to "View Healing Plan", healing_plan_path(Current.user.healing_plans.first), class: "btn btn-secondary w-full text-black mt-2 font-semibold" %>
+            <%= link_to "View Healing Plan", my_healing_plan_path, class: "btn btn-secondary w-full text-black mt-2 font-semibold" %>
           <% end %>
           <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
             <%= button_tag "Start Imbalance Assessment", class: "btn btn-primary w-full text-white mt-2 font-semibold" %>
