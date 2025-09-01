@@ -1,5 +1,6 @@
 class HealingPlansController < ApplicationController
   before_action :set_healing_plan, only: %i[ show edit update destroy ]
+  before_action :require_admin, only: [:index, :new]
   # TODO: Add a before_action to ensure a user is logged in, e.g.:
   # before_action :authenticate_user!
 
@@ -57,6 +58,12 @@ class HealingPlansController < ApplicationController
   end
 
   private
+
+  def require_admin
+    unless Current.user&.admin?
+      redirect_to root_path, alert: "You are not authorized to access this page."
+    end
+  end
 
   def set_healing_plan
     # Scope the find to the current user's plans for security.

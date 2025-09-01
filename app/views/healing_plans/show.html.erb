@@ -29,7 +29,9 @@
     </div>
   <% end %>
 
-  <div class="text-center mt-8">
-    <%= link_to "Back to All Plans", healing_plans_path, class: "btn btn-ghost" %>
-  </div>
+  <% if Current.user.admin? %>
+    <div class="text-center mt-8">
+      <%= link_to "Back to All Plans", healing_plans_path, class: "btn btn-ghost" %>
+    </div>
+  <% end %>
 </div>

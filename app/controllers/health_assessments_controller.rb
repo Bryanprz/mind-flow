@@ -1,7 +1,7 @@
 class HealthAssessmentsController < ApplicationController
   allow_unauthenticated_access only: [:start_prakruti_assessment, :submit_answers, :show_results]
   before_action :set_health_assessment, only: [:submit_answers]
-  before_action :set_assessment_entry, only: [:show_results]
+  before_action :set_assessment_entry, only: [:show_results, :current_imbalance_results]
 
   def ensure_current_session_is_resumed
     resume_session
@@ -86,22 +86,59 @@ class HealthAssessmentsController < ApplicationController
     @assessment_entry.update!(completed_at: Time.current)
     @assessment_entry.reload
 
+    # If it's a Vikruti assessment, create/update the healing plan
+    if session[:assessment_type].to_sym == :vikruti
+      HealingPlanCreatorService.call(Current.user)
+    end
+
     # Store the entry ID in the session for the results page to find.
     session[:assessment_entry_id] = @assessment_entry.id
 
     respond_to do |format|
       format.turbo_stream do
+        redirect_path = if @assessment_entry.is_a?(VikrutiEntry)
+                          current_imbalance_results_path
+                        else
+                          assessment_results_path
+                        end
         render turbo_stream: turbo_stream.replace('main_content_area',
-          partial: 'health_assessments/analyzing'
+          partial: 'health_assessments/analyzing',
+          locals: { redirect_path: redirect_path }
         )
       end
-      format.html { redirect_to assessment_results_path }
+      format.html do
+        if @assessment_entry.is_a?(VikrutiEntry)
+          redirect_to current_imbalance_results_path
+        else
+          redirect_to assessment_results_path
+        end
+      end
     end
   end
 
   def show_results
     # @assessment_entry is loaded by the set_assessment_entry before_action
     render "health_assessments/results", locals: {
+      assessment_entry: @assessment_entry,
+      primary_dosha: @assessment_entry.primary_dosha, 
+      secondary_dosha: @assessment_entry.secondary_dosha,
+      current_user: current_user
+    }
+
+    # Clean up session data after results have been shown
+    session.delete(:assessment_type)
+    session.delete(:assessment_entry_id)
+  end
+
+  def current_imbalance_results
+    # @assessment_entry is loaded by the set_assessment_entry before_action
+    # Ensure it's a VikrutiEntry
+    unless @assessment_entry.is_a?(VikrutiEntry)
+      redirect_to root_path, alert: "Invalid assessment type for this page."
+      return
+    end
+
+    render "health_assessments/current_imbalance_results", locals: {
       assessment_entry: @assessment_entry,
       primary_dosha: @assessment_entry.primary_dosha, 
       secondary_dosha: @assessment_entry.secondary_dosha,

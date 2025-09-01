@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   post 'assessment/back', to: 'health_assessments#go_back_question', as: :go_back_assessment_question
   post 'assessment/submit', to: 'health_assessments#submit_answers', as: :submit_assessment_answers
   get 'assessment/results', to: 'health_assessments#show_results', as: 'assessment_results'
+  get 'assessment/current_imbalance_results', to: 'health_assessments#current_imbalance_results', as: 'current_imbalance_results'
 
   get 'profile', to: 'users#show', as: :profile
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
