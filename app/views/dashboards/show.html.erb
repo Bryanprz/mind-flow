@@ -19,11 +19,23 @@ add instance vars
     <!-- Card 1: User Profile -->
     <div class="card bg-base-100 border border-gray-300">
       <div class="card-body">
-        <h2 class="card-title text-lg">Your Ayurvedic Blueprint</h2>
-        <p class="text-md">
-          Your original nature is 
-          <span class="font-bold <%= dosha_color_class(Current.user.prakruti) %>"><%= Current.user.prakruti.name.titleize %></span>
-        </p>
+        <h2 class="card-title text-lg">"Original Nature" Blueprint</h2>
+        <% if Current.user.prakruti %>
+          <p class="text-md">
+            Your Original Nature is 
+            <span class="font-bold <%= dosha_color_class(Current.user.prakruti) %>"><%= Current.user.prakruti.name.titleize %></span>
+          </p>
+        <% else %>
+          <p class="text-md">
+            Your Original Nature is the KEY to understanding how to go from a state of chronic illness to a state of constant health. Ayurveda calls your "Original Nature" the energetic blueprint that forms the foundation for your body, mind, and soul.
+          </p>
+
+          <span class="font-bold tex-accent">Start your Original Nature Assessment</span>
+          <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
+            <%= button_tag "What is my Original Nature?", class: "btn btn-primary w-full text-white" %>
+          <% end %>
+        <% end %>
+
       </div>
     </div>
 
