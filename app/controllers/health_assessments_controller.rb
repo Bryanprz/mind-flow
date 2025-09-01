@@ -59,11 +59,11 @@ class HealthAssessmentsController < ApplicationController
     )
     # Determine and apply the appropriate healing protocol based on the assessment type
     if Current.user
-      CreateHealingPlan.new(Current.user, @health_assessment).determine_and_apply_protocol
+      CreateHealingPlan.new(Current.user, @health_assessment).call
+    else
+      # Store the entry ID in the session for the results page to find.
+      session[:assessment_entry_id] = @assessment_entry.id
     end
-
-    # Store the entry ID in the session for the results page to find.
-    session[:assessment_entry_id] = @assessment_entry.id
 
     respond_to do |format|
       format.turbo_stream do
@@ -94,9 +94,6 @@ class HealthAssessmentsController < ApplicationController
       primary_dosha: @assessment_entry.primary_dosha, 
       current_user: current_user
     }
-
-    # Clean up session data after results have been shown
-    session.delete(:assessment_entry_id)
   end
 
   def current_imbalance_results
@@ -112,9 +109,6 @@ class HealthAssessmentsController < ApplicationController
       primary_dosha: @assessment_entry.primary_dosha, 
       current_user: current_user
     }
-
-    # Clean up session data after results have been shown
-    session.delete(:assessment_entry_id)
   end
 
   private
@@ -124,7 +118,13 @@ class HealthAssessmentsController < ApplicationController
   end
 
   def set_assessment_entry
-    @assessment_entry = AssessmentEntry.find_by(id: session[:assessment_entry_id])
+    if Current.user
+      # For authenticated users, find the most recent assessment entry
+      @assessment_entry = Current.user.assessment_entries.order(created_at: :desc).first
+    elsif session[:assessment_entry_id].present?
+      # For unauthenticated users, load from session
+      @assessment_entry = AssessmentEntry.find_by(id: session[:assessment_entry_id])
+    end
 
     unless @assessment_entry
       redirect_to root_path,
