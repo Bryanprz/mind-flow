@@ -1,5 +1,5 @@
 # Populate Dosha details from Chapter 4 of the PDF
-vata_dosha = Dosha.find_or_initialize_by(name: 'vata')
+vata_dosha = Dosha.find_or_initialize_by(name: Dosha::VATA)
 vata_dosha.color = "blue"
 vata_dosha.archetype_info = {
   archetype: "Mystic / Visionary",
@@ -14,7 +14,7 @@ vata_dosha.people_manifestation = {
 }
 vata_dosha.save!
 
-pitta_dosha = Dosha.find_or_initialize_by(name: 'pitta')
+pitta_dosha = Dosha.find_or_initialize_by(name: Dosha::PITTA)
 pitta_dosha.color = "red"
 pitta_dosha.archetype_info = {
   archetype: "Warrior / Reformer",
@@ -29,7 +29,7 @@ pitta_dosha.people_manifestation = {
 }
 pitta_dosha.save!
 
-kapha_dosha = Dosha.find_or_initialize_by(name: 'kapha')
+kapha_dosha = Dosha.find_or_initialize_by(name: Dosha::KAPHA)
 kapha_dosha.color = "green"
 kapha_dosha.archetype_info = {
   archetype: "Nurturer / Preserver",

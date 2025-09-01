@@ -1,4 +1,5 @@
-<div class="mx-auto md:w-2/3 w-full">
+<% content_for :main_container_class, "bg-base-200" %>
+<div class="mx-auto mt-7 w-1/2 card bg-base-100 p-6 border border-gray-300">
   <% if alert = flash[:alert] %>
     <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
   <% end %>
@@ -7,24 +8,30 @@
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
 
-  <h1 class="font-bold text-4xl">Sign in</h1>
+  <h1 class="font-bold text-4xl text-center mb-6">Sign in</h1>
 
   <%= form_with url: session_url, class: "contents" do |form| %>
-    <div class="my-5">
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <div class="my-5 form-control">
+      <label class="label">
+        <span class="label-text">Email Address</span>
+      </label>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "input input-bordered w-full" %>
     </div>
 
-    <div class="my-5">
-      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <div class="my-5 form-control">
+      <label class="label">
+        <span class="label-text">Password</span>
+      </label>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input input-bordered w-full" %>
     </div>
 
-    <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
+    <div class="col-span-6 sm:flex sm:items-center sm:gap-4 mt-6">
       <div class="inline">
-        <%= form.submit "Sign in", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+        <%= form.submit "Sign in", class: "btn btn-primary w-full text-white" %>
       </div>
 
-      <div class="mt-4 text-sm text-gray-500 sm:mt-0">
-        <%= link_to "Forgot password?", new_password_path, class: "text-gray-700 underline" %>
+      <div class="mt-4 text-sm text-gray-500 sm:mt-0 text-center w-full">
+        <%= link_to "Forgot password?", new_password_path, class: "link link-hover" %>
       </div>
     </div>
   <% end %>

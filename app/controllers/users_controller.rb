@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     # Set primary and secondary dosha from user's prakruti/vikruti if available
     if @user
       @primary_dosha = @user.prakruti
-      @secondary_dosha = @user.vikruti
+      
     end
 
     # Retrieve assessment entry for detailed results and percentages

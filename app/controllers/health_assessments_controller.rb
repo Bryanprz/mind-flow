@@ -86,10 +86,8 @@ class HealthAssessmentsController < ApplicationController
     @assessment_entry.update!(completed_at: Time.current)
     @assessment_entry.reload
 
-    # If it's a Vikruti assessment, create/update the healing plan
-    if session[:assessment_type].to_sym == :vikruti
-      HealingPlanCreatorService.call(Current.user)
-    end
+    # Determine and apply the appropriate healing protocol based on the assessment type
+    HealingProtocolManager.new(Current.user, session[:assessment_type].to_sym).determine_and_apply_protocol
 
     # Store the entry ID in the session for the results page to find.
     session[:assessment_entry_id] = @assessment_entry.id
@@ -121,7 +119,6 @@ class HealthAssessmentsController < ApplicationController
     render "health_assessments/results", locals: {
       assessment_entry: @assessment_entry,
       primary_dosha: @assessment_entry.primary_dosha, 
-      secondary_dosha: @assessment_entry.secondary_dosha,
       current_user: current_user
     }
 
@@ -141,7 +138,6 @@ class HealthAssessmentsController < ApplicationController
     render "health_assessments/current_imbalance_results", locals: {
       assessment_entry: @assessment_entry,
       primary_dosha: @assessment_entry.primary_dosha, 
-      secondary_dosha: @assessment_entry.secondary_dosha,
       current_user: current_user
     }
 

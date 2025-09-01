@@ -2,7 +2,7 @@
    dosha_scores = @dosha_scores || (@recent_assessment_results && @recent_assessment_results[:dosha_scores])
    dosha_percentages = @dosha_percentages || (@recent_assessment_results && @recent_assessment_results[:dosha_percentages])
    primary_dosha_name = @primary_dosha_name || (@recent_assessment_results && @recent_assessment_results[:primary_dosha])
-   secondary_dosha_name = @secondary_dosha_name || (@recent_assessment_results && @recent_assessment_results[:secondary_dosha])
+   
    completed_at = @recent_assessment_results && @recent_assessment_results[:completed_at]
    
    # If we have scores but no percentages, calculate them
@@ -27,9 +27,7 @@
         <h3 class="text-sm font-medium text-green-800">Your quiz results are ready!</h3>
         <div class="mt-2 text-sm text-green-700">
           <p>Primary Dosha: <span class="font-semibold"><%= primary_dosha_name&.to_s&.titleize || 'Not determined' %></span></p>
-          <% if secondary_dosha_name.present? %>
-            <p>Secondary Dosha: <span class="font-semibold"><%= secondary_dosha_name.to_s.titleize %></span></p>
-          <% end %>
+          
           
           <div class="mt-4">
             <h4 class="font-semibold mb-2">Your Dosha Scores:</h4>

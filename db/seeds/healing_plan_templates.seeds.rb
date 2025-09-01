@@ -332,14 +332,14 @@ dosha_healing_plans_data.each do |dosha_name, data|
     section_template = healing_plan_template.plan_section_templates.find_or_initialize_by(
       name: section_data[:name]
     )
-    section_template.position = section_index + 1
+    section_template.ordering = section_index + 1
     section_template.save!
 
     section_data[:items].each_with_index do |item_content, item_index|
       item_template = section_template.plan_item_templates.find_or_initialize_by(
         content: item_content
       )
-      item_template.position = item_index + 1
+      item_template.ordering = item_index + 1
       item_template.save!
     end
   end

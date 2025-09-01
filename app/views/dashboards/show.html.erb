@@ -26,7 +26,7 @@ add instance vars
             <span class="font-bold <%= dosha_color_class(Current.user.prakruti) %>"><%= Current.user.prakruti.name.titleize %>.</span>
           </p>
           <p>
-            <%= t("doshas.#{Current.user.prakruti.name}.description") %>
+            <%= t("doshas.#{Current.user.prakruti.name.downcase}.description") %>
           </p>
         </div>
       </div>
@@ -35,13 +35,12 @@ add instance vars
       <div class="card bg-base-100 border border-gray-300">
         <div class="card-body flex flex-col">
           <h2 class="card-title text-lg">Healing Plan</h2>
-          <p class="flex-grow mb-4 mt-4"><%= t("doshas.#{Current.user.prakruti.name}.healing_plan_description") %></p>
-          <% if Current.user.vikruti_entry %>
+          <p class="flex-grow mb-4 mt-4"><%= t("doshas.#{Current.user.prakruti.name.downcase}.healing_plan_description") %></p>
+          <% if Current.user.healing_plans.any? %>
             <%= link_to "View Healing Plan", healing_plan_path(Current.user.healing_plans.first), class: "btn btn-secondary w-full text-black mt-2 font-semibold" %>
-          <% else %>
-            <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
-              <%= button_tag "Start Imbalance Assessment", class: "btn btn-primary w-full text-white mt-2 font-semibold" %>
-            <% end %>
+          <% end %>
+          <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
+            <%= button_tag "Start Imbalance Assessment", class: "btn btn-primary w-full text-white mt-2 font-semibold" %>
           <% end %>
         </div>
       </div>
@@ -58,7 +57,7 @@ add instance vars
           </h2>
 
           <ul class="list-disc pl-5 space-y-2 text-md">
-            <% t("doshas.#{Current.user.prakruti.name}.bullet_points").each do |dosha_point| %>
+            <% t("doshas.#{Current.user.prakruti.name.downcase}.bullet_points").each do |dosha_point| %>
               <li><%= dosha_point %></li>
             <% end %>
           </ul>
@@ -75,7 +74,7 @@ add instance vars
         <div class="card-body">
           <h2 class="card-title text-lg">Key Characteristics</h2>
           <ul class="list-disc pl-5 space-y-2">
-            <% t("doshas.#{Current.user.prakruti.name}.key_characteristics").each do |characteristic| %>
+            <% t("doshas.#{Current.user.prakruti.name.downcase}.key_characteristics").each do |characteristic| %>
               <li><%= characteristic %></li>
             <% end %>
           </ul>
@@ -89,11 +88,11 @@ add instance vars
           <div class="grid grid-cols-1 gap-4">
             <div>
               <h3 class="font-semibold text-md">When in Balance</h3>
-              <p><%= t("doshas.#{Current.user.prakruti.name}.in_balance") %></p>
+              <p><%= t("doshas.#{Current.user.prakruti.name.downcase}.in_balance") %></p>
             </div>
             <div>
               <h3 class="font-semibold text-md">When Unbalanced</h3>
-              <p><%= t("doshas.#{Current.user.prakruti.name}.out_of_balance") %></p>
+              <p><%= t("doshas.#{Current.user.prakruti.name.downcase}.out_of_balance") %></p>
             </div>
           </div>
         </div>

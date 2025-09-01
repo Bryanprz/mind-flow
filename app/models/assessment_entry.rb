@@ -24,13 +24,16 @@ class AssessmentEntry < ApplicationRecord
 
   def primary_dosha
     dosha_highest_value = results.max_by { |_, value| value }&.first
-    Dosha.find_by(name: dosha_highest_value)
+    dosha_name_for_lookup = case dosha_highest_value.to_sym
+                            when :vata then Dosha::VATA
+                            when :pitta then Dosha::PITTA
+                            when :kapha then Dosha::KAPHA
+                            else nil
+                            end
+    Dosha.find_by(name: dosha_name_for_lookup)
   end
   
-  def secondary_dosha
-    second_highest_dosha = results.sort_by { |_, value| value }[-2]&.first
-    Dosha.find_by(name: second_highest_dosha)
-  end
+  
 
   def get_elements
     case primary_dosha.name
