@@ -1,37 +1,119 @@
-<% content_for :main_container_class, 'w-full flex-1 bg-base-200 p-8' %>
+<% content_for :main_container_class, 'bg-base-200' %>
 
-<div class="w-1/2 max-w-4xl mx-auto space-y-6">
-  <%# --- Plan Header --- %>
-  <div class="text-center mb-8">
-    <h1 class="text-4xl font-bold"><%= @healing_plan.name %></h1>
-    <p class="text-lg text-gray-500">Version <%= @healing_plan.version %></p>
-    <%# TODO: Add "Create New Version" button here %>
+<div class="max-w-[700px] mx-auto p-6 space-y-6">
+
+  <!-- Hero / Intro -->
+  <div class="card bg-base-100 border border-gray-300">
+    <div class="card-body">
+      <h1 class="card-title text-2xl">
+        <%= Current.user.first_name %>, here is your personalized healing plan 🌿
+      </h1>
+      <p class="text-base">
+        Designed to balance <%= Current.user.prakruti&.name&.titleize || 'your unique constitution' %>, restore digestion, and calm your energy.
+      </p>
+    </div>
   </div>
 
-  <%# --- Iterate through Sections and Items --- %>
-  <% @plan_sections.each do |section| %>
-    <div class="card bg-base-100 border border-gray-300">
-      <div class="card-body">
-        <h2 class="card-title text-2xl mb-4"><%= section.name %></h2>
-        
-        <ul class="space-y-2">
-          <% section.plan_items.order(:ordering).each do |item| %>
-            <li class="flex items-center">
-              <%# TODO: Make this checkbox functional to update the item's 'completed' status %>
-              <input type="checkbox" <%= 'checked' if item.completed? %> class="checkbox checkbox-primary mr-4">
-              <span><%= item.content %></span>
-            </li>
-          <% end %>
-        </ul>
-
-        <%# TODO: Add form/button to add a new item to this section %>
+  <!-- Overview Dashboard -->
+  <div class="card bg-base-100 border border-gray-300">
+    <div class="card-body">
+      <h2 class="card-title text-xl">Overview</h2>
+      <div class="overflow-x-auto">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Focus Area</th>
+              <th>Status</th>
+              <th>Goal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @plan_sections.find { |s| s.name == "Focus Areas" }&.plan_items.each do |item| %>
+              <tr>
+                <td><%= item.content.split(':').first %></td>
+                <td></td> <%# No status icon/status in new data %>
+                <td><%= item.content.split(':').last %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
-  <% end %>
+  </div>
 
-  <% if Current.user.admin? %>
-    <div class="text-center mt-8">
-      <%= link_to "Back to All Plans", healing_plans_path, class: "btn btn-ghost" %>
+  <!-- Daily Routine -->
+  <div class="space-y-3">
+    <% @healing_plan.daily_routines.each do |routine| %>
+      <div class="collapse collapse-arrow bg-base-100 border border-gray-300">
+        <input type="checkbox" />
+        <div class="collapse-title text-lg font-medium">
+          <%= routine[:icon] %> <%= routine[:title] %>
+        </div>
+        <div class="collapse-content">
+          <ul class="list-disc list-inside">
+            <% routine[:steps].each do |step| %>
+              <li><%= step %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Diet & Herbs -->
+  <div class="card bg-base-100 border border-gray-300">
+    <div class="card-body">
+      <h2 class="card-title text-xl">Diet & Herbs</h2>
+      <p><strong>Favor:</strong> <%= @healing_plan.diet[:favor].join(", ") %></p>
+      <p><strong>Avoid:</strong> <%= @healing_plan.diet[:avoid].join(", ") %></p>
+      <div class="mt-3">
+        <h3 class="font-semibold">Herbs:</h3>
+        <ul class="list-disc list-inside">
+          <% @healing_plan.herbs.each do |herb| %>
+            <li><strong><%= herb[:name] %></strong> – <%= herb[:benefit] %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
-  <% end %>
+  </div>
+
+  <!-- Lifestyle & Mind-Body -->
+  <div class="card bg-base-100 border border-gray-300">
+    <div class="card-body">
+      <h2 class="card-title text-xl">Lifestyle & Mind-Body Practices</h2>
+      <ul class="list-disc list-inside">
+        <% @healing_plan.lifestyle.each do |practice| %>
+          <li><%= practice %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Progress & Reflection -->
+  <div class="card bg-base-100 border border-gray-300">
+    <div class="card-body">
+      <h2 class="card-title text-xl">Progress & Reflection</h2>
+      <div class="form-control">
+        <% @healing_plan.daily_routines.each do |routine| %>
+          <label class="label cursor-pointer">
+            <span class="label-text"><%= routine[:icon] %> <%= routine[:title] %> completed</span> 
+            <input type="checkbox" class="checkbox checkbox-success" />
+          </label>
+        <% end %>
+      </div>
+      <textarea class="textarea textarea-bordered w-full mt-3" placeholder="Journal: How did you feel today?"></textarea>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="card bg-base-100 border border-gray-300">
+    <div class="card-body text-center">
+      <p class="mb-3">Follow this plan for 7 days, then reflect on your progress 🌱</p>
+      <div class="flex justify-center gap-4">
+        <%= button_to "Export as PDF", "#", method: :get, class: "btn btn-outline" %>
+        <%= link_to "Continue My Journey", "#", class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+
 </div>

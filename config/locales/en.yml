@@ -16,6 +16,32 @@ en:
       in_balance: 'When Vata is in balance, you feel creative, energetic, and enthusiastic. Your mind is clear, and you are adaptable and inspired.'
       out_of_balance: 'When Vata is out of balance, you may experience anxiety, fear, and restlessness. You might have dry skin, constipation, and difficulty sleeping.'
       healing_plan_description: 'To balance Vata, focus on establishing a consistent daily routine with regular meals and sleep times. Favor warm, nourishing, and slightly oily foods while incorporating calming activities like meditation and gentle yoga to ground your energy.'
+      healing_plan:
+        sections:
+          - name: "Morning Routine"
+            items:
+              - "Wake up before 6 AM."
+              - "Drink warm water with lemon."
+              - "Perform oil pulling for 5-10 minutes."
+              - "Gentle stretching or yoga for 15-20 minutes."
+          - name: "Dietary Guidelines"
+            items:
+              - "Favor warm, cooked, moist, and grounding foods."
+              - "Avoid cold, dry, raw, and light foods."
+              - "Eat regular meals at consistent times."
+              - "Include healthy fats like ghee and olive oil."
+              - "Spices: ginger, cumin, coriander, fennel."
+          - name: "Lifestyle Practices"
+            items:
+              - "Maintain a consistent daily routine (dinacharya)."
+              - "Get adequate rest (7-8 hours of sleep)."
+              - "Practice self-oil massage (abhyanga) daily."
+              - "Spend time in nature, especially in calming environments."
+          - name: "Mind-Body Connection"
+            items:
+              - "Practice meditation or mindfulness for 10-15 minutes daily."
+              - "Engage in calming activities like reading or gentle music."
+              - "Avoid overstimulation and excessive travel."
     pitta:
       description: "Pitta is the energy of transformation, like fire, driving digestion, metabolism, and sharp thinking."
       bullet_points:
@@ -31,6 +57,33 @@ en:
       in_balance: 'When Pitta is in balance, you are intelligent, focused, and a strong leader. You have a sharp wit, and a good appetite.'
       out_of_balance: 'When Pitta is out of balance, you can become irritable, angry, and critical. You may suffer from indigestion, inflammation, and skin rashes.'
       healing_plan_description: 'For Pitta, emphasize cooling and moderation in all aspects of life. Consume fresh, cooling foods while avoiding spicy, fried, and sour items, and practice calming, non-competitive activities like swimming or walking in nature.'
+      healing_plan:
+        sections:
+          - name: "Morning Routine"
+            items:
+              - "Wake up before 6 AM."
+              - "Drink cool water."
+              - "Perform gentle cleansing practices."
+              - "Practice cooling pranayama (breathing exercises)."
+          - name: "Dietary Guidelines"
+            items:
+              - "Favor cool, sweet, bitter, and astringent foods."
+              - "Avoid hot, spicy, sour, and salty foods."
+              - "Eat at regular times and avoid skipping meals."
+              - "Include plenty of fresh fruits and vegetables."
+              - "Spices: coriander, fennel, cardamom, saffron."
+          - name: "Lifestyle Practices"
+            items:
+              - "Avoid excessive heat and sun exposure."
+              - "Engage in moderate, non-competitive exercise."
+              - "Prioritize relaxation and leisure activities."
+              - "Spend time near water or in cool environments."
+          - name: "Mind-Body Connection"
+            items:
+              - "Practice meditation or mindfulness to calm the mind."
+              - "Cultivate patience and forgiveness."
+              - "Avoid arguments and intense debates."
+              - "Engage in creative outlets that are not overly stimulating."
     kapha:
       description: "Kapha is the energy of stability, like earth and water, providing strength, immunity, and calmness."
       bullet_points:
@@ -46,3 +99,30 @@ en:
       in_balance: 'When Kapha is in balance, you are calm, loving, and compassionate. You feel strong, stable, and have a robust immune system.'
       out_of_balance: 'When Kapha is out of balance, you may feel lethargic, possessive, and resistant to change. You might experience congestion, weight gain, and excessive sleep.'
       healing_plan_description: 'A Kapha-balancing plan prioritizes stimulation and regular movement to counteract sluggishness. Eat light, warm, and spicy foods, engage in vigorous daily exercise, and actively seek out new and exciting experiences.'
+      healing_plan:
+        sections:
+          - name: "Morning Routine"
+            items:
+              - "Wake up early (before 6 AM)."
+              - "Drink warm water with honey and ginger."
+              - "Perform dry brushing (garshana)."
+              - "Vigorous exercise for 30-45 minutes."
+          - name: "Dietary Guidelines"
+            items:
+              - "Favor warm, light, dry, and pungent foods."
+              - "Avoid cold, heavy, oily, and sweet foods."
+              - "Eat smaller meals and avoid snacking."
+              - "Include plenty of fresh vegetables and legumes."
+              - "Spices: ginger, black pepper, cayenne, turmeric."
+          - name: "Lifestyle Practices"
+            items:
+              - "Stay active and avoid prolonged sitting."
+              - "Seek out new experiences and challenges."
+              - "Avoid excessive napping during the day."
+              - "Engage in stimulating activities and social interaction."
+          - name: "Mind-Body Connection"
+            items:
+              - "Practice invigorating yoga or exercise."
+              - "Engage in stimulating intellectual activities."
+              - "Avoid emotional eating and attachment."
+              - "Cultivate enthusiasm and motivation."

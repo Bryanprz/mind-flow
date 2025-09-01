@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_30_035131) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_01_053033) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -175,6 +175,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_30_035131) do
     t.index ["healing_plan_id"], name: "index_healing_plan_foods_on_healing_plan_id"
   end
 
+  create_table "healing_plan_templates", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "dosha_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dosha_id"], name: "index_healing_plan_templates_on_dosha_id"
+  end
+
   create_table "healing_plans", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name"
@@ -184,6 +193,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_30_035131) do
     t.integer "version"
     t.string "lineage_id"
     t.boolean "is_active"
+    t.integer "healing_plan_template_id"
+    t.index ["healing_plan_template_id"], name: "index_healing_plans_on_healing_plan_template_id"
     t.index ["user_id"], name: "index_healing_plans_on_user_id"
   end
 
@@ -210,6 +221,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_30_035131) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "plan_item_templates", force: :cascade do |t|
+    t.integer "plan_section_template_id", null: false
+    t.text "content"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["plan_section_template_id"], name: "index_plan_item_templates_on_plan_section_template_id"
+  end
+
   create_table "plan_items", force: :cascade do |t|
     t.text "content"
     t.boolean "completed", default: false
@@ -218,6 +238,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_30_035131) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["plan_section_id"], name: "index_plan_items_on_plan_section_id"
+  end
+
+  create_table "plan_section_templates", force: :cascade do |t|
+    t.integer "healing_plan_template_id", null: false
+    t.string "name"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["healing_plan_template_id"], name: "index_plan_section_templates_on_healing_plan_template_id"
   end
 
   create_table "plan_sections", force: :cascade do |t|
@@ -278,8 +307,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_30_035131) do
   add_foreign_key "assessment_questions", "health_assessments"
   add_foreign_key "healing_plan_foods", "foods"
   add_foreign_key "healing_plan_foods", "healing_plans"
+  add_foreign_key "healing_plan_templates", "doshas"
+  add_foreign_key "healing_plans", "healing_plan_templates"
   add_foreign_key "healing_plans", "users"
+  add_foreign_key "plan_item_templates", "plan_section_templates"
   add_foreign_key "plan_items", "plan_sections"
+  add_foreign_key "plan_section_templates", "healing_plan_templates"
   add_foreign_key "plan_sections", "healing_plans"
   add_foreign_key "sessions", "users"
   add_foreign_key "verses", "books"

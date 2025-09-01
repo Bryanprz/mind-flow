@@ -15,4 +15,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 4 }, on: :create unless Rails.env.development?
   validates :name, presence: true
 
+  def first_name
+    name.to_s.split(' ').first
+  end
 end

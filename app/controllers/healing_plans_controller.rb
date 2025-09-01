@@ -7,7 +7,7 @@ class HealingPlansController < ApplicationController
   # GET /healing_plans
   def index
     # Scope plans to the current user and order by version
-    @healing_plans = current_user.healing_plans.order(version: :desc)
+    @healing_plans = Current.user.healing_plans.order(version: :desc)
   end
 
   # GET /healing_plans/1
@@ -18,17 +18,28 @@ class HealingPlansController < ApplicationController
 
   # GET /healing_plans/new
   def new
-    # This action just renders the form where users select their goals.
   end
 
   # POST /healing_plans
   def create
-    # Get goals from the form, provide a default empty array if none are selected.
-    goals = params.fetch(:goals, [])
+    # Find the user's Prakruti Dosha
+    prakruti_dosha = Current.user.prakruti
+
+    if prakruti_dosha.nil?
+      redirect_to new_healing_plan_path, alert: "Please complete your Prakruti Assessment first to generate a personalized plan."
+      return
+    end
+
+    # Find the HealingPlanTemplate associated with the user's Prakruti Dosha
+    healing_plan_template = HealingPlanTemplate.find_by(dosha: prakruti_dosha)
+
+    if healing_plan_template.nil?
+      redirect_to new_healing_plan_path, alert: "No healing plan template found for your Prakruti Dosha (#{prakruti_dosha.name})."
+      return
+    end
 
     # Use the service to generate the new plan.
-    # This assumes you have a `current_user` method for authentication.
-    @healing_plan = HealingPlanGeneratorService.new(current_user, goals).call
+    @healing_plan = CreateHealingPlanService.new(Current.user, healing_plan_template).call
 
     if @healing_plan.persisted?
       redirect_to @healing_plan, notice: "Your new Healing Plan has been generated."
@@ -67,7 +78,7 @@ class HealingPlansController < ApplicationController
 
   def set_healing_plan
     # Scope the find to the current user's plans for security.
-    @healing_plan = current_user.healing_plans.find(params[:id])
+    @healing_plan = Current.user.healing_plans.find(params[:id])
   end
 
   def healing_plan_params
