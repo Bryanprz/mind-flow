@@ -58,7 +58,9 @@ class HealthAssessmentsController < ApplicationController
       answers: answers
     )
     # Determine and apply the appropriate healing protocol based on the assessment type
-    HealingProtocolManager.new(Current.user , @health_assessment).determine_and_apply_protocol
+    if Current.user
+      CreateHealingPlan.new(Current.user, @health_assessment).determine_and_apply_protocol
+    end
 
     # Store the entry ID in the session for the results page to find.
     session[:assessment_entry_id] = @assessment_entry.id

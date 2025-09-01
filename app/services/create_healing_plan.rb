@@ -1,10 +1,10 @@
-class HealingProtocolManager
+class CreateHealingPlan
   def initialize(user, health_assessment)
     @user = user
     @health_assessment = health_assessment
   end
 
-  def determine_and_apply_protocol
+  def call
     template = determine_template_for_user
 
     unless template
