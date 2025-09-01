@@ -26,23 +26,23 @@ forced to the full height of the padded area.
         </div>
 
         <div class="text-lg">
-          <%= t("doshas.#{@primary_dosha.name}.description") %>
+          <%= t("doshas.#{@primary_dosha.name.downcase}.description") %>
         </div>
 
         <div class="text-lg font-semibold">
           <ul class="list-disc list-inside space-y-1">
-            <% t("doshas.#{@primary_dosha.name}.bullet_points").each do |point| %>
+            <% t("doshas.#{@primary_dosha.name.downcase}.bullet_points").each do |point| %>
               <li><%= point %></li>
             <% end %>
           </ul>
         </div>
 
         <div class="text-lg">
-          <strong>Balanced:</strong> <%= t("doshas.#{@primary_dosha.name}.in_balance") %>
+          <strong>Balanced:</strong> <%= t("doshas.#{@primary_dosha.name.downcase}.in_balance") %>
         </div>
 
         <div class="text-lg">
-          <strong>Unbalanced:</strong> <%= t("doshas.#{@primary_dosha.name}.out_of_balance") %>
+          <strong>Unbalanced:</strong> <%= t("doshas.#{@primary_dosha.name.downcase}.out_of_balance") %>
         </div>
       <% else %>
         <p class="text-lg font-semibold mt-7">No assessment results found for this user.</p>
