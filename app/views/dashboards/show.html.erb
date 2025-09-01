@@ -25,6 +25,10 @@ add instance vars
             Your Original Nature is 
             <span class="font-bold <%= dosha_color_class(Current.user.prakruti) %>"><%= Current.user.prakruti.name.titleize %></span>
           </p>
+
+          <p class="text-md">
+            <%= t("doshas.#{Current.user.prakruti.name}.description") %>
+          </p>
         </div>
       </div>
 
@@ -67,11 +71,9 @@ add instance vars
         <div class="card-body">
           <h2 class="card-title text-lg">Key Characteristics</h2>
           <ul class="list-disc pl-5 space-y-2">
-            <li>Light, thin build</li>
-            <li>Energy comes in bursts</li>
-            <li>Lively, creative, and enthusiastic</li>
-            <li>Quick to learn and grasp new knowledge</li>
-            <li>Responds to stress with fear, worry, and anxiety</li>
+            <% t("doshas.#{Current.user.prakruti.name}.key_characteristics").each do |characteristic| %>
+              <li><%= characteristic %></li>
+            <% end %>
           </ul>
         </div>
       </div>
@@ -83,11 +85,11 @@ add instance vars
           <div class="grid grid-cols-1 gap-4">
             <div>
               <h3 class="font-semibold text-md">When in Balance</h3>
-              <p><%= t("doshas.#{Current.user.prakruti.name}.balanced") %></p>
+              <p><%= t("doshas.#{Current.user.prakruti.name}.in_balance") %></p>
             </div>
             <div>
               <h3 class="font-semibold text-md">When Unbalanced</h3>
-              <p>When Vata is out of balance, you may experience anxiety, insomnia, dry skin, constipation, and difficulty focusing.</p>
+              <p><%= t("doshas.#{Current.user.prakruti.name}.out_of_balance") %></p>
             </div>
           </div>
         </div>

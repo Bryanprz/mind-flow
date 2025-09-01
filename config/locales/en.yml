@@ -7,6 +7,12 @@ en:
         - "Governs movement, creativity, and the nervous system."
         - "Prone to dryness, anxiety, and irregular routines."
         - "Balances with warmth, routine, and grounding foods."
+      key_characteristics:
+        - "Light, thin build"
+        - "Energy comes in bursts"
+        - "Lively, creative, and enthusiastic"
+        - "Quick to learn and grasp new knowledge"
+        - "Responds to stress with fear, worry, and anxiety"
       in_balance: 'When Vata is in balance, you feel creative, energetic, and enthusiastic. Your mind is clear, and you are adaptable and inspired.'
       out_of_balance: 'When Vata is out of balance, you may experience anxiety, fear, and restlessness. You might have dry skin, constipation, and difficulty sleeping.'
     pitta:
@@ -15,6 +21,12 @@ en:
         - "Controls digestion, metabolism, and intelligence."
         - "Can be fiery, irritable, and intense under stress."
         - "Finds harmony with cooling foods and a calm environment."
+      key_characteristics:
+        - "Medium build, muscular"
+        - "Sharp, focused, and ambitious"
+        - "Intelligent and articulate"
+        - "Strong appetite and digestion"
+        - "Responds to stress with anger, irritability, and impatience"
       in_balance: 'When Pitta is in balance, you are intelligent, focused, and a strong leader. You have a sharp wit, and a good appetite.'
       out_of_balance: 'When Pitta is out of balance, you can become irritable, angry, and critical. You may suffer from indigestion, inflammation, and skin rashes.'
     kapha:
@@ -23,5 +35,11 @@ en:
         - "Provides stability, immunity, and structure."
         - "May experience sluggishness, congestion, and attachment."
         - "Thrives with stimulation, exercise, and light foods."
+      key_characteristics:
+        - "Solid, heavy build"
+        - "Calm, steady, and easy-going"
+        - "Methodical and thoughtful"
+        - "Good long-term memory"
+        - "Responds to stress with withdrawal, lethargy, and possessiveness"
       in_balance: 'When Kapha is in balance, you are calm, loving, and compassionate. You feel strong, stable, and have a robust immune system.'
       out_of_balance: 'When Kapha is out of balance, you may feel lethargic, possessive, and resistant to change. You might experience congestion, weight gain, and excessive sleep.'
