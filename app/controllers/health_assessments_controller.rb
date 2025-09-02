@@ -40,10 +40,6 @@ class HealthAssessmentsController < ApplicationController
     end
   end
 
-  # Change how this action executes 
-  # the logic here is creating too many healing plans with is_active
-  # move this logic to service obje and update the is-active
-  # 
   def submit_answers
     # Parse the JSON string if it's a string, otherwise use as is
     answers_param = params.require(:answers)
