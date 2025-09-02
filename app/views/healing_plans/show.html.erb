@@ -47,10 +47,10 @@
       <% section = @plan_sections.find { |s| s.name == section_name } %>
       <% if section %>
         <div class="collapse collapse-arrow bg-base-100 border border-gray-300">
-          <input type="checkbox" />
-          <div class="collapse-title text-lg font-medium">
+          <input type="checkbox" id="<%= section.name.parameterize %>-checkbox" />
+          <label for="<%= section.name.parameterize %>-checkbox" class="collapse-title text-lg font-medium">
             <%= section.name %>
-          </div>
+          </label>
           <div class="collapse-content">
             <ul class="list-disc list-inside">
               <% section.plan_items.each do |item| %>
