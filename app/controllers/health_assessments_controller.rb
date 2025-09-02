@@ -1,7 +1,7 @@
 class HealthAssessmentsController < ApplicationController
   before_action :set_health_assessment, only: [:submit_answers]
   before_action :set_assessment_entry, only: [:show_results, :current_imbalance_results]
-  allow_unauthenticated_access only: [:start_prakruti_assessment, :submit_answers, :show_results]
+  allow_unauthenticated_access only: [:intro_prakruti_assessment, :start_assessment, :start_prakruti_assessment, :submit_answers, :show_results]
 
   def ensure_current_session_is_resumed
     resume_session
@@ -24,7 +24,7 @@ class HealthAssessmentsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
-          "main_content_area",
+          "assessment_frame",
           partial: "health_assessments/question",
           locals: { 
             questions: @questions
@@ -36,7 +36,7 @@ class HealthAssessmentsController < ApplicationController
           questions: @questions.as_json(include: :assessment_options)
         }
       end
-      format.html
+      format.html { redirect_to prakruti_assessment_intro_path }
     end
   end
 
@@ -109,6 +109,10 @@ class HealthAssessmentsController < ApplicationController
       primary_dosha: @assessment_entry.primary_dosha, 
       current_user: current_user
     }
+  end
+
+  def intro_prakruti_assessment
+    # This action will simply render the intro_prakruti_assessment.html.erb view
   end
 
   private

@@ -20,6 +20,15 @@ dosha_healing_plans_data = {
     description: "To balance Vata, focus on establishing a consistent daily routine with regular meals and sleep times. Favor warm, nourishing, and slightly oily foods while incorporating calming activities like meditation and gentle yoga to ground your energy.",
     sections: [
       {
+        name: "Quick Wins",
+        items: [
+          "Eat warm, moist, and grounding foods like soups or stews instead of cold salads.",
+          "Keep a regular daily routine with set times for waking, meals, and sleep.",
+          "Apply warm sesame oil to your body before a shower for calming and nourishment.",
+          "Practice slow, deep breathing or gentle yoga to settle restlessness."
+        ]
+      },
+      {
         name: "Focus Areas",
         items: [
           "Sleep: Deeper rest",
@@ -116,6 +125,15 @@ dosha_healing_plans_data = {
   "Pitta" => {
     description: "For Pitta, emphasize cooling and moderation in all aspects of life. Consume fresh, cooling foods while avoiding spicy, fried, and sour items, and practice calming, non-competitive activities like swimming or walking in nature.",
     sections: [
+      {
+        name: "Quick Wins",
+        items: [
+          "Favor cooling foods like cucumbers, mint, and coconut water.",
+          "Step away from screens and go outside in nature to cool the mind.",
+          "Avoid heated debates — pause and take 3 deep breaths before responding.",
+          "Schedule breaks during work to release intensity and prevent burnout."
+        ]
+      },
       {
         name: "Focus Areas",
         items: [
@@ -214,6 +232,15 @@ dosha_healing_plans_data = {
   "Kapha" => {
     description: "A Kapha-balancing plan prioritizes stimulation and regular movement to counteract sluggishness. Eat light, warm, and spicy foods, engage in vigorous daily exercise, and actively seek out new and exciting experiences.",
     sections: [
+      {
+        name: "Quick Wins",
+        items: [
+          "Start your day with vigorous movement — brisk walking, dancing, or yoga.",
+          "Choose light, spicy foods over heavy, oily meals to awaken digestion.",
+          "Avoid oversleeping — wake up by sunrise to boost energy.",
+          "Declutter your space to refresh the mind and lighten emotional weight."
+        ]
+      },
       {
         name: "Focus Areas",
         items: [

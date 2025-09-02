@@ -13,7 +13,7 @@ add instance vars
 <% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
 
 <div class="w-full mx-auto space-y-6 flex flex-col" data-controller="modal">
-  <% if Current.user.prakruti %>
+  <% if Current.user&.prakruti %>
     <!-- First Row - 3 equal columns -->
     <div class="grid grid-cols-3 md:grid-cols-3 gap-6 h-full">
 
@@ -37,7 +37,7 @@ add instance vars
           <h2 class="card-title text-lg">Healing Plan</h2>
           <p class="flex-grow mb-4 mt-4"><%= t("doshas.#{Current.user.prakruti.name.downcase}.healing_plan_description") %></p>
           <% if Current.user.healing_plans.any? %>
-            <%= link_to "View Healing Plan", my_healing_plan_path, class: "btn btn-accent text-lg w-full text-black mt-2 font-semibold" %>
+            <%= link_to "View Healing Plan", my_healing_plan_path, class: "btn btn-accent text-md w-full text-black mt-2 font-semibold" %>
           <% end %>
 
           <% if Current.user.vikruti_plans.empty? %>
@@ -99,20 +99,6 @@ add instance vars
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  <% else %>
-    <div class="card w-full max-w-lg mx-auto bg-base-100 border border-gray-300">
-      <div class="card-body">
-        <h2 class="card-title text-lg">"Original Nature" Blueprint</h2>
-        <p class="text-md">
-          Your Original Nature is the KEY to understanding how to go from a state of chronic illness to a state of constant health. Ayurveda calls your "Original Nature" the energetic blueprint that forms the foundation for your body, mind, and soul.
-        </p>
-
-        <span class="font-bold tex-accent">Start your Original Nature Assessment</span>
-        <%= form_with url: start_prakruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
-          <%= button_tag "What is my Original Nature?", class: "btn btn-primary w-full text-white" %>
-        <% end %>
       </div>
     </div>
   <% end %>

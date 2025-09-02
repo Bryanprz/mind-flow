@@ -12,8 +12,14 @@ class HealingPlansController < ApplicationController
 
   # GET /healing_plan
   def show
+    unless Current.user.prakruti_plan
+      redirect_to prakruti_assessment_intro_path, alert: "You must take this assessment first before we can build your healing plan."
+      return
+    end
+
     @healing_plans = Current.user.healing_plans.order(version: :desc)
-    @plan_sections = Current.user.prakruti_plan.plan_sections
+    @prakruti_plan = Current.user.prakruti_plan
+    @plan_sections = @prakruti_plan&.plan_sections || []
   end
 
   # GET /healing_plans/new

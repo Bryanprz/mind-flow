@@ -22,9 +22,7 @@
     <% if Current.user&.prakruti_entry.present? %>
       <%= link_to "Get started", dashboard_path, class: "btn btn-primary text-white text-lg" %>
     <% else %>
-      <%= form_with url: start_prakruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
-        <%= button_tag "Get started", class: "btn btn-primary text-white text-lg" %>
-      <% end %>
+      <%= link_to "Get started", prakruti_assessment_intro_path, class: "btn btn-primary text-white text-lg", data: { turbo_frame: "main_content_area" } %>
     <% end %>
   </div>
 </div>

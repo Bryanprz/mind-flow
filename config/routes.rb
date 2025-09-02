@@ -22,7 +22,8 @@ Rails.application.routes.draw do
   resource :healing_plan, only: [:show], as: :my_healing_plan
 
   # Assessment routes
-  post 'original_nature_assessment', to: 'health_assessments#start_prakruti_assessment', as: :start_prakruti_assessment
+  get 'prakruti_assessment_intro', to: 'health_assessments#intro_prakruti_assessment', as: :prakruti_assessment_intro
+  get '/start_assessment', to: 'health_assessments#start_prakruti_assessment', as: :start_assessment
   post 'current_imbalance_assessment', to: 'health_assessments#start_vikruti_assessment', as: :start_vikruti_assessment
 
   post 'assessment/answer', to: 'health_assessments#answer_question', as: :answer_assessment_question
