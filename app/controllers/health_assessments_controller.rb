@@ -111,8 +111,11 @@ class HealthAssessmentsController < ApplicationController
     }
   end
 
+  # This action will simply render the intro_prakruti_assessment.html.erb view
   def intro_prakruti_assessment
-    # This action will simply render the intro_prakruti_assessment.html.erb view
+  end
+
+  def intro_vikruti_assessment
   end
 
   private

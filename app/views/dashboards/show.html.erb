@@ -41,9 +41,7 @@ add instance vars
           <% end %>
 
           <% if Current.user.vikruti_plans.empty? %>
-            <%= form_with url: start_vikruti_assessment_path, method: :post, data: { turbo_frame: "main_content_area" } do %>
-              <%= button_tag "Check My Balance", class: "btn btn-primary w-full text-white mt-2 font-semibold" %>
-            <% end %>
+            <%= link_to "Check My Balance", vikruti_assessment_intro_path, class: "btn btn-primary w-full text-white mt-2 font-semibold" %>
           <% end %>
         </div>
       </div>

@@ -23,8 +23,10 @@ Rails.application.routes.draw do
 
   # Assessment routes
   get 'prakruti_assessment_intro', to: 'health_assessments#intro_prakruti_assessment', as: :prakruti_assessment_intro
-  get '/start_assessment', to: 'health_assessments#start_prakruti_assessment', as: :start_assessment
-  post 'current_imbalance_assessment', to: 'health_assessments#start_vikruti_assessment', as: :start_vikruti_assessment
+  get 'vikruti_assessment_intro', to: 'health_assessments#intro_vikruti_assessment', as: :vikruti_assessment_intro
+
+  get '/start_prakruti_assessment', to: 'health_assessments#start_prakruti_assessment', as: :start_prakruti_assessment
+  get '/start_vikruti_assessment', to: 'health_assessments#start_vikruti_assessment', as: :start_vikruti_assessment
 
   post 'assessment/answer', to: 'health_assessments#answer_question', as: :answer_assessment_question
   post 'assessment/back', to: 'health_assessments#go_back_question', as: :go_back_assessment_question
@@ -33,7 +35,6 @@ Rails.application.routes.draw do
   get 'assessment/current_imbalance_results', to: 'health_assessments#current_imbalance_results', as: 'current_imbalance_results'
 
   get 'profile', to: 'users#show', as: :profile
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

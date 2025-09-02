@@ -1,0 +1,26 @@
+<% content_for :main_container_class, 'w-full flex-1 bg-base-200 p-8' %>
+
+<turbo-frame id="assessment_frame">
+
+  <div class="card w-full max-w-lg mx-auto bg-base-100 border border-gray-300">
+    <div class="card-body">
+      <h2 class="card-title text-lg">"Current Imbalance" Assessment</h2>
+      <p class="text-md">
+      The Vikruti Assessment is a gentle tool to help you uncover your present state of imbalance. While your natural constitution (Prakruti) reflects who you are at your core, Vikruti shows where life’s stresses, habits, and environment may have pulled you out of alignment. </p>
+
+      <p class="text-md">
+      By understanding your current imbalances, you gain clarity on the root of chronic issues—physical, mental, or emotional. This is the first step to beginning the journey to healing your chronic issues at the ROOT LEVEL.
+      </p>
+
+      <p class="text-md">
+      Please answer each question as truthfully as you can, based on how you feel right now. The more honest your responses, the more accurate your Vikruti Assessment will be in guiding your healing.
+      </p>
+
+      <%= button_to "Start Assessment", start_vikruti_assessment_path(format: :turbo_stream), 
+        method: :get,
+        data: { turbo_frame: "assessment_frame" }, 
+        class: "btn btn-primary w-full text-white",
+        form: { class: "inline" } %>
+    </div>
+  </div>
+</turbo-frame>
