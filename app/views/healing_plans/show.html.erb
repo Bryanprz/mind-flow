@@ -1,137 +1,20 @@
 <% content_for :main_container_class, 'bg-base-200' %>
 
-<div class="max-w-[700px] mx-auto p-6 space-y-6">
-
-  <!-- Hero / Intro -->
-  <div class="card bg-base-100 border border-gray-300">
-    <div class="card-body">
-      <h1 class="card-title text-2xl">
-        <%= Current.user.first_name %>, here is your personalized healing plan 🌿
-      </h1>
-      <p class="text-base">
-        Designed to balance <%= Current.user.prakruti&.name&.titleize || 'your unique constitution' %>, restore digestion, and calm your energy.
-      </p>
-    </div>
-  </div>
-
-  <!-- Overview Dashboard -->
-  <div class="card bg-base-100 border border-gray-300">
-    <div class="card-body">
-      <h2 class="card-title text-xl">Overview</h2>
-      <div class="overflow-x-auto">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Focus Area</th>
-              <th>Status</th>
-              <th>Goal</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @plan_sections.find { |s| s.name == "Focus Areas" }&.plan_items.each do |item| %>
-              <tr>
-                <td><%= item.content.split(':').first %></td>
-                <td></td> <%# No status icon/status in new data %>
-                <td><%= item.content.split(':').last %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- Daily Routine -->
-  <div class="space-y-3">
-    <% ["Morning Routine", "Midday Routine", "Evening Routine"].each do |section_name| %>
-      <% section = @plan_sections.find { |s| s.name == section_name } %>
-      <% if section %>
-        <div class="collapse collapse-arrow bg-base-100 border border-gray-300">
-          <input type="checkbox" id="<%= section.name.parameterize %>-checkbox" />
-          <label for="<%= section.name.parameterize %>-checkbox" class="collapse-title text-lg font-medium">
-            <%= section.name %>
-          </label>
-          <div class="collapse-content">
-            <ul class="list-disc list-inside">
-              <% section.plan_items.each do |item| %>
-                <li><%= item.content %></li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
-
-  <!-- Diet & Herbs -->
-  <div class="card bg-base-100 border border-gray-300">
-    <div class="card-body">
-      <h2 class="card-title text-xl">Diet & Herbs</h2>
-      <% section = @plan_sections.find { |s| s.name == "Foods to Favor" } %>
-      <% if section %>
-        <p><strong>Favor:</strong> <%= section.plan_items.map(&:content).join(", ") %></p>
-      <% end %>
-      <% section = @plan_sections.find { |s| s.name == "Foods to Avoid" } %>
-      <% if section %>
-        <p><strong>Avoid:</strong> <%= section.plan_items.map(&:content).join(", ") %></p>
-      <% end %>
-      <div class="mt-3">
-        <h3 class="font-semibold">Herbs:</h3>
-        <ul class="list-disc list-inside">
-          <% section = @plan_sections.find { |s| s.name == "Herbal Remedies" } %>
-          <% if section %>
-            <% section.plan_items.each do |item| %>
-              <li><%= item.content %></li>
-            <% end %>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Lifestyle & Mind-Body -->
-  <div class="card bg-base-100 border border-gray-300">
-    <div class="card-body">
-      <h2 class="card-title text-xl">Lifestyle & Mind-Body Practices</h2>
-      <ul class="list-disc list-inside">
-        <% section = @plan_sections.find { |s| s.name == "Lifestyle Practices" } %>
-        <% if section %>
-          <% section.plan_items.each do |item| %>
-            <li><%= item.content %></li>
-          <% end %>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Progress & Reflection -->
-  <div class="card bg-base-100 border border-gray-300">
-    <div class="card-body">
-      <h2 class="card-title text-xl">Progress & Reflection</h2>
-      <div class="form-control">
-        <% ["Morning Routine", "Midday Routine", "Evening Routine"].each do |section_name| %>
-          <% section = @plan_sections.find { |s| s.name == section_name } %>
-          <% if section %>
-            <label class="label cursor-pointer">
-              <span class="label-text"><%= section.name %> completed</span> 
-              <input type="checkbox" class="checkbox checkbox-success" />
-            </label>
-          <% end %>
-        <% end %>
-      </div>
-      <textarea class="textarea textarea-bordered w-full mt-3" placeholder="Journal: How did you feel today?"></textarea>
-    </div>
-  </div>
-
-  <!-- CTA -->
-  <div class="card bg-base-100 border border-gray-300">
-    <div class="card-body text-center">
-      <p class="mb-3">Follow this plan for 7 days, then reflect on your progress 🌱</p>
-      <div class="flex justify-center gap-4">
-        <%= button_to "Export as PDF", "#", method: :get, class: "btn btn-outline" %>
-        <%= link_to "Continue My Journey", "#", class: "btn btn-primary" %>
-      </div>
-    </div>
-  </div>
-
+<div class="flex flex-row justify-center mt-5">
+  <ul class="menu menu-horizontal bg-base-100 rounded-box border">
+    <li><%= link_to "Daily Plan", my_healing_plan_path(@prakruti_plan, plan_type: 'daily'), data: { turbo_frame: :healing_plan_content } %></li>
+    <li><%= link_to "3 Month Plan", my_healing_plan_path(@prakruti_plan, plan_type: '3month'), data: { turbo_frame: :healing_plan_content } %></li>
+    <li><%= link_to "6 Month Plan", my_healing_plan_path(@prakruti_plan, plan_type: '6month'), data: { turbo_frame: :healing_plan_content } %></li>
+  </ul>
 </div>
+
+<turbo-frame id="healing_plan_content">
+  <% case @plan_type %>
+  <% when 'daily' %>
+    <%= render 'daily_plan' %>
+  <% when '3month' %>
+    <%= render '3_month_plan' %>
+  <% when '6month' %>
+    <%= render '6_month_plan' %>
+  <% end %>
+</turbo-frame>

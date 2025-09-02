@@ -20,6 +20,8 @@ class HealingPlansController < ApplicationController
     @healing_plans = Current.user.healing_plans.order(version: :desc)
     @prakruti_plan = Current.user.prakruti_plan
     @plan_sections = @prakruti_plan&.plan_sections || []
+    
+    @plan_type = params[:plan_type] || 'daily'
   end
 
   # GET /healing_plans/new
