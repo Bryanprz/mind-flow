@@ -1,4 +1,4 @@
-<div class="max-w-[700px] mx-auto p-6 space-y-6">
+<div class="max-w-[700px] mx-auto p-6 space-y-6" data-controller="healing-plan-progress">
   <!-- Hero / Intro -->
   <div class="card bg-base-100 border border-gray-300">
     <div class="card-body">
@@ -8,6 +8,19 @@
       <p class="text-base mt-3">
       Designed to balance <%= Current.user.prakruti&.name&.titleize || 'your unique constitution' %>, restore digestion, and calm your energy.
       </p>
+    </div>
+  </div>
+
+  <!-- Progress & Streak -->
+  <div class="card bg-base-100 border border-gray-300">
+    <div class="card-body">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="card-title text-xl">Daily Progress</h2>
+        <div class="font-bold text-lg">
+          🔥 0 Day Streak! <%# TODO: Implement streak logic %>
+        </div>
+      </div>
+      <progress data-healing-plan-progress-target="progress" class="progress progress-success w-full" value="0" max="100"></progress>
     </div>
   </div>
 
@@ -49,11 +62,16 @@
             <%= section.name %>
           </label>
           <div class="collapse-content">
-            <ul class="list-disc list-inside">
+            <div class="form-control">
               <% section.plan_items.each do |item| %>
-                <li><%= item.content %></li>
+                <div data-healing-plan-progress-target="item" class="py-1">
+                  <label class="label cursor-pointer justify-start">
+                    <input type="checkbox" class="checkbox checkbox-success mr-4" data-action="healing-plan-progress#toggle" />
+                    <span class="label-text"><%= item.content %></span>
+                  </label>
+                </div>
               <% end %>
-            </ul>
+            </div>
           </div>
         </div>
       <% end %>
@@ -74,14 +92,19 @@
       <% end %>
       <div class="mt-3">
         <h3 class="font-semibold">Herbs:</h3>
-        <ul class="list-disc list-inside">
+        <div class="form-control">
           <% section = @healing_plan.sections.find { |s| s.name == "Herbal Remedies" } %>
           <% if section %>
             <% section.plan_items.each do |item| %>
-              <li><%= item.content %></li>
+              <div data-healing-plan-progress-target="item" class="py-1">
+                <label class="label cursor-pointer justify-start">
+                  <input type="checkbox" class="checkbox checkbox-success mr-4" data-action="healing-plan-progress#toggle" />
+                  <span class="label-text"><%= item.content %></span>
+                </label>
+              </div>
             <% end %>
           <% end %>
-        </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -90,14 +113,19 @@
   <div class="card bg-base-100 border border-gray-300">
     <div class="card-body">
       <h2 class="card-title text-xl">Lifestyle & Mind-Body Practices</h2>
-      <ul class="list-disc list-inside">
+      <div class="form-control">
         <% section = @healing_plan.sections.find { |s| s.name == "Lifestyle Practices" } %>
         <% if section %>
           <% section.plan_items.each do |item| %>
-            <li><%= item.content %></li>
+            <div data-healing-plan-progress-target="item" class="py-1">
+              <label class="label cursor-pointer justify-start">
+                <input type="checkbox" class="checkbox checkbox-success mr-4" data-action="healing-plan-progress#toggle" />
+                <span class="label-text"><%= item.content %></span>
+              </label>
+            </div>
           <% end %>
         <% end %>
-      </ul>
+      </div>
     </div>
   </div>
 
