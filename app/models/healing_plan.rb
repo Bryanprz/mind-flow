@@ -4,6 +4,7 @@ class HealingPlan < ApplicationRecord
   belongs_to :healing_plan_template
   has_many :plan_sections, dependent: :destroy
   has_many :plan_items, through: :plan_sections
+  alias_method :sections, :plan_sections
   alias_method :items, :plan_items
 
   before_create :set_details_from_template

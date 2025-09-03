@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :healing_plans, dependent: :destroy # Ayurvedic protocol
-  has_one :prakruti_plan, class_name: 'PrakrutiPlan'
+  has_many :prakruti_plans, class_name: 'PrakrutiPlan'
   has_many :vikruti_plans, class_name: 'VikrutiPlan'
 
   has_many :sessions, dependent: :destroy

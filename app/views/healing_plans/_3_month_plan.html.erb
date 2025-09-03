@@ -25,7 +25,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @plan_sections.find { |s| s.name == "Focus Areas" }&.plan_items.each do |item| %>
+            <% @healing_plan.sections.find { |s| s.name == "Long-term Goals" }&.plan_items.each do |item| %>
               <tr>
                 <td><%= item.content.split(':').first %></td>
                 <td></td> <%# No status icon/status in new data %>
@@ -41,7 +41,7 @@
   <!-- Daily Routine -->
   <div class="space-y-3">
     <% ["Morning Routine", "Midday Routine", "Evening Routine"].each do |section_name| %>
-      <% section = @plan_sections.find { |s| s.name == section_name } %>
+      <% section = @healing_plan.sections.find { |s| s.name == section_name } %>
       <% if section %>
         <div class="collapse collapse-arrow bg-base-100 border border-gray-300">
           <input type="checkbox" id="<%= section.name.parameterize %>-checkbox" />
@@ -64,18 +64,18 @@
   <div class="card bg-base-100 border border-gray-300">
     <div class="card-body">
       <h2 class="card-title text-xl">Diet & Herbs</h2>
-      <% section = @plan_sections.find { |s| s.name == "Foods to Favor" } %>
+      <% section = @healing_plan.sections.find { |s| s.name == "Foods to Favor" } %>
       <% if section %>
         <p><strong>Favor:</strong> <%= section.plan_items.map(&:content).join(", ") %></p>
       <% end %>
-      <% section = @plan_sections.find { |s| s.name == "Foods to Avoid" } %>
+      <% section = @healing_plan.sections.find { |s| s.name == "Foods to Avoid" } %>
       <% if section %>
         <p><strong>Avoid:</strong> <%= section.plan_items.map(&:content).join(", ") %></p>
       <% end %>
       <div class="mt-3">
         <h3 class="font-semibold">Herbs:</h3>
         <ul class="list-disc list-inside">
-          <% section = @plan_sections.find { |s| s.name == "Herbal Remedies" } %>
+          <% section = @healing_plan.sections.find { |s| s.name == "Herbal Remedies" } %>
           <% if section %>
             <% section.plan_items.each do |item| %>
               <li><%= item.content %></li>
@@ -91,7 +91,7 @@
     <div class="card-body">
       <h2 class="card-title text-xl">Lifestyle & Mind-Body Practices</h2>
       <ul class="list-disc list-inside">
-        <% section = @plan_sections.find { |s| s.name == "Lifestyle Practices" } %>
+        <% section = @healing_plan.sections.find { |s| s.name == "Lifestyle Practices" } %>
         <% if section %>
           <% section.plan_items.each do |item| %>
             <li><%= item.content %></li>
@@ -107,7 +107,7 @@
       <h2 class="card-title text-xl">Progress & Reflection</h2>
       <div class="form-control">
         <% ["Morning Routine", "Midday Routine", "Evening Routine"].each do |section_name| %>
-          <% section = @plan_sections.find { |s| s.name == section_name } %>
+          <% section = @healing_plan.sections.find { |s| s.name == section_name } %>
           <% if section %>
             <label class="label cursor-pointer">
               <span class="label-text"><%= section.name %> completed</span> 

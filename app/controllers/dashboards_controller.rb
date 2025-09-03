@@ -6,7 +6,7 @@ class DashboardsController < ApplicationController
   private
 
   def require_prakruti_assessment
-    unless Current.user&.prakruti_entry and Current.user&.prakruti_plan
+    unless Current.user&.prakruti_entry and Current.user&.prakruti_plans
       redirect_to prakruti_assessment_intro_path, notice: "Please complete this assessment to access your Dashboard."
     end
   end

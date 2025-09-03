@@ -1,34 +1,29 @@
 class HealingPlansController < ApplicationController
   before_action :set_healing_plan, only: %i[ edit update destroy ]
   before_action :require_admin, only: [:index, :new]
-  # TODO: Add a before_action to ensure a user is logged in, e.g.:
-  # before_action :authenticate_user!
 
-  # GET /healing_plans
   def index
     # Scope plans to the current user and order by version
     @healing_plans = Current.user.healing_plans.order(version: :desc)
   end
 
-  # GET /healing_plan
   def show
-    unless Current.user.prakruti_plan
+    unless Current.user.prakruti_plans.any?
       redirect_to prakruti_assessment_intro_path, alert: "You must take this assessment first before we can build your healing plan."
       return
     end
 
-    @healing_plans = Current.user.healing_plans.order(version: :desc)
-    @prakruti_plan = Current.user.prakruti_plan
-    @plan_sections = @prakruti_plan&.plan_sections || []
-    
-    @plan_type = params[:plan_type] || 'daily'
+    # Prioritize showing Vikruti plans, fall back to Prakruti plans
+    plan_set = Current.user.vikruti_plans.presence || Current.user.prakruti_plans
+    @duration_type = params[:duration_type] || "daily"
+
+    # Find the specific plan for the selected duration
+    @healing_plan = plan_set.find_by(duration_type: @duration_type)
   end
 
-  # GET /healing_plans/new
   def new
   end
 
-  # POST /healing_plans
   def create
     # Find the user's Prakruti Dosha
     prakruti_dosha = Current.user.prakruti

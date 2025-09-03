@@ -21,11 +21,11 @@ export default class extends Controller {
   // Set initial active link based on URL parameter
   setActiveLink() {
     const urlParams = new URLSearchParams(window.location.search);
-    const planType = urlParams.get('plan_type') || 'daily'; // Default to 'daily'
+    const planType = urlParams.get('duration_type') || 'daily'; // Default to 'daily'
 
     this.linkTargets.forEach(link => {
       const linkUrl = new URL(link.href);
-      const linkPlanType = new URLSearchParams(linkUrl.search).get('plan_type') || 'daily';
+      const linkPlanType = new URLSearchParams(linkUrl.search).get('duration_type') || 'daily';
 
       if (linkPlanType === planType) {
         link.classList.add("active");
