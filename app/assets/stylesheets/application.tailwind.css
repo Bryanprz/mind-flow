@@ -9,3 +9,8 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Custom override for active menu item background */
+.menu li > *:not(ul):not(.menu-title).active {
+  @apply bg-success text-base-content; /* Use bg-base-200 for background and text-base-content for text color */
+}

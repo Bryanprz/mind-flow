@@ -1,10 +1,18 @@
 <% content_for :main_container_class, 'bg-base-200' %>
 
 <div class="flex flex-row justify-center mt-5">
-  <ul class="menu menu-horizontal bg-base-100 rounded-box border">
-    <li><%= link_to "Daily Plan", my_healing_plan_path(@prakruti_plan, plan_type: 'daily'), data: { turbo_frame: :healing_plan_content } %></li>
-    <li><%= link_to "3 Month Plan", my_healing_plan_path(@prakruti_plan, plan_type: '3month'), data: { turbo_frame: :healing_plan_content } %></li>
-    <li><%= link_to "6 Month Plan", my_healing_plan_path(@prakruti_plan, plan_type: '6month'), data: { turbo_frame: :healing_plan_content } %></li>
+  <ul class="menu menu-horizontal bg-base-100 rounded-box border" data-controller="healing-plan-tabs">
+    <li>
+      <%= link_to "Daily Plan", my_healing_plan_path(@prakruti_plan, plan_type: 'daily'), data: { turbo_frame: :healing_plan_content, healing_plan_tabs_target: "link", action: "click->healing-plan-tabs#select" } %>
+    </li>
+
+    <li>
+      <%= link_to "3 Month Plan", my_healing_plan_path(@prakruti_plan, plan_type: '3month'), data: { turbo_frame: :healing_plan_content, healing_plan_tabs_target: "link", action: "click->healing-plan-tabs#select" } %>
+    </li>
+
+    <li>
+      <%= link_to "6 Month Plan", my_healing_plan_path(@prakruti_plan, plan_type: '6month'), data: { turbo_frame: :healing_plan_content, healing_plan_tabs_target: "link", action: "click->healing-plan-tabs#select" } %>
+    </li>
   </ul>
 </div>
 
