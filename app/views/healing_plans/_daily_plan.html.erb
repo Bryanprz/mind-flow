@@ -3,7 +3,7 @@
   <div class="card bg-base-100 border border-gray-300">
     <div class="card-body">
       <h1 class="card-title text-2xl">
-        <%= Current.user.first_name %>, here is your personalized Daily Healing Plan 
+        <%= Current.user.first_name.titleize %>, here is your personalized Daily Healing Plan 
       </h1>
       <p class="text-base mt-3">
       Designed to balance <%= Current.user.prakruti&.name&.titleize || 'your unique constitution' %>, restore digestion, and calm your energy.
@@ -20,16 +20,16 @@
           <thead>
             <tr>
               <th>Focus Area</th>
-              <th>Status</th>
               <th>Goal</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             <% @healing_plan.sections.find { |s| s.name == "Focus Areas" }&.plan_items.each do |item| %>
               <tr>
                 <td><%= item.content.split(':').first %></td>
+                <td><%= item.content.split(':').last %></td>
                 <td></td> <%# No status icon/status in new data %>
-              <td><%= item.content.split(':').last %></td>
               </tr>
             <% end %>
           </tbody>

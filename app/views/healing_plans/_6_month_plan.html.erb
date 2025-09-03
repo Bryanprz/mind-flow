@@ -3,7 +3,7 @@
   <div class="card bg-base-100 border border-gray-300">
     <div class="card-body">
       <h1 class="card-title text-2xl">
-        <%= Current.user.first_name %>, here is your 6-Month Healing Plan
+        <%= Current.user.first_name.titleize %>, here is your 6-Month Healing Plan
       </h1>
       <p class="text-base mt-3">
       Designed to balance <%= Current.user.prakruti&.name&.titleize || 'your unique constitution' %>, restore digestion, and calm your energy.
@@ -20,16 +20,16 @@
           <thead>
             <tr>
               <th>Focus Area</th>
-              <th>Status</th>
               <th>Goal</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <% @healing_plan.sections.find { |s| s.name == "Advanced Practices" }&.plan_items.each do |item| %>
+            <% @healing_plan.sections.find { |s| s.name == "Advanced Practices" }&.items.each do |item| %>
               <tr>
                 <td><%= item.content.split(':').first %></td>
+                <td><%= item.content.split(':').last %></td>
                 <td></td> <%# No status icon/status in new data %>
-              <td><%= item.content.split(':').last %></td>
               </tr>
             <% end %>
           </tbody>
@@ -38,85 +38,44 @@
     </div>
   </div>
 
-  <!-- Daily Routine -->
-  <div class="space-y-3">
-    <% ["Morning Routine", "Midday Routine", "Evening Routine"].each do |section_name| %>
-      <% section = @healing_plan.sections.find { |s| s.name == section_name } %>
-      <% if section %>
-        <div class="collapse collapse-arrow bg-base-100 border border-gray-300">
-          <input type="checkbox" id="<%= section.name.parameterize %>-checkbox" />
-          <label for="<%= section.name.parameterize %>-checkbox" class="collapse-title text-lg font-medium">
-            <%= section.name %>
-          </label>
-          <div class="collapse-content">
-            <ul class="list-disc list-inside">
-              <% section.plan_items.each do |item| %>
-                <li><%= item.content %></li>
-              <% end %>
-            </ul>
-          </div>
+  <%# Render all sections for this plan %>
+  <% if @healing_plan&.sections&.any? %>
+    <% @healing_plan.sections.order(:ordering).each do |section| %>
+      <div class="collapse collapse-arrow bg-base-100 border border-gray-300">
+        <input type="checkbox" id="section-<%= section.id %>-checkbox" checked="checked" />
+        <div class="collapse-title text-lg font-medium">
+          <%= section.name %>
         </div>
-      <% end %>
-    <% end %>
-  </div>
-
-  <!-- Diet & Herbs -->
-  <div class="card bg-base-100 border border-gray-300">
-    <div class="card-body">
-      <h2 class="card-title text-xl">Diet & Herbs</h2>
-      <% section = @healing_plan.sections.find { |s| s.name == "Foods to Favor" } %>
-      <% if section %>
-        <p><strong>Favor:</strong> <%= section.plan_items.map(&:content).join(", ") %></p>
-      <% end %>
-      <% section = @healing_plan.sections.find { |s| s.name == "Foods to Avoid" } %>
-      <% if section %>
-        <p><strong>Avoid:</strong> <%= section.plan_items.map(&:content).join(", ") %></p>
-      <% end %>
-      <div class="mt-3">
-        <h3 class="font-semibold">Herbs:</h3>
-        <ul class="list-disc list-inside">
-          <% section = @healing_plan.sections.find { |s| s.name == "Herbal Remedies" } %>
-          <% if section %>
-            <% section.plan_items.each do |item| %>
+        <div class="collapse-content">
+          <ul class="list-disc list-inside space-y-1">
+            <% section.items.order(:ordering).each do |item| %>
               <li><%= item.content %></li>
             <% end %>
-          <% end %>
-        </ul>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <p>This healing plan does not have any sections defined yet.</p>
       </div>
     </div>
-  </div>
-
-  <!-- Lifestyle & Mind-Body -->
-  <div class="card bg-base-100 border border-gray-300">
-    <div class="card-body">
-      <h2 class="card-title text-xl">Lifestyle & Mind-Body Practices</h2>
-      <ul class="list-disc list-inside">
-        <% section = @healing_plan.sections.find { |s| s.name == "Lifestyle Practices" } %>
-        <% if section %>
-          <% section.plan_items.each do |item| %>
-            <li><%= item.content %></li>
-          <% end %>
-        <% end %>
-      </ul>
-    </div>
-  </div>
+  <% end %>
 
   <!-- Progress & Reflection -->
   <div class="card bg-base-100 border border-gray-300">
     <div class="card-body">
       <h2 class="card-title text-xl">Progress & Reflection</h2>
       <div class="form-control">
-        <% ["Morning Routine", "Midday Routine", "Evening Routine"].each do |section_name| %>
-          <% section = @healing_plan.sections.find { |s| s.name == section_name } %>
-          <% if section %>
-            <label class="label cursor-pointer">
-              <span class="label-text"><%= section.name %> completed</span> 
-              <input type="checkbox" class="checkbox checkbox-success" />
-            </label>
-          <% end %>
+        <% @healing_plan.sections.order(:ordering).each do |section| %>
+          <label class="label cursor-pointer">
+            <span class="label-text">Completed: <%= section.name %></span>
+            <input type="checkbox" class="checkbox checkbox-success" />
+          </label>
         <% end %>
       </div>
-      <textarea class="textarea textarea-bordered w-full mt-3" placeholder="Journal: How did you feel today?"></textarea>
+      <textarea class="textarea textarea-bordered w-full mt-3" placeholder="Journal: How are you feeling about your progress?"></textarea>
     </div>
   </div>
 

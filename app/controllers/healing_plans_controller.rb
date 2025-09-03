@@ -15,7 +15,7 @@ class HealingPlansController < ApplicationController
 
     # Prioritize showing Vikruti plans, fall back to Prakruti plans
     plan_set = Current.user.vikruti_plans.presence || Current.user.prakruti_plans
-    @duration_type = params[:duration_type] || "daily"
+    @duration_type = params[:duration_type] || HealingPlan::DAILY
 
     # Find the specific plan for the selected duration
     @healing_plan = plan_set.find_by(duration_type: @duration_type)

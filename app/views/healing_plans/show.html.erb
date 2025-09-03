@@ -3,26 +3,26 @@
 <div class="flex flex-row justify-center mt-5">
   <ul class="menu menu-horizontal bg-base-100 rounded-box border" data-controller="healing-plan-tabs">
     <li>
-      <%= link_to "Daily Plan", my_healing_plan_path(@prakruti_plan, duration_type: 'daily'), data: { turbo_frame: :healing_plan_content, healing_plan_tabs_target: "link", action: "click->healing-plan-tabs#select" } %>
+      <%= link_to "Daily Plan", my_healing_plan_path(@healing_plan, duration_type: HealingPlan::DAILY), data: { turbo_frame: :healing_plan_content, healing_plan_tabs_target: "link", action: "click->healing-plan-tabs#select" } %>
     </li>
 
     <li>
-      <%= link_to "3 Month Plan", my_healing_plan_path(@prakruti_plan, duration_type: 'three_month'), data: { turbo_frame: :healing_plan_content, healing_plan_tabs_target: "link", action: "click->healing-plan-tabs#select" } %>
+      <%= link_to "3 Month Plan", my_healing_plan_path(@healing_plan, duration_type: HealingPlan::THREE_MONTH), data: { turbo_frame: :healing_plan_content, healing_plan_tabs_target: "link", action: "click->healing-plan-tabs#select" } %>
     </li>
 
     <li>
-      <%= link_to "6 Month Plan", my_healing_plan_path(@prakruti_plan, duration_type: 'six_month'), data: { turbo_frame: :healing_plan_content, healing_plan_tabs_target: "link", action: "click->healing-plan-tabs#select" } %>
+      <%= link_to "6 Month Plan", my_healing_plan_path(@healing_plan, duration_type: HealingPlan::SIX_MONTH), data: { turbo_frame: :healing_plan_content, healing_plan_tabs_target: "link", action: "click->healing-plan-tabs#select" } %>
     </li>
   </ul>
 </div>
 
 <turbo-frame id="healing_plan_content">
   <% case @duration_type %>
-  <% when 'daily' %>
+  <% when HealingPlan::DAILY %>
     <%= render 'daily_plan' %>
-  <% when 'three_month' %>
+  <% when HealingPlan::THREE_MONTH %>
     <%= render '3_month_plan' %>
-  <% when 'six_month' %>
+  <% when HealingPlan::SIX_MONTH %>
     <%= render '6_month_plan' %>
   <% end %>
 </turbo-frame>

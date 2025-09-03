@@ -1,4 +1,8 @@
 class HealingPlan < ApplicationRecord
+  DAILY = 'daily'.freeze
+  THREE_MONTH = '3month'.freeze
+  SIX_MONTH = '6month'.freeze
+
   enum :duration_type, { daily: 0, three_month: 1, six_month: 2 }
   belongs_to :user
   belongs_to :healing_plan_template
