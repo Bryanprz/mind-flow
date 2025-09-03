@@ -1,7 +1,10 @@
 class HealingPlan < ApplicationRecord
+  enum :duration_type, { daily: 0, three_month: 1, six_month: 2 }
   belongs_to :user
   belongs_to :healing_plan_template
   has_many :plan_sections, dependent: :destroy
+  has_many :plan_items, through: :plan_sections
+  alias_method :items, :plan_items
 
   before_create :set_details_from_template
   after_create :build_from_template

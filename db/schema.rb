@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_01_213132) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_03_014158) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -181,6 +181,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_01_213132) do
     t.integer "dosha_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "duration_type"
     t.index ["dosha_id"], name: "index_healing_plan_templates_on_dosha_id"
   end
 
@@ -195,6 +196,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_01_213132) do
     t.boolean "is_active"
     t.integer "healing_plan_template_id"
     t.string "type"
+    t.integer "duration_type"
     t.index ["healing_plan_template_id"], name: "index_healing_plans_on_healing_plan_template_id"
     t.index ["type"], name: "index_healing_plans_on_type"
     t.index ["user_id"], name: "index_healing_plans_on_user_id"
