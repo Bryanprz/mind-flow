@@ -1,3 +1,5 @@
+<% completed_item_ids = @healing_plan.todays_log&.completed_item_ids || [] %>
+
 <div class="max-w-[700px] mx-auto p-6 space-y-6" data-controller="healing-plan-progress" data-healing-plan-progress-healing-plan-id-value="<%= @healing_plan.id %>" data-healing-plan-progress-healing-plan-log-id-value="">
   <!-- Hero / Intro -->
   <div class="card bg-base-100 border border-gray-300">
@@ -66,7 +68,14 @@
               <% section.plan_items.each do |item| %>
                 <div data-healing-plan-progress-target="item" class="py-1">
                   <label class="label cursor-pointer justify-start">
-                    <input type="checkbox" class="checkbox checkbox-success mr-4" data-action="healing-plan-progress#toggle" data-plan-item-id="<%= item.id %>" />
+
+                    <input 
+                      type="checkbox" 
+                      class="checkbox checkbox-success mr-4" 
+                      data-action="healing-plan-progress#toggle"
+                      data-plan-item-id="<%= item.id %>" 
+                      <%= 'checked' if completed_item_ids.include?(item.id) %> />
+
                     <span class="label-text"><%= item.content %></span>
                   </label>
                 </div>
@@ -98,7 +107,14 @@
             <% section.plan_items.each do |item| %>
               <div data-healing-plan-progress-target="item" class="py-1">
                 <label class="label cursor-pointer justify-start">
-                  <input type="checkbox" class="checkbox checkbox-success mr-4" data-action="healing-plan-progress#toggle" data-plan-item-id="<%= item.id %>" />
+
+                  <input 
+                    type="checkbox" 
+                    class="checkbox checkbox-success mr-4" 
+                    data-action="healing-plan-progress#toggle" 
+                    data-plan-item-id="<%= item.id %>" 
+                    <%= 'checked' if completed_item_ids.include?(item.id) %> />
+
                   <span class="label-text"><%= item.content %></span>
                 </label>
               </div>
@@ -119,7 +135,14 @@
           <% section.plan_items.each do |item| %>
             <div data-healing-plan-progress-target="item" class="py-1">
               <label class="label cursor-pointer justify-start">
-                <input type="checkbox" class="checkbox checkbox-success mr-4" data-action="healing-plan-progress#toggle" data-plan-item-id="<%= item.id %>" />
+
+                <input 
+                  type="checkbox" 
+                  class="checkbox checkbox-success mr-4" 
+                  data-action="healing-plan-progress#toggle"
+                  data-plan-item-id="<%= item.id %>" 
+                  <%= 'checked' if completed_item_ids.include?(item.id) %> />
+
                 <span class="label-text"><%= item.content %></span>
               </label>
             </div>

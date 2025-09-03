@@ -16,9 +16,9 @@ export default class extends Controller {
   }
 
   async toggle(event) { // Made async
+    const checkbox = event.currentTarget
     await this.ensureHealingPlanLogExists() // Ensure log exists before sending item log
 
-    const checkbox = event.currentTarget
     const planItemId = checkbox.dataset.planItemId
     const isCompleted = checkbox.checked
 

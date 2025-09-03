@@ -89,14 +89,21 @@ class HealingPlansController < ApplicationController
 
   def log_item_progress
     plan_item = PlanItem.find(params[:plan_item_id])
-    healing_plan_log = HealingPlanLog.find(params[:healing_plan_log_id]) # Find the parent log
+    healing_plan_log = HealingPlanLog.find(params[:healing_plan_log_id])
 
     if params[:completed]
-      PlanItemLog.find_or_create_by(plan_item: plan_item, healing_plan_log: healing_plan_log) do |log|
-        log.completed_at = Time.current
-      end
+      # Find or create the log, and update completed_at
+      log = PlanItemLog.find_or_initialize_by(
+        plan_item: plan_item, 
+        healing_plan_log: healing_plan_log
+      )
+      log.completed_at = Time.current
+      log.save!
     else
-      PlanItemLog.where(plan_item: plan_item, healing_plan_log: healing_plan_log).destroy_all
+      PlanItemLog.where(
+        plan_item: plan_item,
+        healing_plan_log: healing_plan_log
+      ).destroy_all
     end
     head :ok
   rescue ActiveRecord::RecordNotFound

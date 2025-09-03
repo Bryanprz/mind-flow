@@ -4,7 +4,7 @@ class PrakrutiPlan < HealingPlan
   private
 
   def user_has_only_one
-    if user.prakruti_plan.present?
+    if user.prakruti_plans.any?
       errors.add(:user_id, "already has a Prakruti plan")
     end
   end
