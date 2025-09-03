@@ -71,6 +71,55 @@ class HealingPlansController < ApplicationController
     redirect_to healing_plans_path, notice: "Healing plan was successfully destroyed."
   end
 
+  def create_daily_log
+    healing_plan = HealingPlan.find(params[:healing_plan_id])
+    daily_log = HealingPlanLog.for_today(healing_plan)
+
+    if daily_log.persisted?
+      render json: { healing_plan_log_id: daily_log.id }, status: :created
+    else
+      render json: { errors: daily_log.errors.full_messages }, status: :unprocessable_entity
+    end
+  rescue ActiveRecord::RecordNotFound
+    head :not_found # Send a 404 if healing_plan not found
+  rescue => e
+    Rails.logger.error "Error creating daily log: #{e.message}"
+    head :internal_server_error # Send a 500 for other errors
+  end
+
+  def log_item_progress
+    plan_item = PlanItem.find(params[:plan_item_id])
+    healing_plan_log = HealingPlanLog.find(params[:healing_plan_log_id]) # Find the parent log
+
+    if params[:completed]
+      PlanItemLog.find_or_create_by(plan_item: plan_item, healing_plan_log: healing_plan_log) do |log|
+        log.completed_at = Time.current
+      end
+    else
+      PlanItemLog.where(plan_item: plan_item, healing_plan_log: healing_plan_log).destroy_all
+    end
+    head :ok
+  rescue ActiveRecord::RecordNotFound
+    head :not_found
+  rescue => e
+    Rails.logger.error "Error logging plan item progress: #{e.message}"
+    head :internal_server_error
+  end
+
+  def save_plan_log
+    healing_plan_log = HealingPlanLog.find(params[:healing_plan_log_id]) # Find the existing log
+    healing_plan_log.update(
+      journal_entry: params[:journal_entry],
+      completed_at: Time.current # Mark as completed when saved
+    )
+    head :ok
+  rescue ActiveRecord::RecordNotFound
+    head :not_found
+  rescue => e
+    Rails.logger.error "Error saving healing plan log: #{e.message}"
+    head :internal_server_error
+  end
+
   private
 
   def require_admin

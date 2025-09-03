@@ -18,7 +18,13 @@ Rails.application.routes.draw do
   resources :herbs
   resources :foods
   resources :users
-  resources :healing_plans, except: [:new, :show]
+  resources :healing_plans, except: [:new, :show] do
+    collection do
+      post 'log_item_progress'
+      post 'save_plan_log'
+      post 'create_daily_log'
+    end
+  end
   resource :healing_plan, only: [:show], as: :my_healing_plan
 
   # Assessment routes
