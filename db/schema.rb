@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_03_014158) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_03_050058) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -175,6 +175,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_03_014158) do
     t.index ["healing_plan_id"], name: "index_healing_plan_foods_on_healing_plan_id"
   end
 
+  create_table "healing_plan_logs", force: :cascade do |t|
+    t.integer "healing_plan_id", null: false
+    t.string "start_date"
+    t.string "completed_at"
+    t.text "journal_entry"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["healing_plan_id"], name: "index_healing_plan_logs_on_healing_plan_id"
+  end
+
   create_table "healing_plan_templates", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -223,6 +233,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_03_014158) do
     t.json "spiritual_practices_items"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "plan_item_logs", force: :cascade do |t|
+    t.integer "plan_item_id", null: false
+    t.integer "healing_plan_log_id", null: false
+    t.text "note"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["healing_plan_log_id"], name: "index_plan_item_logs_on_healing_plan_log_id"
+    t.index ["plan_item_id"], name: "index_plan_item_logs_on_plan_item_id"
   end
 
   create_table "plan_item_templates", force: :cascade do |t|
@@ -311,9 +332,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_03_014158) do
   add_foreign_key "assessment_questions", "health_assessments"
   add_foreign_key "healing_plan_foods", "foods"
   add_foreign_key "healing_plan_foods", "healing_plans"
+  add_foreign_key "healing_plan_logs", "healing_plans"
   add_foreign_key "healing_plan_templates", "doshas"
   add_foreign_key "healing_plans", "healing_plan_templates"
   add_foreign_key "healing_plans", "users"
+  add_foreign_key "plan_item_logs", "healing_plan_logs"
+  add_foreign_key "plan_item_logs", "plan_items"
   add_foreign_key "plan_item_templates", "plan_section_templates"
   add_foreign_key "plan_items", "plan_sections"
   add_foreign_key "plan_section_templates", "healing_plan_templates"
