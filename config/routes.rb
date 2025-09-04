@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   resources :healing_plans, except: [:new, :show] do
     collection do
       post 'log_item_progress'
-      post 'save_plan_log'
+      post 'save_journal_log'
       post 'create_daily_log'
     end
   end

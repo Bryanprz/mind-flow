@@ -1,18 +1,11 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["progress", "item", "journal"]
+  static targets = ["progress", "item", "journal", "journalView"]
   static values = { healingPlanId: Number, healingPlanLogId: Number } // Added static values
 
   connect() {
     this.update()
-  }
-
-  // Callback for when healingPlanLogIdValue changes
-  healingPlanLogIdValueChanged() {
-    // This callback can be used for debugging or to enable/disable UI elements
-    // once the healingPlanLogId is available.
-    console.log("HealingPlanLog ID is now:", this.healingPlanLogIdValue)
   }
 
   async toggle(event) { // Made async
@@ -28,14 +21,68 @@ export default class extends Controller {
     this.update()
   }
 
-  async savePlan() { // Made async
-    await this.ensureHealingPlanLogExists() // Ensure log exists before saving plan log
+  editJournal() {
+    // Find the journal view (it should be a sibling of the textarea)
+    const journalView = this.element?.querySelector('[data-healing-plan-progress-target="journalView"]')
+    
+    if (journalView) {
+      journalView.classList.add('hidden')
+    }
+    
+    if (this.hasJournalTarget) {
+      this.journalTarget.classList.remove('hidden')
+      this.journalTarget.focus()
+      
+      // If the textarea is empty, copy the content from the view
+      if (!this.journalTarget.value && journalView) {
+        const journalText = journalView.querySelector('.prose')
+        if (journalText) {
+          this.journalTarget.value = journalText.textContent.trim()
+        }
+      }
+    }
+  }
 
-    const healingPlanId = this.healingPlanIdValue // Get healing_plan_id from Stimulus value
-    const journalEntry = this.journalTarget.value
-
-    // Send data to Rails backend for HealingPlanLog
-    this.sendHealingPlanLog(healingPlanId, journalEntry, this.healingPlanLogIdValue) // Pass healingPlanLogId
+  async savePlan() {
+    console.group('savePlan');
+    try {
+      // Ensure we have a valid healing plan log
+      await this.ensureHealingPlanLogExists();
+      
+      if (!this.healingPlanLogIdValue) {
+        const error = new Error('Could not create or find a daily log');
+        console.error('4. Error:', error);
+        throw error;
+      }
+      
+      const healingPlanId = this.healingPlanIdValue;
+      const journalEntry = this.journalTarget?.value || '';
+      
+      // Send the journal entry
+      const result = await this.sendHealingPlanLog(healingPlanId, journalEntry, this.healingPlanLogIdValue);
+      
+      // Force UI update
+      if (this.hasJournalTarget) {
+        this.journalTarget.value = journalEntry;
+        this.journalTarget.dispatchEvent(new Event('input'));
+      }
+      
+    } catch (error) {
+      console.error('9. Error in savePlan:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        response: error.response
+      });
+      
+      // Only show alert for unexpected errors
+      if (!error.message.includes('Cannot save HealingPlanLog') && 
+          !error.message.includes('Missing healingPlanLogId')) {
+        alert('Error saving journal entry. Please try again. ' + error.message);
+      }
+    } finally {
+      console.groupEnd();
+    }
   }
 
   update() {
@@ -118,34 +165,147 @@ export default class extends Controller {
   }
 
   // Helper to send HealingPlanLog data
-  sendHealingPlanLog(healingPlanId, journalEntry, healingPlanLogId) { // Added healingPlanLogId param
+  async sendHealingPlanLog(healingPlanId, journalEntry, healingPlanLogId) {
     if (!healingPlanLogId) {
-      console.error("Cannot save HealingPlanLog: healingPlanLogId is missing.")
-      return
+      const error = new Error('Missing healingPlanLogId in sendHealingPlanLog');
+      console.error('Error details:', error);
+      throw error;
     }
-    fetch(`/healing_plans/save_plan_log`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
-      },
-      body: JSON.stringify({
-        healing_plan_id: healingPlanId,
-        journal_entry: journalEntry,
-        healing_plan_log_id: healingPlanLogId // Pass healingPlanLogId
-      })
-    })
-    .then(response => {
-      if (response.ok) {
-        alert("Daily Plan saved successfully!")
-      } else {
-        console.error("Failed to save daily plan:", response.statusText)
-        alert("Failed to save Daily Plan.")
+    
+    try {
+      const csrfToken = document.querySelector("meta[name='csrf-token']")?.content;
+      if (!csrfToken) {
+        throw new Error('CSRF token not found');
       }
-    })
-    .catch(error => {
-      console.error("Error saving daily plan:", error)
-      alert("Error saving Daily Plan.")
-    })
+      
+      const response = await fetch(`/healing_plans/save_journal_log`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
+          "Accept": "application/json"
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          healing_plan_log_id: healingPlanLogId,
+          journal_entry: journalEntry || ''
+        })
+      });
+
+      let responseData;
+      try {
+        responseData = await response.json();
+      } catch (e) {
+        console.error('Failed to parse JSON response:', e);
+        throw new Error('Invalid server response');
+      }
+      
+      if (!response.ok) {
+        const error = new Error(responseData.message || 'Failed to save journal entry');
+        error.response = responseData;
+        throw error;
+      }
+
+      // Update the journal view without refreshing
+      if (journalEntry.trim()) {
+        // Try to find the journal view container
+        let journalView = this.element?.querySelector('[data-healing-plan-progress-target="journalView"]')
+        
+        // If we don't have a journal view, create it
+        if (!journalView) {
+          // Create the view
+          journalView = document.createElement('div')
+          journalView.dataset.healingPlanProgressTarget = 'journalView'
+          journalView.innerHTML = `
+            <p class="font-semibold mt-4">Your Journal Entry:</p>
+            <div class="prose max-w-none bg-base-200 rounded-lg p-3 my-2 mt-3">${journalEntry}</div>
+            <button data-action="click->healing-plan-progress#editJournal" class="btn btn-sm btn-outline mt-3">Edit</button>
+          `
+          // Insert after the form control div
+          const formControl = this.journalTarget.closest('.form-control')
+          if (formControl) {
+            formControl.insertAdjacentElement('afterend', journalView)
+          } else {
+            this.journalTarget.insertAdjacentElement('afterend', journalView)
+          }
+        } else {
+          // Update existing view
+          const journalText = journalView.querySelector('.prose')
+          if (journalText) {
+            journalText.textContent = journalEntry
+          }
+        }
+        
+        // Hide the textarea and show the view
+        if (this.hasJournalTarget) {
+          this.journalTarget.classList.add('hidden')
+          journalView.classList.remove('hidden')
+        }
+      }
+      
+      // Create a fixed position container for the alert if it doesn't exist
+      let alertContainer = document.getElementById('global-alert-container')
+      if (!alertContainer) {
+        alertContainer = document.createElement('div')
+        alertContainer.id = 'global-alert-container'
+        alertContainer.style.position = 'fixed'
+        alertContainer.style.top = '1rem'
+        alertContainer.style.left = '50%'
+        alertContainer.style.transform = 'translateX(-50%)'
+        alertContainer.style.zIndex = '1000'
+        alertContainer.style.width = '100%'
+        alertContainer.style.maxWidth = '600px'
+        alertContainer.style.pointerEvents = 'none'
+        document.body.appendChild(alertContainer)
+      }
+
+      // Create the alert message
+      const message = document.createElement('div')
+      message.className = 'alert alert-success shadow-lg mx-4 transition-all duration-300 transform'
+      message.role = 'alert'
+      message.style.pointerEvents = 'auto'
+      message.style.opacity = '0'
+      message.style.transform = 'translateY(-20px)'
+      
+      message.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Journal entry saved successfully!</span>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="this.closest('.alert').style.opacity = '0'; setTimeout(() => this.closest('.alert').remove(), 300)">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      `
+      
+      // Add to container and animate in
+      alertContainer.appendChild(message)
+      
+      // Trigger reflow to enable animation
+      void message.offsetWidth
+      
+      // Animate in
+      message.style.opacity = '1'
+      message.style.transform = 'translateY(0)'
+      
+      // Auto-dismiss after 3 seconds
+      setTimeout(() => {
+        message.style.opacity = '0'
+        message.style.transform = 'translateY(-20px)'
+        setTimeout(() => message.remove(), 300)
+      }, 3000)
+      
+      return responseData;
+      
+    } catch (error) {
+      console.error("Error in sendHealingPlanLog:", error);
+      // Don't show alert here, let the caller handle it
+      throw error;
+    }
   }
 }

@@ -113,18 +113,39 @@ class HealingPlansController < ApplicationController
     head :internal_server_error
   end
 
-  def save_plan_log
+  def save_journal_log
     healing_plan_log = HealingPlanLog.find(params[:healing_plan_log_id]) # Find the existing log
-    healing_plan_log.update(
+    
+    if healing_plan_log.update(
       journal_entry: params[:journal_entry],
       completed_at: Time.current # Mark as completed when saved
     )
-    head :ok
-  rescue ActiveRecord::RecordNotFound
-    head :not_found
+      render json: { 
+        status: 'success', 
+        message: 'Journal entry saved successfully',
+        journal_entry: params[:journal_entry]
+      }
+    else
+      render json: { 
+        status: 'error', 
+        errors: healing_plan_log.errors.full_messages,
+        message: 'Failed to save journal entry'
+      }, status: :unprocessable_entity
+    end
+    
+  rescue ActiveRecord::RecordNotFound => e
+    Rails.logger.error "HealingPlanLog not found: #{e.message}"
+    render json: { 
+      status: 'error',
+      message: 'Daily log not found. Please refresh the page and try again.'
+    }, status: :not_found
+    
   rescue => e
-    Rails.logger.error "Error saving healing plan log: #{e.message}"
-    head :internal_server_error
+    Rails.logger.error "Error saving healing plan log: #{e.message}\n#{e.backtrace.join("\n")}"
+    render json: { 
+      status: 'error',
+      message: 'An unexpected error occurred while saving your journal entry.'
+    }, status: :internal_server_error
   end
 
   private
