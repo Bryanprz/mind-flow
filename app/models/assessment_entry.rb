@@ -12,6 +12,9 @@ class AssessmentEntry < ApplicationRecord
   has_many :assessment_options, through: :assessment_answers
   has_many :assessment_questions, through: :assessment_options
 
+  has_many :assessment_chronic_illnesses, dependent: :destroy
+  has_many :chronic_illnesses, through: :assessment_chronic_illnesses
+
   def results
     result_data = Hash.new(0)
     options.each {|option| result_data[option.dosha] += 1 }

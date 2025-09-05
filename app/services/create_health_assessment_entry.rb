@@ -3,8 +3,9 @@ class CreateHealthAssessmentEntry
     new(*args, **kwargs, &block).call
   end
 
-  def initialize(health_assessment:, answers:)
+  def initialize(health_assessment:, answers:, chronic_illness_id: nil)
     @answers = answers
+    chronic_illness = ChronicIllness.find(chronic_illness_id) if chronic_illness_id
 
     assessment_entry_class = case health_assessment.assessment_type.to_sym
                              when :prakruti
@@ -18,6 +19,7 @@ class CreateHealthAssessmentEntry
       user: Current.user,  # Will be nil for guests
       health_assessment: health_assessment
     )
+    @assessment_entry.chronic_illnesses << chronic_illness if chronic_illness.present?
   end
 
   # main logic goes here

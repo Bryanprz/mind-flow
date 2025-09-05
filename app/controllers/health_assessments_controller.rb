@@ -17,6 +17,7 @@ class HealthAssessmentsController < ApplicationController
 
   def start_assessment(assessment_type)
     @health_assessment = HealthAssessment.find_by(assessment_type: assessment_type)
+    session[:chronic_illness_id] = params[:chronic_illness_id] if params[:chronic_illness_id].present?
 
     # Eager load all questions and their options to avoid N+1 queries
     @questions = @health_assessment.assessment_questions.includes(:assessment_options).order(:id)
@@ -51,8 +52,10 @@ class HealthAssessmentsController < ApplicationController
 
     @assessment_entry = CreateHealthAssessmentEntry.call(
       health_assessment: @health_assessment,
-      answers: answers
+      answers: answers,
+      chronic_illness_id: session[:chronic_illness_id]
     )
+
     # Determine and apply the appropriate healing protocol based on the assessment type
     if Current.user
       CreateHealingPlan.new(Current.user, @health_assessment).call

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_05_032241) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_05_071510) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -56,6 +56,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_05_032241) do
     t.datetime "updated_at", null: false
     t.index ["assessment_entry_id"], name: "index_assessment_answers_on_assessment_entry_id"
     t.index ["assessment_option_id"], name: "index_assessment_answers_on_assessment_option_id"
+  end
+
+  create_table "assessment_chronic_illnesses", force: :cascade do |t|
+    t.integer "assessment_entry_id", null: false
+    t.integer "chronic_illness_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assessment_entry_id"], name: "index_assessment_chronic_illnesses_on_assessment_entry_id"
+    t.index ["chronic_illness_id"], name: "index_assessment_chronic_illnesses_on_chronic_illness_id"
   end
 
   create_table "assessment_entries", force: :cascade do |t|
@@ -336,6 +345,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_05_032241) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "assessment_answers", "assessment_entries"
   add_foreign_key "assessment_answers", "assessment_options"
+  add_foreign_key "assessment_chronic_illnesses", "assessment_entries"
+  add_foreign_key "assessment_chronic_illnesses", "chronic_illnesses"
   add_foreign_key "assessment_options", "assessment_questions"
   add_foreign_key "assessment_questions", "health_assessments"
   add_foreign_key "healing_plan_foods", "foods"
