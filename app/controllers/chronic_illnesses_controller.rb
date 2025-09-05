@@ -4,7 +4,7 @@ class ChronicIllnessesController < ApplicationController
 
   # GET /chronic_illnesses or /chronic_illnesses.json
   def index
-    @chronic_illnesses = ChronicIllness.all
+    @chronic_illnesses = ChronicIllness.all.order(:name)
   end
 
   # GET /chronic_illnesses/1 or /chronic_illnesses/1.json
