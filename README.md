@@ -6,7 +6,7 @@ Ancient Herb is a full-stack wellness platform designed to help users track and 
 
 Built a comprehensive wellness management platform leveraging Rails 8's modern stack with SQLite for rapid development and deployment. The system features a normalized relational schema supporting complex many-to-many relationships between users, health metrics, and personalized wellness protocols. Architected with clear separation of concerns and extensible APIs to accommodate planned integrations including ML-driven recommendation engines via RubyLLM and payment processing through Stripe. The codebase emphasizes maintainability through established Rails conventions while supporting horizontal scaling as user growth demands.
 
-You can explore the code here: [https://github.com/Bryanprz/naturehealer](https://github.com/Bryanprz/naturehealer)
+You can explore the code here: [https://github.com/Bryanprz/ancientherb](https://github.com/Bryanprz/ancientherb)
 
 ## Key Features
 
@@ -35,7 +35,7 @@ To get a local copy up and running, follow these simple steps.
 
 1.  Clone the repo
     ```sh
-    git clone https://github.com/Bryanprz/naturehealer.git
+    git clone https://github.com/Bryanprz/ancientherb.git
     ```
 2.  Install NPM packages
     ```sh
