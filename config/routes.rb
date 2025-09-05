@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :chronic_illnesses
   namespace :admin do
     root "dashboard#index"
     resources :foods

@@ -1,0 +1,2 @@
+class ChronicIllness < ApplicationRecord
+end
