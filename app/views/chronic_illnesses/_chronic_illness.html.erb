@@ -1,17 +1,11 @@
-<div id="<%= dom_id chronic_illness %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= chronic_illness.name %>
-  </p>
+<div id="<%= dom_id chronic_illness %>" class="flex items-center space-x-4">
+  <div class="flex flex-col items-center">
+    <% if chronic_illness.icon.present? %>
+      <%= image_tag "icons/#{chronic_illness.icon}", alt: chronic_illness.name, class: "w-24 h-auto" %>
+    <% end %>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Description:</strong>
-    <%= chronic_illness.description %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Icon:</strong>
-    <%= chronic_illness.icon %>
-  </p>
-
+    <div class="text-sm font-semibold font-gray text-gray-600 text-center mt-2">
+      <%= chronic_illness.name %>
+    </div>
+  </div>
 </div>

@@ -13,5 +13,6 @@ require_relative 'seeds/healing_plan_templates.seeds.rb'
 require_relative 'seeds/disease_stages.seeds.rb'
 require_relative 'seeds/doshas.seeds.rb'
 require_relative 'seeds/health_assessments.seeds.rb'
+require_relative 'seeds/chronic_illnesses.rb'
 
 puts "Seeds file has been run."

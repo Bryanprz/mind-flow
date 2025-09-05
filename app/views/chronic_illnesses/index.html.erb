@@ -1,23 +1,19 @@
 <% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
 
-<div class="w-full">
+<div class="w-full flex flex-col items-center">
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
 
   <% content_for :title, "Chronic illnesses" %>
 
-  <div class="flex justify-between items-center">
+  <div class="text-center mb-8">
     <h1 class="font-bold text-2xl">What chronic issues do you want to focus on?</h1>
   </div>
 
-  <div id="chronic_illnesses" class="min-w-1/2 flex flex-col justify-center items-center">
+  <div id="chronic_illnesses" class="w-full max-w-lg grid grid-cols-5 gap-6 items-start justify-items-center">
     <% @chronic_illnesses.each do |chronic_illness| %>
       <%= render chronic_illness %>
-      <p>
-        <%= link_to "Show this chronic illness", chronic_illness, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      </p>
     <% end %>
-    <%= link_to "New chronic illness", new_chronic_illness_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
   </div>
 </div>

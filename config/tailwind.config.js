@@ -70,6 +70,7 @@ module.exports = {
     'grid-cols-5',
     'grid-cols-6',
     'line-through',
+    'gap-9',
     {
       pattern: /(alert|btn|badge|text|bg)-(success|error|warning|info|primary|secondary|accent|neutral)/,
     },
