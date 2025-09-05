@@ -1,11 +1,11 @@
 <div id="<%= dom_id chronic_illness %>" class="flex items-center space-x-4">
-  <div class="flex flex-col items-center">
+  <div class="flex flex-col items-center w-24 h-34">
     <% if chronic_illness.icon.present? %>
-      <%= image_tag "icons/#{chronic_illness.icon}", alt: chronic_illness.name, class: "w-24 h-auto" %>
+      <%= image_tag "icons/#{chronic_illness.icon}", alt: chronic_illness.name, class: "w-full" %>
     <% end %>
 
-    <div class="text-sm font-semibold font-gray text-gray-600 text-center mt-2">
+    <span class="text-sm font-semibold font-gray text-gray-600 text-center mt-2">
       <%= chronic_illness.name %>
-    </div>
+    </span>
   </div>
 </div>

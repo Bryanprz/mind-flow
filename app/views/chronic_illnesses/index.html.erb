@@ -11,9 +11,11 @@
     <h1 class="font-bold text-2xl">What chronic issues do you want to focus on?</h1>
   </div>
 
-  <div id="chronic_illnesses" class="w-full max-w-lg grid grid-cols-5 gap-6 items-start justify-items-center">
+  <div id="chronic_illnesses" class="md:w-2/3 lg:w-1/2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-7 items-start justify-items-center">
     <% @chronic_illnesses.each do |chronic_illness| %>
-      <%= render chronic_illness %>
+      <div class="mt-5">
+        <%= render chronic_illness %>
+      </div>
     <% end %>
   </div>
 </div>
