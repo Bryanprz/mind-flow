@@ -15,7 +15,7 @@
 
       <div
           id="chronic_illnesses"
-          class="grid grid-cols-3 w-full gap-20">
+          class="grid grid-cols-2 md:grid-cols-3 w-full gap-9 sm:gap-20 justify-items-center">
 
         <% @chronic_illnesses.each do |chronic_illness| %>
           <div class="mt-5">
@@ -25,7 +25,7 @@
       </div>
 
       <div class="mt-8">
-        <%= form.submit "Next", class: "btn btn-primary" %>
+        <%= form.submit "Next", class: "btn btn-primary text-white" %>
       </div>
     </div>
   <% end %>
