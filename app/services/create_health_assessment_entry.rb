@@ -22,8 +22,6 @@ class CreateHealthAssessmentEntry
     if chronic_illness_ids.present?
       chronic_illnesses = ChronicIllness.where(id: chronic_illness_ids)
       @assessment_entry.chronic_illnesses = chronic_illnesses
-    else
-      @assessment_entry.chronic_illnesses.clear
     end
   end
 
