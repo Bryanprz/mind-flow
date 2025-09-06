@@ -15,13 +15,28 @@ development:
   queue:
     <<: *default
     database: db/development_queue.sqlite3
+    migrations_paths: db/queue_migrate
   cable:
     <<: *default
     database: db/development_cable.sqlite3
+    migrations_paths: db/cable_migrate
 
 test:
-  <<: *default
-  database: db/test.sqlite3
+  primary:
+    <<: *default
+    database: db/test_primary.sqlite3
+  cache:
+    <<: *default
+    database: db/test_cache.sqlite3
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: db/test_queue.sqlite3
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *default
+    database: db/test_cable.sqlite3
+    migrations_paths: db/cable_migrate
 
 production:
   primary:

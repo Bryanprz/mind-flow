@@ -1,7 +1,7 @@
 <div id="<%= dom_id chronic_illness %>" class="flex items-center space-x-4">
   <% if local_assigns.has_key?(:form) && form.present? %>
     <%= form.check_box :chronic_illness_ids, { multiple: true, class: "hidden peer", id: "chronic_illness_ids_#{chronic_illness.id}" }, chronic_illness.id, nil %>
-    <%= form.label "chronic_illness_ids_#{chronic_illness.id}", class: "flex flex-col items-center w-36 h-36 cursor-pointer rounded-lg p-2 transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-md active:scale-95 active:shadow-inner" do %>
+    <%= form.label "chronic_illness_ids_#{chronic_illness.id}", class: "flex flex-col items-center w-36 h-36 cursor-pointer rounded-lg p-2 transition-all duration-200 ease-in-out hover:-translate-y-1 hover:ring-2 hover:ring-offset-2 hover:ring-primary hover:scale-105 active:scale-95" do %>
       <% if chronic_illness.icon.present? %>
         <%= image_tag "icons/#{chronic_illness.icon}", alt: chronic_illness.name, class: "w-36 h-36 object-contain" %>
       <% end %>
