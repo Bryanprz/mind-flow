@@ -1,6 +1,6 @@
-### **Title: Design Doc: Modeling Prakruti and Vikruti Healing Plans using Inheritance**
+### **Design Doc: Modeling Prakruti and Vikruti Healing Plans using Inheritance**
 
-**Author:** Bryan Prz
+**Author:** Bryan Perez
 **Date:** 2025-09-05
 **Status:** Implemented
 
