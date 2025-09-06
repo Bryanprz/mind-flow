@@ -37,7 +37,7 @@ Rails.application.routes.draw do
 
   post 'assessment/answer', to: 'health_assessments#answer_question', as: :answer_assessment_question
   post 'assessment/back', to: 'health_assessments#go_back_question', as: :go_back_assessment_question
-  post 'assessment/submit', to: 'health_assessments#submit_answers', as: :submit_assessment_answers
+  post 'health_assessments/:health_assessment_id/submit_answers', to: 'health_assessments#submit_answers', as: :health_assessment_submit_answers
   get 'assessment/results', to: 'health_assessments#show_results', as: 'assessment_results'
   get 'assessment/current_imbalance_results', to: 'health_assessments#current_imbalance_results', as: 'current_imbalance_results'
 

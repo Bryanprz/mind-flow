@@ -17,7 +17,7 @@ class HealthAssessmentsController < ApplicationController
 
   def start_assessment(assessment_type)
     @health_assessment = HealthAssessment.find_by(assessment_type: assessment_type)
-    session[:chronic_illness_id] = params[:chronic_illness_id] if params[:chronic_illness_id].present?
+    @chronic_illnesses = ChronicIllness.all.order(:name)
 
     # Eager load all questions and their options to avoid N+1 queries
     @questions = @health_assessment.assessment_questions.includes(:assessment_options).order(:id)
@@ -26,63 +26,85 @@ class HealthAssessmentsController < ApplicationController
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
           "assessment_frame",
-          partial: "health_assessments/question",
+          "chronic_illnesses/index",
           locals: { 
-            questions: @questions
+            chronic_illnesses: @chronic_illnesses
           }
         )
       end
       format.json do
-        render json: {
-          questions: @questions.as_json(include: :assessment_options)
-        }
+        render json: { chronic_illnesses: @chronic_illnesses.as_json(only: [:id, :name, :description, :icon] )}
       end
-      format.html { redirect_to prakruti_assessment_intro_path }
+      format.html { render 'chronic_illnesses/index' }
     end
   end
 
   def submit_answers
-    # Parse the JSON string if it's a string, otherwise use as is
-    answers_param = params.require(:answers)
-    answers = if answers_param.is_a?(String)
-                JSON.parse(answers_param, symbolize_names: true)
-              else
-                answers_param.map { |a| a.permit(:question_id, :option_id).to_h.symbolize_keys }
-              end
+    if params[:chronic_illness_ids].present?
+      session[:chronic_illness_ids] = params[:chronic_illness_ids].reject(&:blank?)
+      @questions = @health_assessment.assessment_questions.includes(:assessment_options).order(:id)
 
-    @assessment_entry = CreateHealthAssessmentEntry.call(
-      health_assessment: @health_assessment,
-      answers: answers,
-      chronic_illness_id: session[:chronic_illness_id]
-    )
-
-    # Determine and apply the appropriate healing protocol based on the assessment type
-    if Current.user
-      CreateHealingPlan.new(Current.user, @health_assessment).call
-    else
-      # Store the entry ID in the session for the results page to find.
-      session[:assessment_entry_id] = @assessment_entry.id
-    end
-
-    respond_to do |format|
-      format.turbo_stream do
-        redirect_path = if @assessment_entry.is_a?(VikrutiEntry)
-                          current_imbalance_results_path
-                        else
-                          assessment_results_path
-                        end
-        render turbo_stream: turbo_stream.replace('main_content_area',
-          partial: 'health_assessments/analyzing',
-          locals: { redirect_path: redirect_path }
-        )
-      end
-      format.html do
-        if @assessment_entry.is_a?(VikrutiEntry)
-          redirect_to current_imbalance_results_path
-        else
-          redirect_to assessment_results_path
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "assessment_frame",
+            partial: "health_assessments/question",
+            locals: { questions: @questions, health_assessment: @health_assessment }
+          )
+        end
+        format.html do
+          render "health_assessments/questions", locals: { questions: @questions, health_assessment: @health_assessment }
         end
       end
+    elsif params[:answers].present?
+      # Parse the JSON string if it's a string, otherwise use as is
+      answers_param = params.require(:answers)
+      answers = if answers_param.is_a?(String)
+                  JSON.parse(answers_param, symbolize_names: true)
+                else
+                  answers_param.map { |a| a.permit(:question_id, :option_id).to_h.symbolize_keys }
+                end
+
+      @assessment_entry = CreateHealthAssessmentEntry.call(
+        health_assessment: @health_assessment,
+        answers: answers,
+        chronic_illness_ids: session[:chronic_illness_ids]
+      )
+
+      # Clean up session
+      session.delete(:chronic_illness_ids)
+
+      # Determine and apply the appropriate healing protocol based on the assessment type
+      if Current.user
+        CreateHealingPlan.new(Current.user, @health_assessment).call
+      else
+        # Store the entry ID in the session for the results page to find.
+        session[:assessment_entry_id] = @assessment_entry.id
+      end
+
+      respond_to do |format|
+        format.turbo_stream do
+          redirect_path = if @assessment_entry.is_a?(VikrutiEntry)
+                            current_imbalance_results_path
+                          else
+                            assessment_results_path
+                          end
+          render turbo_stream: turbo_stream.replace('main_content_area',
+            partial: 'health_assessments/analyzing',
+            locals: { redirect_path: redirect_path }
+          )
+        end
+        format.html do
+          if @assessment_entry.is_a?(VikrutiEntry)
+            redirect_to current_imbalance_results_path
+          else
+            redirect_to assessment_results_path
+          end
+        end
+      end
+    else
+      # Handle case where neither is present, maybe redirect with an error
+      redirect_to root_path, alert: "Invalid submission."
     end
   end
 

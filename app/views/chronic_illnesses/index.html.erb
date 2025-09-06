@@ -1,24 +1,32 @@
-<% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
+<turbo-frame id="assessment_frame">
+  <% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
 
-<div class="w-full flex flex-col items-center">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
+  <%= form_with(url: health_assessment_submit_answers_path(@health_assessment), method: :post) do |form| %>
+    <div class="w-full flex flex-col items-center">
+      <% if notice.present? %>
+        <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+      <% end %>
 
-  <% content_for :title, "Chronic illnesses" %>
+      <% content_for :title, "Chronic illnesses" %>
 
-  <div class="text-center mb-8">
-    <h1 class="font-bold text-2xl mb-5 mt-3">What chronic issues do you want to focus on?</h1>
-  </div>
-
-  <div 
-    id="chronic_illnesses" 
-    class="md:w-2/3 lg:w-1/2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-7 sm:gap-20 items-start justify-items-center"
-    >
-    <% @chronic_illnesses.each do |chronic_illness| %>
-      <div class="mt-5">
-        <%= render chronic_illness %>
+      <div class="text-center mb-8">
+        <h1 class="font-bold text-2xl mb-5 mt-3">What chronic issues do you want to focus on?</h1>
       </div>
-    <% end %>
-  </div>
-</div>
+
+      <div
+          id="chronic_illnesses"
+          class="md:w-2/3 lg:w-1/2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-7 sm:gap-20 items-start justify-items-center">
+
+        <% @chronic_illnesses.each do |chronic_illness| %>
+          <div class="mt-5">
+            <%= render partial: 'chronic_illnesses/chronic_illness', locals: { chronic_illness: chronic_illness, form: form } %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="mt-8">
+        <%= form.submit "Next", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</turbo-frame>

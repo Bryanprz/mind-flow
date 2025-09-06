@@ -21,10 +21,9 @@
 
       <!-- Form for submission -->
       <%= form_with(
-        url: submit_assessment_answers_path,
+        url: health_assessment_submit_answers_path(questions.first.health_assessment_id),
         method: :post,
         class: "flex flex-col flex-grow",
-        data: { turbo_frame: "main_content_area", turbo: true },
         format: :turbo_stream
       ) do |form| %>
         <%= form.hidden_field :health_assessment_id, value: questions.first.health_assessment_id %>
