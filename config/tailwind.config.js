@@ -80,6 +80,7 @@ module.exports = {
     'h-32',
     'h-36',
     'h-40',
+    'w-[40rem]',
     {
       pattern: /(alert|btn|badge|text|bg)-(success|error|warning|info|primary|secondary|accent|neutral)/,
     },
