@@ -56,8 +56,8 @@ class HealthAssessmentsController < ApplicationController
         end
       end
     elsif params[:reason_for_visit].present?
-      binding.pry
       @questions = @health_assessment.assessment_questions.includes(:assessment_options).order(:id)
+      session[:reason_for_visit] = params[:reason_for_visit]
 
       respond_to do |format|
         format.turbo_stream do
@@ -68,11 +68,10 @@ class HealthAssessmentsController < ApplicationController
           )
         end
         format.html do
-          render "health_assessments/questions", locals: { questions: @questions, health_assessment: @health_assessment }
+          render "health_assessments/question", locals: { questions: @questions, health_assessment: @health_assessment }
         end
       end
     elsif params[:answers].present?
-      binding.pry
       # Parse the JSON string if it's a string, otherwise use as is
       answers_param = params.require(:answers)
       answers = if answers_param.is_a?(String)
@@ -85,10 +84,12 @@ class HealthAssessmentsController < ApplicationController
         health_assessment: @health_assessment,
         answers: answers,
         chronic_illness_ids: session[:chronic_illness_ids],
+        reason_for_visit: session[:reason_for_visit]
       )
 
       # Clean up session
       session.delete(:chronic_illness_ids)
+      session.delete(:reason_for_visit)
 
       # Determine and apply the appropriate healing protocol based on the assessment type
       if Current.user
@@ -105,7 +106,7 @@ class HealthAssessmentsController < ApplicationController
                           else
                             assessment_results_path
                           end
-          render turbo_stream: turbo_stream.replace('main_content_area',
+          render turbo_stream: turbo_stream.replace('assessment_frame',
             partial: 'health_assessments/analyzing',
             locals: { redirect_path: redirect_path }
           )
