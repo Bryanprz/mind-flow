@@ -10,8 +10,8 @@
       data: { turbo: true }
     ) do |form| %>
       <div class="form-control w-full">
-        <%= form.label :reason, "What is the main reason for your visit today?", class: "label" %>
-        <%= form.text_area :reason, class: "textarea textarea-bordered h-64", placeholder: "e.g., I have trouble sleeping and low energy." %>
+        <%= form.label :reason_for_visit, "What is the main reason for your visit today?", class: "label" %>
+        <%= form.text_area :reason_for_visit, class: "textarea textarea-bordered h-64", placeholder: "e.g., I have trouble sleeping and low energy." %>
       </div>
       <div class="card-actions justify-end mt-4">
         <%= form.submit "Submit Reason", class: "btn btn-primary text-white" %>
