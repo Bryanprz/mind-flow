@@ -1,20 +1,7 @@
-<%# TODO 
-make the dashboard diverse in its presentation of data
-
-add instance vars
-  - prakruti info (primary dosha)
-  - vikruti info (current imbalance - chronic illnesses)
-  - food (for recommending) (list or other)
-  - herbs (for recommending)
-  - cures (for recommending)
-  - lifestyle (for recommending)
-
-%>
 <% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-4' %>
 
 <%= render 'sidebar' %>
 <div class="w-full mx-auto space-y-6 flex flex-col" data-controller="modal">
-
   <% if Current.user&.prakruti %>
     <!-- First Row - 3 equal columns -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">

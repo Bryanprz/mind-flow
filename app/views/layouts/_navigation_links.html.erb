@@ -1,9 +1,8 @@
 <li><%= link_to "Dashboard", dashboard_path, class: nav_link_class(dashboard_path) %></li>
 <li><%= link_to "Healing Plan", my_healing_plan_path, class: nav_link_class(my_healing_plan_path) %></li>
 
-<li><%= link_to "Cures", cures_path, class: nav_link_class(cures_path) %></li>
-<li><%= link_to "Lifestyle", lifestyle_plans_path, class: nav_link_class(lifestyle_plans_path) %></li>
-<li><%= link_to "Books", books_path, class: nav_link_class(books_path) %></li>
+<li><%= link_to "Community", "#", class: nav_link_class(cures_path) %></li>
+<li><%= link_to "Classroom", "#", class: nav_link_class(lifestyle_plans_path) %></li>
 
 <% if Current.user&.admin? %>
   <li class="text-info"><%= link_to "Admin", admin_root_path %></li>
