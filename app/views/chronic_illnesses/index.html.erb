@@ -3,10 +3,6 @@
 
   <%= form_with(url: health_assessment_submit_answers_path(@health_assessment), method: :post) do |form| %>
     <div class="w-full flex flex-col items-center p-8">
-      <% if notice.present? %>
-        <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-      <% end %>
-
       <% content_for :title, "Chronic illnesses" %>
 
       <div class="text-center mb-5">

@@ -1,5 +1,6 @@
 class DashboardsController < ApplicationController
   before_action :require_prakruti_assessment, only: [:show]
+
   def show
   end
 
@@ -7,7 +8,7 @@ class DashboardsController < ApplicationController
 
   def require_prakruti_assessment
     unless Current.user&.prakruti_entry and Current.user&.prakruti_plans
-      redirect_to prakruti_assessment_intro_path, notice: "Please complete this assessment to access your Dashboard."
+      redirect_to start_prakruti_assessment_path, notice: "Please complete this assessment to access your Dashboard."
     end
   end
 end
