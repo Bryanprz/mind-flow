@@ -12,7 +12,7 @@
       ) do |form| %>
       <div class="form-control w-full">
         <%= form.label :reason_for_visit, "What is the main reason for your visit today?", class: "label mt-4" %>
-        <%= form.rich_text_area :reason_for_visit, class: "textarea textarea-bordered h-64", placeholder: "e.g., I have trouble sleeping and low energy.", style: "height: 20rem;", toolbar: false %>
+        <%= form.rich_text_area :reason_for_visit, class: "textarea textarea-bordered", placeholder: "e.g., I have trouble sleeping and low energy.", style: "height: 20rem;" %>
       </div>
       <div class="card-actions justify-end mt-4">
         <%= form.submit "Submit Reason", class: "btn btn-primary text-white" %>
