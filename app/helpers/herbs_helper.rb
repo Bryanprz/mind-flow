@@ -1,2 +1,0 @@
-module HerbsHelper
-end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_07_023016) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_07_073117) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -119,6 +119,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_023016) do
     t.string "icon"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "root_cause"
   end
 
   create_table "cures", force: :cascade do |t|
@@ -150,6 +151,36 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_023016) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "dosha_aggravating_foods", force: :cascade do |t|
+    t.integer "dosha_id", null: false
+    t.string "name"
+    t.text "description"
+    t.text "recommendations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dosha_id"], name: "index_dosha_aggravating_foods_on_dosha_id"
+  end
+
+  create_table "dosha_healing_foods", force: :cascade do |t|
+    t.integer "dosha_id", null: false
+    t.string "name"
+    t.text "description"
+    t.text "recommendations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dosha_id"], name: "index_dosha_healing_foods_on_dosha_id"
+  end
+
+  create_table "dosha_healing_herbs", force: :cascade do |t|
+    t.integer "dosha_id", null: false
+    t.string "name"
+    t.text "description"
+    t.text "recommendations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dosha_id"], name: "index_dosha_healing_herbs_on_dosha_id"
+  end
+
   create_table "doshas", force: :cascade do |t|
     t.string "name"
     t.text "core_qualities"
@@ -161,36 +192,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_023016) do
     t.string "color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "general_recommendations"
     t.index ["name"], name: "index_doshas_on_name", unique: true
-  end
-
-  create_table "foods", force: :cascade do |t|
-    t.string "name"
-    t.string "recommendation"
-    t.string "contraindication"
-    t.text "details"
-    t.json "elements", default: []
-    t.json "recipes", default: []
-    t.integer "rasa_taste"
-    t.text "virya_potency"
-    t.text "vipaka_post_digestive_effect"
-    t.string "prabhava_special_action"
-    t.integer "guna_quality"
-    t.text "samskara_preparation"
-    t.text "habitat_and_source"
-    t.integer "form_of_intake"
-    t.text "samyoga_combination"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "healing_plan_foods", force: :cascade do |t|
-    t.integer "healing_plan_id", null: false
-    t.integer "food_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["food_id"], name: "index_healing_plan_foods_on_food_id"
-    t.index ["healing_plan_id"], name: "index_healing_plan_foods_on_healing_plan_id"
   end
 
   create_table "healing_plan_logs", force: :cascade do |t|
@@ -234,13 +237,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_023016) do
     t.string "name"
     t.text "description"
     t.integer "assessment_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "herbs", force: :cascade do |t|
-    t.string "name"
-    t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -350,8 +346,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_023016) do
   add_foreign_key "assessment_chronic_illnesses", "chronic_illnesses"
   add_foreign_key "assessment_options", "assessment_questions"
   add_foreign_key "assessment_questions", "health_assessments"
-  add_foreign_key "healing_plan_foods", "foods"
-  add_foreign_key "healing_plan_foods", "healing_plans"
+  add_foreign_key "dosha_aggravating_foods", "doshas"
+  add_foreign_key "dosha_healing_foods", "doshas"
+  add_foreign_key "dosha_healing_herbs", "doshas"
   add_foreign_key "healing_plan_logs", "healing_plans"
   add_foreign_key "healing_plan_templates", "doshas"
   add_foreign_key "healing_plans", "healing_plan_templates"

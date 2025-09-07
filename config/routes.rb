@@ -2,10 +2,9 @@ Rails.application.routes.draw do
   resources :chronic_illnesses
   namespace :admin do
     root "dashboard#index"
-    resources :foods
+    
     resources :users do
       resources :healing_plans
-      resources :healing_plan_foods
     end
   end
 
@@ -16,8 +15,8 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   resources :lifestyle_plans
   resources :cures
-  resources :herbs
-  resources :foods
+  
+  
   resources :users
   resources :healing_plans, except: [:new, :show] do
     collection do

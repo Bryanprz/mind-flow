@@ -129,7 +129,8 @@ class HealthAssessmentsController < ApplicationController
     # @assessment_entry is loaded by the set_assessment_entry before_action
     render "health_assessments/results", locals: {
       assessment_entry: @assessment_entry,
-      primary_dosha: @assessment_entry.primary_dosha, 
+      primary_dosha: @assessment_entry.primary_dosha,
+      chronic_illnesses: @assessment_entry.chronic_illnesses,
       current_user: current_user
     }
   end

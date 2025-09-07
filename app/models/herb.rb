@@ -1,2 +1,0 @@
-class Herb < ApplicationRecord
-end
