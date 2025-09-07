@@ -166,7 +166,8 @@ class HealthAssessmentsController < ApplicationController
   def set_assessment_entry
     if Current.user
       # For authenticated users, find the most recent assessment entry
-      @assessment_entry = Current.user.assessment_entries.order(created_at: :desc).first
+      @assessment_entry = Current.user.prakruti_entry
+      # @assessment_entry = Current.user.assessment_entries.order(created_at: :desc).first
     elsif session[:assessment_entry_id].present?
       # For unauthenticated users, load from session
       @assessment_entry = AssessmentEntry.find_by(id: session[:assessment_entry_id])
