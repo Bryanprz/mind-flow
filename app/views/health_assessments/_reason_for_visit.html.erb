@@ -1,0 +1,21 @@
+<div class="card w-full max-w-lg mx-auto bg-base-100 border border-gray-300 mt-9 mb-8">
+  <div class="card-body">
+    <h2 class="card-title text-lg">Reason for Visit</h2>
+    <p class="italic text-sm text-gray-500">
+      To help us understand your unique journey, please share as much as you can about your condition. Think about when it began, how long it's been present, what seems to trigger it, and what brings you relief. Every detail helps us tailor the best support for you!
+    </p>
+    <%= form_with(
+      url: health_assessment_submit_answers_path(@health_assessment),
+      method: :post,
+      data: { turbo: true }
+    ) do |form| %>
+      <div class="form-control w-full">
+        <%= form.label :reason, "What is the main reason for your visit today?", class: "label" %>
+        <%= form.text_area :reason, class: "textarea textarea-bordered h-64", placeholder: "e.g., I have trouble sleeping and low energy." %>
+      </div>
+      <div class="card-actions justify-end mt-4">
+        <%= form.submit "Submit Reason", class: "btn btn-primary text-white" %>
+      </div>
+    <% end %>
+  </div>
+</div>

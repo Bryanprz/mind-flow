@@ -81,6 +81,7 @@ module.exports = {
     'h-36',
     'h-40',
     'w-[40rem]',
+    'mb-8',
     {
       pattern: /(alert|btn|badge|text|bg)-(success|error|warning|info|primary|secondary|accent|neutral)/,
     },

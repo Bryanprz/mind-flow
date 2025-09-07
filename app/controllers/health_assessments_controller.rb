@@ -42,6 +42,21 @@ class HealthAssessmentsController < ApplicationController
   def submit_answers
     if params[:chronic_illness_ids].present?
       session[:chronic_illness_ids] = params[:chronic_illness_ids].reject(&:blank?)
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "assessment_frame",
+            partial: "health_assessments/reason_for_visit",
+            locals: { health_assessment: @health_assessment }
+          )
+        end
+        format.html do
+          render "health_assessments/reason_for_visit", locals: { health_assessment: @health_assessment }
+        end
+      end
+    elsif params[:reason_for_visit].present?
+      binding.pry
       @questions = @health_assessment.assessment_questions.includes(:assessment_options).order(:id)
 
       respond_to do |format|
@@ -57,6 +72,7 @@ class HealthAssessmentsController < ApplicationController
         end
       end
     elsif params[:answers].present?
+      binding.pry
       # Parse the JSON string if it's a string, otherwise use as is
       answers_param = params.require(:answers)
       answers = if answers_param.is_a?(String)
@@ -68,7 +84,7 @@ class HealthAssessmentsController < ApplicationController
       @assessment_entry = CreateHealthAssessmentEntry.call(
         health_assessment: @health_assessment,
         answers: answers,
-        chronic_illness_ids: session[:chronic_illness_ids]
+        chronic_illness_ids: session[:chronic_illness_ids],
       )
 
       # Clean up session
