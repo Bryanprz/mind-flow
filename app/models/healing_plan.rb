@@ -8,7 +8,7 @@ class HealingPlan < ApplicationRecord
   belongs_to :healing_plan_template
   has_many :plan_sections, dependent: :destroy
   has_many :plan_items, through: :plan_sections
-  has_many :healing_plan_logs, dependent: :destroy
+  has_many :logs, class_name: 'HealingPlanLog', dependent: :destroy
   alias_method :sections, :plan_sections
   alias_method :items, :plan_items
 

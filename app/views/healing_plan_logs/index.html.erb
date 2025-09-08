@@ -1,0 +1,42 @@
+<% content_for :main_container_class, 'w-full flex-1 bg-base-200 p-8' %>
+<% content_for :title, "Healing Plan Logs" %>
+
+<div class="w-full flex flex-col items-center">
+  <div class="max-w-4xl mx-auto w-full space-y-6 flex-grow">
+    <div class="flex flex-col items-center justify-between">
+      <h1 class="font-bold text-4xl">Healing Plan Logs</h1>
+    </div>
+
+    <table class="table bg-base-100">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Version</th>
+          <th>Active</th>
+          <th>User</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @healing_plans_logs.each_with_index do |healing_plan_log, index| %>
+          <tr>
+            <th><%= index + 1 %></th>
+            <td><%= healing_plan_log.name %></td>
+            <td><%= healing_plan_log.type %></td>
+            <td><%= truncate(healing_plan_log.description, length: 50) %></td>
+            <td><%= healing_plan_log.version %></td>
+            <td><%= healing_plan_log.is_active ? 'Yes' : 'No' %></td>
+            <td><%= healing_plan_log.user.name %></td>
+            <td><%= link_to "Show Details", "#", class: "btn btn-secondary btn-xs" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+      </tfoot>
+    </table>
+  </div>
+  <%= link_to "Daily Check-in", my_healing_plan_path, class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium mt-5" %>
+</div>

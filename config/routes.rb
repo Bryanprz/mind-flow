@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :chronic_illnesses
+  resources :healing_plan_logs
   namespace :admin do
     root "dashboard#index"
     
