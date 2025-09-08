@@ -1,27 +1,14 @@
-<div class="drawer lg:drawer-open">
-  <!-- Toggle button (for mobile) -->
-  <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
-  
-  <div class="drawer-content flex flex-col">
-    <!-- Page content -->
-    <label for="sidebar-toggle" class="btn btn-primary drawer-button lg:hidden">
-      Open sidebar
-    </label>
-    <div class="p-6">
-      <h1 class="text-2xl font-bold">Main Content</h1>
-      <p class="mt-2">This is your main page area.</p>
-    </div>
-  </div> 
-  
-  <div class="drawer-side">
-    <label for="sidebar-toggle" class="drawer-overlay"></label>
-    <ul class="menu p-4 w-64 min-h-full bg-base-200 text-base-content">
-      <!-- Sidebar items -->
-      <li><a>Dashboard</a></li>
-      <li><a>Healing Plan</a></li>
-      <li><a>Profile</a></li>
-      <li><a>Settings</a></li>
-      <li><a>Logout</a></li>
-    </ul>
-  </div>
+<!-- Toggle button (for mobile) -->
+<input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+
+<div class="drawer-side" style="height: auto;">
+  <label for="sidebar-toggle" class="drawer-overlay"></label>
+  <ul class="menu p-4 w-[11rem] mt-5 bg-base-200 text-base-content">
+    <!-- Sidebar items -->
+    <li><a>Dashboard</a></li>
+    <li><%= link_to "Healing Plan", my_healing_plan_path %></li>
+    <li><a>Profile</a></li>
+    <li><a>Settings</a></li>
+    <li><a>Logout</a></li>
+  </ul>
 </div>
