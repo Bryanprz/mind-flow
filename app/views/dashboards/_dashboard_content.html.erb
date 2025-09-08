@@ -6,119 +6,15 @@
   <% if Current.user&.prakruti %>
     <!-- First Row - 3 equal columns -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-      <!-- Card 1: User Profile -->
-      <div class="card bg-base-100 border border-gray-300">
-        <div class="card-body flex flex-col gap-4">
-          <h2 class="card-title text-lg">
-            "Original Nature Blueprint": 
-            <span class="font-bold <%= dosha_color_class(Current.user.prakruti) %>"><%= Current.user.prakruti.name.titleize %>
-            </span>
-          </h2>
-
-          <div class="text-md">
-            <%= t("doshas.#{Current.user.prakruti.name.downcase}.description") %>
-          </div>
-
-          <ul class="list-disc pl-5 space-y-2 text-md">
-            <% t("doshas.#{Current.user.prakruti.name.downcase}.bullet_points").each do |dosha_point| %>
-              <li><%= dosha_point %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Card 2: Quick Actions -->
-      <div class="card bg-base-100 border border-gray-300">
-        <div class="card-body">
-          <div class="flex-grow flex flex-col gap-4">
-            <h2 class="card-title text-lg">Healing Plan</h2>
-            <div class="text-md"><%= t("doshas.#{Current.user.prakruti.name.downcase}.healing_plan_description") %></div>
-            <% if Current.user.vikruti %>
-              <div class="text-md"><%= t("doshas.#{Current.user.vikruti.name.downcase}.healing_plan_description") %></div>
-            <% end %>
-          </div>
-
-          <% if Current.user.healing_plans.any? %>
-            <%= link_to "🌿 My Healing Plan", my_healing_plan_path, class: "btn btn-accent text-md w-full text-black mt-2 font-semibold" %>
-          <% end %>
-
-        </div>
-      </div>
-
-      <!-- Card 3: Current Imbalance -->
-      <div class="card bg-base-100 border border-gray-300">
-        <div class="card-body flex flex-col gap-4">
-          <% if Current.user.vikruti %>
-            <h2 class="card-title text-lg ">
-              Current Imbalance:
-              <span class="<%= dosha_color_class(Current.user.vikruti) %>">
-                <%= Current.user.vikruti.name.titleize %>
-              </span>
-            </h2>
-
-            <div class="text-md">
-              <%= t("doshas.#{Current.user.vikruti.name.downcase}.description") %>
-            </div>
-
-            <div class="text-md">
-              <%= t("doshas.#{Current.user.vikruti.name.downcase}.out_of_balance") %>
-            </div>
-
-            <ul class="list-disc pl-5 space-y-2 text-md">
-              <% t("doshas.#{Current.user.vikruti.name.downcase}.bullet_points").each do |dosha_point| %> 
-                <li><%= dosha_point %></li>
-              <% end %>
-            </ul>
-          <% elsif Current.user.vikruti_plans.empty? %>
-            <div class="flex-grow flex flex-col gap-4">
-              <h2 class="card-title text-lg ">
-                Current Imbalance Assessment
-              </h2>
-
-              <div class="text-md">
-                <%= t("vikruti_assessment_description") %>
-              </div>
-            </div>
-
-            <%= link_to "View Completed Assessment", assessment_results_path, class: "btn btn-primary w-full text-white mt-2 font-semibold" %>
-            <%= link_to "Check My Balance", vikruti_assessment_intro_path, class: "btn btn-primary w-full text-white mt-2 font-semibold" %>
-          <% end %>
-        </div>
-      </div>
+      <%= render 'dashboards/user_profile_card' %>
+      <%= render 'dashboards/healing_plan_card' %>
+      <%= render 'dashboards/current_imbalance_card' %>
     </div>
 
     <!-- Second Row - 2 equal columns -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Card 4: Key Characteristics -->
-      <div class="card bg-base-100 border border-gray-300">
-        <div class="card-body">
-          <h2 class="card-title text-lg">Key Characteristics</h2>
-          <ul class="list-disc pl-5 space-y-2">
-            <% t("doshas.#{Current.user.prakruti.name.downcase}.key_characteristics").each do |characteristic| %>
-              <li><%= characteristic %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Card 5: Balanced State -->
-      <div class="card bg-base-100 border border-gray-300">
-        <div class="card-body">
-          <h2 class="card-title text-lg">Balanced State</h2>
-          <div class="grid grid-cols-1 gap-4">
-            <div>
-              <h3 class="font-semibold text-md">When in Balance</h3>
-              <p><%= t("doshas.#{Current.user.prakruti.name.downcase}.in_balance") %></p>
-            </div>
-            <div>
-              <h3 class="font-semibold text-md">When Unbalanced</h3>
-              <p><%= t("doshas.#{Current.user.prakruti.name.downcase}.out_of_balance") %></p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <%= render 'dashboards/key_characteristics_card' %>
+      <%= render 'dashboards/balanced_state_card' %>
     </div>
   <% end %>
 </div>
-

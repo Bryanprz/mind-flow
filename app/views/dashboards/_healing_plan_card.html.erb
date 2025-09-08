@@ -1,0 +1,17 @@
+<!-- Card 2: Quick Actions -->
+<div class="card bg-base-100 border border-gray-300">
+  <div class="card-body">
+    <div class="flex-grow flex flex-col gap-4">
+      <h2 class="card-title text-lg">Healing Plan</h2>
+      <div class="text-md"><%= t("doshas.#{Current.user.prakruti.name.downcase}.healing_plan_description") %></div>
+      <% if Current.user.vikruti %>
+        <div class="text-md"><%= t("doshas.#{Current.user.vikruti.name.downcase}.healing_plan_description") %></div>
+      <% end %>
+    </div>
+
+    <% if Current.user.healing_plans.any? %>
+      <%= link_to "🌿 My Healing Plan", my_healing_plan_path, class: "btn btn-accent text-md w-full text-black mt-2 font-semibold" %>
+    <% end %>
+
+  </div>
+</div>

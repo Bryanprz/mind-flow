@@ -1,0 +1,11 @@
+<!-- Card 4: Key Characteristics -->
+<div class="card bg-base-100 border border-gray-300">
+  <div class="card-body">
+    <h2 class="card-title text-lg">Key Characteristics</h2>
+    <ul class="list-disc pl-5 space-y-2">
+      <% t("doshas.#{Current.user.prakruti.name.downcase}.key_characteristics").each do |characteristic| %>
+        <li><%= characteristic %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

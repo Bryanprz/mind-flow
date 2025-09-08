@@ -1,0 +1,20 @@
+<!-- Card 1: User Profile -->
+<div class="card bg-base-100 border border-gray-300">
+  <div class="card-body flex flex-col gap-4">
+    <h2 class="card-title text-lg">
+      "Original Nature Blueprint": 
+      <span class="font-bold <%= dosha_color_class(Current.user.prakruti) %>"><%= Current.user.prakruti.name.titleize %>
+      </span>
+    </h2>
+
+    <div class="text-md">
+      <%= t("doshas.#{Current.user.prakruti.name.downcase}.description") %>
+    </div>
+
+    <ul class="list-disc pl-5 space-y-2 text-md">
+      <% t("doshas.#{Current.user.prakruti.name.downcase}.bullet_points").each do |dosha_point| %>
+        <li><%= dosha_point %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
