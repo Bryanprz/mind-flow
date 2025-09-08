@@ -24,6 +24,7 @@ class HealingPlan < ApplicationRecord
   def set_details_from_template
     self.name ||= healing_plan_template.name
     self.description ||= healing_plan_template.description
+    self.duration_type ||= healing_plan_template.duration_type
     self.is_active = true # New plans are active by default
   end
 

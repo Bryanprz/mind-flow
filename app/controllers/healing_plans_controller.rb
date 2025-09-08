@@ -1,6 +1,6 @@
 class HealingPlansController < ApplicationController
   before_action :set_healing_plan, only: %i[ edit update destroy ]
-  before_action :require_admin, only: [:index, :new]
+  before_action :require_admin, only: [:new]
 
   def index
     # Scope plans to the current user and order by version

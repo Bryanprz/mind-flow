@@ -9,9 +9,9 @@
 
     <div id="healing_plans" class="w-full max-w-lg mx-auto">
       <% @healing_plans.each do |healing_plan| %>
-        <%= render healing_plan %>
+        <%= render "healing_plans/healing_plan", healing_plan: healing_plan %>
       <% end %>
     </div>
   </div>
-  <%= link_to "New healing plan", new_healing_plan_path, class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium mt-5" %>
+  <%= link_to "Daily Check-in", my_healing_plan_path, class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium mt-5" %>
 </div>

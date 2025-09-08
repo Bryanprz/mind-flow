@@ -25,7 +25,7 @@ class AssessmentEntry < ApplicationRecord
 
   def primary_dosha
     dosha_highest_value = results.max_by { |_, value| value }&.first
-    dosha_name_for_lookup = case dosha_highest_value.to_sym
+    dosha_name_for_lookup = case dosha_highest_value&.to_sym
                             when :vata then Dosha::VATA
                             when :pitta then Dosha::PITTA
                             when :kapha then Dosha::KAPHA
