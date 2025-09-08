@@ -34,19 +34,23 @@ forced to the full height of the padded area.
         </div>
 
         <div class="text-base">
-          <span class="font-semibold text-gray-600 text-sm mb-2">Balanced</span><br>
-          <p class="mt-2">
+          <span class="font-semibold text-gray-600 text-sm">Balanced</span><br>
+          <p class="mt-1">
             <%= t("doshas.#{primary_dosha.name.downcase}.in_balance") %>
           </p>
         </div>
 
         <div class="text-base">
           <span class="font-semibold text-gray-600 text-sm">Unbalanced</span><br>
-          <p class="mt-2">
+          <p class="mt-1">
             <%= t("doshas.#{primary_dosha.name.downcase}.out_of_balance") %>
           </p>
         </div>
       </div>
+    </div>
+
+    <div class="card w-full bg-base-100 border border-gray-300  flex flex-col p-6">
+      <%= render 'health_assessments/vata_info_card_content', primary_dosha: primary_dosha %>
     </div>
 
     <div class="card w-full bg-base-100 border border-gray-300  flex flex-col p-6">
