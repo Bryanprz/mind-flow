@@ -50,7 +50,17 @@ forced to the full height of the padded area.
     </div>
 
     <div class="card w-full bg-base-100 border border-gray-300  flex flex-col p-6">
-      <%= render 'health_assessments/vata_info_card_content', primary_dosha: primary_dosha %>
+      <% case primary_dosha.name.downcase %>
+      <% when 'vata' %>
+        <%= render 'health_assessments/vata_info_card_content', primary_dosha: primary_dosha %>
+      <% when 'pitta' %>
+        <%= render 'health_assessments/pitta_info_card_content', primary_dosha: primary_dosha %>
+      <% when 'kapha' %>
+        <%= render 'health_assessments/kapha_info_card_content', primary_dosha: primary_dosha %>
+      <% else %>
+        <%# Handle other doshas or a default case if necessary %>
+        <p>Information for <%= primary_dosha.name.titleize %> is not yet available.</p>
+      <% end %>
     </div>
 
     <div class="card w-full bg-base-100 border border-gray-300  flex flex-col p-6">
