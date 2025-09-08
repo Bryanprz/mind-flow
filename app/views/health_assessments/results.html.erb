@@ -2,8 +2,7 @@
     This sets the classes for the main layout container.
     It will grow, have a background color, and center its content.
   %>
-<% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-4' %>
-
+<% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200' %>
 
 <%#
     This is our custom card.
@@ -12,12 +11,12 @@ forced to the full height of the padded area.
     %>
 <div class="max-w-xl mx-auto flex flex-col p-6 text-gray-700" data-controller="modal">
   <%# Card Content %>
-  <h2 class="text-md text-gray-600 tracking-normal text-center mb-9">Your Assessment Results</h2>
+  <h2 class="text-md text-gray-600 tracking-wide text-center mb-5 mt-2">Your Assessment Results</h2>
 
   <div class="flex flex-col items-center gap-6 w-full">
 
     <div class="card w-full bg-base-100 border border-gray-300  flex flex-col p-6">
-      <h3 class="p-2 text-lg text-center font-semibold mb-1">Your Primary Dosha is <span class="<%= dosha_color_class(primary_dosha) %>"><%= primary_dosha.name.titleize %></span></h3>
+      <h3 class="p-2 text-lg text-center font-semibold mb-1">🧬 Your Primary Dosha is <span class="<%= dosha_color_class(primary_dosha) %>"><%= primary_dosha.name.titleize %></span></h3>
 
       <div class="p-2 flex flex-col gap-5">
         <p class="text-base">Your original nature, or Prakruti, is defined by your primary dosha. Understanding your Prakruti helps you align with your natural strengths and address potential imbalances.</p>
@@ -68,7 +67,7 @@ forced to the full height of the padded area.
     </div>
 
     <div class="card w-full bg-base-100 border border-gray-300  flex flex-col p-6">
-      <h3 class="text-lg font-semibold mb-2">Foods that Heal (<%= primary_dosha.name.titleize %>)</h3>
+      <h3 class="text-lg font-semibold mb-2">🍲 Foods that Heal for <%= primary_dosha.name.titleize %></h3>
       <div class="p-2 flex flex-col gap-5">
         <ul class="list-disc list-inside space-y-1 text-base">
           <% primary_dosha.healing_foods.each do |food| %>
@@ -79,7 +78,7 @@ forced to the full height of the padded area.
     </div>
 
     <div class="card w-full bg-base-100 border border-gray-300  flex flex-col p-6">
-      <h3 class="text-lg font-semibold mb-2">Foods that Aggravate (<%= primary_dosha.name.titleize %>)</h3>
+      <h3 class="text-lg font-semibold mb-2">❌ Foods that Aggravate for <%= primary_dosha.name.titleize %></h3>
       <div class="p-2 flex flex-col gap-5">
         <ul class="list-disc list-inside space-y-1 text-base">
           <% primary_dosha.aggravating_foods.each do |food| %>
@@ -90,7 +89,7 @@ forced to the full height of the padded area.
     </div>
 
     <div class="card w-full bg-base-100 border border-gray-300  flex flex-col p-6">
-      <h3 class="text-lg font-semibold mb-2">Healing Herbs (<%= primary_dosha.name.titleize %>)</h3>
+      <h3 class="text-lg font-semibold mb-2">🌿 Healing Herbs for <%= primary_dosha.name.titleize %></h3>
       <div class="p-2 flex flex-col gap-5">
         <ul class="list-disc list-inside space-y-1 text-base">
           <% primary_dosha.healing_herbs.each do |herb| %>
@@ -101,7 +100,7 @@ forced to the full height of the padded area.
     </div>
 
     <div class="card w-full bg-base-100 border border-gray-300  flex flex-col p-6">
-      <h3 class="text-lg font-semibold mb-1">General Recommendations (<%= primary_dosha.name.titleize %>)</h3>
+      <h3 class="text-lg font-semibold mb-1">✅ General Recommendations for <%= primary_dosha.name.titleize %></h3>
       <div class="p-2 flex flex-col gap-5">
         <% t("doshas.#{primary_dosha.name.downcase}.healing_plan.sections").each do |section| %>
           <h4 class="text-md font-semibold mt-4"><%= section[:name] %></h4>
