@@ -9,6 +9,7 @@ class HealingPlan < ApplicationRecord
   has_many :plan_sections, dependent: :destroy
   has_many :plan_items, through: :plan_sections
   has_many :logs, class_name: 'HealingPlanLog', dependent: :destroy
+  alias_method :healing_plan_logs, :logs
   alias_method :sections, :plan_sections
   alias_method :items, :plan_items
 
@@ -16,7 +17,7 @@ class HealingPlan < ApplicationRecord
   after_create :build_from_template
 
   def todays_log
-    healing_plan_logs.find_by(date: Date.current)
+    logs.find_by(date: Date.current)
   end
 
   private

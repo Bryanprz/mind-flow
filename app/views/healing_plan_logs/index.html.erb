@@ -9,27 +9,23 @@
 
     <table class="table bg-base-100">
       <thead>
-        <tr>
+        <tr class="text-center">
           <th></th>
-          <th>Name</th>
-          <th>Type</th>
+          <th>Date</th>
+          <th>Completed</th>
           <th>Description</th>
-          <th>Version</th>
+          <th>Focus</th>
           <th>Active</th>
-          <th>User</th>
-          <th></th>
         </tr>
       </thead>
       <tbody>
-        <% @healing_plans_logs.each_with_index do |healing_plan_log, index| %>
-          <tr>
+        <% @healing_plan_logs.each_with_index do |healing_plan_log, index| %>
+          <tr class="text-center">
             <th><%= index + 1 %></th>
-            <td><%= healing_plan_log.name %></td>
-            <td><%= healing_plan_log.type %></td>
-            <td><%= truncate(healing_plan_log.description, length: 50) %></td>
-            <td><%= healing_plan_log.version %></td>
-            <td><%= healing_plan_log.is_active ? 'Yes' : 'No' %></td>
-            <td><%= healing_plan_log.user.name %></td>
+            <td><%= healing_plan_log.date.strftime("%b %d") %></td>
+            <td><%= healing_plan_log.completed_at ? '✅' : '❌' %></td>
+            <td><%= healing_plan_log.journal_entry.first(15).concat("...") %></td>
+            <td><%#= truncate(healing_plan_log.description, length: 50) %></td>
             <td><%= link_to "Show Details", "#", class: "btn btn-secondary btn-xs" %></td>
           </tr>
         <% end %>

@@ -17,13 +17,13 @@ hector = User.find_or_create_by!(email_address: 'h@h') do |user|
   user.password_confirmation = 'asdfasdf'
 end
 
-# Set Hector's prakruti
-vata_dosha = Dosha.find_by(name: Dosha::VATA)
-if vata_dosha
-  hector.update(prakruti: vata_dosha)
-  puts "Set Hector's prakruti to Vata."
+# Set Hector's prakruti to Kapha
+kapha_dosha = Dosha.find_by(name: Dosha::KAPHA)
+if kapha_dosha
+  hector.update(prakruti: kapha_dosha)
+  puts "Set Hector's prakruti to Kapha."
 else
-  puts "Could not find Vata dosha. Skipping setting Hector's prakruti."
+  puts "Could not find Kapha dosha. Skipping setting Hector's prakruti."
 end
 
 # Create a PrakrutiPlan for Hector if he doesn't have one
@@ -40,44 +40,27 @@ if hector.prakruti_plans.empty?
       healing_plan_template_id: template.id
     )
 
-    # Create 5 healing plan logs for the PrakrutiPlan
-    5.times do |i|
-      prakruti_plan.healing_plan_logs.create!(
+    # Create 7 healing plan logs for the PrakrutiPlan
+    journal_entries = [
+      "Feeling energetic and focused today. The plan is working well.",
+      "A bit tired today, but sticking to the plan. Cravings for sweets were strong.",
+      "Slept well and woke up refreshed. My digestion feels much better.",
+      "Feeling a little bloated after lunch. Need to be more mindful of my food choices.",
+      "Had a great day! Felt balanced and calm throughout.",
+      "Struggled with some anxiety today. The breathing exercises helped a lot.",
+      "Feeling grateful for this journey. Noticing positive changes in my body and mind."
+    ]
+    7.times do |i|
+      prakruti_plan.logs.create!(
         date: Date.today - i.days,
-        journal_entry: "Log entry for day #{i + 1}."
+        journal_entry: journal_entries[i]
       )
     end
-    puts "Created PrakrutiPlan and 5 HealingPlanLogs for Hector."
+    puts "Created PrakrutiPlan and 7 HealingPlanLogs for Hector."
   end
 else
   puts "Hector already has a PrakrutiPlan."
 end
-
-# Create 4 VikrutiPlans for Hector
-if hector.vikruti_plans.count < 4
-  vikruti_templates = [
-    "Pitta Balancing Plan - Daily",
-    "Kapha Balancing Plan - Daily",
-    "Vata Balancing Plan - Three Month",
-    "Pitta Balancing Plan - Three Month"
-  ]
-
-  vikruti_templates.each do |template_name|
-    template = HealingPlanTemplate.find_by(name: template_name)
-    if template
-      hector.vikruti_plans.create!(
-        healing_plan_template_id: template.id,
-        description: "A Vikruti plan based on #{template_name}",
-        version: 1,
-        is_active: false
-      )
-      puts "Created VikrutiPlan for Hector based on #{template_name}"
-    else
-      puts "Could not find template #{template_name}. Skipping VikrutiPlan creation."
-    end
-  end
-end
-
 
 # Create a PrakrutiEntry for Hector if he doesn't have one
 if hector.prakruti_entry.nil?
@@ -85,10 +68,17 @@ if hector.prakruti_entry.nil?
   if prakruti_assessment.nil?
     puts "Could not find the 'Prakruti Assessment' template. Skipping PrakrutiEntry creation for Hector."
   else
-    hector.create_prakruti_entry!(
+    prakruti_entry = hector.create_prakruti_entry!(
       health_assessment: prakruti_assessment
     )
-    puts "Created PrakrutiEntry for Hector."
+    # Add some answers to the entry to make it more realistic
+    questions = prakruti_assessment.assessment_questions
+    questions.each do |question|
+      # Pick the third option (Kapha) for each question
+      option = question.assessment_options[2]
+      prakruti_entry.answers.create!(assessment_option_id: option.id) if option
+    end
+    puts "Created PrakrutiEntry for Hector and added some answers."
   end
 else
   puts "Hector already has a PrakrutiEntry."
