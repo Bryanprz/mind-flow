@@ -24,4 +24,24 @@ class User < ApplicationRecord
   def active_healing_plan
     healing_plans.find_by(is_active: true)
   end
+
+  def daily_check_in_streak
+    "30 days"
+  end
+
+  def completed_healing_plan_logs_count
+    25
+  end
+
+  def total_healing_plan_logs_count
+    30
+  end
+
+  def healing_plan_progress_percentage
+    83
+  end
+
+  def has_checked_in_today?
+    false # Stub: Returns false to show the button initially
+  end
 end

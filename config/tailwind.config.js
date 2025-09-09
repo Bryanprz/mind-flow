@@ -83,6 +83,12 @@ module.exports = {
     'w-[40rem]',
     'mb-8',
     'rounded-xl',
+    'timeline', 
+    'timeline-vertical', 
+    'timeline-start', 
+    'timeline-box', 
+    'timeline-middle', 
+    'timeline-end',
     {
       pattern: /(alert|btn|badge|text|bg)-(success|error|warning|info|primary|secondary|accent|neutral)/,
     },
