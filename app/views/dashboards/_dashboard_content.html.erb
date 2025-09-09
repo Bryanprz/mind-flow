@@ -1,20 +1,20 @@
-<div class="drawer-content text-md space-y-4" data-controller="modal">
+<div class="drawer-content text-md space-y-3" data-controller="modal">
   <label for="sidebar-toggle" class="btn btn-primary drawer-button lg:hidden">
     Open sidebar
   </label>
 
   <% if Current.user&.prakruti %>
     <!-- First Row - 3 equal columns -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
       <%= render 'dashboards/user_daily_streak_card' %>
       <%= render 'dashboards/healing_plan_card' %>
     </div>
 
     <!-- Second Row - 2 equal columns -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
       <%= render 'dashboards/current_imbalance_card' %>
       <%= render 'dashboards/balanced_state_card' %>
-      <%= render 'dashboards/user_profile_card' %>
+      <%= render 'dashboards/social_feed_card' %>
     </div>
   <% end %>
 </div>

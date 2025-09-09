@@ -6,7 +6,7 @@
   <div class="card bg-base-100 border border-gray-300">
     <div class="card-body">
       <h1 class="card-title text-2xl">
-        <%= Current.user.first_name.titleize %>, here is your personalized Daily Healing Plan 
+        <%= Current.user.first_name.titleize %>, your Daily Plan for <%= Date.current.strftime("%B %d") %>
       </h1>
       <p class="text-base mt-3">
       Designed to balance <%= Current.user.prakruti&.name&.titleize || 'your unique constitution' %>, restore digestion, and calm your energy.
