@@ -2,55 +2,30 @@ class CreateHealingPlan
   def initialize(user, health_assessment)
     @user = user
     @health_assessment = health_assessment
+    @templates = determine_templates_for_user
+    @plan_model = determine_plan_model
   end
 
   def call
-    templates = determine_templates_for_user
+    create_plans
+  end
 
-    if templates.empty?
-      Rails.logger.warn "Could not determine any healing plan templates for user #{user.id}"
-      return []
-    end
+  def create_plans
+    plan_duration_types = [
+      HealingPlan::DAILY, 
+      HealingPlan::THREE_MONTH, 
+      HealingPlan::SIX_MONTH
+    ]
 
-    # Sort templates by the enum order to ensure 'daily' is first.
-    sorted_templates = templates.sort_by { |t| HealingPlanTemplate.duration_types[t.duration_type] }
-
-    first_template = sorted_templates.first
-    plan_model = determine_plan_model
-    return [] unless plan_model && first_template
-
-    # Create the first plan to establish the lineage ID
-    first_plan = plan_model.create(
-      user: user,
-      healing_plan_template: first_template,
-      version: 1,
-      duration_type: first_template.duration_type
-    )
-
-    unless first_plan.persisted?
-      Rails.logger.error "Failed to create the first healing plan for user #{user.id}, template #{first_template.id}"
-      return []
-    end
-
-    # Use the first plan's ID as the lineage ID for the set
-    lineage_id = first_plan.id.to_s
-    first_plan.update!(lineage_id: lineage_id)
-
-    created_plans = [first_plan]
-
-    # Create the rest of the plans
-    sorted_templates.drop(1).each do |template|
+    plan_duration_types.each do |duration_type|
+      template = templates.find_by(duration_type: duration_type)
       plan = plan_model.create(
         user: user,
         healing_plan_template: template,
         version: 1,
-        duration_type: template.duration_type,
-        lineage_id: lineage_id
+        duration_type: duration_type
       )
-      created_plans << plan if plan.persisted?
     end
-
-    created_plans
   end
 
   private
@@ -79,5 +54,5 @@ class CreateHealingPlan
     end
   end
 
-  attr_reader :user, :health_assessment
+  attr_reader :user, :health_assessment, :templates, :plan_model 
 end

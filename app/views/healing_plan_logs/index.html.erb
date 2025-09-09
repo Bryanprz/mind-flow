@@ -24,7 +24,7 @@
             <th><%= index + 1 %></th>
             <td><%= healing_plan_log.date.strftime("%b %d") %></td>
             <td><%= healing_plan_log.completed_at ? '✅' : '❌' %></td>
-            <td><%= healing_plan_log.journal_entry.first(15).concat("...") %></td>
+            <td><%= healing_plan_log.journal_entry&.first(15)&.concat("...") %></td>
             <td><%#= truncate(healing_plan_log.description, length: 50) %></td>
             <td><%= link_to "Show Details", "#", class: "btn btn-secondary btn-xs" %></td>
           </tr>
