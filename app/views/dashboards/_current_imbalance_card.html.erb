@@ -3,7 +3,7 @@
   <div class="card-body flex flex-col gap-2 p-4 px-6">
     <% if Current.user.vikruti %>
       <h2 class="card-title text-lg ">
-        Current Imbalance:
+        AI Chat
         <span class="<%= dosha_color_class(Current.user.vikruti) %>">
           <%= Current.user.vikruti.name.titleize %>
         </span>
@@ -25,7 +25,7 @@
     <% elsif Current.user.vikruti_plans.empty? %>
       <div class="flex-grow flex flex-col gap-4">
         <h2 class="card-title text-lg ">
-          Current Imbalance Assessment
+          AI Chat
         </h2>
 
         <div class="text-md">

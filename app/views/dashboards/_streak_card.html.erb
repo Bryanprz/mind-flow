@@ -1,0 +1,77 @@
+<%# Streak Card - Displays the user's current streak and progress %>
+<div class="card bg-base-100 border border-gray-300">
+  <div class="card-body p-4">
+    <h3 class="card-title text-lg flex items-center gap-2">
+      <span class="text-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+        </svg>
+      </span>
+      Daily Streak
+    </h3>
+    
+    <div class="flex flex-col items-center justify-center py-4">
+      <!-- Current Streak -->
+      <div class="text-4xl font-bold text-center mb-2">
+        <%= @healing_plan.current_streak %>
+      </div>
+      <div class="text-sm text-gray-500 mb-4">
+day<%= 's' if @healing_plan.current_streak != 1 %> in a row
+      </div>
+      
+      <!-- Progress Bar -->
+      <% if (progress = @healing_plan.milestone_progress) > 0 %>
+        <div class="w-full max-w-xs mb-2">
+          <div class="text-xs text-gray-500 mb-1 text-center">
+            <% if (next_milestone = @healing_plan.next_milestone) %>
+              <%= (@healing_plan.milestone_progress * 100).round %>% to next milestone
+            <% end %>
+          </div>
+          <progress 
+            class="progress progress-primary w-full h-2" 
+            value="<%= progress * 100 %>" 
+            max="100">
+          </progress>
+          <div class="text-xs text-gray-500 text-center mt-1">
+            <% if next_milestone %>
+              <%= next_milestone %> days
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      
+      <!-- Milestone Message -->
+      <% if (milestone_msg = @healing_plan.milestone_message).present? %>
+        <div class="alert alert-success shadow-lg mt-4">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span><%= milestone_msg %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    
+    <!-- Tip -->
+    <div class="text-xs text-gray-500 text-center mt-2">
+      Complete your daily plan to keep your streak going!
+    </div>
+    
+    <!-- Check-in Button -->
+    <div class="w-full flex justify-center">
+      <% if Current.user&.has_checked_in_today? %>
+        <div class="alert alert-success shadow-sm px-2">
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-sm">You've checked in today!</span>
+          </div>
+        </div>
+      <% else %>
+        <%= link_to "✨ Check-in for Today", my_healing_plan_path, class: "btn btn-md btn-primary w-1/2 text-white" %>
+      <% end %>
+    </div>
+  </div>
+</div>
