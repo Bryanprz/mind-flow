@@ -16,6 +16,14 @@ class HealingPlan < ApplicationRecord
   before_create :set_details_from_template
   after_create :build_from_template
 
+  # for Cally calendar API
+  # return data as "2024-01-10 2024-01-20"
+  def completed_days_this_month
+    if duration_type == HealingPlan::DAILY
+      return logs.pluck(:date).map { |d| d.strftime("%Y-%m-%d") }.join(" ")
+    end
+  end
+
   def todays_log
     logs.find_by(date: Date.current)
   end

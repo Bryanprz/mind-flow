@@ -2,6 +2,7 @@ class DashboardsController < ApplicationController
   before_action :require_prakruti_assessment, only: [:show]
 
   def show
+    @healing_plan = Current.user.active_healing_plan
   end
 
   private

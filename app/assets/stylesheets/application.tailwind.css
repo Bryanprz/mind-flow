@@ -16,7 +16,7 @@
 }
 
 /* Styles moved from app/views/dashboards/_calendar_card.html.erb */
-calendar-range {
+calendar-multi {
   svg {
     height: 16px;
     width: 16px;
@@ -33,5 +33,5 @@ calendar-range {
 
 calendar-month {
   --color-accent: oklch(var(--p));
-  --color-text-on-accent: oklch(var(--pc));
+  --color-text-on-accent: #fff;
 }
