@@ -3,6 +3,8 @@ class DashboardsController < ApplicationController
 
   def show
     @healing_plan = Current.user.active_healing_plan
+    @todays_plan_log = @healing_plan.todays_log
+    @section_presenters = @healing_plan.plan_sections.map { |section| PlanSectionPresenter.new(section, @todays_plan_log) }
   end
 
   private
