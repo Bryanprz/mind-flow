@@ -9,3 +9,4 @@ import "turbo_stream_actions"
 
 import "trix"
 import "@rails/actiontext"
+import "cally"

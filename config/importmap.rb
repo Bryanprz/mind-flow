@@ -8,3 +8,4 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 pin "turbo_stream_actions"
 pin "trix"
 pin "@rails/actiontext", to: "actiontext.esm.js"
+pin "cally", to: "vendor/cally.js", preload: true
