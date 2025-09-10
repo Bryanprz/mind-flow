@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   get 'assessment/current_imbalance_results', to: 'health_assessments#current_imbalance_results', as: 'current_imbalance_results'
 
   get 'profile', to: 'users#show', as: :profile
+  get "ai/ask", to: "ai#ask"
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
