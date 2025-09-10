@@ -14,3 +14,24 @@
 .menu li > *:not(ul):not(.menu-title).active {
   @apply bg-success text-base-content; /* Use bg-base-200 for background and text-base-content for text color */
 }
+
+/* Styles moved from app/views/dashboards/_calendar_card.html.erb */
+calendar-range {
+  svg {
+    height: 16px;
+    width: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+  }
+
+  path {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+calendar-month {
+  --color-accent: oklch(var(--p));
+  --color-text-on-accent: oklch(var(--pc));
+}
