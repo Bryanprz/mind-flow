@@ -1,0 +1,6 @@
+<%= turbo_stream.append "chat_messages" do %>
+  <div class="chat chat-end">
+    <div class="chat-bubble chat-bubble-info"><%= @question %></div>
+  </div>
+<% end %>
+<%= turbo_stream.append "chat_messages", partial: "ai/thinking_indicator" %>
