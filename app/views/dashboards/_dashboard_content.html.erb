@@ -1,4 +1,4 @@
-<div class="drawer-content text-md space-y-3" data-controller="modal">
+<div class="drawer-content text-md space-y-3 pb-3" data-controller="modal">
   <label for="sidebar-toggle" class="btn btn-primary drawer-button lg:hidden">
     Open sidebar
   </label>
@@ -11,9 +11,8 @@
     </div>
 
     <!-- Second Row - 2 equal columns -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-      <%= render 'dashboards/current_imbalance_card' %>
-      <%= render 'dashboards/balanced_state_card' %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <%= render 'dashboards/ai_chat_card' %>
       <%= render 'dashboards/social_feed_card' %>
     </div>
   <% end %>

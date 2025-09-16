@@ -1,6 +1,6 @@
 class HealingPlanLog < ApplicationRecord
   belongs_to :healing_plan
-  has_many :plan_item_logs
+  has_many :plan_item_logs, dependent: :destroy
   has_one :user, through: :healing_plan
 
   def self.for_today(healing_plan)

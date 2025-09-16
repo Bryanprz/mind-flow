@@ -35,3 +35,12 @@ calendar-month {
   --color-accent: oklch(var(--p));
   --color-text-on-accent: #fff;
 }
+
+calendar-month::part(today) {
+  font-weight: bold;
+  color: oklch(var(--p));
+}
+
+calendar-month::part(selected) {
+  color: #fff;
+}
