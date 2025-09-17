@@ -1,6 +1,16 @@
 service: ancientherb
 image: bryanprz00/ancientherb
 
+accessories:
+  ollama:
+    image: ollama/ollama:latest
+    host: 138.197.45.148 # Deploy on the same server as the web app
+    volumes:
+      - "/var/lib/ollama:/root/.ollama" # Persistent storage for models
+    env:
+      clear:
+        OLLAMA_HOST: 0.0.0.0 # Allow external connections
+
 servers:
   web:
     hosts:

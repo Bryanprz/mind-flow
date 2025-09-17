@@ -3,7 +3,8 @@ class AiChatJob < ApplicationJob
 
   def perform(question)
     # Call the AI service to get the answer
-    chat = RubyLLM.chat(provider: 'ollama')
+    ollama_host = ENV.fetch("OLLAMA_URL", "http://localhost:11434") # Fallback for local dev
+    chat = RubyLLM.chat(provider: 'ollama', host: ollama_host)
     response = chat.ask(question)
     answer = response.content
 
