@@ -18,7 +18,7 @@ local:
 google:
   service: GCS
   project: ancient-herb
-  keyfile: <%= ENV["GCS_KEYFILE_JSON"].strip %> 
+  keyfile: <%= ENV["GCS_KEYFILE_JSON"].strip %>
   bucket:  ancientherb-social-posts
 
 # Use bin/rails credentials:edit to set the Azure Storage secret (as azure_storage:storage_access_key)
