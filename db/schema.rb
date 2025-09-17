@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_09_052458) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_16_230554) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -306,6 +306,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_09_052458) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "social_posts", force: :cascade do |t|
+    t.text "content"
+    t.integer "user_id", null: false
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_social_posts_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "name"
@@ -362,5 +371,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_09_052458) do
   add_foreign_key "plan_section_templates", "healing_plan_templates"
   add_foreign_key "plan_sections", "healing_plans"
   add_foreign_key "sessions", "users"
+  add_foreign_key "social_posts", "users"
   add_foreign_key "verses", "books"
 end

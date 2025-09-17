@@ -1,0 +1,39 @@
+<div class="card bg-base-100 mb-4 border border-gray-300">
+  <div class="card-body">
+    <div class="flex items-center mb-2">
+      <div class="avatar placeholder mr-3">
+        <div class="bg-neutral text-neutral-content rounded-full w-8 h-8">
+          <span class="text-xs"><%= social_post.user.email_address[0].upcase %></span>
+        </div>
+      </div>
+      <div>
+        <h2 class="card-title text-sm"><%= social_post.user.email_address %></h2>
+        <p class="text-xs text-gray-500"><%= time_ago_in_words(social_post.published_at) %> ago</p>
+      </div>
+    </div>
+
+    <p class="mb-4"><%= social_post.content %></p>
+
+    <% if social_post.media.attached? %>
+      <div class="grid grid-cols-1 gap-2">
+        <% social_post.media.each do |media_item| %>
+          <% if media_item.image? %>
+            <%= image_tag media_item, class: "rounded-lg w-full" %>
+          <% elsif media_item.video? %>
+            <video controls class="rounded-lg w-full">
+              <source src="<%= url_for(media_item) %>" type="<%= media_item.content_type %>">
+              Your browser does not support the video tag.
+            </video>
+          <% else %>
+            <div class="flex items-center p-3 border rounded-lg bg-base-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              <%= link_to media_item.filename, url_for(media_item), target: "_blank", class: "text-blue-500 hover:underline" %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
