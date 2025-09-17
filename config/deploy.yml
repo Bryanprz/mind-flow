@@ -43,6 +43,7 @@ env:
     - GCP_PROJECT_ID
     - GCS_BUCKET_NAME
     - GCS_KEYFILE_JSON
+    - SECRET_KEY_BASE
 
 proxy:
   ssl: true
