@@ -36,6 +36,9 @@ env:
     RAILS_LOG_TO_STDOUT: true
   secret:
     - RAILS_MASTER_KEY
+    - GCP_PROJECT_ID
+    - GCS_BUCKET_NAME
+    - GCS_KEYFILE_JSON
 
 proxy:
   ssl: true
