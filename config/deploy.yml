@@ -50,15 +50,19 @@ proxy:
     timeout: 10
 readiness_delay: 30
 
-workers:
-  solid_queue:
-    hosts:
-      - 138.197.45.148 # Deploy on the same server as the web app
-    cmd: bundle exec rails solid_queue:start
-    env:
-      secret:
-        - RAILS_MASTER_KEY
-        - GCP_PROJECT_ID
-        - GCS_BUCKET_NAME
-        - GCS_KEYFILE_JSON # Assuming this is the correct name now
-        - OLLAMA_URL
+solid_queue_worker: # New service name
+  hosts:
+    - 138.197.45.148 # Deploy on the same server as the web app
+  cmd: bundle exec rails solid_queue:start
+  image: bryanprz00/ancientherb # Use the same image as the main app
+  env:
+    secret:
+      - RAILS_MASTER_KEY
+      - GCP_PROJECT_ID
+      - GCS_BUCKET_NAME
+      - GCS_KEYFILE_JSON
+      - OLLAMA_URL
+  volumes:
+    - "/var/lib/ancientherb/storage:/rails/storage" # If workers need access to Active Storage files
+
+
