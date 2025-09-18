@@ -30,34 +30,51 @@
     
     <!-- Suggested Questions -->
     <div class="grid grid-cols-1 gap-2 mt-4">
-      <%= form_with url: ai_ask_path, method: :post, class: "w-full" do |form| %>
-        <%= form.hidden_field :question, value: "What foods balance my dosha?" %>
-        <%= form.button "What foods balance my dosha?", class: "btn btn-sm btn-outline justify-start text-left text-sm w-full border-neutral text-neutral hover:bg-neutral hover:text-neutral-content" %>
-      <% end %>
-      <%= form_with url: ai_ask_path, method: :post, class: "w-full" do |form| %>
-        <%= form.hidden_field :question, value: "Suggest a morning routine for me" %>
-        <%= form.button "Suggest a morning routine for me", class: "btn btn-sm btn-outline justify-start text-left text-sm w-full border-neutral text-neutral hover:bg-neutral hover:text-neutral-content" %>
-      <% end %>
-      <%= form_with url: ai_ask_path, method: :post, class: "w-full" do |form| %>
-        <%= form.hidden_field :question, value: "How can I improve my sleep?" %>
-        <%= form.button "How can I improve my sleep?", class: "btn btn-sm btn-outline justify-start text-left text-sm w-full border-neutral text-neutral hover:bg-neutral hover:text-neutral-content" %>
+      <% if Rails.env.production? %>
+        <button class="btn btn-sm btn-outline justify-start text-left text-sm w-full border-neutral text-neutral hover:bg-neutral hover:text-neutral-content" onclick="alert('AI Chat coming soon!')">What foods balance my dosha?</button>
+        <button class="btn btn-sm btn-outline justify-start text-left text-sm w-full border-neutral text-neutral hover:bg-neutral hover:text-neutral-content" onclick="alert('AI Chat coming soon!')">Suggest a morning routine for me</button>
+        <button class="btn btn-sm btn-outline justify-start text-left text-sm w-full border-neutral text-neutral hover:bg-neutral hover:text-neutral-content" onclick="alert('AI Chat coming soon!')">How can I improve my sleep?</button>
+      <% else %>
+        <%= form_with url: ai_ask_path, method: :post, class: "w-full" do |form| %>
+          <%= form.hidden_field :question, value: "What foods balance my dosha?" %>
+          <%= form.button "What foods balance my dosha?", class: "btn btn-sm btn-outline justify-start text-left text-sm w-full border-neutral text-neutral hover:bg-neutral hover:text-neutral-content" %>
+        <% end %>
+        <%= form_with url: ai_ask_path, method: :post, class: "w-full" do |form| %>
+          <%= form.hidden_field :question, value: "Suggest a morning routine for me" %>
+          <%= form.button "Suggest a morning routine for me", class: "btn btn-sm btn-outline justify-start text-left text-sm w-full border-neutral text-neutral hover:bg-neutral hover:text-neutral-content" %>
+        <% end %>
+        <%= form_with url: ai_ask_path, method: :post, class: "w-full" do |form| %>
+          <%= form.hidden_field :question, value: "How can I improve my sleep?" %>
+          <%= form.button "How can I improve my sleep?", class: "btn btn-sm btn-outline justify-start text-left text-sm w-full border-neutral text-neutral hover:bg-neutral hover:text-neutral-content" %>
+        <% end %>
       <% end %>
     </div>
   </div>
-  
+
   <!-- Message Input -->
   <div class="p-3 border-t border-gray-200">
-    <%= form_with url: ai_ask_path, method: :post, data: { chat_target: "form", action: "turbo:submit-end->chat#clearForm" } do |form| %>
+    <% if Rails.env.production? %>
       <div class="relative">
-        <%= form.text_field :question, 
-            class: "input input-bordered w-full pr-12",
-            placeholder: "Ask me anything about your health..." %>
-        <%= form.button class: "absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary" do %>
+        <input type="text" class="input input-bordered w-full pr-12" placeholder="Ask me anything about your health..." disabled>
+        <button class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" onclick="alert('AI Chat coming soon!')">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
           </svg>
-        <% end %>
+        </button>
       </div>
+    <% else %>
+      <%= form_with url: ai_ask_path, method: :post, data: { chat_target: "form", action: "turbo:submit-end->chat#clearForm" } do |form| %>
+        <div class="relative">
+          <%= form.text_field :question,
+              class: "input input-bordered w-full pr-12",
+              placeholder: "Ask me anything about your health..." %>
+          <%= form.button class: "absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+            </svg>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>
