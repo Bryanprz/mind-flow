@@ -2,20 +2,62 @@
 
 <div class="container mx-auto px-4 py-8">
 
-  <div class="card w-full max-w-lg mx-auto bg-base-100 border border-gray-300">
+  <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300">
     <div class="card-body">
       <h2 class="card-title text-2xl mb-4">Healing Plan for <%= @user.name %></h2>
 
-      <div class="space-y-2">
-        <p><strong>Name:</strong> <%= @healing_plan.name %></p>
-        <p><strong>Description:</strong> <%= @healing_plan.description %></p>
-      </div>
+      <% if @healing_plan %>
+        <div class="space-y-4">
+          <p><strong>Plan Name:</strong> <%= @healing_plan.name %></p>
+          <p><strong>Description:</strong> <%= @healing_plan.description %></p>
 
-      <div class="card-actions justify-end mt-6 flex-nowrap">
-        <%= link_to "Edit", edit_admin_user_healing_plan_path(@user, @healing_plan.id), class: "btn btn-sm btn-secondary" %>
-        <%= link_to "Back to User", admin_user_path(@user), class: "btn btn-sm btn-ghost" %>
-        <%= button_to "Destroy", admin_user_healing_plan_path(@user, @healing_plan.id), method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this healing plan?" }, class: "btn btn-sm btn-error" %>
-      </div>
+          <div class="divider"></div>
+
+          <h3 class="text-xl font-bold mb-2">Overview (Focus Areas & Goals)</h3>
+          <% if @healing_plan.overview.present? %>
+            <ul class="list-disc list-inside">
+              <% (0..3).each do |index| %>
+                <% focus_area = @healing_plan.overview["focus_area_#{index}"] %>
+                <% goal = @healing_plan.overview["goal_#{index}"] %>
+                <% if focus_area.present? || goal.present? %>
+                  <li><strong>Focus Area <%= index + 1 %>:</strong> <%= focus_area %> - <strong>Goal:</strong> <%= goal %></li>
+                <% end %>
+              <% end %>
+            </ul>
+          <% else %>
+            <p>No overview data available.</p>
+          <% end %>
+
+          <div class="divider"></div>
+
+          <h3 class="text-xl font-bold mb-2">Other Plan Sections</h3>
+          <% @healing_plan.sections.order(:ordering).each do |section| %>
+            <% next if section.name == "Focus Areas" %> <%# Exclude the old Focus Areas section %>
+            <div class="collapse collapse-arrow border border-base-300 bg-base-200">
+              <input type="checkbox" id="section-<%= section.id %>" />
+              <label for="section-<%= section.id %>" class="collapse-title text-xl font-medium">
+                <%= section.name %>
+              </label>
+              <div class="collapse-content">
+                <ul class="list-disc list-inside">
+                  <% section.plan_items.order(:ordering).each do |item| %>
+                    <li><%= item.content %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="card-actions justify-end mt-6 flex-nowrap">
+          <%= link_to "Edit", edit_admin_user_healing_plan_path(@user, @healing_plan.id), class: "btn btn-sm btn-secondary" %>
+          <%= link_to "Back to User", admin_user_path(@user), class: "btn btn-sm btn-ghost" %>
+          <%= button_to "Destroy", admin_user_healing_plan_path(@user, @healing_plan.id), method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this healing plan?" }, class: "btn btn-sm btn-error" %>
+        </div>
+      <% else %>
+        <p>This user does not have an active healing plan.</p>
+        <%= link_to "Back to User", admin_user_path(@user), class: "btn btn-sm btn-ghost mt-4" %>
+      <% end %>
     </div>
   </div>
 </div>

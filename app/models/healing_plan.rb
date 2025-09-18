@@ -9,6 +9,11 @@ class HealingPlan < ApplicationRecord
   has_many :plan_sections, dependent: :destroy
   has_many :plan_items, through: :plan_sections
   has_many :logs, class_name: 'HealingPlanLog', dependent: :destroy
+
+  accepts_nested_attributes_for :plan_sections, allow_destroy: true
+
+  store_accessor :overview, *(0..3).map { |i| ["focus_area_#{i}", "goal_#{i}"] }.flatten
+
   alias_method :healing_plan_logs, :logs
   alias_method :sections, :plan_sections
   alias_method :items, :plan_items

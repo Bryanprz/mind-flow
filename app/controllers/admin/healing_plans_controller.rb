@@ -1,8 +1,14 @@
 class Admin::HealingPlansController < ApplicationController
   before_action :set_user, only: [:new, :create, :show, :edit, :update, :destroy]
-  before_action :set_healing_plan, only: [:show, :edit, :update, :destroy]
+  before_action :set_healing_plan, only: [:edit, :update, :destroy]
 
   def show
+    # @user is set by the set_user before_action
+    @healing_plan = @user.active_healing_plan
+
+    if @healing_plan.nil?
+      redirect_to admin_user_path(@user), alert: "This user does not have an active healing plan."
+    end
   end
 
   def new
@@ -50,6 +56,20 @@ class Admin::HealingPlansController < ApplicationController
   end
 
   def healing_plan_params
-    params.require(:healing_plan).permit(:name, :description)
+    params.require(@healing_plan.model_name.param_key).permit(
+      :name,
+      :description,
+      overview: {},
+      plan_sections_attributes: [
+        :id,
+        :_destroy,
+        :name,
+        plan_items_attributes: [
+          :id,
+          :_destroy,
+          :content
+        ]
+      ]
+    )
   end
 end

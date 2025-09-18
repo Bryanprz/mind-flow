@@ -19,12 +19,22 @@ class CreateHealingPlan
 
     plan_duration_types.each do |duration_type|
       template = templates.find_by(duration_type: duration_type)
-      plan = plan_model.create(
+      plan = plan_model.new(
         user: user,
         healing_plan_template: template,
         version: 1,
         duration_type: duration_type
       )
+
+      # Set default overview data
+      plan.overview = {
+        "focus_area_0" => "Sleep", "goal_0" => "Deeper rest",
+        "focus_area_1" => "Digestion", "goal_1" => "Improve Agni",
+        "focus_area_2" => "Energy", "goal_2" => "Maintain balance",
+        "focus_area_3" => "Emotions", "goal_3" => "Reduce anxiety"
+      }
+
+      plan.save # Explicitly save the plan
     end
   end
 

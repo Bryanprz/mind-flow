@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_16_230554) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_18_193904) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -228,6 +228,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_16_230554) do
     t.integer "healing_plan_template_id"
     t.string "type"
     t.integer "duration_type"
+    t.json "overview"
     t.index ["healing_plan_template_id"], name: "index_healing_plans_on_healing_plan_template_id"
     t.index ["type"], name: "index_healing_plans_on_type"
     t.index ["user_id"], name: "index_healing_plans_on_user_id"

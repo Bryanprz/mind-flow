@@ -8,7 +8,7 @@
         <%= Current.user.first_name.titleize %>, your Daily Plan for <%= @date.strftime("%B %d") %>
       </h1>
       <p class="text-base mt-3">
-      Designed to balance <%= Current.user.prakruti&.name&.titleize || 'your unique constitution' %>, restore digestion, and calm your energy.
+        <%= @healing_plan.description %>
       </p>
     </div>
   </div>

@@ -1,40 +1,107 @@
 <% content_for :main_container_class, 'bg-base-200' %>
 
-<div class="container mx-auto px-4 py-8 flex flex-col w-1/2 items-center">
-  <h1 class="text-center text-3xl font-bold mb-6">Editing Healing Plan for <br><%= @user.name %></h1>
+<div class="container mx-auto px-4 py-8">
 
-  <div class="card w-full max-w-lg mx-auto bg-base-100 border border-gray-300">
-    <div class="card-body">
-      <%= form_with(model: [:admin, @user, @healing_plan], local: true) do |form| %>
-        <% if @healing_plan.errors.any? %>
-          <div class="alert alert-error shadow-lg mb-4">
-            <div>
-              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span><%= pluralize(@healing_plan.errors.count, "error") %> prohibited this healing plan from being saved:</span>
-            </div>
-            <ul>
-              <% @healing_plan.errors.each do |error| %>
-                <li><%= error.full_message %></li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
+  <%= form_with(model: [:admin, @user, @healing_plan], url: admin_user_healing_plan_path(@user, @healing_plan)) do |form| %>
+    <% if @healing_plan.errors.any? %>
+      <div class="alert alert-error">
+        <ul>
+          <% @healing_plan.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6">
+      <div class="card-body">
+        <h2 class="card-title text-2xl mb-4">Edit Healing Plan for <%= @user.name %></h2>
 
         <div class="form-control">
           <%= form.label :name, class: "label" %>
-          <%= form.text_field :name, class: "input input-bordered w-full" %>
+          <%= form.text_field :name, class: "input input-bordered" %>
         </div>
 
-        <div class="form-control mt-4">
+        <div class="form-control">
           <%= form.label :description, class: "label" %>
-          <%= form.text_area :description, rows: 4, class: "textarea textarea-bordered w-full" %>
+          <%= form.text_area :description, class: "textarea textarea-bordered" %>
         </div>
+      </div>
+    </div>
 
-        <div class="card-actions justify-end mt-6">
-          <%= form.submit "Update Healing Plan", class: "btn btn-primary text-white" %>
-          <%= link_to "Cancel", admin_user_path(@user), class: "btn btn-ghost" %>
+    <h3 class="text-2xl font-bold mb-4 max-w-2xl mx-auto">Overview (Focus Areas & Goals)</h3>
+
+    <%= form.fields_for :overview do |overview_form| %>
+      <% (0..3).each do |index| %>
+        <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6">
+          <div class="card-body">
+            <div class="flex justify-between items-center mb-2">
+              <div class="form-control flex-grow mr-2">
+                <%= overview_form.label "focus_area_#{index}", "Focus Area #{index + 1}", class: "label" %>
+                <%= overview_form.text_field "focus_area_#{index}", class: "input input-bordered" %>
+              </div>
+              <div class="form-control flex-grow">
+                <%= overview_form.label "goal_#{index}", "Goal #{index + 1}", class: "label" %>
+                <%= overview_form.text_field "goal_#{index}", class: "input input-bordered" %>
+              </div>
+            </div>
+          </div>
         </div>
       <% end %>
+    <% end %>
+
+    <h3 class="text-2xl font-bold mb-4 max-w-2xl mx-auto">Other Plan Sections</h3>
+
+    <%= form.fields_for :plan_sections do |section_form| %>
+      <% # Exclude the "Focus Areas" section from this loop %>
+      <% next if section_form.object.name == "Focus Areas" %>
+      <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-2">
+            <div class="form-control flex-grow">
+              <%= section_form.label :name, "Section Name", class: "label" %>
+              <%= section_form.text_field :name, class: "input input-bordered" %>
+            </div>
+            <div class="ml-4">
+              <%= section_form.hidden_field :_destroy, value: section_form.object.marked_for_destruction? ? 1 : 0, id: "section_destroy_#{section_form.object.id}" %>
+              <button type="button" class="btn btn-ghost btn-sm text-error" onclick="document.getElementById('section_destroy_<%= section_form.object.id %>').value = 1; this.closest('.card').style.display = 'none';">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="divider mt-4 mb-2">Plan Items</div>
+
+          <% section_form.object.plan_items.order(:ordering).each do |item| %>
+            <%= section_form.fields_for :plan_items, item do |item_form| %>
+              <div class="flex justify-between items-center mb-2">
+                <div class="form-control flex-grow">
+                  <%= item_form.label :content, "Item Content", class: "label" %>
+                  <%= item_form.text_area :content, rows: 2, class: "textarea textarea-bordered" %>
+                </div>
+                <div class="ml-4">
+                  <%= item_form.hidden_field :_destroy, value: item_form.object.marked_for_destruction? ? 1 : 0, id: "item_destroy_#{item_form.object.id}" %>
+                  <button type="button" class="btn btn-ghost btn-sm text-error" onclick="document.getElementById('item_destroy_<%= item_form.object.id %>').value = 1; this.closest('.flex').style.display = 'none';">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+</div>
+</div>
+<% end %>
+<div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6">
+      <div class="card-body">
+        <div class="card-actions justify-end">
+          <%= form.submit "Update Healing Plan", class: "btn btn-primary" %>
+          <%= link_to "Cancel", admin_user_healing_plan_path(@user, @healing_plan), class: "btn btn-ghost" %>
+        </div>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
