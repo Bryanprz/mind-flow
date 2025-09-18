@@ -1,12 +1,11 @@
-<% todays_log = @healing_plan.todays_log %>
-<% completed_item_ids = todays_log&.completed_item_ids || [] %>
+<% completed_item_ids = @healing_plan_log&.completed_item_ids || [] %>
 
-<div class="max-w-[700px] mx-auto p-6 space-y-6" data-controller="healing-plan-progress" data-healing-plan-progress-healing-plan-id-value="<%= @healing_plan.id %>" data-healing-plan-progress-healing-plan-log-id-value="">
+<div class="max-w-[700px] mx-auto p-6 space-y-6" data-controller="healing-plan-progress" data-healing-plan-progress-healing-plan-id-value="<%= @healing_plan.id %>" data-healing-plan-progress-healing-plan-log-id-value="<%= @healing_plan_log&.id %>" data-healing-plan-progress-date-value="<%= @date.iso8601 %>">
   <!-- Hero / Intro -->
   <div class="card bg-base-100 border border-gray-300">
     <div class="card-body">
       <h1 class="card-title text-2xl">
-        <%= Current.user.first_name.titleize %>, your Daily Plan for <%= Date.current.strftime("%B %d") %>
+        <%= Current.user.first_name.titleize %>, your Daily Plan for <%= @date.strftime("%B %d") %>
       </h1>
       <p class="text-base mt-3">
       Designed to balance <%= Current.user.prakruti&.name&.titleize || 'your unique constitution' %>, restore digestion, and calm your energy.
@@ -168,13 +167,13 @@
           <% end %>
         <% end %>
       </div>
-      <% if todays_log&.journal_entry.present? %>
+      <% if @healing_plan_log&.journal_entry.present? %>
         <div data-healing-plan-progress-target="journalView">
           <p class="font-semibold mt-4">Your Journal Entry:</p>
-          <div class="prose max-w-none bg-base-200 rounded-lg p-3 my-2 mt-3"><%= todays_log.journal_entry %></div>
+          <div class="prose max-w-none bg-base-200 rounded-lg p-3 my-2 mt-3"><%= @healing_plan_log.journal_entry %></div>
           <button data-action="click->healing-plan-progress#editJournal" class="btn btn-sm btn-outline mt-3">Edit</button>
         </div>
-        <textarea data-healing-plan-progress-target="journal" class="textarea textarea-bordered w-full mt-3 hidden" placeholder="Journal: How did you feel today?"><%= todays_log.journal_entry %></textarea>
+        <textarea data-healing-plan-progress-target="journal" class="textarea textarea-bordered w-full mt-3 hidden" placeholder="Journal: How did you feel today?"><%= @healing_plan_log.journal_entry %></textarea>
       <% else %>
         <textarea data-healing-plan-progress-target="journal" class="textarea textarea-bordered w-full mt-3" placeholder="Journal: How did you feel today?"></textarea>
       <% end %>

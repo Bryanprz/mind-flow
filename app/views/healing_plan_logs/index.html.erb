@@ -26,7 +26,7 @@
             <td><%= healing_plan_log.completed_at ? '✅' : '❌' %></td>
             <td><%= healing_plan_log.journal_entry&.first(15)&.concat("...") %></td>
             <td><%#= truncate(healing_plan_log.description, length: 50) %></td>
-            <td><%= link_to "Show Details", "#", class: "btn btn-secondary btn-xs" %></td>
+            <td><%= link_to "Show Details", my_healing_plan_path(date: healing_plan_log.date), class: "btn btn-secondary btn-xs" %></td>
           </tr>
         <% end %>
       </tbody>

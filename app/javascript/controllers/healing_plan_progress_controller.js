@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["progress", "item", "journal", "journalView"]
-  static values = { healingPlanId: Number, healingPlanLogId: Number } // Added static values
+  static values = { healingPlanId: Number, healingPlanLogId: Number, date: String } // Added static values
 
   connect() {
     this.update()
@@ -120,7 +120,7 @@ export default class extends Controller {
           "Content-Type": "application/json",
           "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
         },
-        body: JSON.stringify({ healing_plan_id: this.healingPlanIdValue }) // Pass healingPlanId
+        body: JSON.stringify({ healing_plan_id: this.healingPlanIdValue, date: this.dateValue }) // Pass healingPlanId
       })
 
       if (response.ok) {

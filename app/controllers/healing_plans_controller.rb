@@ -19,6 +19,15 @@ class HealingPlansController < ApplicationController
 
     # Find the specific plan for the selected duration
     @healing_plan = plan_set.find_by(duration_type: @duration_type)
+
+    if @healing_plan.nil?
+      # Handle case where no plan is found for the duration type
+      redirect_to healing_plans_path, alert: "No healing plan found for the selected duration."
+      return
+    end
+
+    @date = params[:date] ? Time.zone.parse(params[:date]).to_date : Time.zone.today
+    @healing_plan_log = @healing_plan.healing_plan_logs.find_or_create_by(date: @date)
   end
 
   def new
@@ -73,7 +82,8 @@ class HealingPlansController < ApplicationController
 
   def create_daily_log
     healing_plan = HealingPlan.find(params[:healing_plan_id])
-    daily_log = HealingPlanLog.for_today(healing_plan)
+    date = params[:date] ? Date.parse(params[:date]) : Date.current
+    daily_log = HealingPlanLog.for_date(healing_plan, date)
 
     if daily_log.persisted?
       render json: { healing_plan_log_id: daily_log.id }, status: :created
