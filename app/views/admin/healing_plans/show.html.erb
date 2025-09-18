@@ -12,9 +12,9 @@
       </div>
 
       <div class="card-actions justify-end mt-6 flex-nowrap">
-        <%= link_to "Edit", edit_admin_user_healing_plan_path(@user, @healing_plan), class: "btn btn-sm btn-secondary" %>
+        <%= link_to "Edit", edit_admin_user_healing_plan_path(@user, @healing_plan.id), class: "btn btn-sm btn-secondary" %>
         <%= link_to "Back to User", admin_user_path(@user), class: "btn btn-sm btn-ghost" %>
-        <%= button_to "Destroy", [:admin, @user, @healing_plan], method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this healing plan?" }, class: "btn btn-sm btn-error" %>
+        <%= button_to "Destroy", admin_user_healing_plan_path(@user, @healing_plan.id), method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this healing plan?" }, class: "btn btn-sm btn-error" %>
       </div>
     </div>
   </div>
