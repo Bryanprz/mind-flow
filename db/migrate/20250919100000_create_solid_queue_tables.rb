@@ -36,7 +36,6 @@ class CreateSolidQueueTables < ActiveRecord::Migration[7.1]
     create_table :solid_queue_failed_executions do |t|
       t.references :job, null: false, index: { unique: true }
       t.text :error
-      t.datetime :created_at, null: false
       t.timestamps
     end
 
