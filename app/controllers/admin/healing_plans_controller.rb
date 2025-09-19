@@ -59,6 +59,10 @@ class Admin::HealingPlansController < ApplicationController
     params.require(@healing_plan.model_name.param_key).permit(
       :name,
       :description,
+      :focus_area_0, :goal_0,
+      :focus_area_1, :goal_1,
+      :focus_area_2, :goal_2,
+      :focus_area_3, :goal_3,
       overview: {},
       plan_sections_attributes: [
         :id,

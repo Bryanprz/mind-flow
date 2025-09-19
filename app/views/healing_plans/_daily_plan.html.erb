@@ -36,15 +36,17 @@
             <tr>
               <th>Focus Area</th>
               <th>Goal</th>
-              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <% @healing_plan.sections.find { |s| s.name == "Focus Areas" }&.plan_items.each do |item| %>
+            <% overview = @healing_plan.overview || {} %>
+            <% (0..3).each do |index| %>
+              <% focus = overview["focus_area_#{index}"] %>
+              <% goal  = overview["goal_#{index}"] %>
+              <% next if focus.blank? && goal.blank? %>
               <tr>
-                <td><%= item.content.split(':').first %></td>
-                <td><%= item.content.split(':').last %></td>
-                <td></td> <%# No status icon/status in new data %>
+                <td><%= focus %></td>
+                <td><%= goal %></td>
               </tr>
             <% end %>
           </tbody>

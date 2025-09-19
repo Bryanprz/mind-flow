@@ -37,7 +37,13 @@ if hector.prakruti_plans.empty?
       description: "Initial constitutional healing plan for Hector.",
       version: 1,
       is_active: true,
-      healing_plan_template_id: template.id
+      healing_plan_template_id: template.id,
+      overview: {
+        "focus_area_0" => "Sleep", "goal_0" => "Deeper rest",
+        "focus_area_1" => "Digestion", "goal_1" => "Improve Agni",
+        "focus_area_2" => "Energy", "goal_2" => "Maintain balance",
+        "focus_area_3" => "Emotions", "goal_3" => "Reduce anxiety"
+      }
     )
 
     # Create 7 healing plan logs for the PrakrutiPlan

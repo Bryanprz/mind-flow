@@ -14,11 +14,12 @@
           <div class="divider"></div>
 
           <h3 class="text-xl font-bold mb-2">Overview (Focus Areas & Goals)</h3>
-          <% if @healing_plan.overview.present? %>
+          <% overview = @healing_plan.overview %>
+          <% if overview.present? %>
             <ul class="list-disc list-inside">
               <% (0..3).each do |index| %>
-                <% focus_area = @healing_plan.overview["focus_area_#{index}"] %>
-                <% goal = @healing_plan.overview["goal_#{index}"] %>
+                <% focus_area = overview["focus_area_#{index}"] %>
+                <% goal = overview["goal_#{index}"] %>
                 <% if focus_area.present? || goal.present? %>
                   <li><strong>Focus Area <%= index + 1 %>:</strong> <%= focus_area %> - <strong>Goal:</strong> <%= goal %></li>
                 <% end %>

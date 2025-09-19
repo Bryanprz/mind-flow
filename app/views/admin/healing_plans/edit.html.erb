@@ -30,24 +30,32 @@
     </div>
 
     <h3 class="text-2xl font-bold mb-4 max-w-2xl mx-auto">Overview (Focus Areas & Goals)</h3>
-
-    <%= form.fields_for :overview do |overview_form| %>
-      <% (0..3).each do |index| %>
-        <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6">
-          <div class="card-body">
-            <div class="flex justify-between items-center mb-2">
-              <div class="form-control flex-grow mr-2">
-                <%= overview_form.label "focus_area_#{index}", "Focus Area #{index + 1}", class: "label" %>
-                <%= overview_form.text_field "focus_area_#{index}", class: "input input-bordered" %>
-              </div>
-              <div class="form-control flex-grow">
-                <%= overview_form.label "goal_#{index}", "Goal #{index + 1}", class: "label" %>
-                <%= overview_form.text_field "goal_#{index}", class: "input input-bordered" %>
-              </div>
+    <% (0..3).each do |index| %>
+      <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6" id="overview_item_<%= index %>">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-2">
+            <div class="form-control flex-grow mr-2">
+              <%= form.label "focus_area_#{index}", "Focus Area #{index + 1}", class: "label" %>
+              <%= form.text_field "focus_area_#{index}", class: "input input-bordered" %>
+            </div>
+            <div class="form-control flex-grow">
+              <%= form.label "goal_#{index}", "Goal #{index + 1}", class: "label" %>
+              <%= form.text_field "goal_#{index}", class: "input input-bordered" %>
+            </div>
+            <div class="ml-4">
+              <button type="button" class="btn btn-ghost btn-sm text-error" onclick="
+                document.getElementById('overview_item_<%= index %>').style.display = 'none';
+                document.getElementById('<%= form.field_id("focus_area_#{index}") %>').value = '';
+                document.getElementById('<%= form.field_id("goal_#{index}") %>').value = '';
+              ">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
-      <% end %>
+      </div>
     <% end %>
 
     <h3 class="text-2xl font-bold mb-4 max-w-2xl mx-auto">Other Plan Sections</h3>
