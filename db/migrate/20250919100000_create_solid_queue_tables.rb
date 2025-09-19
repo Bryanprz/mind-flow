@@ -10,9 +10,9 @@ class CreateSolidQueueTables < ActiveRecord::Migration[7.1]
       t.string :concurrency_key
       t.timestamps
 
-      t.index [ :queue_name, :priority, :id ], name: :index_solid_queue_jobs_on_queue_name_and_priority_and_id
-      t.index [ :scheduled_at, :priority, :id ], name: :index_solid_queue_jobs_on_scheduled_at_and_priority_and_id
-      t.index [ :concurrency_key ], name: :index_solid_queue_jobs_on_concurrency_key
+      t.index [ :queue_name, :priority, :id ], name: :idx_sq_jobs_queue_prio_id
+      t.index [ :scheduled_at, :priority, :id ], name: :idx_sq_jobs_sched_prio_id
+      t.index [ :concurrency_key ], name: :idx_sq_jobs_concurrency_key
     end
 
     create_table :solid_queue_blocked_executions do |t|
@@ -45,7 +45,7 @@ class CreateSolidQueueTables < ActiveRecord::Migration[7.1]
       t.integer :priority, default: 0, null: false
       t.timestamps
 
-      t.index [ :queue_name, :priority, :job_id ], name: :index_solid_queue_ready_executions_on_queue_name_and_priority_and_job
+      t.index [ :queue_name, :priority, :job_id ], name: :idx_sq_ready_exec_queue_prio_job
     end
 
     create_table :solid_queue_recurring_executions do |t|
@@ -54,7 +54,7 @@ class CreateSolidQueueTables < ActiveRecord::Migration[7.1]
       t.datetime :run_at, null: false
       t.timestamps
 
-      t.index [ :task_key, :run_at ], name: :index_solid_queue_recurring_executions_on_task_key_and_run_at
+      t.index [ :task_key, :run_at ], name: :idx_sq_recurring_exec_task_run
     end
 
     create_table :solid_queue_scheduled_executions do |t|
@@ -64,7 +64,7 @@ class CreateSolidQueueTables < ActiveRecord::Migration[7.1]
       t.datetime :scheduled_at, null: false
       t.timestamps
 
-      t.index [ :scheduled_at, :priority, :job_id ], name: :index_solid_queue_scheduled_executions_on_scheduled_at_and_priority_and_job
+      t.index [ :scheduled_at, :priority, :job_id ], name: :idx_sq_scheduled_exec_sched_prio_job
     end
   end
 end
