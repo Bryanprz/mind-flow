@@ -43,7 +43,6 @@ class CreateSolidQueueTables < ActiveRecord::Migration[7.1]
       t.references :job, null: false, index: { unique: true }
       t.string :queue_name, null: false
       t.integer :priority, default: 0, null: false
-      t.datetime :created_at, null: false
       t.timestamps
 
       t.index [ :queue_name, :priority, :job_id ], name: :index_solid_queue_ready_executions_on_queue_name_and_priority_and_job
