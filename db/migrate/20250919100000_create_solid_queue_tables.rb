@@ -21,7 +21,7 @@ class CreateSolidQueueTables < ActiveRecord::Migration[7.1]
       t.datetime :expires_at, null: false
       t.timestamps
 
-      t.index [ :expires_at, :concurrency_key ], name: :index_solid_queue_blocked_executions_on_expires_at_and_concurrency_key
+      t.index [ :expires_at, :concurrency_key ], name: :idx_sq_blocked_exec_expires_concurrency
     end
 
     create_table :solid_queue_claimed_executions do |t|
