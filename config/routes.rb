@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     resources :users do
       resources :healing_plans
     end
+
+    resources :social_posts, only: [:index, :show, :edit, :update, :destroy]
   end
 
   resources :verses
