@@ -27,7 +27,6 @@ class CreateSolidQueueTables < ActiveRecord::Migration[7.1]
     create_table :solid_queue_claimed_executions do |t|
       t.references :job, null: false, index: { unique: true }
       t.bigint :process_id, null: false
-      t.datetime :created_at, null: false
       t.datetime :expires_at, null: false
       t.timestamps
 
