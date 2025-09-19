@@ -30,7 +30,7 @@ class CreateSolidQueueTables < ActiveRecord::Migration[7.1]
       t.datetime :expires_at, null: false
       t.timestamps
 
-      t.index [ :process_id, :expires_at ], name: :index_solid_queue_claimed_executions_on_process_id_and_expires_at
+      t.index [ :process_id, :expires_at ], name: :idx_sq_claimed_exec_proc_exp
     end
 
     create_table :solid_queue_failed_executions do |t|
