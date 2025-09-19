@@ -55,11 +55,6 @@ proxy:
     timeout: 10
 readiness_delay: 30
 
-hooks:
-  pre_deploy:
-    - echo "Running migrations for queue database..."
-    - kamal ssh web -- docker exec $(docker ps --filter "name=ancientherb-web" --format "{{.ID}}") sh -lc 'RAILS_ENV=production bin/rails db:migrate DATABASE=queue'
-
 
 
 
