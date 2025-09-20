@@ -31,19 +31,30 @@
       </div>
     </div>
     
-    <!-- New Post Input (UI only, non-functional) -->
+    <!-- New Post Form -->
     <div class="p-3 border-t border-gray-200">
-      <div class="flex items-start gap-3">
-        <div class="avatar placeholder">
-          <div class="bg-gray-100 text-gray-500 rounded-full w-8 h-8 flex items-center justify-center text-xs font-medium">You</div>
-        </div>
-        <div class="flex-1">
-          <div class="w-full flex items-center gap-2">
-            <input type="text" class="input input-bordered input-sm w-full flex-1" placeholder="Write something..." aria-label="Write a post">
-            <button class="btn btn-sm btn-primary normal-case">Post</button>
+      <%= turbo_frame_tag "new_post_form" do %>
+        <%= form_with(model: SocialPost.new, url: social_posts_path, data: { turbo_frame: "social_feed", controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }, class: "w-full") do |form| %>
+          <div class="flex items-start gap-3">
+            <div class="avatar placeholder">
+              <div class="bg-gray-100 text-gray-500 rounded-full w-8 h-8 flex items-center justify-center text-xs font-medium">
+                <%= Current.user.name.to_s.first&.upcase || Current.user.email_address.to_s.first&.upcase %>
+              </div>
+            </div>
+            <div class="flex-1 relative">
+              <div class="w-full flex items-center gap-2">
+                <%= form.text_field :content, 
+                                 class: "input input-bordered input-sm w-full flex-1", 
+                                 placeholder: "Write something...", 
+                                 required: true,
+                                 autocomplete: "off",
+                                 data: { action: "keydown.enter->reset-form#submitOnEnter" } %>
+                <%= form.submit "Post", class: "btn btn-sm btn-primary normal-case" %>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>

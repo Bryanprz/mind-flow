@@ -1,0 +1,51 @@
+<%# Prepend the new post to the feed without extra spacing %>
+<%= turbo_stream.prepend "social_feed" do %>
+  <%= render partial: "social_posts/social_post", 
+             formats: [:html],
+             variants: [:embedded],
+             locals: { social_post: @social_post } %>
+<% end %>
+
+<%# Clear the form and show success message %>
+<%= turbo_stream.update "new_post_form" do %>
+  <%= form_with(model: SocialPost.new, url: social_posts_path, data: { turbo_frame: "social_feed", controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }, class: "w-full") do |form| %>
+    <div class="flex items-start gap-3">
+      <div class="avatar placeholder">
+        <div class="bg-gray-100 text-gray-500 rounded-full w-8 h-8 flex items-center justify-center text-xs font-medium">
+          <%= Current.user.name.to_s.first&.upcase || Current.user.email_address.to_s.first&.upcase %>
+        </div>
+      </div>
+      <div class="flex-1 relative">
+        <div class="w-full flex items-center gap-2">
+          <%= form.text_field :content, 
+                           class: "input input-bordered input-sm w-full flex-1", 
+                           placeholder: "Write something...", 
+                           required: true,
+                           autocomplete: "off",
+                           data: { action: "keydown.enter->reset-form#submitOnEnter" } %>
+          <%= form.submit "Post", class: "btn btn-sm btn-primary normal-case" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <%# Show success message %>
+  <div class="toast toast-top toast-end z-50">
+    <div class="alert alert-success">
+      <div>
+        <span>Post created successfully!</span>
+      </div>
+    </div>
+  </div>
+  
+  <%= javascript_tag nonce: true do %>
+    setTimeout(function() {
+      const toast = document.querySelector('.toast');
+      if (toast) {
+        setTimeout(() => {
+          toast.remove();
+        }, 5000);
+      }
+    }, 100);
+  <% end %>
+<% end %>

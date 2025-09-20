@@ -1,4 +1,4 @@
-<div class="card bg-base-100 mb-4 border border-gray-300">
+<div class="card bg-base-100 mb-4 border border-gray-300 rounded-xl">
   <div class="card-body">
     <div class="flex items-center mb-2">
       <div class="avatar placeholder mr-3">
@@ -10,7 +10,7 @@
         <h2 class="card-title text-sm"><%= social_post.user.name.presence || social_post.user.email_address %></h2>
         <% ts = social_post.published_at || social_post.created_at %>
         <% if ts.present? %>
-          <p class="text-xs text-gray-500"><%= time_ago_in_words(ts) %> ago</p>
+          <p class="text-xs text-gray-500"><%= ts.strftime('%b %-d, %Y') %></p>
         <% end %>
       </div>
     </div>
