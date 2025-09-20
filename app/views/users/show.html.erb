@@ -2,14 +2,14 @@
     This sets the classes for the main layout container.
     It will grow, have a background color, and center its content.
   %>
-<% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
+<% content_for :main_container_class, 'flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
 
 <%#
     This is our custom card.
     Because its parent (<main>) has 'items-stretch', this card will be
 forced to the full height of the padded area.
     %>
-  <div class="w-1/2 items-start bg-base-100 rounded-2xl flex flex-col p-8" data-controller="modal">
+  <div class="w-full md:w-1/2 items-start bg-base-100 rounded-2xl flex flex-col p-8" data-controller="modal">
 
     <%# Header Image %>
     <div class="w-full h-48 bg-gradient-to-r from-primary to-secondary rounded-t-2xl mb-4">

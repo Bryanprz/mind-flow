@@ -4,35 +4,43 @@
 <div class="w-full flex flex-col items-center">
   <div class="max-w-4xl mx-auto w-full space-y-6 flex-grow">
     <div class="flex flex-col items-center justify-between">
-      <h1 class="font-bold text-4xl">Healing Plan Logs</h1>
+      <h1 class="font-bold text-2xl md:text-4xl">Healing Plan Logs</h1>
     </div>
 
-    <table class="table bg-base-100">
-      <thead>
-        <tr class="text-center">
-          <th></th>
-          <th>Date</th>
-          <th>Completed</th>
-          <th>Description</th>
-          <th>Focus</th>
-          <th>Active</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @healing_plan_logs.each_with_index do |healing_plan_log, index| %>
+    <div class="hidden md:block">
+      <table class="table bg-base-100">
+        <thead>
           <tr class="text-center">
-            <th><%= index + 1 %></th>
-            <td><%= healing_plan_log.date.strftime("%b %d") %></td>
-            <td><%= healing_plan_log.completed_at ? '✅' : '❌' %></td>
-            <td><%= healing_plan_log.journal_entry&.first(15)&.concat("...") %></td>
-            <td><%#= truncate(healing_plan_log.description, length: 50) %></td>
-            <td><%= link_to "Show Details", my_healing_plan_path(date: healing_plan_log.date), class: "btn btn-secondary btn-xs" %></td>
+            <th></th>
+            <th>Date</th>
+            <th>Completed</th>
+            <th>Description</th>
+            <th>Focus</th>
+            <th>Active</th>
           </tr>
-        <% end %>
-      </tbody>
-      <tfoot>
-      </tfoot>
-    </table>
+        </thead>
+        <tbody>
+          <% @healing_plan_logs.each_with_index do |healing_plan_log, index| %>
+            <tr class="text-center">
+              <th><%= index + 1 %></th>
+              <td><%= healing_plan_log.date.strftime("%b %d") %></td>
+              <td><%= healing_plan_log.completed_at ? '✅' : '❌' %></td>
+              <td><%= healing_plan_log.journal_entry&.first(15)&.concat("...") %></td>
+              <td><%#= truncate(healing_plan_log.description, length: 50) %></td>
+              <td><%= link_to "Show Details", my_healing_plan_path(date: healing_plan_log.date), class: "btn btn-secondary btn-xs" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="block md:hidden">
+      <% @healing_plan_logs.each do |healing_plan_log| %>
+        <%= render 'log_card', healing_plan_log: healing_plan_log %>
+      <% end %>
+    </div>
   </div>
   <%= link_to "Daily Check-in", my_healing_plan_path, class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium mt-5" %>
 </div>
