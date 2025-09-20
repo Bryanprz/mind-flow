@@ -1,0 +1,29 @@
+<% flash.each do |type, message| %>
+  <% next if message.blank? %>
+  
+  <% alert_class = case type.to_sym
+    when :notice then 'alert-success'
+    when :alert, :error then 'alert-error'
+    when :warning then 'alert-warning'
+    else 'alert-info'
+  end %>
+  
+  <div class="toast toast-top toast-end z-50">
+    <div class="alert <%= alert_class %>">
+      <div>
+        <span><%= message %></span>
+      </div>
+    </div>
+  </div>
+  
+  <%= javascript_tag nonce: true do %>
+    setTimeout(function() {
+      const toast = document.querySelector('.toast');
+      if (toast) {
+        setTimeout(() => {
+          toast.remove();
+        }, 5000);
+      }
+    }, 100);
+  <% end %>
+<% end %>

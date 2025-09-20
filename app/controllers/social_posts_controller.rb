@@ -15,14 +15,48 @@ class SocialPostsController < ApplicationController
 
     respond_to do |format|
       if @social_post.save
-        format.turbo_stream
+        format.turbo_stream do
+          if request.referer&.include?('dashboard')
+            render turbo_stream: [
+              turbo_stream.prepend("social_feed", 
+                partial: "social_posts/social_post",
+                formats: [:html],
+                variants: [:embedded],
+                locals: { social_post: @social_post }
+              ),
+              turbo_stream.update("new_post_form", 
+                partial: "dashboards/social_feed_form"
+              )
+            ]
+          else
+            render turbo_stream: [
+              turbo_stream.prepend("social-posts", 
+                partial: "social_posts/social_post",
+                locals: { social_post: @social_post }
+              ),
+              turbo_stream.update("post-form-container",
+                partial: "social_posts/form"
+              ),
+              turbo_stream.update("flash",
+                partial: "layouts/flash"
+              )
+            ]
+          end
+        end
         format.html { redirect_to community_path, notice: "Post created successfully!" }
       else
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update("new_post_form",
-            partial: "shared/error_messages",
-            locals: { resource: @social_post }
-          )
+          if request.referer&.include?('dashboard')
+            render turbo_stream: turbo_stream.update("new_post_form",
+              partial: "dashboards/social_feed_form",
+              locals: { social_post: @social_post }
+            )
+          else
+            render turbo_stream: turbo_stream.update("post-form-container",
+              partial: "social_posts/form",
+              locals: { social_post: @social_post }
+            )
+          end
         end
         format.html { redirect_to community_path, alert: @social_post.errors.full_messages.to_sentence }
       end
