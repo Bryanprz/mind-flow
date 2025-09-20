@@ -3,16 +3,19 @@
     <div class="flex items-center mb-2">
       <div class="avatar placeholder mr-3">
         <div class="bg-neutral text-neutral-content rounded-full w-8 h-8">
-          <span class="text-xs"><%= social_post.user.email_address[0].upcase %></span>
+          <span class="text-xs"><%= (social_post.user.name.to_s.first&.upcase || social_post.user.email_address.to_s.first&.upcase) %></span>
         </div>
       </div>
       <div>
-        <h2 class="card-title text-sm"><%= social_post.user.email_address %></h2>
-        <p class="text-xs text-gray-500"><%= time_ago_in_words(social_post.published_at) %> ago</p>
+        <h2 class="card-title text-sm"><%= social_post.user.name.presence || social_post.user.email_address %></h2>
+        <% ts = social_post.published_at || social_post.created_at %>
+        <% if ts.present? %>
+          <p class="text-xs text-gray-500"><%= time_ago_in_words(ts) %> ago</p>
+        <% end %>
       </div>
     </div>
 
-    <p class="mb-4"><%= social_post.content %></p>
+    <p class="mb-4 text-sm"><%= social_post.content %></p>
 
     <% if social_post.media.attached? %>
       <div class="grid grid-cols-1 gap-2">

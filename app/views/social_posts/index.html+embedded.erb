@@ -1,0 +1,10 @@
+<%# Embedded variant: render a compact list suitable for the dashboard card feed %>
+<%= turbo_frame_tag "social_feed" do %>
+  <% if @social_posts.any? %>
+  <div class="divide-y divide-gray-200 text-sm">
+    <%= render partial: "social_posts/social_post", collection: @social_posts, as: :social_post %>
+  </div>
+  <% else %>
+    <div class="card bg-base-100 border-b border-gray-200 last:border-b-0 rounded-none">No posts yet. Be the first to share!</div>
+  <% end %>
+<% end %>

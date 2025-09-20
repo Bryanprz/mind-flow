@@ -1,16 +1,49 @@
 <!-- Social Feed Card -->
-<div class="card bg-base-100 border border-gray-300">
-  <div class="card-body p-0 flex flex-col">
+<div class="card bg-base-100 border border-gray-300 h-full flex flex-col">
+  <div class="card-body p-0 flex flex-col flex-1 min-h-[500px] sm:min-h-0">
     <!-- Feed Header -->
-    <div class="p-4 border-b border-gray-200">
-      <h2 class="card-title text-lg font-semibold text-gray-800">
-        Community Feed
-      </h2>
-      <p class="text-xs text-gray-500">Share your wins, struggles, questions — anything on your mind</p>
+    <div class="p-4 border-b border-gray-200 flex items-start justify-between gap-3">
+      <div>
+        <h2 class="card-title text-lg font-semibold text-gray-800">
+          Community Feed
+        </h2>
+        <p class="text-xs text-gray-500">Share your wins, struggles, questions — anything on your mind</p>
+      </div>
+      <div class="pt-1">
+        <button class="btn btn-ghost btn-xs p-0 w-6 h-6 flex items-center justify-center" data-action="click->expandable#toggle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </div>
     </div>
     
     <!-- Feed Content -->
+    <div class="flex-1 flex flex-col min-h-0">
+      <div class="relative flex-1">
+        <div class="absolute inset-0 overflow-y-auto">
+          <turbo-frame id="social_feed" src="<%= community_path %>"></turbo-frame>
+        </div>
+        <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-base-100 to-transparent"></div>
+      </div>
+      <div class="px-4 py-2 text-right">
+        <%= link_to "View full feed", community_path, class: "link link-primary text-xs" %>
+      </div>
+    </div>
     
-    <!-- New Post Input -->
+    <!-- New Post Input (UI only, non-functional) -->
+    <div class="p-3 border-t border-gray-200">
+      <div class="flex items-start gap-3">
+        <div class="avatar placeholder">
+          <div class="bg-gray-100 text-gray-500 rounded-full w-8 h-8 flex items-center justify-center text-xs font-medium">You</div>
+        </div>
+        <div class="flex-1">
+          <div class="w-full flex items-center gap-2">
+            <input type="text" class="input input-bordered input-sm w-full flex-1" placeholder="Write something..." aria-label="Write a post">
+            <button class="btn btn-sm btn-primary normal-case">Post</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

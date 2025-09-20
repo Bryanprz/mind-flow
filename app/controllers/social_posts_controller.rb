@@ -3,6 +3,8 @@ class SocialPostsController < ApplicationController
 
   def index
     @social_posts = SocialPost.order(published_at: :desc)
+    # Use a variant for embedded (e.g., Turbo Frame) requests so we can render a compact feed
+    request.variant = :embedded if turbo_frame_request?
   end
 
   def create

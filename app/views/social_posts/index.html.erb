@@ -1,19 +1,30 @@
-<% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
-
-<div class="container mx-auto max-w-lg mt-8" data-controller="post-form">
-  <div class="flex justify-end mb-4">
-    <button id="create-post-button" class="btn btn-primary" data-action="click->post-form#toggle">Create Post</button>
-  </div>
-
-  <div id="post-form-container" class="hidden mb-8" data-post-form-target="formContainer">
-    <%= render "social_posts/form" %>
-  </div>
-
-  <div id="social-feed">
+<% if turbo_frame_request? %>
+  <%= turbo_frame_tag "social_feed" do %>
+    <%# Lightweight feed for Turbo Frame embedding (e.g., dashboard card) %>
     <% if @social_posts.any? %>
       <%= render @social_posts %>
     <% else %>
-      <p class="text-center text-gray-500">No posts yet. Be the first to share!</p>
+      <p class="p-4 text-center text-gray-500">No posts yet. Be the first to share!</p>
     <% end %>
+  <% end %>
+<% else %>
+  <% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
+
+  <div class="container mx-auto max-w-lg mt-8" data-controller="post-form">
+    <div class="flex justify-end mb-4">
+      <button id="create-post-button" class="btn btn-primary" data-action="click->post-form#toggle">Create Post</button>
+    </div>
+
+    <div id="post-form-container" class="hidden mb-8" data-post-form-target="formContainer">
+      <%= render "social_posts/form" %>
+    </div>
+
+    <div id="social-feed">
+      <% if @social_posts.any? %>
+        <%= render @social_posts %>
+      <% else %>
+        <p class="text-center text-gray-500">No posts yet. Be the first to share!</p>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>

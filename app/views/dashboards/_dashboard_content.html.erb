@@ -1,17 +1,17 @@
-<div class="drawer-content text-md space-y-3 pb-3" data-controller="modal">
+<div class="drawer-content text-md space-y-3 pb-3 h-full flex flex-col" data-controller="modal">
   <label for="sidebar-toggle" class="btn btn-primary drawer-button lg:hidden">
     Open sidebar
   </label>
 
   <% if Current.user&.prakruti %>
-    <!-- First Row - 3 equal columns -->
+    <!-- First Row - 2 equal columns -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
       <%= render 'dashboards/streak_card' %>
       <%= render 'dashboards/calendar_card' %>
     </div>
 
     <!-- Second Row - 2 equal columns -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1 min-h-0 sm:min-h-0">
       <%= render 'dashboards/ai_chat_card' %>
       <%= render 'dashboards/social_feed_card' %>
     </div>

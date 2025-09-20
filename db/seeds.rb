@@ -6,5 +6,6 @@ require_relative 'seeds/chronic_illnesses.rb'
 require_relative 'seeds/dosha_foods_seed.rb'
 require_relative 'seeds/dosha_healing_herbs.seeds.rb'
 require_relative 'seeds/users.seeds.rb'
+require_relative 'seeds/social_posts.rb'
 
 puts "Seeds file has been run."
