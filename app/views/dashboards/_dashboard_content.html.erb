@@ -1,8 +1,4 @@
-<div class="drawer-content text-md space-y-3 pb-3 h-full flex flex-col" data-controller="modal">
-  <label for="sidebar-toggle" class="btn btn-primary drawer-button lg:hidden">
-    Open sidebar
-  </label>
-
+<div class="text-md space-y-3 py-4 flex flex-col h-full" data-controller="modal">
   <% if Current.user&.prakruti %>
     <!-- First Row - 2 equal columns -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -11,9 +7,11 @@
     </div>
 
     <!-- Second Row - 2 equal columns -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1 min-h-0 sm:min-h-0">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1 min-h-0" style="grid-template-rows: 1fr;">
       <%= render 'dashboards/ai_chat_card' %>
-      <%= render 'dashboards/social_feed_card' %>
+      <div class="mb-8 md:mb-0">
+        <%= render 'dashboards/social_feed_card' %>
+      </div>
     </div>
   <% end %>
 </div>

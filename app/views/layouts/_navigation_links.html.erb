@@ -1,8 +1,15 @@
+<!-- Main Navigation Links (visible on all screens) -->
 <li><%= link_to "Dashboard", dashboard_path, class: nav_link_class(dashboard_path) %></li>
 <li><%= link_to "Healing Plan", my_healing_plan_path, class: nav_link_class(my_healing_plan_path) %></li>
-
 <li><%= link_to "Community", community_path, class: nav_link_class(community_path) %></li>
 <li><%= link_to "Classroom", "#", class: nav_link_class(lifestyle_plans_path) %></li>
+
+<!-- Additional Dashboard Links (mobile only) -->
+<div class="lg:hidden">
+  <li><%= link_to "Assessments", assessment_results_path, class: nav_link_class(assessment_results_path) %></li>
+  <li><%= link_to "Check Ins", healing_plan_logs_path, class: nav_link_class(healing_plan_logs_path) %></li>
+  <li><%= link_to "Profile", user_path(Current.user), class: nav_link_class(user_path(Current.user)) %></li>
+</div>
 
 <% if Current.user&.admin? %>
   <li class="text-info"><%= link_to "Admin", admin_root_path %></li>
