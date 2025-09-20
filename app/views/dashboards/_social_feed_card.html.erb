@@ -1,6 +1,6 @@
 <!-- Social Feed Card -->
-<div class="card bg-base-100 border border-gray-300 h-full flex flex-col">
-  <div class="card-body p-0 flex flex-col flex-1 min-h-[500px] sm:min-h-0">
+<div class="card bg-base-100 border border-gray-300 h-full flex flex-col lg:max-h-[calc(100vh-200px)]">
+  <div class="card-body p-0 flex flex-col flex-1 min-h-[500px] lg:min-h-0">
     <!-- Feed Header -->
     <div class="p-4 border-b border-gray-200 flex items-start justify-between gap-3">
       <div>
@@ -9,22 +9,22 @@
         </h2>
         <p class="text-xs text-gray-500">Share your wins, struggles, questions — anything on your mind</p>
       </div>
-      <div class="pt-1">
-        <button class="btn btn-ghost btn-xs p-0 w-6 h-6 flex items-center justify-center" data-action="click->expandable#toggle">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-      </div>
+      
     </div>
     
     <!-- Feed Content -->
     <div class="flex-1 flex flex-col min-h-0">
       <div class="relative flex-1">
-        <div class="absolute inset-0 overflow-y-auto">
-          <turbo-frame id="social_feed" src="<%= community_path %>"></turbo-frame>
+        <div class="absolute inset-0 flex flex-col">
+          <div class="flex-1 overflow-y-auto" id="social-feed-scroll">
+            <turbo-frame id="social_feed" src="<%= community_path %>" data-action="turbo:frame-render->scroll-to#scrollTop">
+              <div class="flex items-center justify-center h-full">
+                <span class="loading loading-spinner loading-lg"></span>
+              </div>
+            </turbo-frame>
+          </div>
+          <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-base-100 to-transparent"></div>
         </div>
-        <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-base-100 to-transparent"></div>
       </div>
       <div class="px-4 py-2 text-right">
         <%= link_to "View full feed", community_path, class: "link link-primary text-xs" %>

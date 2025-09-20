@@ -26,7 +26,10 @@ class SocialPostsController < ApplicationController
               ),
               turbo_stream.update("new_post_form", 
                 partial: "dashboards/social_feed_form"
-              )
+              ),
+              turbo_stream.append("social_feed", "
+                <div data-controller='scroll-to' data-action='turbo:frame-render->scroll-to#scrollTop'></div>
+              ".html_safe)
             ]
           else
             render turbo_stream: [
