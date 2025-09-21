@@ -29,34 +29,8 @@ class Admin::HealingPlansController < ApplicationController
   end
 
   def update
-    Rails.logger.info "Healing Plan Params: #{healing_plan_params.inspect}"
-    
-    # Manually process the parameters to ensure they're in the correct format
-    params = healing_plan_params.dup
-    
-    # Process plan_sections_attributes to ensure proper format for nested attributes
-    if params[:plan_sections_attributes].present?
-      sections_attrs = params[:plan_sections_attributes].values
-      
-      sections_attrs.each_with_index do |section_attrs, section_index|
-        if section_attrs[:plan_items_attributes].present?
-          # Convert the plan_items_attributes to an array if it's a hash
-          items_attrs = section_attrs[:plan_items_attributes].is_a?(Array) ? 
-                       section_attrs[:plan_items_attributes] : 
-                       section_attrs[:plan_items_attributes].values
-          
-          section_attrs[:plan_items_attributes] = items_attrs.each_with_index.map do |item_attrs, item_index|
-            # Ensure _destroy is properly set
-            item_attrs[:_destroy] = item_attrs[:_destroy] == '1' if item_attrs[:_destroy].present?
-            item_attrs
-          end
-        end
-      end
-      
-      params[:plan_sections_attributes] = sections_attrs.each_with_index.map { |attrs, i| [i.to_s, attrs] }.to_h
-    end
-    
-    if @healing_plan.update(params)
+    Rails.logger.info "Raw Healing Plan Params: #{params.inspect}"
+    if @healing_plan.update(healing_plan_params)
       redirect_to admin_user_healing_plan_path(@user, @healing_plan), notice: 'Healing plan was successfully updated.'
     else
       Rails.logger.error "Failed to update healing plan: #{@healing_plan.errors.full_messages}"
@@ -97,10 +71,12 @@ class Admin::HealingPlansController < ApplicationController
         :id,
         :_destroy,
         :name,
+        :ordering,
         plan_items_attributes: [
           :id,
           :_destroy,
-          :content
+          :content,
+          :ordering
         ]
       ]
     )

@@ -9,3 +9,4 @@ pin "turbo_stream_actions"
 pin "trix"
 pin "@rails/actiontext", to: "actiontext.esm.js"
 pin "cally", to: "vendor/cally.js", preload: true
+pin "sortablejs" # @1.15.6
