@@ -89,18 +89,10 @@
             </div>
 
             <div class="divider mt-4 mb-2">
-              <div class="flex items-center justify-between w-full">
-                <span>Plan Items</span>
-                <button type="button" class="btn btn-sm btn-ghost" onclick="addPlanItem(this, '<%= section_form.index %>')">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                  </svg>
-                  Add Item
-                </button>
-              </div>
+              <span>Plan Items</span>
             </div>
 
-            <div class="plan-items-container" data-controller="sortable" data-section-index="<%= section_form.index %>">
+            <div class="plan-items-container mb-4" data-controller="sortable" data-section-index="<%= section_form.index %>">
               <% section_form.object.plan_items.order(:ordering).each do |item| %>
                 <%= section_form.fields_for :plan_items, item do |item_form| %>
                   <div class="flex justify-between items-center mb-2" data-sortable-target="item" data-id="<%= item.id %>" data-ordering="<%= item.ordering %>" data-sortable-input-name="healing_plan[plan_sections_attributes][<%= section_form.index %>][plan_items_attributes][<%= item_form.index %>][ordering]">
@@ -121,6 +113,15 @@
                   </div>
                 <% end %>
               <% end %>
+            </div>
+            
+            <div class="flex justify-end mt-2">
+              <button type="button" class="btn btn-sm btn-ghost" onclick="addPlanItem(this, '<%= section_form.index %>')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Item
+              </button>
             </div>
           </div>
         </div>
