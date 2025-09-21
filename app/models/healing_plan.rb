@@ -12,6 +12,39 @@ class HealingPlan < ApplicationRecord
   has_many :logs, class_name: 'HealingPlanLog', dependent: :destroy
 
   accepts_nested_attributes_for :plan_sections, allow_destroy: true
+  
+  # Validate that plan items have content
+  validate :reject_empty_plan_items
+  
+  # Clean up empty plan items before validation
+  before_validation :clean_empty_plan_items
+  
+  private
+  
+  def reject_empty_plan_items
+    plan_sections.each do |section|
+      section.plan_items.each do |item|
+        if item.content.blank? && !item.marked_for_destruction?
+          errors.add(:base, "Plan items cannot be empty")
+          return
+        end
+      end
+    end
+  end
+  
+  def clean_empty_plan_items
+    plan_sections.each do |section|
+      section.plan_items.each do |item|
+        if item.content.blank? && !item.marked_for_destruction?
+          if item.persisted?
+            item.mark_for_destruction
+          else
+            section.plan_items.delete(item)
+          end
+        end
+      end
+    end
+  end
 
   store_accessor :overview, *(0..3).map { |i| ["focus_area_#{i}", "goal_#{i}"] }.flatten
 

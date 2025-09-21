@@ -134,6 +134,39 @@
 </div>
 
 <script>
+  // Function to clean up empty plan items before form submission
+  function cleanEmptyPlanItems(form) {
+    // Find all plan item textareas
+    const textareas = form.querySelectorAll('textarea[name$="[content]"]');
+    
+    textareas.forEach(textarea => {
+      const itemDiv = textarea.closest('.flex');
+      const destroyInput = itemDiv.querySelector('input[type="hidden"][name$="[_destroy]"]');
+      
+      // If the textarea is empty, mark it for destruction
+      if (textarea.value.trim() === '') {
+        if (destroyInput) {
+          destroyInput.value = '1';
+        } else {
+          // If no destroy input exists, remove the entire item
+          itemDiv.remove();
+        }
+      }
+    });
+    
+    return true;
+  }
+  
+  // Add form submission handler
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        cleanEmptyPlanItems(this);
+      });
+    }
+  });
+
   function addPlanItem(button, sectionIndex) {
     // Find the container for this section's items
     const container = button.closest('.card-body').querySelector('.plan-items-container');
@@ -173,13 +206,14 @@
     // Add the new item to the container
     container.appendChild(newItem);
     
-    // Scroll to the new item
-    newItem.scrollIntoView({ behavior: 'smooth' });
-    
-    // Focus the new textarea
+    // Focus the new textarea without scrolling
     const newTextarea = newItem.querySelector('textarea');
     if (newTextarea) {
-      newTextarea.focus();
+      // Focus without scrolling the page
+      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      newTextarea.focus({ preventScroll: true });
+      // Restore scroll position in case focus caused any scrolling
+      window.scrollTo(0, scrollPosition);
     }
   }
   

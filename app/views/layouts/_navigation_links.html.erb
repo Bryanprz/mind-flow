@@ -4,7 +4,9 @@
   <li><%= link_to "Healing Plan", my_healing_plan_path, class: nav_link_class(my_healing_plan_path) %></li>
 <% end %>
 <li><%= link_to "Community", community_path, class: nav_link_class(community_path) %></li>
-<li><%= link_to "Classroom", "#", class: nav_link_class(lifestyle_plans_path) %></li>
+<% if Rails.env.development? %>
+  <li><%= link_to "Classroom", "#", class: nav_link_class(lifestyle_plans_path) %></li>
+<% end %>
 
 <!-- Additional Dashboard Links (mobile only) -->
 <div class="lg:hidden">
