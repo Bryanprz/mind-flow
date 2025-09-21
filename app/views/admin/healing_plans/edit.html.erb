@@ -2,7 +2,7 @@
 
 <div class="container mx-auto px-4 py-8">
 
-  <%= form_with(model: [:admin, @user, @healing_plan], url: admin_user_healing_plan_path(@user, @healing_plan)) do |form| %>
+  <%= form_with(model: [:admin, @user, @healing_plan], scope: :healing_plan, url: admin_user_healing_plan_path(@user, @healing_plan)) do |form| %>
     <% if @healing_plan.errors.any? %>
       <div class="alert alert-error">
         <ul>
@@ -167,7 +167,7 @@
     }
   });
 
-  function addPlanItem(button, sectionIndex) {
+  function addPlanItem(button, sectionIndex, paramKey) {
     // Find the container for this section's items
     const container = button.closest('.card-body').querySelector('.plan-items-container');
     const timestamp = new Date().getTime();
@@ -223,6 +223,9 @@
     const button = document.querySelector('.plan-items-container[data-section-index="0"]')?.closest('.card-body')?.querySelector('button[onclick^="addPlanItem"]');
     if (button) {
       addPlanItem(button, 0);
+    }
+  }
+</script>m(button, 0);
     }
   }
 </script>

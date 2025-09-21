@@ -84,7 +84,8 @@ class Admin::HealingPlansController < ApplicationController
   end
 
   def healing_plan_params
-    params.require(@healing_plan.model_name.param_key).permit(
+    key = [:prakruti_plan, :vikruti_plan, :healing_plan].find { |k| params.key?(k) }
+    params.require(key).permit(
       :name,
       :description,
       :focus_area_0, :goal_0,
