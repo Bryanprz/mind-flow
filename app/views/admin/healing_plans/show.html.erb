@@ -31,21 +31,7 @@
 
           <div class="divider"></div>
 
-          <h3 class="text-xl font-bold mb-2">Diet & Herbs</h3>
-          <% diet_section = @healing_plan.sections.find_by(name: 'Diet & Herbs') %>
-          <% if diet_section.present? %>
-            <ul class="list-disc list-inside">
-              <% diet_section.plan_items.order(:ordering).each do |item| %>
-                <li><%= item.content %></li>
-              <% end %>
-            </ul>
-          <% else %>
-            <p>No diet & herbs plan added yet.</p>
-          <% end %>
-
-          <div class="divider"></div>
-
-          <h3 class="text-xl font-bold mb-2">Other Plan Sections</h3>
+          <h3 class="text-xl font-bold mb-2">Plan Sections</h3>
           <% @healing_plan.sections.order(:ordering).each do |section| %>
             <% next if section.name == "Focus Areas" %> <%# Exclude the old Focus Areas section %>
             <div class="collapse collapse-arrow border border-base-300 bg-base-200">
