@@ -24,7 +24,13 @@
 
         <div class="form-control">
           <%= form.label :description, class: "label" %>
-          <%= form.text_area :description, class: "textarea textarea-bordered" %>
+          <%= form.hidden_field :description, id: "healing_plan_description" %>
+          <trix-editor 
+            input="healing_plan_description" 
+            class="trix-content min-h-[300px] bg-base-100 rounded-lg p-4 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
+            data-direct-upload-url="<%= rails_direct_uploads_path %>"
+            data-blob-url-template="<%= rails_service_blob_path(":signed_id", ":filename") %>"
+          ><%= @healing_plan.description&.body&.to_s&.html_safe %></trix-editor>
         </div>
       </div>
     </div>
@@ -58,6 +64,49 @@
       </div>
     <% end %>
 
+    <h3 class="text-2xl font-bold mb-4 max-w-2xl mx-auto">Diet & Herbs</h3>
+    <% diet_section = @healing_plan.sections.find_or_initialize_by(name: 'Diet & Herbs') %>
+    <% diet_section.plan_items.build if diet_section.new_record? || diet_section.plan_items.empty? %>
+    <%= form.fields_for :plan_sections, diet_section do |diet_form| %>
+      <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6">
+        <div class="card-body">
+          <%= diet_form.hidden_field :name, value: 'Diet & Herbs' %>
+          <%= diet_form.hidden_field :id, value: diet_section.id %>
+          
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-lg font-semibold">Diet & Herbs Plan Items</h4>
+            <button type="button" class="btn btn-sm btn-ghost" onclick="addPlanItem(this, '<%= diet_form.index %>')">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Add Item
+            </button>
+          </div>
+          
+          <div id="diet-items" class="plan-items-container" data-section-index="<%= diet_form.index %>">
+            <%= diet_form.fields_for :plan_items do |item_form| %>
+              <div class="flex justify-between items-center mb-2">
+                <div class="form-control flex-grow">
+                  <%= item_form.label :content, "Item", class: "label" %>
+                  <%= item_form.text_area :content, rows: 2, class: "textarea textarea-bordered w-full" %>
+                </div>
+                <div class="ml-4">
+                  <%= item_form.hidden_field :_destroy, value: item_form.object.marked_for_destruction? ? 1 : 0, id: "diet_item_destroy_#{item_form.object.id || 'new'}" %>
+                  <button type="button" class="btn btn-ghost btn-sm text-error" onclick="document.getElementById('diet_item_destroy_#{item_form.object.id || 'new'}').value = 1; this.closest('.flex').style.display = 'none';">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    
+    <div class="divider max-w-2xl mx-auto"></div>
+    
     <h3 class="text-2xl font-bold mb-4 max-w-2xl mx-auto">Other Plan Sections</h3>
 
     <%= form.fields_for :plan_sections do |section_form| %>
@@ -80,8 +129,19 @@
             </div>
           </div>
 
-          <div class="divider mt-4 mb-2">Plan Items</div>
-
+          <div class="divider mt-4 mb-2">
+            <div class="flex items-center justify-between w-full">
+              <span>Plan Items</span>
+              <button type="button" class="btn btn-sm btn-ghost" onclick="addPlanItem(this, '<%= section_form.index %>')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Item
+              </button>
+            </div>
+          </div>
+          
+          <div class="plan-items-container" data-section-index="<%= section_form.index %>">
           <% section_form.object.plan_items.order(:ordering).each do |item| %>
             <%= section_form.fields_for :plan_items, item do |item_form| %>
               <div class="flex justify-between items-center mb-2">
@@ -100,10 +160,12 @@
                 </div>
               <% end %>
             <% end %>
-</div>
-</div>
-<% end %>
-<div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6">
+          </div>
+        </div>
+      </div>
+    <% end %>
+    
+    <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6">
       <div class="card-body">
         <div class="card-actions justify-end">
           <%= form.submit "Update Healing Plan", class: "btn btn-primary" %>
@@ -113,3 +175,63 @@
     </div>
   <% end %>
 </div>
+
+<script>
+  function addPlanItem(button, sectionIndex) {
+    // Find the container for this section's items
+    const container = button.closest('.card-body').querySelector('.plan-items-container');
+    const timestamp = new Date().getTime();
+    const newItem = document.createElement('div');
+    newItem.className = 'flex justify-between items-center mb-2';
+    
+    // Create a unique ID for the new item
+    const newItemId = timestamp;
+    
+    // Create the new item HTML
+    newItem.innerHTML = `
+      <div class="form-control flex-grow">
+        <label class="label">Item</label>
+        <textarea name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${newItemId}][content]" 
+                  class="textarea textarea-bordered w-full" 
+                  rows="2"
+                  placeholder="Enter plan item content"></textarea>
+        <input type="hidden" 
+               name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${newItemId}][id]" 
+               value="">
+      </div>
+      <div class="ml-4">
+        <input type="hidden" 
+               name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${newItemId}][_destroy]" 
+               value="0" 
+               id="item_destroy_${newItemId}">
+        <button type="button" class="btn btn-ghost btn-sm text-error" 
+                onclick="document.getElementById('item_destroy_${newItemId}').value = '1'; this.closest('.flex').style.display = 'none';">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    `;
+    
+    // Add the new item to the container
+    container.appendChild(newItem);
+    
+    // Scroll to the new item
+    newItem.scrollIntoView({ behavior: 'smooth' });
+    
+    // Focus the new textarea
+    const newTextarea = newItem.querySelector('textarea');
+    if (newTextarea) {
+      newTextarea.focus();
+    }
+  }
+  
+  // Keep the existing addDietItem function for backward compatibility
+  function addDietItem() {
+    // This is kept for backward compatibility but now uses the new function
+    const button = document.querySelector('.plan-items-container[data-section-index="0"]')?.closest('.card-body')?.querySelector('button[onclick^="addPlanItem"]');
+    if (button) {
+      addPlanItem(button, 0);
+    }
+  }
+</script>

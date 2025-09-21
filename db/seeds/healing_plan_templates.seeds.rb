@@ -1,23 +1,16 @@
+# The Dosha model is already loaded by seeds.rb
 require_relative 'healing_plan_templates_data.seeds.rb'
 
-# Seed Dosha records if they don't exist (assuming they are already seeded elsewhere or will be)
-# For this seed, we'll find_or_create_by name
-vata_dosha = Dosha.find_or_initialize_by(name: "Vata")
-vata_dosha.color = "blue"
-vata_dosha.save!
+# Create doshas if they don't exist
+vata = Dosha.find_or_create_by!(name: Dosha::VATA) { |d| d.color = "blue" }
+pitta = Dosha.find_or_create_by!(name: Dosha::PITTA) { |d| d.color = "red" }
+kapha = Dosha.find_or_create_by!(name: Dosha::KAPHA) { |d| d.color = "green" }
 
-pitta_dosha = Dosha.find_or_initialize_by(name: "Pitta")
-pitta_dosha.color = "red"
-pitta_dosha.save!
-
-kapha_dosha = Dosha.find_or_initialize_by(name: "Kapha")
-kapha_dosha.color = "green"
-kapha_dosha.save!
-
+# Create a map of dosha names to their records
 dosha_map = {
-  "Vata" => vata_dosha,
-  "Pitta" => pitta_dosha,
-  "Kapha" => kapha_dosha
+  Dosha::VATA => vata,
+  Dosha::PITTA => pitta,
+  Dosha::KAPHA => kapha
 }
 
 DOSHA_HEALING_PLANS_TEMPLATE_DATA.each do |dosha_name, plans_data_array| # plans_data_array is now an array of plan configs
@@ -25,12 +18,15 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA.each do |dosha_name, plans_data_array| # plans
   puts "Creating Healing Plan Templates for #{dosha_name}..."
 
   plans_data_array.each do |data| # Loop through each plan config (daily, 3month, 6month)
-    healing_plan_template = HealingPlanTemplate.find_or_initialize_by(
-      name: "#{dosha_name} Balancing Plan - #{data[:duration_type].titleize}" # Adjust name for clarity
+    name = "#{dosha_name} Balancing Plan - #{data[:duration_type].titleize}"
+    
+    # Find or create the template with all required attributes
+    healing_plan_template = HealingPlanTemplate.find_or_initialize_by(name: name)
+    healing_plan_template.assign_attributes(
+      description: data[:description],
+      dosha: dosha,
+      duration_type: data[:duration_type]
     )
-    healing_plan_template.description = data[:description]
-    healing_plan_template.dosha = dosha
-    healing_plan_template.duration_type = data[:duration_type]
     healing_plan_template.save!
 
     # ... rest of the section and item seeding logic remains the same ...

@@ -1,5 +1,5 @@
 DOSHA_HEALING_PLANS_TEMPLATE_DATA = {
-  "Vata" => [
+  Dosha::VATA => [
     {
       description: "To balance Vata, focus on establishing a consistent daily routine with regular meals and sleep times. Favor warm, nourishing, and slightly oily foods while incorporating calming activities like meditation and gentle yoga to ground your energy.",
       "duration_type": "daily",
@@ -127,7 +127,7 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA = {
       ]
     }
   ],
-  "Pitta" => [
+  Dosha::PITTA => [
     {
       description: "For Pitta, emphasize cooling and moderation in all aspects of life. Consume fresh, cooling foods while avoiding spicy, fried, and sour items, and practice calming, non-competitive activities like swimming or walking in nature.",
       "duration_type": "daily",
@@ -256,7 +256,7 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA = {
       ]
     }
   ],
-  "Kapha" => [
+  Dosha::KAPHA => [
     {
       description: "A Kapha-balancing plan prioritizes stimulation and regular movement to counteract sluggishness. Eat light, warm, and spicy foods, engage in vigorous daily exercise, and actively seek out new and exciting experiences.",
       "duration_type": "daily",
