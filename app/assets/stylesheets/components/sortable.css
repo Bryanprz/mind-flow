@@ -1,8 +1,0 @@
-.dragging {
-  opacity: 0.5;
-  transform: scale(1.05);
-}
-
-[data-sortable-target="handle"] {
-  cursor: move;
-}

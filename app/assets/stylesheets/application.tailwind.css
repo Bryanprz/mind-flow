@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "components/sortable.css";
-
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
