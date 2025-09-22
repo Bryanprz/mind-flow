@@ -11,6 +11,18 @@ Rails.application.routes.draw do
     end
 
     resources :social_posts, only: [:index, :show, :edit, :update, :destroy]
+
+    resources :plan_sections, only: [] do
+      member do
+        patch :move
+      end
+    end
+
+    resources :plan_items, only: [] do
+      member do
+        patch :move
+      end
+    end
   end
 
   resources :verses

@@ -32,22 +32,29 @@
           <div class="divider"></div>
 
           <h3 class="text-xl font-bold mb-2">Plan Sections</h3>
-          <% @healing_plan.sections.order(:position).each do |section| %>
-            <% next if section.name == "Focus Areas" %> <%# Exclude the old Focus Areas section %>
-            <div class="collapse collapse-arrow border border-base-300 bg-base-200">
-              <input type="checkbox" id="section-<%= section.id %>" />
-              <label for="section-<%= section.id %>" class="collapse-title text-xl font-medium">
-                <%= section.name %>
-              </label>
-              <div class="collapse-content">
-                <ul class="list-disc list-inside">
-                  <% section.plan_items.order(:position).each do |item| %>
-                    <li><%= item.content %></li>
-                  <% end %>
-                </ul>
+          <div data-controller="sortable" data-reorder-url-value="<%= update_position_admin_user_healing_plan_path(0) %>">
+            <% @healing_plan.sections.order(:position).each do |section| %>
+              <% next if section.name == "Focus Areas" %> <%# Exclude the old Focus Areas section %>
+              <div 
+                class="collapse collapse-arrow border border-base-300 bg-base-200" 
+                data-reorder-id-value="<%= section.id %>"
+                data-action="dragstart->reorder#dragStart"
+                >
+
+                <input type="checkbox" id="section-<%= section.id %>" />
+                <label for="section-<%= section.id %>" class="collapse-title text-xl font-medium">
+                  <%= section.name %>
+                </label>
+                <div class="collapse-content">
+                  <ul class="list-disc list-inside">
+                    <% section.plan_items.order(:position).each do |item| %>
+                      <li><%= item.content %></li>
+                    <% end %>
+                  </ul>
+                </div>
               </div>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
         </div>
 
         <div class="card-actions justify-end mt-6 flex-nowrap">

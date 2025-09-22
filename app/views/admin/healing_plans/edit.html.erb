@@ -322,18 +322,19 @@
 
     <h3 class="text-2xl font-bold mb-4 max-w-2xl mx-auto">Plan Sections</h3>
 
-    <div class="space-y-4">
+    <div class="space-y-4" data-controller="sortable" data-sortable-url-value="<%= move_admin_plan_section_path(0) %>">
       <%= form.fields_for :plan_sections do |section_form| %>
         <% next if section_form.object.name == "Focus Areas" %>
         <% section_key = section_form.object.persisted? ? section_form.object.id : section_form.index %>
         <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 overflow-hidden transition-all duration-200" 
              data-controller="collapsible" 
-             data-collapsible-expanded-class="expanded">
+             data-collapsible-expanded-class="expanded"
+             data-sortable-id-value="<%= section_form.object.id %>">
           <div class="card-body p-0">
             <div class="card-header flex justify-between items-center p-4 hover:bg-neutral/10 cursor-pointer transition-colors duration-200" 
                  data-action="click->collapsible#toggle">
               <div class="flex items-center gap-2 flex-1">
-                <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400">
+                <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 drag-handle">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
                   </svg>
@@ -364,12 +365,12 @@
                 <span class="text-sm font-medium">Plan Items</span>
               </div>
 
-              <div class="plan-items-container mb-4 space-y-2">
+              <div class="plan-items-container mb-4 space-y-2" data-controller="sortable" data-sortable-url-value="<%= move_admin_plan_item_path(0, parent_id: 0) %>" data-sortable-parent-id-value="<%= section_form.object.id %>">
                 <% section_form.object.plan_items.order(:position).each do |item| %>
                   <%= section_form.fields_for :plan_items, item do |item_form| %>
                     <% item_key = item.persisted? ? item.id : item_form.index %>
-                    <div class="flex items-start gap-2 p-2 rounded-lg hover:bg-base-200 transition-colors duration-200 group/item">
-                      <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 opacity-0 group-hover/item:opacity-100 transition-opacity duration-200">
+                    <div class="flex items-start gap-2 p-2 rounded-lg hover:bg-base-200 transition-colors duration-200 group/item" data-sortable-id-value="<%= item.id %>">
+                      <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 opacity-0 group-hover/item:opacity-100 transition-opacity duration-200 drag-handle">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
                         </svg>
