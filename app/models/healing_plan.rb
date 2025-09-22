@@ -7,7 +7,7 @@ class HealingPlan < ApplicationRecord
   belongs_to :user
   has_rich_text :description
   belongs_to :healing_plan_template
-  has_many :plan_sections, dependent: :destroy
+  has_many :plan_sections, -> { order(position: :asc) }, dependent: :destroy
   has_many :plan_items, through: :plan_sections
   has_many :logs, class_name: 'HealingPlanLog', dependent: :destroy
 
