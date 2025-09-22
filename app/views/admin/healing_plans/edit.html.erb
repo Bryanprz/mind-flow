@@ -1,8 +1,234 @@
+<% content_for :head do %>
+  <style>
+    [data-sortable-handle] {
+      touch-action: none;
+    }
+    
+    [data-sortable-dragging] {
+      opacity: 0.8;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      padding: 0 1rem;
+    }
+    
+    .card-content.active {
+      max-height: 5000px;
+      padding: 1rem;
+    }
+    
+    .arrow-icon {
+      transition: transform 0.3s ease;
+    }
+    
+    .arrow-icon.rotated {
+      transform: rotate(180deg);
+    }
+    
+    .focus-area-item {
+      transition: all 0.2s ease;
+    }
+    
+    .focus-area-item:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+  </style>
+  <script>
+    // Function to prepare form submission
+    function prepareForm(form) {
+      // Clean up empty plan items
+      cleanEmptyPlanItems(form);
+      
+      // Add hidden inputs for deleted focus areas
+      deletedFocusAreas.forEach(index => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = `healing_plan[focus_areas_attributes][${index}][_destroy]`;
+        input.value = '1';
+        form.appendChild(input);
+      });
+      
+      return true;
+    }
+    
+    // Function to add a new focus area
+    function addFocusArea() {
+      const container = document.querySelector('.card-content .space-y-6');
+      if (!container) return;
+      
+      // Get the next available index that's not in deletedFocusAreas
+      let index = 0;
+      while (deletedFocusAreas.has(index)) {
+        index++;
+      }
+      
+      const newItem = document.createElement('div');
+      newItem.className = 'focus-area-item group/focus-item';
+      newItem.innerHTML = `
+        <div class="flex items-center gap-4">
+          <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move" data-sortable-handle>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+            </svg>
+          </div>
+          <h4 class="text-lg font-medium text-gray-700">Focus Area ${index + 1}</h4>
+          <div class="ml-auto flex items-center gap-2">
+            <button type="button" class="btn btn-ghost btn-sm text-error opacity-0 group-hover/focus-item:opacity-100 transition-opacity" 
+                    onclick="const item = this.closest('.focus-area-item'); 
+                           const index = Array.from(document.querySelectorAll('.focus-area-item')).indexOf(item);
+                           if (index >= 0) deletedFocusAreas.add(index);
+                           item.remove()">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4 pl-14">
+          <div class="form-control">
+            <label class="label !p-0 mb-1">Focus Area</label>
+            <input type="text" name="focus_area_${index}" class="input input-bordered w-full" />
+          </div>
+          <div class="form-control">
+            <label class="label !p-0 mb-1">Goal</label>
+            <input type="text" name="goal_${index}" class="input input-bordered w-full" />
+          </div>
+        </div>
+        <div class="divider my-4"></div>
+      `;
+      
+      // Insert before the "Add Focus Area" button
+      const addButton = document.querySelector('.card-content button[onclick="addFocusArea()"]');
+      if (addButton) {
+        container.insertBefore(newItem, addButton.closest('.px-6'));
+      } else {
+        container.appendChild(newItem);
+      }
+    }
+
+    // Track deleted focus areas
+    const deletedFocusAreas = new Set();
+
+    // Handle form submission
+    function prepareForm(form) {
+      // First clean up empty plan items
+      cleanEmptyPlanItems(form);
+      
+      // Add hidden inputs for deleted focus areas
+      deletedFocusAreas.forEach(index => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = `healing_plan[focus_areas_attributes][${index}][_destroy]`;
+        input.value = '1';
+        form.appendChild(input);
+      });
+      
+      return true;
+    }
+
+    // Function to clean up empty plan items before form submission
+    function cleanEmptyPlanItems(form) {
+      const textareas = form.querySelectorAll('textarea[name$="[content]"]');
+      textareas.forEach(textarea => {
+        const itemDiv = textarea.closest('.flex');
+        const destroyInput = itemDiv?.querySelector('input[type="hidden"][name$="[_destroy]"]');
+        
+        if (textarea.value.trim() === '') {
+          if (destroyInput) {
+            destroyInput.value = '1';
+          } else if (itemDiv) {
+            itemDiv.remove();
+          }
+        }
+      });
+      return true;
+    }
+
+    // Add plan item function
+    function addPlanItem(button, sectionIndex, paramKey) {
+      const container = button.closest('.card-body').querySelector('.plan-items-container');
+      const timestamp = new Date().getTime();
+      const newItem = document.createElement('div');
+      newItem.className = 'flex items-start gap-2 p-2 rounded-lg hover:bg-base-200 transition-colors duration-200 group/item';
+      
+      // Create a unique ID for the new item
+      const newItemId = timestamp;
+      
+      // Create the new item content
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'flex-1';
+      contentDiv.innerHTML = `
+        <div class="flex items-start gap-2">
+          <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move opacity-0 group-hover/item:opacity-100 transition-opacity duration-200" data-sortable-handle>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+            </svg>
+          </div>
+          <div class="form-control flex-1">
+            <textarea name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${newItemId}][content]" class="textarea textarea-bordered w-full min-h-[100px]" placeholder="Enter plan item content"></textarea>
+          </div>
+        </div>
+      `;
+      
+      const actionsDiv = document.createElement('div');
+      actionsDiv.className = 'flex-shrink-0 ml-2';
+      actionsDiv.innerHTML = `
+        <button type="button" class="btn btn-ghost btn-sm text-error" onclick="this.closest('.flex').remove()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      `;
+      
+      // Add the new item to the container
+      newItem.appendChild(contentDiv);
+      newItem.appendChild(actionsDiv);
+      container.appendChild(newItem);
+      
+      // Focus the new textarea
+      const newTextarea = newItem.querySelector('textarea');
+      if (newTextarea) {
+        const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+        newTextarea.focus({ preventScroll: true });
+        window.scrollTo(0, scrollPosition);
+      }
+    }
+    
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize collapsible sections
+      document.querySelectorAll('.card-header').forEach(header => {
+        header.addEventListener('click', function() {
+          const card = this.closest('.card');
+          const content = card.querySelector('.card-content');
+          const arrow = this.querySelector('.arrow-icon');
+          
+          if (content && arrow) {
+            content.classList.toggle('active');
+            arrow.classList.toggle('rotated');
+          }
+        });
+      });
+      
+      // Add form submission handler
+      const form = document.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          cleanEmptyPlanItems(this);
+        });
+      }
+    });
+  </script>
+<% end %>
+
 <% content_for :main_container_class, 'bg-base-200' %>
 
 <div class="container mx-auto px-4 py-8">
-
-  <%= form_with(model: [:admin, @user, @healing_plan], scope: :healing_plan, url: admin_user_healing_plan_path(@user, @healing_plan)) do |form| %>
+  <%= form_with(model: [:admin, @user, @healing_plan], scope: :healing_plan, url: admin_user_healing_plan_path(@user, @healing_plan), html: { onsubmit: "return prepareForm(this)" }) do |form| %>
     <% if @healing_plan.errors.any? %>
       <div class="alert alert-error">
         <ul>
@@ -35,200 +261,167 @@
       </div>
     </div>
 
-    <h3 class="text-2xl font-bold mb-4 max-w-2xl mx-auto">Overview (Focus Areas & Goals)</h3>
-    <% (0..3).each do |index| %>
-      <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6" id="overview_item_<%= index %>">
-        <div class="card-body">
-          <div class="flex justify-between items-center mb-2">
-            <div class="form-control flex-grow mr-2">
-              <%= form.label "focus_area_#{index}", "Focus Area #{index + 1}", class: "label" %>
-              <%= form.text_field "focus_area_#{index}", class: "input input-bordered" %>
+    <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-10" data-controller="collapsible" data-collapsible-expanded-class="expanded">
+      <div class="card-body p-0">
+        <div class="card-header flex justify-between items-center p-4 hover:bg-neutral/10 cursor-pointer transition-colors duration-200" 
+             data-action="click->collapsible#toggle">
+          <div class="flex items-center gap-2 flex-1">
+            <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move" data-sortable-handle>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+              </svg>
             </div>
-            <div class="form-control flex-grow">
-              <%= form.label "goal_#{index}", "Goal #{index + 1}", class: "label" %>
-              <%= form.text_field "goal_#{index}", class: "input input-bordered" %>
-            </div>
-            <div class="ml-4">
-              <button type="button" class="btn btn-ghost btn-sm text-error" onclick="
-                document.getElementById('overview_item_<%= index %>').style.display = 'none';
-                document.getElementById('<%= form.field_id("focus_area_#{index}") %>').value = '';
-                document.getElementById('<%= form.field_id("goal_#{index}") %>').value = '';
-              ">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
+            <h3 class="text-xl font-semibold">Focus Areas & Goals</h3>
+          </div>
+          <div class="text-gray-500" data-collapsible-target="arrow">
+            <svg class="h-5 w-5 transform transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+
+        <div data-collapsible-target="content" class="hidden">
+          <div class="p-6 space-y-6">
+            <% (0..3).each do |index| %>
+              <div class="focus-area-item group/focus-item">
+                <div class="flex items-center gap-4">
+                  <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move" data-sortable-handle>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+                    </svg>
+                  </div>
+                  <h4 class="text-lg font-medium text-gray-700">Focus Area <%= index + 1 %></h4>
+                  <div class="ml-auto flex items-center gap-2">
+                    <button type="button" class="btn btn-ghost btn-sm text-error opacity-0 group-hover/focus-item:opacity-100 transition-opacity" 
+                            onclick="const item = this.closest('.focus-area-item'); 
+                                   const index = Array.from(document.querySelectorAll('.focus-area-item')).indexOf(item);
+                                   if (index >= 0) deletedFocusAreas.add(index);
+                                   item.remove()">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4 pl-14">
+                  <div class="form-control">
+                    <%= form.label "focus_area_#{index}", "Focus Area", class: "label !p-0 mb-1" %>
+                    <%= form.text_field "focus_area_#{index}", class: "input input-bordered w-full" %>
+                  </div>
+                  <div class="form-control">
+                    <%= form.label "goal_#{index}", "Goal", class: "label !p-0 mb-1" %>
+                    <%= form.text_field "goal_#{index}", class: "input input-bordered w-full" %>
+                  </div>
+                </div>
+                <% if index < 3 %>
+                  <div class="divider my-4"></div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="px-6 pb-6">
+            <button type="button" class="btn btn-outline btn-sm w-full" onclick="addFocusArea()">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Add Focus Area
+            </button>
           </div>
         </div>
       </div>
-    <% end %>
+    </div>
 
     <h3 class="text-2xl font-bold mb-4 max-w-2xl mx-auto">Plan Sections</h3>
 
-    <div data-controller="sortable">
+    <div data-controller="sortable section" class="space-y-4">
       <%= form.fields_for :plan_sections do |section_form| %>
         <% next if section_form.object.name == "Focus Areas" %>
-        <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6" data-sortable-target="item" data-id="<%= section_form.object.id %>" data-ordering="<%= section_form.object.ordering %>" data-sortable-input-name="healing_plan[plan_sections_attributes][<%= section_form.index %>][ordering]">
-          <div class="card-body">
-            <div class="flex justify-between items-center mb-2">
-              <div class="flex items-center">
-                <div class="form-control flex-grow">
-                  <%= section_form.label :name, "Section Name", class: "label" %>
-                  <%= section_form.text_field :name, class: "input input-bordered" %>
+        <% section_key = section_form.object.persisted? ? section_form.object.id : section_form.index %>
+        <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 overflow-hidden transition-all duration-200" data-sortable-target="item" data-id="<%= section_form.object.id %>" data-ordering="<%= section_form.object.ordering %>" data-sortable-input-name="healing_plan[plan_sections_attributes][<%= section_key %>][ordering]" data-controller="collapsible" data-collapsible-expanded-class="expanded">
+          <div class="card-body p-0">
+            <div class="card-header flex justify-between items-center p-4 hover:bg-neutral/10 cursor-pointer transition-colors duration-200" 
+                 data-action="click->collapsible#toggle">
+              <div class="flex items-center gap-2 flex-1">
+                <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move" data-sortable-handle>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+                  </svg>
+                </div>
+                <div class="form-control flex-1">
+                  <%= section_form.label :name, "Section Name", class: "label !p-0" %>
+                  <div class="relative">
+                    <%= section_form.text_field :name, class: "input input-bordered !py-1 h-10 pr-10 w-full" %>
+                    <%= section_form.hidden_field :_destroy, class: "section-destroy" %>
+                    <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-error hover:text-error/80 transition-colors" 
+                            onclick="this.closest('[data-sortable-target=\'item\']').style.display = 'none'; this.previousElementSibling.value = '1';">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div class="ml-4">
-                <%= section_form.hidden_field :_destroy, value: section_form.object.marked_for_destruction? ? 1 : 0, id: "section_destroy_#{section_form.object.id}" %>
-                <button type="button" class="btn btn-ghost btn-sm text-error" onclick="document.getElementById('section_destroy_<%= section_form.object.id %>').value = 1; this.closest('.card').style.display = 'none';">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+              <div class="text-gray-500 ml-4" data-collapsible-target="arrow">
+                <svg class="h-5 w-5 transform transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
               </div>
             </div>
 
-            <div class="divider mt-4 mb-2">
-              <span>Plan Items</span>
-            </div>
+            <div data-collapsible-target="content" class="hidden">
+              <div class="divider my-2">
+                <span class="text-sm font-medium">Plan Items</span>
+              </div>
 
-            <div class="plan-items-container mb-4" data-controller="sortable" data-section-index="<%= section_form.index %>">
-              <% section_form.object.plan_items.order(:ordering).each do |item| %>
-                <%= section_form.fields_for :plan_items, item do |item_form| %>
-                  <div class="flex justify-between items-center mb-2" data-sortable-target="item" data-id="<%= item.id %>" data-ordering="<%= item.ordering %>" data-sortable-input-name="healing_plan[plan_sections_attributes][<%= section_form.index %>][plan_items_attributes][<%= item_form.index %>][ordering]">
-                    <div class="flex items-center flex-grow">
-                      <div class="form-control flex-grow">
-                        <%= item_form.label :content, "Item Content", class: "label" %>
-                        <%= item_form.text_area :content, rows: 2, class: "textarea textarea-bordered" %>
+              <div class="plan-items-container mb-4 space-y-2" data-controller="sortable" data-section-index="<%= section_form.index %>">
+                <% section_form.object.plan_items.order(:ordering).each do |item| %>
+                  <%= section_form.fields_for :plan_items, item do |item_form| %>
+                    <% item_key = item.persisted? ? item.id : item_form.index %>
+                    <div class="flex items-start gap-2 p-2 rounded-lg hover:bg-base-200 transition-colors duration-200 group/item" data-sortable-target="item" data-id="<%= item.id %>" data-ordering="<%= item.ordering %>" data-sortable-input-name="healing_plan[plan_sections_attributes][<%= section_key %>][plan_items_attributes][<%= item_key %>][ordering]">
+                      <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move opacity-0 group-hover/item:opacity-100 transition-opacity duration-200" data-sortable-handle>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <div class="form-control">
+                          <%= item_form.label :content, "Item Content", class: "label" %>
+                          <%= item_form.text_area :content, rows: 2, class: "textarea textarea-bordered w-full" %>
+                        </div>
+                      </div>
+                      <div class="flex-shrink-0 ml-2">
+                        <%= item_form.hidden_field :_destroy, value: item_form.object.marked_for_destruction? ? 1 : 0, id: "item_destroy_#{item_form.object.id}" %>
+                        <button type="button" class="btn btn-ghost btn-sm text-error" onclick="document.getElementById('item_destroy_<%= item_form.object.id %>').value = 1; this.closest('.group\\/item').style.display = 'none';">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
                       </div>
                     </div>
-                    <div class="ml-4">
-                      <%= item_form.hidden_field :_destroy, value: item_form.object.marked_for_destruction? ? 1 : 0, id: "item_destroy_#{item_form.object.id}" %>
-                      <button type="button" class="btn btn-ghost btn-sm text-error" onclick="document.getElementById('item_destroy_<%= item_form.object.id %>').value = 1; this.closest('.flex').style.display = 'none';">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </div>
-            
-            <div class="flex justify-end mt-2">
-              <button type="button" class="btn btn-sm btn-ghost" onclick="addPlanItem(this, '<%= section_form.index %>')">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Add Item
-              </button>
+              </div>
+
+              <div class="flex justify-end mt-4 mb-2">
+                <button type="button" class="btn btn-sm btn-ghost" onclick="event.stopPropagation(); addPlanItem(this, '<%= section_form.index %>')">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                  Add Item
+                </button>
+              </div>
             </div>
           </div>
         </div>
       <% end %>
     </div>
-    
-    <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6">
-      <div class="card-body">
-        <div class="card-actions justify-end">
-          <%= form.submit "Update Healing Plan", class: "btn btn-primary" %>
-          <%= link_to "Cancel", admin_user_healing_plan_path(@user, @healing_plan), class: "btn btn-ghost" %>
-        </div>
-      </div>
+
+    <div class="flex justify-end gap-2 w-full max-w-2xl mx-auto mt-6 mb-6">
+      <%= link_to "Cancel", admin_user_healing_plan_path(@user, @healing_plan), class: "btn btn-ghost" %>
+      <%= form.submit "Update Healing Plan", class: "btn btn-primary text-white" %>
     </div>
   <% end %>
 </div>
-
-<script>
-  // Function to clean up empty plan items before form submission
-  function cleanEmptyPlanItems(form) {
-    // Find all plan item textareas
-    const textareas = form.querySelectorAll('textarea[name$="[content]"]');
-    
-    textareas.forEach(textarea => {
-      const itemDiv = textarea.closest('.flex');
-      const destroyInput = itemDiv.querySelector('input[type="hidden"][name$="[_destroy]"]');
-      
-      // If the textarea is empty, mark it for destruction
-      if (textarea.value.trim() === '') {
-        if (destroyInput) {
-          destroyInput.value = '1';
-        } else {
-          // If no destroy input exists, remove the entire item
-          itemDiv.remove();
-        }
-      }
-    });
-    
-    return true;
-  }
-  
-  // Add form submission handler
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form');
-    if (form) {
-      form.addEventListener('submit', function(e) {
-        cleanEmptyPlanItems(this);
-      });
-    }
-  });
-
-  function addPlanItem(button, sectionIndex, paramKey) {
-    // Find the container for this section's items
-    const container = button.closest('.card-body').querySelector('.plan-items-container');
-    const timestamp = new Date().getTime();
-    const newItem = document.createElement('div');
-    newItem.className = 'flex justify-between items-center mb-2';
-    
-    // Create a unique ID for the new item
-    const newItemId = timestamp;
-    
-    // Create the new item HTML
-    newItem.innerHTML = `
-      <div class="form-control flex-grow">
-        <label class="label">Item</label>
-        <textarea name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${newItemId}][content]" 
-                  class="textarea textarea-bordered w-full" 
-                  rows="2"
-                  placeholder="Enter plan item content"></textarea>
-        <input type="hidden" 
-               name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${newItemId}][id]" 
-               value="">
-      </div>
-      <div class="ml-4">
-        <input type="hidden" 
-               name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${newItemId}][_destroy]" 
-               value="0" 
-               id="item_destroy_${newItemId}">
-        <button type="button" class="btn btn-ghost btn-sm text-error" 
-                onclick="document.getElementById('item_destroy_${newItemId}').value = '1'; this.closest('.flex').style.display = 'none';">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    `;
-    
-    // Add the new item to the container
-    container.appendChild(newItem);
-    
-    // Focus the new textarea without scrolling
-    const newTextarea = newItem.querySelector('textarea');
-    if (newTextarea) {
-      // Focus without scrolling the page
-      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-      newTextarea.focus({ preventScroll: true });
-      // Restore scroll position in case focus caused any scrolling
-      window.scrollTo(0, scrollPosition);
-    }
-  }
-  
-  // Keep the existing addDietItem function for backward compatibility
-  function addDietItem() {
-    // This is kept for backward compatibility but now uses the new function
-    const button = document.querySelector('.plan-items-container[data-section-index="0"]')?.closest('.card-body')?.querySelector('button[onclick^="addPlanItem"]');
-    if (button) {
-      addPlanItem(button, 0);
-    }
-  }
 </script>
+</div>

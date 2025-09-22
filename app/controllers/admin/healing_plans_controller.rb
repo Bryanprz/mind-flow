@@ -30,6 +30,7 @@ class Admin::HealingPlansController < ApplicationController
 
   def update
     Rails.logger.info "Raw Healing Plan Params: #{params.inspect}"
+    
     if @healing_plan.update(healing_plan_params)
       redirect_to admin_user_healing_plan_path(@user, @healing_plan), notice: 'Healing plan was successfully updated.'
     else
@@ -58,14 +59,10 @@ class Admin::HealingPlansController < ApplicationController
   end
 
   def healing_plan_params
-    key = [:prakruti_plan, :vikruti_plan, :healing_plan].find { |k| params.key?(k) }
-    params.require(key).permit(
+    params.require(:healing_plan).permit(
       :name,
       :description,
-      :focus_area_0, :goal_0,
-      :focus_area_1, :goal_1,
-      :focus_area_2, :goal_2,
-      :focus_area_3, :goal_3,
+      (0..3).map { |i| ["focus_area_#{i}".to_sym, "goal_#{i}".to_sym] }.flatten,
       overview: {},
       plan_sections_attributes: [
         :id,
