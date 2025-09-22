@@ -153,7 +153,7 @@ class HealingPlan < ApplicationRecord
     healing_plan_template.plan_section_templates.each do |section_template|
       sections_to_insert << {
         name: section_template.name,
-        ordering: section_template.ordering,
+        position: section_template.position,
         healing_plan_id: self.id,
         created_at: Time.current,
         updated_at: Time.current
@@ -172,7 +172,7 @@ class HealingPlan < ApplicationRecord
         section_template.plan_item_templates.each do |item_template|
           items_to_insert << {
             content: item_template.content,
-            ordering: item_template.ordering,
+            position: item_template.position,
             plan_section_id: section_id,
             created_at: Time.current,
             updated_at: Time.current

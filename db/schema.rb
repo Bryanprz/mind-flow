@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_21_172327) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_22_215846) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -262,37 +262,41 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_21_172327) do
   create_table "plan_item_templates", force: :cascade do |t|
     t.integer "plan_section_template_id", null: false
     t.text "content"
-    t.integer "ordering"
+    t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["plan_section_template_id", "position"], name: "idx_plan_item_templates_on_section_and_position"
     t.index ["plan_section_template_id"], name: "index_plan_item_templates_on_plan_section_template_id"
   end
 
   create_table "plan_items", force: :cascade do |t|
     t.text "content"
     t.boolean "completed", default: false
-    t.integer "ordering"
+    t.integer "position"
     t.integer "plan_section_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["plan_section_id", "position"], name: "index_plan_items_on_plan_section_id_and_position"
     t.index ["plan_section_id"], name: "index_plan_items_on_plan_section_id"
   end
 
   create_table "plan_section_templates", force: :cascade do |t|
     t.integer "healing_plan_template_id", null: false
     t.string "name"
-    t.integer "ordering"
+    t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["healing_plan_template_id", "position"], name: "idx_plan_section_templates_on_plan_and_position"
     t.index ["healing_plan_template_id"], name: "index_plan_section_templates_on_healing_plan_template_id"
   end
 
   create_table "plan_sections", force: :cascade do |t|
     t.string "name"
-    t.integer "ordering"
+    t.integer "position"
     t.integer "healing_plan_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["healing_plan_id", "position"], name: "index_plan_sections_on_healing_plan_id_and_position"
     t.index ["healing_plan_id"], name: "index_plan_sections_on_healing_plan_id"
   end
 

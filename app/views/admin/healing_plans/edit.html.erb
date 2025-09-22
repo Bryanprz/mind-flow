@@ -21,11 +21,22 @@
     }
   </style>
   <script>
+    // Track deleted focus areas
+    const deletedFocusAreas = new Set();
+    
+    // Function to clean up empty plan items
+    function cleanEmptyPlanItems(form) {
+      // Implementation of cleanEmptyPlanItems if needed
+    }
+
     // Function to prepare form submission
     function prepareForm(form) {
       // Clean up empty plan items
       cleanEmptyPlanItems(form);
       
+      // Add hidden inputs for deleted focus areas
+      deletedFocusAreas.forEach(index => {
+        const input = document.createElement('input');
         input.type = 'hidden';
         input.name = `healing_plan[focus_areas_attributes][${index}][_destroy]`;
         input.value = '1';
@@ -50,7 +61,7 @@
       newItem.className = 'focus-area-item group/focus-item';
       newItem.innerHTML = `
         <div class="flex items-center gap-4">
-          <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move" data-sortable-handle>
+          <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
             </svg>
@@ -89,9 +100,6 @@
         container.appendChild(newItem);
       }
     }
-
-    // Track deleted focus areas
-    const deletedFocusAreas = new Set();
 
     // Handle form submission
     function prepareForm(form) {
@@ -143,7 +151,7 @@
       contentDiv.className = 'flex-1';
       contentDiv.innerHTML = `
         <div class="flex items-start gap-2">
-          <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move opacity-0 group-hover/item:opacity-100 transition-opacity duration-200" data-sortable-handle>
+          <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 opacity-0 group-hover/item:opacity-100 transition-opacity duration-200">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
             </svg>
@@ -246,7 +254,7 @@
         <div class="card-header flex justify-between items-center p-4 hover:bg-neutral/10 cursor-pointer transition-colors duration-200" 
              data-action="click->collapsible#toggle">
           <div class="flex items-center gap-2 flex-1">
-            <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move" data-sortable-handle>
+            <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
               </svg>
@@ -265,7 +273,7 @@
             <% (0..3).each do |index| %>
               <div class="focus-area-item group/focus-item">
                 <div class="flex items-center gap-4">
-                  <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move" data-sortable-handle>
+                  <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
                     </svg>
@@ -336,7 +344,7 @@
                     <%= section_form.text_field :name, class: "input input-bordered !py-1 h-10 pr-10 w-full" %>
                     <%= section_form.hidden_field :_destroy, class: "section-destroy" %>
                     <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-error hover:text-error/80 transition-colors" 
-                            onclick="this.closest('[data-sortable-target=\'item\']').style.display = 'none'; this.previousElementSibling.value = '1';">
+                            onclick="this.closest('.group\/item').style.display = 'none'; this.previousElementSibling.value = '1';">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                       </svg>
@@ -356,12 +364,12 @@
                 <span class="text-sm font-medium">Plan Items</span>
               </div>
 
-              <div class="plan-items-container mb-4 space-y-2" data-controller="sortable" data-section-index="<%= section_form.index %>">
-                <% section_form.object.plan_items.order(:ordering).each do |item| %>
+              <div class="plan-items-container mb-4 space-y-2">
+                <% section_form.object.plan_items.order(:position).each do |item| %>
                   <%= section_form.fields_for :plan_items, item do |item_form| %>
                     <% item_key = item.persisted? ? item.id : item_form.index %>
-                    <div class="flex items-start gap-2 p-2 rounded-lg hover:bg-base-200 transition-colors duration-200 group/item" data-sortable-target="item" data-id="<%= item.id %>" data-ordering="<%= item.ordering %>" data-sortable-input-name="healing_plan[plan_sections_attributes][<%= section_key %>][plan_items_attributes][<%= item_key %>][ordering]">
-                      <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 cursor-move opacity-0 group-hover/item:opacity-100 transition-opacity duration-200" data-sortable-handle>
+                    <div class="flex items-start gap-2 p-2 rounded-lg hover:bg-base-200 transition-colors duration-200 group/item">
+                      <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 opacity-0 group-hover/item:opacity-100 transition-opacity duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
                         </svg>

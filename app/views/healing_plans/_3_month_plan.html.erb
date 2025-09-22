@@ -48,7 +48,7 @@
         </div>
         <div class="collapse-content">
           <ul class="list-disc list-inside space-y-1">
-            <% section.items.order(:ordering).each do |item| %>
+            <% section.items.order(:position).each do |item| %>
               <li><%= item.content %></li>
             <% end %>
           </ul>
@@ -68,7 +68,7 @@
     <div class="card-body">
       <h2 class="card-title text-xl">Progress & Reflection</h2>
       <div class="form-control">
-        <% @healing_plan.sections.order(:ordering).each do |section| %>
+        <% @healing_plan.sections.order(:position).each do |section| %>
           <label class="label cursor-pointer">
             <span class="label-text">Completed: <%= section.name %></span>
             <input type="checkbox" class="checkbox checkbox-success" />

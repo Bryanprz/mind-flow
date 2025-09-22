@@ -62,7 +62,7 @@
   <% end %>
 
   <!-- Main Content Sections -->
-  <% @healing_plan.sections.order(:ordering).each do |section| %>
+  <% @healing_plan.sections.order(:position).each do |section| %>
     <% next if section.plan_items.empty? %>
     <% next if section.name == "Focus Areas" %>
     
@@ -71,7 +71,7 @@
         <h2 class="card-title text-xl"><%= section.name %></h2>
         
         <div class="space-y-4 mt-4">
-          <% section.plan_items.order(:ordering).each do |item| %>
+          <% section.plan_items.order(:position).each do |item| %>
             <div data-healing-plan-progress-target="item" class="py-1">
               <label class="label cursor-pointer justify-start p-0">
                 <input 

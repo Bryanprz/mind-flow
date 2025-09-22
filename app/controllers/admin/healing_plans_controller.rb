@@ -68,12 +68,12 @@ class Admin::HealingPlansController < ApplicationController
         :id,
         :_destroy,
         :name,
-        :ordering,
+        :position,
         plan_items_attributes: [
           :id,
           :_destroy,
           :content,
-          :ordering
+          :position
         ]
       ]
     )
