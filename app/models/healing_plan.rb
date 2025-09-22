@@ -13,6 +13,8 @@ class HealingPlan < ApplicationRecord
 
   accepts_nested_attributes_for :plan_sections, allow_destroy: true
   
+  store_accessor :overview, *(0..3).map { |i| ["focus_area_#{i}", "goal_#{i}"] }.flatten
+
   # Validate that plan items have content
   validate :reject_empty_plan_items
   
@@ -43,8 +45,6 @@ class HealingPlan < ApplicationRecord
       end
     end
   end
-
-  store_accessor :overview, *(0..3).map { |i| ["focus_area_#{i}", "goal_#{i}"] }.flatten
 
   alias_method :healing_plan_logs, :logs
   alias_method :sections, :plan_sections
