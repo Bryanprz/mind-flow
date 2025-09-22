@@ -14,15 +14,6 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA = {
           ]
         },
         {
-          name: "Focus Areas",
-          items: [
-            "Sleep: Deeper rest",
-            "Digestion: Improve Agni",
-            "Energy: Maintain balance",
-            "Emotions: Reduce anxiety"
-          ]
-        },
-        {
           name: "Morning Routine",
           items: [
             "Wake up before 6 AM.",
@@ -139,15 +130,6 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA = {
             "Step away from screens and go outside in nature to cool the mind.",
             "Avoid heated debates — pause and take 3 deep breaths before responding.",
             "Schedule breaks during work to release intensity and prevent burnout."
-          ]
-        },
-        {
-          name: "Focus Areas",
-          items: [
-            "Sleep: Deeper rest",
-            "Digestion: Improve Agni",
-            "Energy: Maintain balance",
-            "Emotions: Reduce anxiety"
           ]
         },
         {
@@ -268,15 +250,6 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA = {
             "Choose light, spicy foods over heavy, oily meals to awaken digestion.",
             "Avoid oversleeping — wake up by sunrise to boost energy.",
             "Declutter your space to refresh the mind and lighten emotional weight."
-          ]
-        },
-        {
-          name: "Focus Areas",
-          items: [
-            "Sleep: Deeper rest",
-            "Digestion: Improve Agni",
-            "Energy: Maintain balance",
-            "Emotions: Reduce anxiety"
           ]
         },
         {

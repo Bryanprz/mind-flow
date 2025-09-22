@@ -64,6 +64,7 @@
   <!-- Main Content Sections -->
   <% @healing_plan.sections.order(:ordering).each do |section| %>
     <% next if section.plan_items.empty? %>
+    <% next if section.name == "Focus Areas" %>
     
     <div class="card bg-base-100 border border-gray-300">
       <div class="card-body">
