@@ -19,8 +19,6 @@ class HealingPlan < ApplicationRecord
   # Clean up empty plan items before validation
   before_validation :clean_empty_plan_items
   
-  private
-  
   def reject_empty_plan_items
     plan_sections.each do |section|
       section.plan_items.each do |item|
