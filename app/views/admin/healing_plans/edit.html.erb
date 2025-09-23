@@ -324,7 +324,7 @@
 
     <div class="space-y-4" data-controller="sortable" data-sortable-url-value="<%= move_admin_plan_section_path(0) %>">
       <%= form.fields_for :plan_sections do |section_form| %>
-        <% next if section_form.object.name == "Focus Areas" %>
+
         <% section_key = section_form.object.persisted? ? section_form.object.id : section_form.index %>
         <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 overflow-hidden transition-all duration-200" 
              data-controller="collapsible" 

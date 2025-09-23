@@ -1,5 +1,8 @@
 class PlanSection < ApplicationRecord
-  acts_as_list scope: :healing_plan
+  acts_as_list scope: :healing_plan, 
+               column: :position, 
+               top_of_list: 1, 
+               sequential_updates: true
 
   belongs_to :healing_plan
   has_many :plan_items, -> { order(position: :asc) }, dependent: :destroy

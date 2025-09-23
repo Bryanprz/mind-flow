@@ -8,30 +8,47 @@ export default class extends Controller {
     this.sortable = Sortable.create(this.element, {
       onEnd: this.end.bind(this),
       animation: 150,
-      handle: '.drag-handle' // Add a handle for dragging
+      handle: '.drag-handle'
     })
   }
 
   async end(event) {
-    const id = event.item.dataset.sortableIdValue
-    const newPosition = event.newIndex + 1
-
-    let url = this.urlValue.replace('/0/', `/${id}/`)
-
-    // If a parentId is provided, replace the second /0/ in the URL for nested resources
+    const actualItems = Array.from(event.from.children).filter(item => 
+      item.dataset.sortableIdValue !== undefined
+    );
+    
+    // Calculate 1-based position in the filtered list
+    const actualPosition = actualItems.indexOf(event.item) + 1;
+    const newPosition = actualPosition; // 1-based for acts_as_list
+    
+    const id = event.item.dataset.sortableIdValue;
+    
+    // Prepare the URL
+    let url = this.urlValue.replace('/0/', `/${id}/`);
     if (this.hasParentIdValue) {
-      url = url.replace('/0/', `/${this.parentIdValue}/`)
+      url = url.replace('/0/', `/${this.parentIdValue}/`);
     }
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content
-
-    await fetch(url, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken
-      },
-      body: JSON.stringify({ position: newPosition })
-    })
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    
+    try {
+      await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({ position: newPosition })
+      });
+      
+      // Update the UI to reflect the new position
+      if (this.hasUpdatedCallback) {
+        this.dispatch('updated', { id, position: newPosition });
+      }
+      
+    } catch (error) {
+      console.error('Failed to update position:', error);
+      throw error;
+    }
   }
 }
