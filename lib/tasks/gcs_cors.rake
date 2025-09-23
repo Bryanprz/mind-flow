@@ -4,11 +4,18 @@ namespace :gcs do
   task :set_cors => :environment do
     require "google/cloud/storage"
 
+    # Define CORS configuration according to Google Cloud Storage API
     cors_policy = [
       {
-        origin: ["https://ancientherb.health"],
-        method: ["GET", "POST", "PUT", "DELETE"],
-        response_header: ["Content-Type"],
+        origin: ["https://ancientherb.health", "https://www.ancientherb.health"],
+        method: ["GET", "HEAD", "PUT", "POST", "DELETE", "OPTIONS"],
+        response_header: [
+          "Content-Type",
+          "Content-MD5",
+          "x-goog-resumable",
+          "x-goog-meta-*",
+          "x-client-*"
+        ],
         max_age_seconds: 3600
       }
     ]
@@ -27,9 +34,12 @@ namespace :gcs do
     begin
       social_posts_bucket = storage.bucket(social_posts_bucket_name)
       if social_posts_bucket
-        # Update CORS configuration using the update method
+        # For google-cloud-storage 1.57.0, we need to use the update method with cors_configuration
         social_posts_bucket.update do |b|
-          b.cors = cors_policy
+          b.cors_configuration = cors_policy
+          # Ensure public access prevention is not blocking CORS
+          b.website_main_page_suffix = nil
+          b.website_not_found_page = nil
         end
         puts "CORS policy set for bucket: #{social_posts_bucket_name}"
       else
@@ -46,9 +56,12 @@ namespace :gcs do
     begin
       avatars_bucket = storage.bucket(avatars_bucket_name)
       if avatars_bucket
-        # Update CORS configuration using the update method
+        # For google-cloud-storage 1.57.0, we need to use the update method with cors_configuration
         avatars_bucket.update do |b|
-          b.cors = cors_policy
+          b.cors_configuration = cors_policy
+          # Ensure public access prevention is not blocking CORS
+          b.website_main_page_suffix = nil
+          b.website_not_found_page = nil
         end
         puts "CORS policy set for bucket: #{avatars_bucket_name}"
       else
