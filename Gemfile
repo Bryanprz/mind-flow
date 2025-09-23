@@ -42,6 +42,8 @@ gem "image_processing", "~> 1.2"
 
 gem 'ruby_llm'
 gem 'google-cloud-storage'
+gem 'google-apis-storage_v1', '~> 0.40.0'
+gem 'googleauth', '~> 1.7'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
