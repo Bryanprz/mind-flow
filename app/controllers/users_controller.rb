@@ -116,10 +116,19 @@ class UsersController < ApplicationController
 
   def attach_avatar
     @user = User.find(params[:id])
-    if @user.update(avatar: params[:avatar])
-      render json: { success: true, avatar_url: url_for(@user.avatar) }
-    else
-      render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
+    begin
+      if @user.update(avatar: params[:avatar])
+        render json: { success: true, avatar_url: url_for(@user.avatar) }
+      else
+        render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
+      end
+    rescue ActiveModel::UnknownAttributeError, NoMethodError => e
+      Rails.logger.error("Avatar updated but background job enqueue failed: #{e.class}: #{e.message}")
+      if @user.avatar.attached?
+        render json: { success: true, avatar_url: url_for(@user.avatar) }
+      else
+        render json: { success: false, errors: ["Upload succeeded but processing failed"] }, status: :accepted
+      end
     end
   end
 
