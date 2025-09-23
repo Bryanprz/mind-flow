@@ -114,6 +114,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def attach_avatar
+    @user = User.find(params[:id])
+    if @user.update(avatar: params[:avatar])
+      render json: { success: true, avatar_url: url_for(@user.avatar) }
+    else
+      render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_user

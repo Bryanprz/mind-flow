@@ -31,10 +31,11 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :lifestyle_plans
-  resources :cures
-  
-  
-  resources :users
+  resources :users do
+    member do
+      patch :attach_avatar
+    end
+  end
   resources :healing_plans, except: [:new, :show] do
     collection do
       post 'log_item_progress'

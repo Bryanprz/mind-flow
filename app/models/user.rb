@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_one_attached :avatar
   has_secure_password
   has_many :healing_plans, dependent: :destroy # Ayurvedic protocol
   has_many :prakruti_plans, class_name: 'PrakrutiPlan'
