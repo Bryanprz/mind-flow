@@ -6,8 +6,14 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-google:
+google_social_posts:
   service: GCS
   project: ancient-herb
   bucket: ancientherb-social-posts
+  credentials: <%= Rails.application.credentials.gcs[:credentials].to_json %>
+
+google_avatars:
+  service: GCS
+  project: ancient-herb
+  bucket: ancientherb-avatars
   credentials: <%= Rails.application.credentials.gcs[:credentials].to_json %>
