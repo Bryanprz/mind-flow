@@ -17,7 +17,7 @@ namespace :gcs do
     # Initialize GCS client using credentials
     # Ensure Rails.application.credentials.gcs[:credentials] is correctly set up
     # as a JSON string in your Rails credentials.
-    gcs_credentials = JSON.parse(Rails.application.credentials.gcs[:credentials].to_s)
+    gcs_credentials = Rails.application.credentials.gcs[:credentials]
     storage = Google::Cloud::Storage.new(credentials: gcs_credentials)
 
     # Define bucket names
