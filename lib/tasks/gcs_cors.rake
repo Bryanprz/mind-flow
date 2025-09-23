@@ -5,12 +5,12 @@ namespace :gcs do
     require "google/cloud/storage"
 
     cors_policy = [
-      Google::Cloud::Storage::Bucket::Cors.new(
+      {
         origin: ["https://ancientherb.health"],
-        method: [:get, :post, :put, :delete],
+        method: ["GET", "POST", "PUT", "DELETE"],
         response_header: ["Content-Type"],
         max_age_seconds: 3600
-      )
+      }
     ]
 
     # Initialize GCS client using credentials
