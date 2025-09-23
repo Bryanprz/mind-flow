@@ -6,12 +6,15 @@ namespace :gcs do
   desc "Set CORS policy for GCS buckets used by Active Storage"
   task :set_cors => :environment do
     # Get the service account credentials
-    credentials = JSON.parse(Rails.application.credentials.gcs[:credentials])
+    credentials = Rails.application.credentials.gcs[:credentials]
+    
+    # Convert credentials to string if it's a hash
+    credentials = credentials.to_json if credentials.respond_to?(:to_json)
     
     # Initialize the storage service
     storage = Google::Apis::StorageV1::StorageService.new
     storage.authorization = Google::Auth::ServiceAccountCredentials.make_creds(
-      json_key_io: StringIO.new(credentials.to_json),
+      json_key_io: StringIO.new(credentials),
       scope: 'https://www.googleapis.com/auth/devstorage.full_control'
     )
 
