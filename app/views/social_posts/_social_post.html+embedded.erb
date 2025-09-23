@@ -2,8 +2,14 @@
   <div class="<%= 'pb-2' if social_post.media.attached? %> card-body py-3">
     <div class="flex items-center mb-2">
       <div class="avatar placeholder mr-3">
-        <div class="bg-neutral text-neutral-content w-8 h-8 flex items-center justify-center">
-          <span class="text-xs"><%= (social_post.user.name.to_s.first&.upcase || social_post.user.email_address.to_s.first&.upcase) %></span>
+        <div class="rounded-full w-8 h-8 overflow-hidden">
+          <% if social_post.user.avatar.attached? %>
+            <%= image_tag social_post.user.avatar, class: "w-full h-full object-cover" %>
+          <% else %>
+            <div class="w-full h-full bg-neutral text-neutral-content flex items-center justify-center text-xs">
+              <%= (social_post.user.name.to_s.first&.upcase || social_post.user.email_address.to_s.first&.upcase) %>
+            </div>
+          <% end %>
         </div>
       </div>
       <div>

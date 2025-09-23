@@ -26,10 +26,14 @@
     <% if authenticated? %>
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-          <div class="w-10 rounded-full">
-            <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+          <div class="w-10 rounded-full overflow-hidden">
+            <% if Current.user.avatar.attached? %>
+              <%= image_tag Current.user.avatar, class: "w-full h-full object-cover" %>
+            <% else %>
+              <div class="w-full h-full bg-neutral text-neutral-content flex items-center justify-center text-lg">
+                <%= Current.user.name[0].upcase %>
+              </div>
+            <% end %>
           </div>
         </div>
         <ul
