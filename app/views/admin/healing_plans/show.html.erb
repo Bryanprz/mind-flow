@@ -32,7 +32,7 @@
           <div class="divider"></div>
 
           <h3 class="text-xl font-bold mb-2">Plan Sections</h3>
-          <div data-controller="sortable">
+          <div data-controller="sortable" class="space-y-3">
             <% @healing_plan.sections.order(:position).each do |section| %>
               <% next if section.name == "Focus Areas" %> <%# Exclude the old Focus Areas section %>
               <div 
