@@ -28,7 +28,9 @@ namespace :gcs do
     begin
       social_posts_bucket = storage.bucket(social_posts_bucket_name)
       if social_posts_bucket
-        social_posts_bucket.cors = cors_policy
+        social_posts_bucket.update do |bucket|
+          bucket.cors = cors_policy
+        end
         puts "CORS policy set for bucket: #{social_posts_bucket_name}"
       else
         puts "Bucket not found: #{social_posts_bucket_name}"
@@ -43,7 +45,9 @@ namespace :gcs do
     begin
       avatars_bucket = storage.bucket(avatars_bucket_name)
       if avatars_bucket
-        avatars_bucket.cors = cors_policy
+        avatars_bucket.update do |bucket|
+          bucket.cors = cors_policy
+        end
         puts "CORS policy set for bucket: #{avatars_bucket_name}"
       else
         puts "Bucket not found: #{avatars_bucket_name}"
