@@ -44,31 +44,7 @@ export default class extends Controller {
     }
   }
 
-  createReply(event) {
-    event.preventDefault()
-    
-    const form = event.target
-    const formData = new FormData(form)
-    
-    // Use Turbo for immediate updates
-    fetch(form.action, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
-        'Accept': 'text/vnd.turbo-stream.html'
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        form.reset()
-        if (this.hasReplyFormTarget) {
-          this.replyFormTarget.classList.add('hidden')
-        }
-      }
-    })
-    .catch(error => console.error('Error:', error))
-  }
+
 
 
   updateReplyCount(count) {

@@ -23,7 +23,9 @@
 
     <div class="flex gap-4 items-center min-h-[4.5rem]">
       <div class="flex-1 self-center">
-        <p class="mb-0"><%= social_post.content %></p>
+        <div class="prose prose-sm max-w-none mb-0">
+          <%= social_post.content %>
+        </div>
       </div>
       
       <% if social_post.media.attached? %>

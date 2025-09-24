@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_24_050140) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_24_065430) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -332,7 +332,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_050140) do
   create_table "social_post_replies", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "social_post_id", null: false
-    t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["social_post_id"], name: "index_social_post_replies_on_social_post_id"
@@ -340,7 +339,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_050140) do
   end
 
   create_table "social_posts", force: :cascade do |t|
-    t.text "content"
     t.integer "user_id", null: false
     t.datetime "published_at"
     t.datetime "created_at", null: false

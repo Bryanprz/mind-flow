@@ -1,5 +1,6 @@
 class SocialPost < ApplicationRecord
   belongs_to :user
+  has_rich_text :content
   has_many_attached :media
   has_many :social_post_likes, dependent: :destroy
   has_many :social_post_replies, dependent: :destroy

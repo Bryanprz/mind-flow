@@ -2,7 +2,7 @@ class SocialPostsController < ApplicationController
   before_action :require_authentication
 
   def index
-    @social_posts = SocialPost.includes(:user, :social_post_likes, :social_post_replies)
+    @social_posts = SocialPost.includes(:user, :social_post_likes, :social_post_replies, :rich_text_content)
                               .order(published_at: :desc)
     # For dashboard card
     # Use a variant for embedded (e.g., Turbo Frame) requests so we can render a compact feed
@@ -10,9 +10,9 @@ class SocialPostsController < ApplicationController
   end
 
   def show
-    @social_post = SocialPost.includes(:user, :social_post_likes, :social_post_replies, :saved_posts)
+    @social_post = SocialPost.includes(:user, :social_post_likes, :social_post_replies, :saved_posts, :rich_text_content)
                             .find(params[:id])
-    @replies = @social_post.social_post_replies.includes(:user).order(:created_at)
+    @replies = @social_post.social_post_replies.includes(:user, :rich_text_content).order(:created_at)
   end
 
   def create

@@ -12,14 +12,15 @@
       </div>
     </div>
     <div class="flex-1 relative">
-      <div class="w-full flex items-center gap-2">
-        <%= form.text_field :content, 
-                         class: "input input-bordered input-sm w-full flex-1", 
+      <div class="w-full">
+        <%= form.rich_text_area :content, 
+                         class: "textarea textarea-bordered w-full", 
                          placeholder: "Write something...", 
                          required: true,
-                         autocomplete: "off",
                          data: { action: "keydown.enter->reset-form#submitOnEnter" } %>
-        <%= form.submit "Post", class: "btn btn-sm btn-primary normal-case" %>
+        <div class="flex justify-end mt-2">
+          <%= form.submit "Post", class: "btn btn-sm btn-primary normal-case" %>
+        </div>
       </div>
       <%= render 'shared/error_messages', resource: social_post if local_assigns[:social_post]&.errors&.any? %>
     </div>

@@ -51,7 +51,7 @@
           <%= reply.content %>
         <% end %>
       <% else %>
-        <span class="text-gray-500 italic">No content</span>
+        <span class="text-gray-500 italic">This reply appears to be empty</span>
       <% end %>
     </div>
 
@@ -59,11 +59,17 @@
     <div class="mt-2 hidden" data-social-post-target="replyForm">
       <%= form_with model: [reply.social_post, SocialPostReply.new], 
           class: "space-y-2", 
-          data: { action: "submit->social-post#createReply" } do |f| %>
+          local: true,
+          data: { 
+            turbo: false
+          } do |f| %>
         <div class="border border-gray-300 rounded-lg overflow-hidden">
           <%= f.rich_text_area :content, 
               placeholder: "Reply to @#{reply.user.handle || reply.user.name}...", 
-              class: "w-full min-h-[60px] p-3 border-0 resize-none focus:ring-0 focus:outline-none" %>
+              class: "w-full min-h-[60px] p-3 border-0 resize-none focus:ring-0 focus:outline-none",
+              data: { 
+                direct_upload_url: rails_direct_uploads_url
+              } %>
         </div>
         <div class="flex justify-end">
           <%= f.submit "Reply", class: "btn btn-xs btn-primary text-white" %>
