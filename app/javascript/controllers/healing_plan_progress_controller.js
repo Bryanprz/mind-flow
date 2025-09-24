@@ -13,6 +13,151 @@ export default class extends Controller {
     this.createModernConfetti()
   }
 
+  getDailyMotivationalContent() {
+    // For testing: Use random selection to see different messages
+    // Change this back to dayOfYear for production
+    const useRandomForTesting = true // Set to false for production
+    
+    let index
+    if (useRandomForTesting) {
+      // Random selection for testing different messages
+      index = Math.floor(Math.random() * 20) // 20 different messages
+    } else {
+      // Production: Get day of year for consistent daily rotation
+      const now = new Date()
+      const start = new Date(now.getFullYear(), 0, 0)
+      const dayOfYear = Math.floor((now - start) / (1000 * 60 * 60 * 24))
+      index = dayOfYear % 20
+    }
+    
+    // Heart-centered congratulatory content focused on healing and wellness
+    const motivationalMessages = [
+      { 
+        emoji: '🎉', 
+        title: 'Congratulations!', 
+        message: 'You\'ve taken another beautiful step in your healing journey',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🏆', 
+        title: 'Achievement Unlocked!', 
+        message: 'Your commitment to wellness is truly inspiring',
+        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🌟', 
+        title: 'You\'re Winning!', 
+        message: 'Every moment of self-care is a victory worth celebrating',
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '💚', 
+        title: 'Heart-Centered Success!', 
+        message: 'Your dedication to healing is transforming your life',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🌱', 
+        title: 'Growth Achievement!', 
+        message: 'You\'re blossoming into your healthiest, happiest self',
+        image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🎊', 
+        title: 'Wellness Victory!', 
+        message: 'Your healing journey is a beautiful testament to your strength',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '💪', 
+        title: 'Health Champion!', 
+        message: 'You\'re becoming the wellness warrior you were meant to be',
+        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🌈', 
+        title: 'Healing Success!', 
+        message: 'Your transformation is creating ripples of wellness',
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🦋', 
+        title: 'Metamorphosis Complete!', 
+        message: 'You\'re emerging as your most vibrant, healthy self',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🌺', 
+        title: 'Flourishing Achievement!', 
+        message: 'Your wellness garden is blooming with beautiful results',
+        image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '💎', 
+        title: 'Precious Progress!', 
+        message: 'Your healing journey is creating priceless transformation',
+        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🌅', 
+        title: 'Dawn of Wellness!', 
+        message: 'You\'re awakening to your true potential for health',
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🕊️', 
+        title: 'Peaceful Victory!', 
+        message: 'You\'re creating inner harmony and outer wellness',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🌿', 
+        title: 'Natural Success!', 
+        message: 'You\'re aligning with your body\'s natural wisdom',
+        image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🎭', 
+        title: 'Authentic Achievement!', 
+        message: 'You\'re embracing your true, healthy essence',
+        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🔥', 
+        title: 'Inner Fire Victory!', 
+        message: 'Your healing energy is creating powerful transformation',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🌻', 
+        title: 'Radiant Success!', 
+        message: 'You\'re glowing with the vitality of true wellness',
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🌊', 
+        title: 'Flow State Victory!', 
+        message: 'You\'re in perfect harmony with your healing journey',
+        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🌙', 
+        title: 'Rest & Renewal Success!', 
+        message: 'You\'re honoring your body\'s wisdom and healing power',
+        image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop&crop=center&q=80'
+      },
+      { 
+        emoji: '🦅', 
+        title: 'Soaring Achievement!', 
+        message: 'You\'re rising above limitations into true wellness',
+        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop&crop=center&q=80'
+      }
+    ]
+    
+    // Return the selected message
+    return motivationalMessages[index]
+  }
+
   showSuccessMessage() {
     // Hide any existing Rails notices
     const existingNotices = document.querySelectorAll('.alert, .notice, .flash-message')
@@ -35,15 +180,20 @@ export default class extends Controller {
     // Create gamified success notification - use fixed positioning for reliability
     const notification = document.createElement('div')
     notification.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 z-[10000]'
+    // Get daily motivational content
+    const motivationalContent = this.getDailyMotivationalContent()
+    
     notification.innerHTML = `
       <div class="bg-gradient-to-r from-success to-success/80 text-success-content px-6 py-4 rounded-lg shadow-xl border border-success/20 max-w-md animate-wag" style="animation: wag 0.6s ease-in-out;">
-        <div class="flex items-center space-x-3">
-          <div class="text-2xl">🎉</div>
-          <div>
-            <div class="font-bold text-lg">Journal Entry Saved!</div>
-            <div class="text-sm opacity-90">Your healing journey continues...</div>
+        <div class="text-center">
+          <!-- Image on its own row -->
+          <div class="mb-3 p-2">
+            <img src="${motivationalContent.image}" alt="${motivationalContent.title}" class="w-full rounded-lg object-cover border-2 border-success-content/20" />
           </div>
-          <div class="text-2xl">✨</div>
+          
+          <!-- Title and message -->
+          <div class="font-bold text-lg mb-1">${motivationalContent.title}</div>
+          <div class="text-sm opacity-90">${motivationalContent.message}</div>
         </div>
       </div>
     `
