@@ -13,6 +13,53 @@ export default class extends Controller {
     this.createModernConfetti()
   }
 
+  showSuccessMessage() {
+    // Hide any existing Rails notices
+    const existingNotices = document.querySelectorAll('.alert, .notice, .flash-message')
+    existingNotices.forEach(notice => notice.style.display = 'none')
+    
+    // Add wag keyframes if not already present
+    if (!document.querySelector('#wag-animation-styles')) {
+      const style = document.createElement('style')
+      style.id = 'wag-animation-styles'
+      style.textContent = `
+        @keyframes wag {
+          0%, 100% { transform: rotate(0deg); }
+          25% { transform: rotate(-3deg); }
+          75% { transform: rotate(3deg); }
+        }
+      `
+      document.head.appendChild(style)
+    }
+    
+    // Create gamified success notification - use fixed positioning for reliability
+    const notification = document.createElement('div')
+    notification.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 z-[10000]'
+    notification.innerHTML = `
+      <div class="bg-gradient-to-r from-success to-success/80 text-success-content px-6 py-4 rounded-lg shadow-xl border border-success/20 max-w-md animate-wag" style="animation: wag 0.6s ease-in-out;">
+        <div class="flex items-center space-x-3">
+          <div class="text-2xl">🎉</div>
+          <div>
+            <div class="font-bold text-lg">Journal Entry Saved!</div>
+            <div class="text-sm opacity-90">Your healing journey continues...</div>
+          </div>
+          <div class="text-2xl">✨</div>
+        </div>
+      </div>
+    `
+    
+    // Append to body for guaranteed visibility
+    document.body.appendChild(notification)
+    
+    // Auto-remove after 4 seconds
+    setTimeout(() => {
+      notification.style.transition = 'all 0.5s ease-out'
+      notification.style.opacity = '0'
+      notification.style.transform = 'translate(-50%, -10px)'
+      setTimeout(() => notification.remove(), 500)
+    }, 4000)
+  }
+
   createModernConfetti() {
     // Create multiple burst points for more dynamic effect
     const burstPoints = [
