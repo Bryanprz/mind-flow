@@ -51,6 +51,19 @@ export default class extends Controller {
     const formData = new FormData(form);
     const url = form.action;
 
+    const trixEditor = form.querySelector('trix-editor');
+    if (trixEditor && trixEditor.editor) {
+      const hiddenInput = form.querySelector('input[type="hidden"][name="social_post_reply[content]"]');
+      if (hiddenInput) {
+        const content = trixEditor.editor.element.innerHTML;
+        if (trixEditor.editor.getDocument().toString().trim() === '') {
+          formData.set(hiddenInput.name, '');
+        } else {
+          formData.set(hiddenInput.name, content);
+        }
+      }
+    }
+
     // Clear previous errors
     const existingError = form.querySelector('.form-errors');
     if (existingError) {

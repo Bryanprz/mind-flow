@@ -15,7 +15,7 @@ class SocialPostRepliesController < ApplicationController
           render json: { 
             success: true, 
             replies_count: @social_post.social_post_replies.count,
-            reply: render_to_string(partial: 'social_post_replies/reply', locals: { reply: @reply })
+            reply: render_to_string(partial: "social_post_replies/reply", locals: { reply: @reply }, formats: [:html])
           }
         end
         format.turbo_stream do
