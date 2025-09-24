@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["likeButton", "likesCount", "replyButton", "replyForm", "repliesList", "repliesCount", "saveButton", "savesCount"]
-  static values = { postId: Number }
+  static values = { postId: Number, url: String }
 
   toggleLike(event) {
     event.preventDefault()
@@ -50,24 +50,21 @@ export default class extends Controller {
     const form = event.target
     const formData = new FormData(form)
     
+    // Use Turbo for immediate updates
     fetch(form.action, {
       method: 'POST',
       body: formData,
       headers: {
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+        'Accept': 'text/vnd.turbo-stream.html'
       }
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        if (this.hasRepliesListTarget) {
-          this.repliesListTarget.insertAdjacentHTML('beforeend', data.reply)
-        }
+    .then(response => {
+      if (response.ok) {
         form.reset()
         if (this.hasReplyFormTarget) {
           this.replyFormTarget.classList.add('hidden')
         }
-        this.updateReplyCount(data.replies_count)
       }
     })
     .catch(error => console.error('Error:', error))
@@ -75,7 +72,9 @@ export default class extends Controller {
 
 
   updateReplyCount(count) {
-    this.repliesCountTarget.textContent = count
+    if (this.hasRepliesCountTarget) {
+      this.repliesCountTarget.textContent = count
+    }
   }
 
   toggleSave(event) {
@@ -117,5 +116,14 @@ export default class extends Controller {
 
   updateSaveCount(count) {
     this.savesCountTarget.textContent = count
+  }
+
+  openPost(event) {
+    event.preventDefault()
+    window.location.href = this.urlValue
+  }
+
+  stopPropagation(event) {
+    event.stopPropagation()
   }
 }

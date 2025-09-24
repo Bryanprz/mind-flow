@@ -9,6 +9,12 @@ class SocialPostsController < ApplicationController
     request.variant = :embedded if turbo_frame_request?
   end
 
+  def show
+    @social_post = SocialPost.includes(:user, :social_post_likes, :social_post_replies, :saved_posts)
+                            .find(params[:id])
+    @replies = @social_post.social_post_replies.includes(:user).order(:created_at)
+  end
+
   def create
     @social_post = SocialPost.new(social_post_params)
     @social_post.user = Current.user

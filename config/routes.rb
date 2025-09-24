@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :social_posts do
+  resources :social_posts, only: [:show, :create] do
     resources :social_post_likes, only: [:create]
     delete 'social_post_likes', to: 'social_post_likes#destroy'
     resources :social_post_replies, only: [:create]
