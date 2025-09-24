@@ -27,7 +27,8 @@ class HealingPlansController < ApplicationController
     end
 
     @date = params[:date] ? Time.zone.parse(params[:date]).to_date : Time.zone.today
-    @healing_plan_log = @healing_plan.healing_plan_logs.find_or_create_by(date: @date)
+    # Only find existing log, don't create unless user actually starts working
+    @healing_plan_log = @healing_plan.healing_plan_logs.find_by(date: @date)
   end
 
   def new

@@ -33,8 +33,8 @@
     
     <!-- Profile Picture -->
     <div class="absolute -bottom-16 left-6">
-      <div class="avatar" data-controller="avatar-upload" data-avatar-upload-user-id-value="<%= @user.id %>" data-action="click->avatar-upload#selectFile dragover->avatar-upload#dragOver dragleave->avatar-upload#dragLeave drop->avatar-upload#drop">
-        <div class="w-32 h-32 rounded-full ring-4 ring-white relative overflow-hidden group cursor-pointer">
+      <div class="avatar group" data-controller="avatar-upload" data-avatar-upload-user-id-value="<%= @user.id %>" data-action="click->avatar-upload#selectFile dragover->avatar-upload#dragOver dragleave->avatar-upload#dragLeave drop->avatar-upload#drop">
+        <div class="w-32 h-32 rounded-full ring-4 ring-white relative overflow-hidden cursor-pointer">
           <% if @user.avatar.attached? %>
             <%= image_tag @user.avatar, class: "w-full h-full object-cover" %>
           <% else %>
@@ -43,8 +43,16 @@
             </div>
           <% end %>
           <input type="file" accept="image/*" class="hidden" data-avatar-upload-target="fileInput" data-action="change->avatar-upload#uploadFile">
+          <!-- Upload overlay on hover -->
+          <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center z-10">
+            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              </svg>
+            </div>
+          </div>
         </div>
-        <div data-avatar-upload-target="progress" class="absolute inset-0 bg-blue-500 bg-opacity-75 flex items-center justify-center text-white text-lg font-bold opacity-0 transition-opacity duration-200">0%</div>
+        <div data-avatar-upload-target="progress" class="absolute inset-0 bg-blue-500 bg-opacity-75 flex items-center justify-center text-white text-lg font-bold opacity-0 transition-opacity duration-200 z-20">0%</div>
       </div>
     </div>
   </div>

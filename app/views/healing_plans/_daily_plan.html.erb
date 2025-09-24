@@ -1,6 +1,10 @@
 <% completed_item_ids = @healing_plan_log&.completed_item_ids || [] %>
 
 <div class="max-w-[700px] mx-auto p-6 space-y-6" data-controller="healing-plan-progress" data-healing-plan-progress-healing-plan-id-value="<%= @healing_plan.id %>" data-healing-plan-progress-healing-plan-log-id-value="<%= @healing_plan_log&.id %>" data-healing-plan-progress-date-value="<%= @date.iso8601 %>">
+  
+  
+  <!-- Main Content (only shown when log exists) -->
+  <% if @healing_plan_log %>
   <!-- Hero / Intro -->
   <div class="card bg-base-100 border border-gray-300">
     <div class="card-body">
@@ -117,4 +121,5 @@
       </div>
     </div>
   </div>
+  <% end %>
 </div>

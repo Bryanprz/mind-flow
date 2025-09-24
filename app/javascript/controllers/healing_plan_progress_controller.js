@@ -8,6 +8,32 @@ export default class extends Controller {
     this.update()
   }
 
+  async startSession() {
+    // Create a new healing plan log for this date
+    try {
+      const response = await fetch(`/healing_plans/${this.healingPlanIdValue}/create_daily_log`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ date: this.dateValue })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        // Reload the page to show the new log
+        window.location.reload()
+      } else {
+        console.error('Failed to create daily log')
+        alert('Failed to start session. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error creating daily log:', error)
+      alert('An error occurred. Please try again.')
+    }
+  }
+
   async toggle(event) { // Made async
     const checkbox = event.currentTarget
     await this.ensureHealingPlanLogExists() // Ensure log exists before sending item log
