@@ -4,9 +4,9 @@
 ARG RUBY_VERSION=3.3.0
 FROM ruby:$RUBY_VERSION-slim
 
-# Install dependencies including Node.js
+# Install dependencies including Node.js and libvips for image processing
 RUN apt-get update -qq && \
-    apt-get install -y build-essential libsqlite3-dev curl && \
+    apt-get install -y build-essential libsqlite3-dev curl libvips-dev && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     npm install -g npm@latest && \
