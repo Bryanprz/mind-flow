@@ -2,7 +2,8 @@ class SocialPostsController < ApplicationController
   before_action :require_authentication
 
   def index
-    @social_posts = SocialPost.order(published_at: :desc)
+    @social_posts = SocialPost.includes(:user, :social_post_likes, :social_post_replies)
+                              .order(published_at: :desc)
     # For dashboard card
     # Use a variant for embedded (e.g., Turbo Frame) requests so we can render a compact feed
     request.variant = :embedded if turbo_frame_request?

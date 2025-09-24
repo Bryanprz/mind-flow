@@ -1,8 +1,8 @@
-<div class="card bg-base-100 border border-gray-300 rounded-lg overflow-hidden">
+<div class="card bg-base-100 border border-gray-300 rounded-lg overflow-hidden" data-controller="social-post" data-social-post-post-id-value="<%= social_post.id %>">
   <div class="card-body p-3">
     <div class="flex items-center mb-1">
-      <div class="avatar placeholder mr-2">
-        <div class="rounded-full w-6 h-6 overflow-hidden">
+      <%= link_to user_path(social_post.user), class: "avatar placeholder mr-2 hover:opacity-80 transition-opacity" do %>
+        <div class="rounded-full w-10 h-10 overflow-hidden">
           <% if social_post.user.avatar.attached? %>
             <%= image_tag social_post.user.avatar, class: "w-full h-full object-cover" %>
           <% else %>
@@ -11,7 +11,7 @@
             </div>
           <% end %>
         </div>
-      </div>
+      <% end %>
       <div class="flex-1 min-w-0">
         <h2 class="font-medium text-sm truncate"><%= social_post.user.name.presence || social_post.user.email_address %></h2>
         <% ts = social_post.published_at || social_post.created_at %>
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <p class="text-sm mt-1 mb-2"><%= social_post.content %></p>
+    <p class="text-sm mt-4"><%= social_post.content %></p>
 
     <% if social_post.media.attached? %>
       <div class="mt-2">
@@ -47,5 +47,65 @@
         </div>
       </div>
     <% end %>
+
+    <!-- Interaction Bar -->
+    <div class="flex items-center justify-around mt-3 pt-2 border-t border-gray-100">
+      <!-- Reply Button -->
+      <button 
+        class="flex items-center gap-1 text-gray-500 hover:text-blue-500 transition-colors"
+        data-action="click->social-post#toggleReplyForm"
+        data-social-post-target="replyButton">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+        </svg>
+        <span class="text-xs" data-social-post-target="repliesCount"><%= social_post.social_post_replies.count %></span>
+      </button>
+
+      <!-- Like Button -->
+      <button 
+        class="flex items-center gap-1 <%= 'text-red-500' if social_post.liked_by?(Current.user) %> hover:text-red-500 transition-colors"
+        data-action="click->social-post#toggleLike"
+        data-social-post-target="likeButton">
+        <svg class="w-4 h-4" fill="<%= social_post.liked_by?(Current.user) ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+        </svg>
+        <span class="text-xs" data-social-post-target="likesCount"><%= social_post.social_post_likes.count %></span>
+      </button>
+
+      <!-- Save Button -->
+      <button 
+        class="flex items-center gap-1 <%= 'text-blue-500' if social_post.saved_by?(Current.user) %> hover:text-blue-500 transition-colors"
+        data-action="click->social-post#toggleSave"
+        data-social-post-target="saveButton">
+        <svg class="w-4 h-4" fill="<%= social_post.saved_by?(Current.user) ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+        </svg>
+        <span class="text-xs" data-social-post-target="savesCount"><%= social_post.saved_posts.count %></span>
+      </button>
+    </div>
+
+    <!-- Reply Form (hidden by default) -->
+    <div class="mt-3 hidden" data-social-post-target="replyForm">
+      <%= form_with model: [social_post, SocialPostReply.new], 
+          class: "space-y-2", 
+          data: { action: "submit->social-post#createReply" } do |f| %>
+        <div class="trix-content">
+          <%= f.rich_text_area :content, 
+              placeholder: "Write a reply...", 
+              class: "trix-editor",
+              style: "min-height: 80px;" %>
+        </div>
+        <div class="flex justify-end">
+          <%= f.submit "Reply", class: "btn btn-sm btn-primary text-white" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Replies List -->
+    <div class="mt-3" data-social-post-target="repliesList">
+      <% social_post.social_post_replies.includes(:user).limit(5).each do |reply| %>
+        <%= render 'social_post_replies/reply', reply: reply %>
+      <% end %>
+    </div>
   </div>
 </div>

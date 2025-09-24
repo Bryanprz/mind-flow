@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
-  resources :social_posts
+  resources :social_posts do
+    resources :social_post_likes, only: [:create]
+    delete 'social_post_likes', to: 'social_post_likes#destroy'
+    resources :social_post_replies, only: [:create]
+    resources :saved_posts, only: [:create]
+    delete 'saved_posts', to: 'saved_posts#destroy'
+  end
   get "/community", to: "social_posts#index"
+  get "/saved_posts", to: "saved_posts#index"
   resources :chronic_illnesses
   resources :healing_plan_logs
   namespace :admin do

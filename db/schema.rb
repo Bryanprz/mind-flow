@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_24_011209) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_24_050140) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -300,6 +300,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_011209) do
     t.index ["healing_plan_id"], name: "index_plan_sections_on_healing_plan_id"
   end
 
+  create_table "saved_posts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "social_post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["social_post_id"], name: "index_saved_posts_on_social_post_id"
+    t.index ["user_id", "social_post_id"], name: "index_saved_posts_on_user_id_and_social_post_id", unique: true
+    t.index ["user_id"], name: "index_saved_posts_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -309,12 +319,35 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_011209) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "social_post_likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "social_post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["social_post_id"], name: "index_social_post_likes_on_social_post_id"
+    t.index ["user_id", "social_post_id"], name: "index_social_post_likes_on_user_id_and_social_post_id", unique: true
+    t.index ["user_id"], name: "index_social_post_likes_on_user_id"
+  end
+
+  create_table "social_post_replies", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "social_post_id", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["social_post_id"], name: "index_social_post_replies_on_social_post_id"
+    t.index ["user_id"], name: "index_social_post_replies_on_user_id"
+  end
+
   create_table "social_posts", force: :cascade do |t|
     t.text "content"
     t.integer "user_id", null: false
     t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "likes_count", default: 0
+    t.integer "replies_count", default: 0
+    t.integer "saves_count", default: 0
     t.index ["user_id"], name: "index_social_posts_on_user_id"
   end
 
@@ -448,7 +481,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_011209) do
   add_foreign_key "plan_items", "plan_sections"
   add_foreign_key "plan_section_templates", "healing_plan_templates"
   add_foreign_key "plan_sections", "healing_plans"
+  add_foreign_key "saved_posts", "social_posts"
+  add_foreign_key "saved_posts", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "social_post_likes", "social_posts"
+  add_foreign_key "social_post_likes", "users"
+  add_foreign_key "social_post_replies", "social_posts"
+  add_foreign_key "social_post_replies", "users"
   add_foreign_key "social_posts", "users"
   add_foreign_key "verses", "books"
 end
