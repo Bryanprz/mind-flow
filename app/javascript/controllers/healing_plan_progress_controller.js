@@ -215,42 +215,33 @@ export default class extends Controller {
   }
 
   editJournal() {
-    console.log('editJournal called')
-    
     // Hide the journal view
     if (this.hasJournalViewTarget) {
       this.journalViewTarget.classList.add('hidden')
-      console.log('Hidden journal view')
     }
     
     // Show the textarea
     if (this.hasJournalTarget) {
       this.journalTarget.classList.remove('hidden')
       this.journalTarget.focus()
-      console.log('Showed textarea and focused')
       
       // If the textarea is empty, copy the content from the view
       if (!this.journalTarget.value && this.hasJournalViewTarget) {
         const journalText = this.journalViewTarget.querySelector('.prose')
         if (journalText) {
           this.journalTarget.value = journalText.textContent.trim()
-          console.log('Copied content from view to textarea')
         }
       }
-    } else {
-      console.error('Journal target not found')
     }
   }
 
   async savePlan() {
-    console.group('savePlan');
     try {
       // Ensure we have a valid healing plan log
       await this.ensureHealingPlanLogExists();
       
       if (!this.healingPlanLogIdValue) {
         const error = new Error('Could not create or find a daily log');
-        console.error('4. Error:', error);
         throw error;
       }
       
@@ -260,9 +251,10 @@ export default class extends Controller {
       // Send the journal entry
       const result = await this.sendHealingPlanLog(healingPlanId, journalEntry, this.healingPlanLogIdValue);
       
-      // Trigger confetti animation on successful save
+      // Trigger confetti animation and success message on successful save
       if (result && result.status === 'success') {
         this.triggerConfetti();
+        this.showSuccessMessage();
       }
       
       // Force UI update
@@ -272,20 +264,11 @@ export default class extends Controller {
       }
       
     } catch (error) {
-      console.error('9. Error in savePlan:', {
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
-        response: error.response
-      });
-      
       // Only show alert for unexpected errors
       if (!error.message.includes('Cannot save HealingPlanLog') && 
           !error.message.includes('Missing healingPlanLogId')) {
         alert('Error saving journal entry. Please try again. ' + error.message);
       }
-    } finally {
-      console.groupEnd();
     }
   }
 
