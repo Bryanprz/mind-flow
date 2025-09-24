@@ -61,10 +61,7 @@
         <div class="border border-gray-300 rounded-lg overflow-hidden">
           <%= f.rich_text_area :content, 
               placeholder: "Reply to @#{reply.user.handle || reply.user.name}...", 
-              class: "w-full min-h-[60px] p-3 border-0 resize-none focus:ring-0 focus:outline-none",
-              data: { 
-                direct_upload_url: rails_direct_uploads_url
-              } %>
+              class: "w-full min-h-[60px] p-3 border-0 resize-none focus:ring-0 focus:outline-none" %>
         </div>
         <div class="flex justify-end">
           <%= f.submit "Reply", class: "btn btn-xs btn-primary text-white" %>

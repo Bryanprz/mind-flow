@@ -4,7 +4,7 @@ class SocialPostReply < ApplicationRecord
   has_rich_text :content
   
   validate :content_is_not_just_whitespace
-  validates :content, length: { maximum: 500 }
+  validates :content, length: { maximum: 5000 }
 
   private
 

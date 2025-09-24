@@ -9,6 +9,33 @@ trix-editor {
   padding: 0.4em 0.6em;
   min-height: 5em;
   outline: none;
+  overflow: hidden;
+}
+
+/* Ensure Trix editor content stays within bounds */
+trix-editor .trix-content {
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+/* Constrain attachments within the editor */
+trix-editor .attachment {
+  max-width: 100% !important;
+  display: block !important;
+  margin: 0.5rem 0 !important;
+}
+
+trix-editor .attachment img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+/* Hide attachment filenames in the editor */
+trix-editor .attachment__name,
+trix-editor .attachment__size {
+  display: none !important;
 }
 
 trix-toolbar {
@@ -442,7 +469,9 @@ trix-editor .attachment__metadata {
     overflow-x: auto; }
   .trix-content img {
     max-width: 100%;
-    height: auto; }
+    height: auto;
+    display: block;
+    margin: 0.5rem auto; }
   .trix-content .attachment {
     display: inline-block;
     position: relative;
