@@ -47,7 +47,13 @@ class User < ApplicationRecord
   end
 
   def has_checked_in_today?
-    false # Stub: Returns false to show the button initially
+    return false unless active_healing_plan
+    
+    # Check if user has completed a healing plan log for today
+    active_healing_plan.logs
+      .where(date: Date.current)
+      .where.not(completed_at: nil)
+      .exists?
   end
 
   # Gamification methods

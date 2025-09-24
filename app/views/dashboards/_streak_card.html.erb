@@ -54,19 +54,29 @@ day<%= 's' if @healing_plan.current_streak != 1 %> in a row
     </div>
     
     <!-- Tip -->
-    <div class="text-xs text-gray-500 text-center mt-2">
-      Complete your daily plan to keep your streak going!
-    </div>
+    <% unless Current.user&.has_checked_in_today? %>
+      <div class="text-xs text-gray-500 text-center mt-2">
+        Complete your daily plan to keep your streak going!
+      </div>
+    <% end %>
     
     <!-- Check-in Button -->
     <div class="w-full flex justify-center">
       <% if Current.user&.has_checked_in_today? %>
-        <div class="alert alert-success shadow-sm px-2">
-          <div class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div class="flex flex-col items-center gap-3">
+          <!-- Achievement Badge -->
+          <div class="badge badge-success badge-lg gap-2 px-4 py-3">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
             </svg>
-            <span class="text-sm">You've checked in today!</span>
+            <span class="font-semibold">Daily Check-in Complete!</span>
+          </div>
+          
+          <!-- Motivational Message -->
+          <div class="text-center">
+            <div class="text-2xl mb-1">🎉</div>
+            <div class="text-sm font-medium text-success">You're on fire!</div>
+            <div class="text-xs text-gray-500">Keep the momentum going</div>
           </div>
         </div>
       <% else %>
