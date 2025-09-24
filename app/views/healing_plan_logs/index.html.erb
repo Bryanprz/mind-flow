@@ -14,7 +14,7 @@
 
     <!-- Week Overview Cards (only show in week view) -->
     <% if @show_week_view %>
-    <div class="grid grid-cols-1 md:grid-cols-7 gap-4 mb-6">
+    <div class="hidden md:grid grid-cols-7 gap-4 mb-6">
       <% @week_days.each do |day| %>
         <div class="card bg-base-100 border-2 <%= 'border-primary' if day[:is_today] %> <%= 'opacity-50' if day[:is_future] %>">
           <div class="card-body p-3 text-center">
@@ -47,7 +47,7 @@
     <!-- Detailed Logs Table (Desktop) -->
     <div class="hidden md:block">
       <h2 class="text-xl font-semibold mb-4">
-        <%= @show_week_view ? "Recent Activity" : "" %>
+        <%= @show_week_view ? "" : "" %>
       </h2>
       <% logs_to_show = @show_week_view ? @existing_logs.values : @all_logs %>
       <% if logs_to_show.any? %>
@@ -96,7 +96,7 @@
     <!-- Mobile Cards -->
     <div class="block md:hidden">
       <h2 class="text-xl font-semibold mb-4">
-        <%= @show_week_view ? "Recent Activity" : "" %>
+        <%= @show_week_view ? "" : "" %>
       </h2>
       <% logs_to_show = @show_week_view ? @existing_logs.values : @all_logs %>
       <% if logs_to_show.any? %>
