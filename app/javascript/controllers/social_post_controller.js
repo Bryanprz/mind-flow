@@ -44,6 +44,59 @@ export default class extends Controller {
     }
   }
 
+  createReply(event) {
+    console.log("createReply triggered");
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const url = form.action;
+
+    // Clear previous errors
+    const existingError = form.querySelector('.form-errors');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+        'Accept': 'application/json'
+      },
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const mainRepliesList = document.querySelector(`#replies-list-for-post-${this.postIdValue}`);
+        if (mainRepliesList) {
+          mainRepliesList.insertAdjacentHTML('beforeend', data.reply);
+        }
+        
+        const mainRepliesCount = document.querySelector(`#replies-count-for-post-${this.postIdValue}`);
+        if (mainRepliesCount) {
+          mainRepliesCount.textContent = data.replies_count;
+        }
+
+        form.reset();
+        // Also reset the Trix editor
+        const trixEditor = form.querySelector('trix-editor');
+        if (trixEditor) {
+          trixEditor.editor.loadHTML('');
+        }
+        
+        this.replyFormTarget.classList.add('hidden');
+      } else {
+        const errorMessages = data.errors ? data.errors.join(', ') : 'Could not post reply.';
+        const errorElement = document.createElement('div');
+        errorElement.className = 'form-errors text-red-500 text-sm mt-2';
+        errorElement.textContent = errorMessages;
+        form.prepend(errorElement);
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
 
 
 

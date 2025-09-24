@@ -96,11 +96,18 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update(user_params)
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(
-            "user-bio",
-            partial: "users/bio",
-            locals: { user: @user }
-          )
+          render turbo_stream: [
+            turbo_stream.replace(
+              "user-profile-header",
+              partial: "users/profile_header",
+              locals: { user: @user, primary_dosha: @user.prakruti }
+            ),
+            turbo_stream.replace(
+              "user-bio",
+              partial: "users/bio",
+              locals: { user: @user }
+            )
+          ]
         end
         format.html { redirect_to @user, notice: "User was successfully updated." }
         format.json { render :show, status: :ok, location: @user }

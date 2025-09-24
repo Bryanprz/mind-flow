@@ -57,12 +57,7 @@
 
     <!-- Reply Form (hidden by default) -->
     <div class="mt-2 hidden" data-social-post-target="replyForm">
-      <%= form_with model: [reply.social_post, SocialPostReply.new], 
-          class: "space-y-2", 
-          local: true,
-          data: { 
-            turbo: false
-          } do |f| %>
+      <%= form_with model: [reply.social_post, SocialPostReply.new], class: "space-y-2", data: { action: "submit->social-post#createReply" } do |f| %>
         <div class="border border-gray-300 rounded-lg overflow-hidden">
           <%= f.rich_text_area :content, 
               placeholder: "Reply to @#{reply.user.handle || reply.user.name}...", 
