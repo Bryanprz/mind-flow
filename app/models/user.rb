@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_one_attached :avatar, service: :google_avatars
+  has_one_attached :cover_image, service: :google_avatars
   has_secure_password
   has_many :healing_plans, dependent: :destroy # Ayurvedic protocol
   has_many :prakruti_plans, class_name: 'PrakrutiPlan'
@@ -14,9 +15,11 @@ class User < ApplicationRecord
   belongs_to :vikruti, class_name: 'Dosha', optional: true
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+  normalizes :handle, with: ->(h) { h&.strip&.downcase }
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true, length: { minimum: 4 }, on: :create unless Rails.env.development?
   validates :name, presence: true
+  validates :handle, uniqueness: true, allow_blank: true, format: { with: /\A[a-z0-9_]+\z/, message: "can only contain lowercase letters, numbers, and underscores" }
 
   def first_name
     name.to_s.split(' ').first

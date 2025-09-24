@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_22_215846) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_24_011209) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -407,6 +407,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_22_215846) do
     t.boolean "admin"
     t.text "bio"
     t.string "location"
+    t.string "handle"
     t.index ["authentication_token"], name: "index_users_on_authentication_token"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["prakruti_id"], name: "index_users_on_prakruti_id"

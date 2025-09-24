@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   resources :users do
     member do
       patch :attach_avatar
+      patch :attach_cover_image
     end
   end
   resources :healing_plans, except: [:new, :show] do

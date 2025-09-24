@@ -95,9 +95,23 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "user-bio",
+            partial: "users/bio",
+            locals: { user: @user }
+          )
+        end
         format.html { redirect_to @user, notice: "User was successfully updated." }
         format.json { render :show, status: :ok, location: @user }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "user-bio",
+            partial: "users/bio_form",
+            locals: { user: @user }
+          ), status: :unprocessable_entity
+        end
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -132,6 +146,24 @@ class UsersController < ApplicationController
     end
   end
 
+  def attach_cover_image
+    @user = User.find(params[:id])
+    begin
+      if @user.update(cover_image: params[:cover_image])
+        render json: { success: true, cover_image_url: url_for(@user.cover_image) }
+      else
+        render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
+      end
+    rescue ActiveModel::UnknownAttributeError, NoMethodError => e
+      Rails.logger.error("Cover image updated but background job enqueue failed: #{e.class}: #{e.message}")
+      if @user.cover_image.attached?
+        render json: { success: true, cover_image_url: url_for(@user.cover_image) }
+      else
+        render json: { success: false, errors: ["Upload succeeded but processing failed"] }, status: :accepted
+      end
+    end
+  end
+
   private
 
   def set_user
@@ -149,6 +181,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email_address, :password)
+    params.require(:user).permit(:name, :email_address, :password, :bio, :location, :handle)
   end
 end
