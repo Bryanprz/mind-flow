@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   has_many :sessions, dependent: :destroy
   has_many :assessment_entries, dependent: :destroy
+  has_many :social_posts, dependent: :destroy
   has_one :prakruti_entry, class_name: 'PrakrutiEntry'
   has_one :vikruti_entry, class_name: 'VikrutiEntry'
 
@@ -47,5 +48,62 @@ class User < ApplicationRecord
 
   def has_checked_in_today?
     false # Stub: Returns false to show the button initially
+  end
+
+  # Gamification methods
+  def social_posts_count
+    social_posts.count
+  end
+
+  def assessment_count
+    assessment_entries.count
+  end
+
+  def healing_plans_count
+    healing_plans.count
+  end
+
+  def current_streak
+    active_healing_plan&.current_streak || 0
+  end
+
+  def longest_streak
+    return 0 if healing_plans.none?
+    
+    healing_plans.map(&:current_streak).max || 0
+  end
+
+  def wellness_score
+    assessment_score = assessment_entries.count * 10
+    streak_bonus = current_streak * 2
+    community_score = social_posts.count * 5
+    plan_score = healing_plans.count * 15
+    (assessment_score + streak_bonus + community_score + plan_score).clamp(0, 1000)
+  end
+
+  def healing_mastery_level
+    case wellness_score
+    when 0..50 then "Beginner"
+    when 51..150 then "Apprentice"
+    when 151..300 then "Practitioner"
+    when 301..500 then "Healer"
+    else "Master"
+    end
+  end
+
+  def has_social_posts?
+    social_posts_count > 0
+  end
+
+  def has_completed_assessments?
+    assessment_count > 0
+  end
+
+  def has_healing_plans?
+    healing_plans_count > 0
+  end
+
+  def has_streak?
+    current_streak > 0
   end
 end
