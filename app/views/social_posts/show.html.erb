@@ -123,6 +123,7 @@
         <h3 class="text-lg font-semibold text-gray-900 mb-4">
           Replies (<%= @replies.count %>)
         </h3>
+        <div id="reply-status-messages" class="mb-2"></div>
         
         <div class="space-y-3" data-social-post-target="repliesList" id="replies-list-for-post-<%= @social_post.id %>">
           <% if @replies.any? %>

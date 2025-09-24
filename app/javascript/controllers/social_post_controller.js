@@ -64,11 +64,8 @@ export default class extends Controller {
       }
     }
 
-    // Clear previous errors
-    const existingError = form.querySelector('.form-errors');
-    if (existingError) {
-      existingError.remove();
-    }
+    const statusMessages = document.getElementById('reply-status-messages');
+    if (statusMessages) statusMessages.innerHTML = '';
 
     fetch(url, {
       method: 'POST',
@@ -84,6 +81,14 @@ export default class extends Controller {
         const mainRepliesList = document.querySelector(`#replies-list-for-post-${this.postIdValue}`);
         if (mainRepliesList) {
           mainRepliesList.insertAdjacentHTML('beforeend', data.reply);
+          const newReplyElement = mainRepliesList.lastElementChild;
+          if (newReplyElement) {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'text-green-600 mb-2';
+            messageElement.textContent = 'Your reply has been posted!';
+            newReplyElement.before(messageElement);
+            setTimeout(() => { messageElement.remove(); }, 5000);
+          }
         }
         
         const mainRepliesCount = document.querySelector(`#replies-count-for-post-${this.postIdValue}`);
@@ -92,7 +97,6 @@ export default class extends Controller {
         }
 
         form.reset();
-        // Also reset the Trix editor
         const trixEditor = form.querySelector('trix-editor');
         if (trixEditor) {
           trixEditor.editor.loadHTML('');
@@ -101,10 +105,9 @@ export default class extends Controller {
         this.replyFormTarget.classList.add('hidden');
       } else {
         const errorMessages = data.errors ? data.errors.join(', ') : 'Could not post reply.';
-        const errorElement = document.createElement('div');
-        errorElement.className = 'form-errors text-red-500 text-sm mt-2';
-        errorElement.textContent = errorMessages;
-        form.prepend(errorElement);
+        if (statusMessages) {
+          statusMessages.innerHTML = `<p class="text-red-500">${errorMessages}</p>`;
+        }
       }
     })
     .catch(error => console.error('Error:', error));
