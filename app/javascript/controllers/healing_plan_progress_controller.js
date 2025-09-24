@@ -8,6 +8,173 @@ export default class extends Controller {
     this.update()
   }
 
+  // Modern confetti animation for journal completion
+  triggerConfetti() {
+    this.createModernConfetti()
+  }
+
+  createModernConfetti() {
+    // Create multiple burst points for more dynamic effect
+    const burstPoints = [
+      { x: window.innerWidth * 0.2, y: window.innerHeight * 0.3 },
+      { x: window.innerWidth * 0.5, y: window.innerHeight * 0.2 },
+      { x: window.innerWidth * 0.8, y: window.innerHeight * 0.3 }
+    ]
+
+    burstPoints.forEach((point, index) => {
+      setTimeout(() => this.createConfettiBurst(point.x, point.y), index * 400) // Slower burst timing
+    })
+  }
+
+  createConfettiBurst(centerX, centerY) {
+    const canvas = document.createElement('canvas')
+    
+    // Set high-resolution canvas for crisp rendering
+    const dpr = window.devicePixelRatio || 1
+    const rect = { width: window.innerWidth, height: window.innerHeight }
+    
+    canvas.width = rect.width * dpr
+    canvas.height = rect.height * dpr
+    canvas.style.width = rect.width + 'px'
+    canvas.style.height = rect.height + 'px'
+    
+    canvas.style.position = 'fixed'
+    canvas.style.top = '0'
+    canvas.style.left = '0'
+    canvas.style.pointerEvents = 'none'
+    canvas.style.zIndex = '9999'
+    document.body.appendChild(canvas)
+
+    const ctx = canvas.getContext('2d')
+    ctx.scale(dpr, dpr) // Scale context for high DPI
+    ctx.imageSmoothingEnabled = false // Disable smoothing for sharp pixels
+    
+    const particles = []
+    
+    // Modern color palette with gradients
+    const colors = [
+      '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', 
+      '#ff9ff3', '#54a0ff', '#a8e6cf', '#ffd3a5', '#fd79a8',
+      '#ff7675', '#74b9ff', '#a29bfe', '#fd79a8', '#fdcb6e'
+    ]
+
+    // Create sophisticated particles with slower, more elegant movement
+    for (let i = 0; i < 80; i++) {
+      const angle = (Math.PI * 2 * i) / 80 + Math.random() * 0.5
+      const velocity = 4 + Math.random() * 6 // Reduced from 8-20 to 4-10
+      
+      particles.push({
+        x: centerX,
+        y: centerY,
+        vx: Math.cos(angle) * velocity + (Math.random() - 0.5) * 2, // Reduced spread
+        vy: Math.sin(angle) * velocity + (Math.random() - 0.5) * 2, // Reduced spread
+        color: colors[Math.floor(Math.random() * colors.length)],
+        size: 2 + Math.random() * 4,
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 8, // Reduced from 15 to 8
+        gravity: 0.15 + Math.random() * 0.1, // Reduced gravity for slower fall
+        airResistance: 0.985 + Math.random() * 0.01, // Increased air resistance
+        life: 1.0,
+        decay: 0.005 + Math.random() * 0.005, // Slower decay
+        shape: Math.random() > 0.3 ? 'circle' : 'star',
+        twinkle: Math.random() > 0.7
+      })
+    }
+
+    let animationId
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      
+      particles.forEach((particle, index) => {
+        // Update physics
+        particle.x += particle.vx
+        particle.y += particle.vy
+        particle.vy += particle.gravity
+        particle.vx *= particle.airResistance
+        particle.vy *= particle.airResistance
+        particle.rotation += particle.rotationSpeed
+        particle.life -= particle.decay
+
+        // Draw particle with modern effects
+        if (particle.life > 0) {
+          ctx.save()
+          ctx.translate(particle.x, particle.y)
+          ctx.rotate(particle.rotation * Math.PI / 180)
+          ctx.globalAlpha = particle.life
+          
+          // Add glow effect for twinkling particles
+          if (particle.twinkle) {
+            ctx.shadowColor = particle.color
+            ctx.shadowBlur = 6
+            ctx.shadowOffsetX = 0
+            ctx.shadowOffsetY = 0
+          }
+          
+          // Create gradient for more modern look
+          const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, particle.size/2)
+          gradient.addColorStop(0, particle.color)
+          gradient.addColorStop(1, this.darkenColor(particle.color, 0.3))
+          ctx.fillStyle = gradient
+          
+          if (particle.shape === 'circle') {
+            ctx.beginPath()
+            ctx.arc(0, 0, particle.size/2, 0, Math.PI * 2)
+            ctx.fill()
+          } else {
+            // Draw star shape with crisp edges
+            this.drawStar(ctx, 0, 0, particle.size/2, particle.size/4, 5)
+          }
+          
+          ctx.restore()
+        }
+
+        // Remove dead particles
+        if (particle.life <= 0 || particle.y > canvas.height + 100) {
+          particles.splice(index, 1)
+        }
+      })
+
+      // Continue animation if particles remain
+      if (particles.length > 0) {
+        animationId = requestAnimationFrame(animate)
+      } else {
+        canvas.remove()
+      }
+    }
+
+    // Start animation
+    animate()
+  }
+
+  drawStar(ctx, x, y, outerRadius, innerRadius, points) {
+    ctx.beginPath()
+    for (let i = 0; i < points * 2; i++) {
+      const angle = (i * Math.PI) / points
+      const radius = i % 2 === 0 ? outerRadius : innerRadius
+      const px = x + Math.cos(angle) * radius
+      const py = y + Math.sin(angle) * radius
+      if (i === 0) ctx.moveTo(px, py)
+      else ctx.lineTo(px, py)
+    }
+    ctx.closePath()
+    ctx.fill()
+  }
+
+  darkenColor(color, factor) {
+    // Convert hex to RGB
+    const hex = color.replace('#', '')
+    const r = parseInt(hex.substr(0, 2), 16)
+    const g = parseInt(hex.substr(2, 2), 16)
+    const b = parseInt(hex.substr(4, 2), 16)
+    
+    // Darken by factor
+    const newR = Math.floor(r * (1 - factor))
+    const newG = Math.floor(g * (1 - factor))
+    const newB = Math.floor(b * (1 - factor))
+    
+    return `rgb(${newR}, ${newG}, ${newB})`
+  }
+
   async startSession() {
     // Create a new healing plan log for this date
     try {
@@ -48,24 +215,30 @@ export default class extends Controller {
   }
 
   editJournal() {
-    // Find the journal view (it should be a sibling of the textarea)
-    const journalView = this.element?.querySelector('[data-healing-plan-progress-target="journalView"]')
+    console.log('editJournal called')
     
-    if (journalView) {
-      journalView.classList.add('hidden')
+    // Hide the journal view
+    if (this.hasJournalViewTarget) {
+      this.journalViewTarget.classList.add('hidden')
+      console.log('Hidden journal view')
     }
     
+    // Show the textarea
     if (this.hasJournalTarget) {
       this.journalTarget.classList.remove('hidden')
       this.journalTarget.focus()
+      console.log('Showed textarea and focused')
       
       // If the textarea is empty, copy the content from the view
-      if (!this.journalTarget.value && journalView) {
-        const journalText = journalView.querySelector('.prose')
+      if (!this.journalTarget.value && this.hasJournalViewTarget) {
+        const journalText = this.journalViewTarget.querySelector('.prose')
         if (journalText) {
           this.journalTarget.value = journalText.textContent.trim()
+          console.log('Copied content from view to textarea')
         }
       }
+    } else {
+      console.error('Journal target not found')
     }
   }
 
@@ -86,6 +259,11 @@ export default class extends Controller {
       
       // Send the journal entry
       const result = await this.sendHealingPlanLog(healingPlanId, journalEntry, this.healingPlanLogIdValue);
+      
+      // Trigger confetti animation on successful save
+      if (result && result.status === 'success') {
+        this.triggerConfetti();
+      }
       
       // Force UI update
       if (this.hasJournalTarget) {

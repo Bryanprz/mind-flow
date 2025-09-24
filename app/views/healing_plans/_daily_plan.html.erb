@@ -98,16 +98,15 @@
     <div class="card-body">
       <h2 class="card-title text-xl">Progress & Reflection</h2>
       
-      <% if @healing_plan_log&.journal_entry.present? %>
-        <div data-healing-plan-progress-target="journalView">
-          <p class="font-semibold mt-4">Your Journal Entry:</p>
-          <div class="prose max-w-none bg-base-200 rounded-lg p-3 my-2 mt-3"><%= @healing_plan_log.journal_entry %></div>
-          <button data-action="click->healing-plan-progress#editJournal" class="btn btn-sm btn-outline mt-3">Edit</button>
-        </div>
-        <textarea data-healing-plan-progress-target="journal" class="textarea textarea-bordered w-full mt-3 hidden" placeholder="Journal: How did you feel today?"><%= @healing_plan_log.journal_entry %></textarea>
-      <% else %>
-        <textarea data-healing-plan-progress-target="journal" class="textarea textarea-bordered w-full mt-3" placeholder="Journal: How did you feel today?"></textarea>
-      <% end %>
+      <!-- Journal View (always present) -->
+      <div data-healing-plan-progress-target="journalView" class="<%= 'hidden' unless @healing_plan_log&.journal_entry.present? %>">
+        <p class="font-semibold mt-4">Your Journal Entry:</p>
+        <div class="prose max-w-none bg-base-200 rounded-lg p-3 my-2 mt-3"><%= @healing_plan_log&.journal_entry %></div>
+        <button data-action="click->healing-plan-progress#editJournal" class="btn btn-sm btn-outline mt-3">Edit</button>
+      </div>
+      
+      <!-- Journal Textarea (always present) -->
+      <textarea data-healing-plan-progress-target="journal" class="textarea textarea-bordered w-full mt-3 <%= 'hidden' if @healing_plan_log&.journal_entry.present? %>" placeholder="Journal: How did you feel today?"><%= @healing_plan_log&.journal_entry %></textarea>
     </div>
   </div>
 
