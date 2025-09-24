@@ -130,7 +130,9 @@ class HealingPlan < ApplicationRecord
   # return data as "2024-01-10 2024-01-20"
   def completed_days_this_month
     if duration_type == HealingPlan::DAILY
-      return logs.pluck(:date).map { |d| d.strftime("%Y-%m-%d") }.join(" ")
+      # Only return dates where the log is actually completed (has completed_at)
+      completed_logs = logs.where.not(completed_at: nil)
+      return completed_logs.pluck(:date).map { |d| d.strftime("%Y-%m-%d") }.join(" ")
     end
   end
 
