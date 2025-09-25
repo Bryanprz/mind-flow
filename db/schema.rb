@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_24_065430) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_24_094655) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -387,6 +387,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_065430) do
     t.string "concurrency_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "active_job_id"
+    t.index ["active_job_id"], name: "index_solid_queue_jobs_on_active_job_id"
     t.index ["concurrency_key"], name: "idx_sq_jobs_concurrency_key"
     t.index ["queue_name", "priority", "id"], name: "idx_sq_jobs_queue_prio_id"
     t.index ["scheduled_at", "priority", "id"], name: "idx_sq_jobs_sched_prio_id"
