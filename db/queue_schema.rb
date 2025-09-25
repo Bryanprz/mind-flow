@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_19_100000) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_25_060153) do
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
     t.integer "job_id", null: false
     t.string "concurrency_key", null: false
@@ -72,6 +72,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_19_100000) do
     t.datetime "updated_at", null: false
     t.index ["job_id"], name: "index_solid_queue_recurring_executions_on_job_id", unique: true
     t.index ["task_key", "run_at"], name: "idx_sq_recurring_exec_task_run"
+  end
+
+  create_table "solid_queue_recurring_tasks", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "schedule", null: false
+    t.string "command", limit: 2048
+    t.string "class_name"
+    t.text "arguments"
+    t.string "queue_name"
+    t.integer "priority", default: 0
+    t.boolean "static", default: true, null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "idx_sq_recurring_tasks_key", unique: true
+    t.index ["static"], name: "idx_sq_recurring_tasks_static"
   end
 
   create_table "solid_queue_scheduled_executions", force: :cascade do |t|
