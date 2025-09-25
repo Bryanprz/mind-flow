@@ -6,10 +6,14 @@ FROM ruby:$RUBY_VERSION-slim
 
 # Install dependencies including Node.js and libvips for image processing
 RUN apt-get update -qq && \
-    apt-get install -y build-essential libsqlite3-dev curl libvips libvips-dev libvips42 libvips-tools libvips-doc && \
+    apt-get install -y build-essential libsqlite3-dev curl && \
+    # Install libvips with all required runtime libraries
+    apt-get install -y libvips42 libvips-dev libvips-tools && \
+    # Install Node.js
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     npm install -g npm@latest && \
+    # Clean up
     rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -23,6 +27,9 @@ ENV RAILS_ENV=production \
 # Install gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
+
+# Verify libvips installation works
+RUN ruby -e "require 'vips'; puts 'libvips version: ' + Vips.version_string"
 
 # Copy package files and install Node dependencies
 COPY package.json package-lock.json* ./
