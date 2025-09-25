@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_25_060153) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_25_064934) do
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
     t.integer "job_id", null: false
     t.string "concurrency_key", null: false
@@ -49,9 +49,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_25_060153) do
     t.string "concurrency_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "active_job_id"
+    t.index ["active_job_id"], name: "index_solid_queue_jobs_on_active_job_id"
     t.index ["concurrency_key"], name: "idx_sq_jobs_concurrency_key"
     t.index ["queue_name", "priority", "id"], name: "idx_sq_jobs_queue_prio_id"
     t.index ["scheduled_at", "priority", "id"], name: "idx_sq_jobs_sched_prio_id"
+  end
+
+  create_table "solid_queue_processes", force: :cascade do |t|
+    t.string "kind", null: false
+    t.datetime "last_heartbeat_at", null: false
+    t.bigint "supervisor_id"
+    t.integer "pid", null: false
+    t.string "hostname"
+    t.text "metadata"
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.index ["last_heartbeat_at"], name: "index_solid_queue_processes_on_last_heartbeat_at"
+    t.index ["name", "supervisor_id"], name: "index_solid_queue_processes_on_name_and_supervisor_id", unique: true
+    t.index ["supervisor_id"], name: "index_solid_queue_processes_on_supervisor_id"
   end
 
   create_table "solid_queue_ready_executions", force: :cascade do |t|
