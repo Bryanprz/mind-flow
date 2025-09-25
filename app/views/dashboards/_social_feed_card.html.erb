@@ -32,35 +32,30 @@
     </div>
     
     <!-- New Post Form -->
-    <div class="p-3 border-t border-gray-200">
+    <div class="px-3 pt-3 border-t border-gray-200">
       <%= turbo_frame_tag "new_post_form" do %>
-        <%= form_with(model: SocialPost.new, url: social_posts_path, data: { turbo_frame: "social_feed", controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }, class: "w-full") do |form| %>
-          <div class="flex items-start gap-3">
-            <div class="avatar placeholder">
-              <div class="rounded-full w-8 h-8 overflow-hidden">
-                <% if Current.user.avatar.attached? %>
-                  <%= image_tag Current.user.avatar, class: "w-full h-full object-cover" %>
-                <% else %>
-                  <div class="w-full h-full bg-gray-100 text-gray-500 flex items-center justify-center text-xs font-medium">
-                    <%= Current.user.name.to_s.first&.upcase || Current.user.email_address.to_s.first&.upcase %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-            <div class="flex-1 relative">
-              <div class="w-full">
-                <%= form.rich_text_area :content, 
-                                 class: "textarea textarea-bordered w-full", 
-                                 placeholder: "Write something...", 
-                                 required: true,
-                                 data: { action: "keydown.enter->reset-form#submitOnEnter" } %>
-                <div class="flex justify-end mt-2">
-                  <%= form.submit "Post", class: "btn btn-sm btn-primary normal-case" %>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
+        <%= form_with(model: SocialPost.new, url: social_posts_path, data: { controller: "reset-form" }, class: "w-full") do |form| %>
+                    <div class="flex items-start gap-3">
+                                  <div class="flex-1 relative min-w-0 flex items-center gap-2 mb-2">
+                                    <%= form.rich_text_area :content, 
+                                                     class: "textarea textarea-bordered flex-1 social-feed-input", 
+                                                     placeholder: "Write something...", 
+                                                     required: true,
+                                                     data: { action: "keydown.enter->reset-form#submitOnEnter" } %>
+                                    <div class="flex items-center gap-2">
+                                      <%= form.label :media, class: "cursor-pointer text-gray-400 hover:text-primary" do %>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                          <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                                        </svg>
+                                        <%= form.file_field :media, multiple: true, class: "hidden" %>
+                                      <% end %>
+                                      <%= button_tag type: 'submit', class: "text-gray-400 hover:text-primary" do %>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                          <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                                        </svg>
+                                      <% end %>
+                                    </div>
+                                  </div>                    </div>        <% end %>
       <% end %>
     </div>
   </div>
