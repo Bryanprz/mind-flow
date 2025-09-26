@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["likeButton", "likesCount", "replyButton", "replyForm", "repliesList", "repliesCount", "saveButton", "savesCount"]
-  static values = { postId: Number, url: String }
+  static values = { postId: Number, url: String, originalPostId: Number }
 
   toggleLike(event) {
     event.preventDefault()
@@ -48,8 +48,16 @@ export default class extends Controller {
   }
 
   toggleReplyForm() {
+    // Show the reply form for this specific post (whether it's a main post or reply)
     if (this.hasReplyFormTarget) {
-      this.replyFormTarget.classList.toggle('hidden')
+      // For main posts, use the target
+      this.replyFormTarget.classList.toggle('hidden');
+    } else {
+      // For replies, find the form by ID
+      const replyForm = document.querySelector(`#reply-form-for-post-${this.postIdValue}`);
+      if (replyForm) {
+        replyForm.classList.toggle('hidden');
+      }
     }
   }
 
@@ -68,16 +76,33 @@ export default class extends Controller {
       const hiddenInput = form.querySelector('input[type="hidden"][name*="[content]"]');
       if (hiddenInput) {
         const content = trixEditor.editor.element.innerHTML;
-        if (trixEditor.editor.getDocument().toString().trim() === '') {
-          formData.set(hiddenInput.name, '');
+        const textContent = trixEditor.editor.getDocument().toString().trim();
+        console.log('Trix content:', content);
+        console.log('Trix text:', textContent);
+        console.log('Hidden input value before:', hiddenInput.value);
+        
+        // Force update the hidden input with the current content
+        if (textContent === '') {
+          hiddenInput.value = '';
         } else {
-          formData.set(hiddenInput.name, content);
+          hiddenInput.value = content;
         }
+        
+        console.log('Hidden input value after:', hiddenInput.value);
+        
+        // Also set it in formData
+        formData.set(hiddenInput.name, hiddenInput.value);
       }
     }
 
     const statusMessages = document.getElementById('reply-status-messages');
     if (statusMessages) statusMessages.innerHTML = '';
+
+    // Debug: Log what we're sending
+    console.log('Form data entries:');
+    for (let [key, value] of formData.entries()) {
+      console.log(key, ':', value);
+    }
 
     fetch(url, {
       method: 'POST',
@@ -90,10 +115,17 @@ export default class extends Controller {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        const mainRepliesList = document.querySelector(`#replies-list-for-post-${parentPostId}`);
-        if (mainRepliesList) {
-          mainRepliesList.insertAdjacentHTML('beforeend', data.reply);
-          const newReplyElement = mainRepliesList.lastElementChild;
+        // If we have a redirect URL, navigate to it
+        if (data.redirect_url) {
+          window.location.href = data.redirect_url;
+          return;
+        }
+        
+        // Try to find the replies list for the parent post
+        const repliesList = document.querySelector(`#replies-list-for-post-${parentPostId}`);
+        if (repliesList) {
+          repliesList.insertAdjacentHTML('beforeend', data.reply);
+          const newReplyElement = repliesList.lastElementChild;
           if (newReplyElement) {
             const messageElement = document.createElement('div');
             messageElement.className = 'text-green-600 mb-2';
@@ -101,20 +133,35 @@ export default class extends Controller {
             newReplyElement.before(messageElement);
             setTimeout(() => { messageElement.remove(); }, 5000);
           }
+        } else {
+          // If no replies list found, reload the page to show the new reply
+          window.location.reload();
+          return;
         }
         
-        const mainRepliesCount = document.querySelector(`#replies-count-for-post-${parentPostId}`);
-        if (mainRepliesCount) {
-          mainRepliesCount.textContent = data.replies_count;
+        // Update replies count
+        const repliesCount = document.querySelector(`#replies-count-for-post-${parentPostId}`);
+        if (repliesCount) {
+          repliesCount.textContent = data.replies_count;
         }
 
+        // Reset form
         form.reset();
         const trixEditor = form.querySelector('trix-editor');
         if (trixEditor) {
           trixEditor.editor.loadHTML('');
         }
         
-        this.replyFormTarget.classList.add('hidden');
+        // Hide the reply form
+        if (this.hasReplyFormTarget) {
+          this.replyFormTarget.classList.add('hidden');
+        } else {
+          // For replies, find and hide the form by ID
+          const replyForm = document.querySelector(`#reply-form-for-post-${this.postIdValue}`);
+          if (replyForm) {
+            replyForm.classList.add('hidden');
+          }
+        }
       } else {
         const errorMessages = data.errors ? data.errors.join(', ') : 'Could not post reply.';
         if (statusMessages) {

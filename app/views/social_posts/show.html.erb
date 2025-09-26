@@ -12,7 +12,7 @@
   </div>
 
   <!-- Main Post -->
-  <div class="card bg-base-100 border border-gray-300 rounded-lg overflow-hidden mb-6" data-controller="social-post" data-social-post-post-id-value="<%= @social_post.id %>">
+  <div class="card bg-base-100 border border-gray-300 rounded-lg overflow-hidden mb-6" data-controller="social-post" data-social-post-post-id-value="<%= @social_post.id %>" data-social-post-original-post-id-value="<%= @social_post.id %>">
     <div class="card-body p-4">
       <div class="flex items-start mb-3">
         <%= link_to user_path(@social_post.user), class: "avatar placeholder mr-3 hover:opacity-80 transition-opacity" do %>
@@ -130,7 +130,7 @@
       </div>
 
       <!-- Reply Form (hidden by default) -->
-      <div class="mt-4 hidden" data-social-post-target="replyForm">
+      <div class="mt-4 hidden" data-social-post-target="replyForm" id="main-reply-form-for-post-<%= @social_post.id %>">
         <%= form_with model: [@social_post, SocialPost.new], 
             url: social_post_replies_path(@social_post),
             class: "space-y-3", 
@@ -186,8 +186,10 @@
         
         <div class="space-y-3" data-social-post-target="repliesList" id="replies-list-for-post-<%= @social_post.id %>">
           <% if @replies.any? %>
+            <!-- Debug: Found <%= @replies.count %> replies -->
             <% @replies.each do |reply| %>
-              <%= render 'social_posts/reply', social_post: reply %>
+              <!-- Debug: Rendering reply <%= reply.id %> (parent: <%= reply.parent_post_id %>) -->
+              <%= render 'social_posts/reply', social_post: reply, main_post_id: @social_post.id %>
             <% end %>
           <% else %>
             <div class="text-center py-8 text-gray-500">
