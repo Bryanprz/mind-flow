@@ -14,7 +14,7 @@
   <!-- Main Post -->
   <div class="card bg-base-100 border border-gray-300 rounded-lg overflow-hidden mb-6" data-controller="social-post" data-social-post-post-id-value="<%= @social_post.id %>">
     <div class="card-body p-4">
-      <div class="flex items-center mb-3">
+      <div class="flex items-start mb-3">
         <%= link_to user_path(@social_post.user), class: "avatar placeholder mr-3 hover:opacity-80 transition-opacity" do %>
           <div class="rounded-full w-12 h-12 overflow-hidden">
             <% if @social_post.user.avatar.attached? %>
@@ -27,15 +27,14 @@
           </div>
         <% end %>
         <div class="flex-1 min-w-0">
-          <h2 class="font-medium text-base truncate"><%= @social_post.user.name.presence || @social_post.user.email_address %></h2>
-          <% ts = @social_post.published_at || @social_post.created_at %>
-          <% if ts.present? %>
-            <p class="text-sm text-gray-500"><%= time_ago_in_words(ts) %> ago</p>
+          <h2 class="font-bold text-base truncate"><%= @social_post.user.name %></h2>
+          <%= link_to user_path(@social_post.user), class: "text-gray-500 text-sm truncate hover:text-blue-500 transition-colors -mt-1" do %>
+            @<%= @social_post.user.handle.presence || @social_post.user.name.downcase.gsub(' ', '_') %>
           <% end %>
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-none mb-4">
+      <div class="prose prose-md max-w-none mb-4">
         <%= @social_post.content %>
       </div>
 
@@ -86,6 +85,14 @@
         </div>
       <% end %>
 
+      <!-- Timestamp -->
+      <% ts = @social_post.published_at || @social_post.created_at %>
+      <% if ts.present? %>
+        <div class="text-gray-500 text-sm mb-3">
+          <%= ts.strftime("%l:%M %p · %b %-d, %Y") %>
+        </div>
+      <% end %>
+
       <!-- Interaction Bar -->
       <div class="flex items-center justify-around pt-3 border-t border-gray-100">
         <!-- Reply Button -->
@@ -96,7 +103,7 @@
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
           </svg>
-          <span class="text-sm" data-social-post-target="repliesCount" id="replies-count-for-post-<%= @social_post.id %>"><%= @social_post.social_post_replies.count %></span>
+          <span class="text-sm" data-social-post-target="repliesCount" id="replies-count-for-post-<%= @social_post.id %>"><%= @social_post.replies_count %></span>
         </button>
 
         <!-- Like Button -->
@@ -107,30 +114,32 @@
           <svg class="w-5 h-5" fill="<%= @social_post.liked_by?(Current.user) ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
           </svg>
-          <span class="text-sm" data-social-post-target="likesCount"><%= @social_post.social_post_likes.count %></span>
+          <span class="text-sm" data-social-post-target="likesCount"><%= @social_post.likes_count %></span>
         </button>
 
         <!-- Save Button -->
         <button 
-          class="flex items-center gap-2 <%= 'text-blue-500' if @social_post.saved_by?(Current.user) %> hover:text-blue-500 transition-colors"
+          class="flex items-center gap-2 <%= 'text-blue-500' if @social_post.bookmarked_by?(Current.user) %> hover:text-blue-500 transition-colors"
           data-action="click->social-post#toggleSave"
           data-social-post-target="saveButton">
-          <svg class="w-5 h-5" fill="<%= @social_post.saved_by?(Current.user) ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5" fill="<%= @social_post.bookmarked_by?(Current.user) ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
           </svg>
-          <span class="text-sm" data-social-post-target="savesCount"><%= @social_post.saved_posts.count %></span>
+          <span class="text-sm" data-social-post-target="savesCount"><%= @social_post.bookmarks_count %></span>
         </button>
       </div>
 
       <!-- Reply Form (hidden by default) -->
       <div class="mt-4 hidden" data-social-post-target="replyForm">
-        <%= form_with model: [@social_post, SocialPostReply.new], 
+        <%= form_with model: [@social_post, SocialPost.new], 
+            url: social_post_replies_path(@social_post),
             class: "space-y-3", 
             data: { 
               turbo: false,
               controller: "image-preview"
             },
             multipart: true do |f| %>
+          <%= f.hidden_field :parent_post_id, value: @social_post.id %>
           <div class="border border-gray-300 rounded-lg overflow-hidden">
             <%= f.rich_text_area :content, 
                 placeholder: "Write a reply...", 
@@ -178,7 +187,7 @@
         <div class="space-y-3" data-social-post-target="repliesList" id="replies-list-for-post-<%= @social_post.id %>">
           <% if @replies.any? %>
             <% @replies.each do |reply| %>
-              <%= render 'social_post_replies/reply', reply: reply %>
+              <%= render 'social_posts/reply', social_post: reply %>
             <% end %>
           <% else %>
             <div class="text-center py-8 text-gray-500">

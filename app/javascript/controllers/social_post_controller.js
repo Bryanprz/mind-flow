@@ -8,17 +8,26 @@ export default class extends Controller {
     event.preventDefault()
     
     const isLiked = this.likeButtonTarget.classList.contains('text-red-500')
-    const url = `/social_posts/${this.postIdValue}/social_post_likes`
-    const method = isLiked ? 'DELETE' : 'POST'
+    const url = `/likes`
     
     fetch(url, {
-      method: method,
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-      }
+      },
+      body: JSON.stringify({
+        likeable_type: 'SocialPost',
+        likeable_id: this.postIdValue,
+        action: isLiked ? 'destroy' : 'create'
+      })
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      return response.json()
+    })
     .then(data => {
       if (data.success) {
         this.updateLikeButton(data.liked, data.likes_count)
@@ -126,20 +135,26 @@ export default class extends Controller {
     event.preventDefault()
     
     const isSaved = this.saveButtonTarget.classList.contains('text-blue-500')
-    const url = isSaved 
-      ? `/social_posts/${this.postIdValue}/saved_posts`
-      : `/social_posts/${this.postIdValue}/saved_posts`
-    
-    const method = isSaved ? 'DELETE' : 'POST'
+    const url = `/social_post_bookmarks`
     
     fetch(url, {
-      method: method,
+      method: 'POST',
       headers: {
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        bookmarkable_type: 'SocialPost',
+        bookmarkable_id: this.postIdValue,
+        action: isSaved ? 'destroy' : 'create'
+      })
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      return response.json()
+    })
     .then(data => {
       if (data.success) {
         this.updateSaveButton(data.saved)

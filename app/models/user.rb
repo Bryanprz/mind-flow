@@ -8,11 +8,9 @@ class User < ApplicationRecord
 
   has_many :sessions, dependent: :destroy
   has_many :assessment_entries, dependent: :destroy
-  has_many :social_post_likes, dependent: :destroy
-  has_many :social_post_replies, dependent: :destroy
   has_many :social_posts, dependent: :destroy
-  has_many :saved_posts, dependent: :destroy
-  has_many :saved_social_posts, through: :saved_posts, source: :social_post
+  has_many :likes, dependent: :destroy
+  has_many :social_post_bookmarks, dependent: :destroy
   has_one :prakruti_entry, class_name: 'PrakrutiEntry'
   has_one :vikruti_entry, class_name: 'VikrutiEntry'
 

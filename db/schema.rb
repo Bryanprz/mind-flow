@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_24_094655) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_26_070201) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -248,6 +248,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_094655) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "likeable_type", null: false
+    t.integer "likeable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
+    t.index ["user_id", "likeable_type", "likeable_id"], name: "index_likes_on_user_id_and_likeable_type_and_likeable_id", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
   create_table "plan_item_logs", force: :cascade do |t|
     t.integer "plan_item_id", null: false
     t.integer "healing_plan_log_id", null: false
@@ -300,16 +312,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_094655) do
     t.index ["healing_plan_id"], name: "index_plan_sections_on_healing_plan_id"
   end
 
-  create_table "saved_posts", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "social_post_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["social_post_id"], name: "index_saved_posts_on_social_post_id"
-    t.index ["user_id", "social_post_id"], name: "index_saved_posts_on_user_id_and_social_post_id", unique: true
-    t.index ["user_id"], name: "index_saved_posts_on_user_id"
-  end
-
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -319,23 +321,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_094655) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "social_post_likes", force: :cascade do |t|
+  create_table "social_post_bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "social_post_id", null: false
+    t.string "bookmarkable_type", null: false
+    t.integer "bookmarkable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["social_post_id"], name: "index_social_post_likes_on_social_post_id"
-    t.index ["user_id", "social_post_id"], name: "index_social_post_likes_on_user_id_and_social_post_id", unique: true
-    t.index ["user_id"], name: "index_social_post_likes_on_user_id"
-  end
-
-  create_table "social_post_replies", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "social_post_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["social_post_id"], name: "index_social_post_replies_on_social_post_id"
-    t.index ["user_id"], name: "index_social_post_replies_on_user_id"
+    t.index ["bookmarkable_type", "bookmarkable_id"], name: "idx_on_bookmarkable_type_bookmarkable_id_6a787f38d6"
+    t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_social_post_bookmarks_on_bookmarkable"
+    t.index ["user_id", "bookmarkable_type", "bookmarkable_id"], name: "idx_on_user_id_bookmarkable_type_bookmarkable_id_2a3fa77bb1", unique: true
+    t.index ["user_id"], name: "index_social_post_bookmarks_on_user_id"
   end
 
   create_table "social_posts", force: :cascade do |t|
@@ -346,6 +341,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_094655) do
     t.integer "likes_count", default: 0
     t.integer "replies_count", default: 0
     t.integer "saves_count", default: 0
+    t.integer "parent_post_id"
+    t.index ["parent_post_id"], name: "index_social_posts_on_parent_post_id"
     t.index ["user_id"], name: "index_social_posts_on_user_id"
   end
 
@@ -475,19 +472,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_094655) do
   add_foreign_key "healing_plan_templates", "doshas"
   add_foreign_key "healing_plans", "healing_plan_templates"
   add_foreign_key "healing_plans", "users"
+  add_foreign_key "likes", "users"
   add_foreign_key "plan_item_logs", "healing_plan_logs"
   add_foreign_key "plan_item_logs", "plan_items"
   add_foreign_key "plan_item_templates", "plan_section_templates"
   add_foreign_key "plan_items", "plan_sections"
   add_foreign_key "plan_section_templates", "healing_plan_templates"
   add_foreign_key "plan_sections", "healing_plans"
-  add_foreign_key "saved_posts", "social_posts"
-  add_foreign_key "saved_posts", "users"
   add_foreign_key "sessions", "users"
-  add_foreign_key "social_post_likes", "social_posts"
-  add_foreign_key "social_post_likes", "users"
-  add_foreign_key "social_post_replies", "social_posts"
-  add_foreign_key "social_post_replies", "users"
+  add_foreign_key "social_post_bookmarks", "users"
+  add_foreign_key "social_posts", "social_posts", column: "parent_post_id"
   add_foreign_key "social_posts", "users"
   add_foreign_key "verses", "books"
 end

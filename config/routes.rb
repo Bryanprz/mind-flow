@@ -2,12 +2,11 @@ Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
   
   resources :social_posts, only: [:show, :create] do
-    resources :social_post_likes, only: [:create]
-    delete 'social_post_likes', to: 'social_post_likes#destroy'
-    resources :social_post_replies, only: [:create]
-    resources :saved_posts, only: [:create]
-    delete 'saved_posts', to: 'saved_posts#destroy'
+    resources :social_posts, only: [:create], as: :replies
   end
+  
+  resources :likes, only: [:create, :destroy]
+  resources :social_post_bookmarks, only: [:create, :destroy]
   get "/community", to: "social_posts#index"
   get "/saved_posts", to: "saved_posts#index"
   resources :chronic_illnesses
