@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
+  
   resources :social_posts, only: [:show, :create] do
     resources :social_post_likes, only: [:create]
     delete 'social_post_likes', to: 'social_post_likes#destroy'

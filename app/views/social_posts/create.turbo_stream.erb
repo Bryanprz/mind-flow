@@ -8,9 +8,9 @@
 
 <%# Clear the form and show success message %>
 <%= turbo_stream.update "new_post_form" do %>
-  <%= form_with(model: SocialPost.new, url: social_posts_path, data: { controller: "reset-form" }, class: "w-full") do |form| %>
+  <%= form_with(model: SocialPost.new, url: social_posts_path, data: { controller: "reset-form image-preview" }, class: "w-full") do |form| %>
     <div class="flex items-start gap-3">
-      <div class="flex-1 relative min-w-0 flex items-center gap-2 mb-2">
+      <div class="flex-1 relative min-w-0 flex items-center gap-2 mb-2" data-image-preview-target="inputField">
         <%= form.rich_text_area :content, 
                                class: "textarea textarea-bordered flex-1 social-feed-input", 
                                placeholder: "Write something...", 
@@ -21,7 +21,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
             </svg>
-            <%= form.file_field :media, multiple: true, class: "hidden" %>
+            <%= form.file_field :media, multiple: true, class: "hidden", data: { image_preview_target: "fileInput" } %>
           <% end %>
           <%= button_tag type: 'submit', class: "text-gray-400 hover:text-primary" do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
