@@ -1,11 +1,14 @@
 module ApplicationHelper
     def nav_link_class(path)
+    # Add text-neutral-content for home page, otherwise use default colors
+    text_color = current_page?(root_path) ? "text-neutral-content" : "text-black"
+    
     if current_page?(path)
-      # Active → soft, opaque accent background, black text
-      "bg-secondary/70 text-black rounded-md px-3 py-2 text-sm font-medium"
+      # Active → soft, opaque accent background, with conditional text color
+      "bg-secondary/70 #{text_color} rounded-md px-3 py-2 text-sm font-medium"
     else
-      # Inactive → black text, no background
-      "text-black px-3 py-2 text-sm font-medium"
+      # Inactive → conditional text color, no background
+      "#{text_color} px-3 py-2 text-sm font-medium"
     end
   end
 

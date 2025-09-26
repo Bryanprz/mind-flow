@@ -3,18 +3,18 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["menu"]
 
-  connect() {
-    this.hide()
-  }
-
   toggle() {
-    this.menuTarget.classList.toggle("hidden")
+    const menu = this.element.querySelector('.dropdown-content')
+    if (menu) {
+      menu.classList.toggle('hidden')
+    }
   }
 
-  hide(event) {
-    if (event && this.element.contains(event.target)) {
-      return
+  connect() {
+    // Hide dropdown initially
+    const menu = this.element.querySelector('.dropdown-content')
+    if (menu) {
+      menu.classList.add('hidden')
     }
-    this.menuTarget.classList.add("hidden")
   }
 }
