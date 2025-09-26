@@ -1,92 +1,121 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["text", "carousel", "dot"]
+  static targets = ["text", "carousel", "prevBtn", "nextBtn", "playPauseBtn", "playIcon", "pauseIcon"]
   
   connect() {
-    // Define the rotating text options
-    this.textOptions = [
-      "chronic illness",
-      "digestive issues", 
-      "chronic fatigue",
-      "autoimmune conditions"
+    // Define carousel items with text, hex color, and image
+    // Format: [text, hexColor, imagePath]
+    this.carouselItems = [
+      ["chronic illness", "#4e4eba", "home-carousel-optimized/chronic-illness.png"],
+      ["anxiety", "#4b6ca3", "home-carousel-optimized/anxiety.png"],
+      ["asthma", "#abe5e2", "home-carousel-optimized/asthma.png"],
+      ["depression", "#2b648b", "home-carousel-optimized/depression.png"],
+      ["diabetes", "#db6f68", "home-carousel-optimized/diabetes.png"],
+      ["heart disease", "#ef7f81", "home-carousel-optimized/heart-disease.png"],
+      ["high cholesterol", "#ec2129", "home-carousel-optimized/high-cholesterol.png"],
+      ["hypertension", "#fed4e2", "home-carousel-optimized/hypertension.png"],
+      ["obesity", "#ef605d", "home-carousel-optimized/obesity.png"],
+      ["stress", "#cb4e55", "home-carousel-optimized/stress.png"]
     ]
     
-    // Define the image sources (you can replace these with your actual images)
-    this.images = [
-      "home-carousel/healing-1.jpg",
-      "home-carousel/healing-2.jpg", 
-      "home-carousel/healing-3.jpg",
-      "home-carousel/healing-4.jpg"
-    ]
+    // Extract arrays for backward compatibility
+    this.textOptions = this.carouselItems.map(item => item[0])
+    this.images = this.carouselItems.map(item => item[2])
     
     this.currentIndex = 0
     this.isAnimating = false
+    this.isPlaying = true
     
     // Initialize the carousel
     this.initializeCarousel()
     
+    // Initialize play/pause button state
+    this.updatePlayPauseButton()
+    
     // Start the auto-rotation
     this.startAutoRotation()
-    
-    // Add click handlers for dots
-    this.dots.forEach((dot, index) => {
-      dot.addEventListener('click', () => this.goToSlide(index))
-    })
+  }
+  
+  disconnect() {
+    this.stopAutoRotation()
   }
   
   initializeCarousel() {
-    // Create image elements
+    // Create image elements with appropriate sizing
     this.carouselTarget.innerHTML = this.images.map((src, index) => `
-      <div class="w-full h-80 flex-shrink-0">
-        <img src="${src}" alt="Healing image ${index + 1}" class="w-full h-full object-cover">
+      <div class="w-full h-64 flex-shrink-0 flex items-center justify-center">
+        <img src="${src}" alt="Healing image ${index + 1}" class="max-w-full max-h-full object-contain">
       </div>
     `).join('')
+    
+    // Set initial position to show first image
+    this.carouselTarget.style.transform = 'translateX(0%)'
+    
+    // Show the first slide
+    this.showSlide(0)
+  }
+  
+  showSlide(index) {
+    this.currentIndex = index
+    
+    // Update text with alternating colors
+    this.textTarget.textContent = this.textOptions[this.currentIndex]
+    this.updateTextColor()
+    
+    // Update carousel position - each slide is 10% of the total width
+    const translateX = -this.currentIndex * 10
+    this.carouselTarget.style.transform = `translateX(${translateX}%)`
+  }
+  
+  updateTextColor(index = null) {
+    // Use provided index or current index
+    const targetIndex = index !== null ? index : this.currentIndex
+    const hexColor = this.carouselItems[targetIndex][1]
+    
+    // Remove all color classes
+    this.textTarget.classList.remove(
+      'text-primary', 'text-secondary', 'text-accent', 'text-neutral',
+      'text-info', 'text-success', 'text-warning', 'text-error'
+    )
+    
+    // Apply the hex color directly as inline style
+    this.textTarget.style.color = hexColor
+    this.textTarget.classList.add('font-black')
   }
   
   startAutoRotation() {
-    setInterval(() => {
-      if (!this.isAnimating) {
+    this.autoRotateInterval = setInterval(() => {
+      if (!this.isAnimating && this.isPlaying) {
         this.nextSlide()
       }
     }, 3000) // Change every 3 seconds
   }
   
-  nextSlide() {
-    this.isAnimating = true
-    
-    // Update text
-    this.currentIndex = (this.currentIndex + 1) % this.textOptions.length
-    this.textTarget.textContent = this.textOptions[this.currentIndex]
-    
-    // Update carousel
-    const translateX = -this.currentIndex * 100
-    this.carouselTarget.style.transform = `translateX(${translateX}%)`
-    
-    // Update dots
-    this.updateDots()
-    
-    // Reset animation flag
-    setTimeout(() => {
-      this.isAnimating = false
-    }, 1000)
+  stopAutoRotation() {
+    if (this.autoRotateInterval) {
+      clearInterval(this.autoRotateInterval)
+      this.autoRotateInterval = null
+    }
   }
   
-  goToSlide(index) {
+  // Navigation methods
+  previousSlide() {
     if (this.isAnimating) return
     
     this.isAnimating = true
-    this.currentIndex = index
+    const prevIndex = this.currentIndex === 0 ? this.textOptions.length - 1 : this.currentIndex - 1
     
-    // Update text
-    this.textTarget.textContent = this.textOptions[this.currentIndex]
+    // Update text and color
+    this.textTarget.textContent = this.textOptions[prevIndex]
+    this.updateTextColor(prevIndex)
     
-    // Update carousel
-    const translateX = -this.currentIndex * 100
+    // Update carousel position
+    const translateX = -prevIndex * 10
     this.carouselTarget.style.transform = `translateX(${translateX}%)`
     
-    // Update dots
-    this.updateDots()
+    // Update current index
+    this.currentIndex = prevIndex
     
     // Reset animation flag
     setTimeout(() => {
@@ -94,21 +123,41 @@ export default class extends Controller {
     }, 1000)
   }
   
-  updateDots() {
-    this.dots.forEach((dot, index) => {
-      if (index === this.currentIndex) {
-        dot.classList.remove('bg-white/50')
-        dot.classList.add('bg-white')
-        dot.classList.add('w-8')
-      } else {
-        dot.classList.remove('bg-white')
-        dot.classList.add('bg-white/50')
-        dot.classList.remove('w-8')
-      }
-    })
+  nextSlide() {
+    if (this.isAnimating) return
+    
+    this.isAnimating = true
+    const nextIndex = (this.currentIndex + 1) % this.textOptions.length
+    
+    // Update text and color
+    this.textTarget.textContent = this.textOptions[nextIndex]
+    this.updateTextColor(nextIndex)
+    
+    // Update carousel position - each slide is 10% of the total width
+    const translateX = -nextIndex * 10
+    this.carouselTarget.style.transform = `translateX(${translateX}%)`
+    
+    // Update current index
+    this.currentIndex = nextIndex
+    
+    // Reset animation flag
+    setTimeout(() => {
+      this.isAnimating = false
+    }, 1000)
   }
   
-  get dots() {
-    return this.element.querySelectorAll('.carousel-dot')
+  togglePlayPause() {
+    this.isPlaying = !this.isPlaying
+    this.updatePlayPauseButton()
+  }
+  
+  updatePlayPauseButton() {
+    if (this.isPlaying) {
+      this.playIconTarget.classList.add('hidden')
+      this.pauseIconTarget.classList.remove('hidden')
+    } else {
+      this.playIconTarget.classList.remove('hidden')
+      this.pauseIconTarget.classList.add('hidden')
+    }
   }
 }
