@@ -76,6 +76,6 @@ class SocialPostsController < ApplicationController
   private
 
   def social_post_params
-    params.require(:social_post).permit(:content)
+    params.require(:social_post).permit(:content, media: [])
   end
 end
