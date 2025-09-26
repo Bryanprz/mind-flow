@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["text", "carousel", "prevBtn", "nextBtn", "playPauseBtn", "playIcon", "pauseIcon"]
+  static targets = ["text", "carousel"]
   
   connect() {
     // Define carousel items with text, hex color, and image
@@ -31,9 +31,6 @@ export default class extends Controller {
     // Initialize the carousel
     this.initializeCarousel()
     
-    // Initialize play/pause button state
-    this.updatePlayPauseButton()
-    
     // Start the auto-rotation
     this.startAutoRotation()
   }
@@ -43,15 +40,12 @@ export default class extends Controller {
   }
   
   initializeCarousel() {
-    // Create image elements with appropriate sizing
+    // Create image elements with absolute positioning and transitions
     this.carouselTarget.innerHTML = this.images.map((src, index) => `
-      <div class="w-full h-64 flex-shrink-0 flex items-center justify-center">
+      <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ease-in-out ${index === 0 ? 'opacity-100' : 'opacity-0'}">
         <img src="${src}" alt="Healing image ${index + 1}" class="max-w-full max-h-full object-contain">
       </div>
     `).join('')
-    
-    // Set initial position to show first image
-    this.carouselTarget.style.transform = 'translateX(0%)'
     
     // Show the first slide
     this.showSlide(0)
@@ -64,9 +58,17 @@ export default class extends Controller {
     this.textTarget.textContent = this.textOptions[this.currentIndex]
     this.updateTextColor()
     
-    // Update carousel position - each slide is 10% of the total width
-    const translateX = -this.currentIndex * 10
-    this.carouselTarget.style.transform = `translateX(${translateX}%)`
+    // Fade out all images and fade in the active one
+    const imageContainers = this.carouselTarget.querySelectorAll('div')
+    imageContainers.forEach((container, i) => {
+      if (i === index) {
+        container.classList.remove('opacity-0')
+        container.classList.add('opacity-100')
+      } else {
+        container.classList.remove('opacity-100')
+        container.classList.add('opacity-0')
+      }
+    })
   }
   
   updateTextColor(index = null) {
@@ -107,16 +109,8 @@ export default class extends Controller {
     this.isAnimating = true
     const prevIndex = this.currentIndex === 0 ? this.textOptions.length - 1 : this.currentIndex - 1
     
-    // Update text and color
-    this.textTarget.textContent = this.textOptions[prevIndex]
-    this.updateTextColor(prevIndex)
-    
-    // Update carousel position
-    const translateX = -prevIndex * 10
-    this.carouselTarget.style.transform = `translateX(${translateX}%)`
-    
-    // Update current index
-    this.currentIndex = prevIndex
+    // Show the previous slide
+    this.showSlide(prevIndex)
     
     // Reset animation flag
     setTimeout(() => {
@@ -130,16 +124,8 @@ export default class extends Controller {
     this.isAnimating = true
     const nextIndex = (this.currentIndex + 1) % this.textOptions.length
     
-    // Update text and color
-    this.textTarget.textContent = this.textOptions[nextIndex]
-    this.updateTextColor(nextIndex)
-    
-    // Update carousel position - each slide is 10% of the total width
-    const translateX = -nextIndex * 10
-    this.carouselTarget.style.transform = `translateX(${translateX}%)`
-    
-    // Update current index
-    this.currentIndex = nextIndex
+    // Show the next slide
+    this.showSlide(nextIndex)
     
     // Reset animation flag
     setTimeout(() => {
@@ -147,18 +133,4 @@ export default class extends Controller {
     }, 1000)
   }
   
-  togglePlayPause() {
-    this.isPlaying = !this.isPlaying
-    this.updatePlayPauseButton()
-  }
-  
-  updatePlayPauseButton() {
-    if (this.isPlaying) {
-      this.playIconTarget.classList.add('hidden')
-      this.pauseIconTarget.classList.remove('hidden')
-    } else {
-      this.playIconTarget.classList.remove('hidden')
-      this.pauseIconTarget.classList.add('hidden')
-    }
-  }
 }

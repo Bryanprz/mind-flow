@@ -1,8 +1,8 @@
-<% content_for :main_container_class, "container mx-auto px-5" %>
+<% content_for :main_container_class, "w-full overflow-x-hidden" %>
 
 <!-- Hero Section -->
-<section class="py-20 lg:py-32 bg-neutral w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-  <div class="max-w-7xl mx-auto">
+<section class="py-20 lg:py-32 bg-neutral w-full">
+  <div class="max-w-7xl mx-auto px-5">
     <div class="text-center">
       <!-- Main Headline -->
       <h1 class="text-5xl lg:text-7xl font-bold tracking-tight text-neutral-content mb-8">
@@ -62,52 +62,52 @@
       <!-- Image Carousel -->
       <div class="mt-12 max-w-2xl mx-auto">
         <div class="relative h-64">
-          <div id="image-carousel" data-rotating-carousel-target="carousel" class="flex transition-transform duration-1000 ease-in-out h-full">
+          <div id="image-carousel" data-rotating-carousel-target="carousel" class="relative h-full">
             <!-- Images will be dynamically inserted here -->
           </div>
         </div>
       </div>
       
-      <!-- Navigation Controls -->
-      <div class="flex items-center justify-center gap-3 mt-16">
-        <button data-rotating-carousel-target="prevBtn" 
-                data-action="click->rotating-carousel#previousSlide"
-                class="btn btn-circle btn-outline btn-sm hover:btn-primary transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-          </svg>
-        </button>
-        
-        <button data-rotating-carousel-target="playPauseBtn" 
-                data-action="click->rotating-carousel#togglePlayPause"
-                class="btn btn-circle btn-ghost btn-sm">
-          <svg data-rotating-carousel-target="playIcon" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          <svg data-rotating-carousel-target="pauseIcon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
-          </svg>
-        </button>
-        
-        <button data-rotating-carousel-target="nextBtn" 
-                data-action="click->rotating-carousel#nextSlide"
-                class="btn btn-circle btn-outline btn-sm hover:btn-primary transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-        </button>
-      </div>
     </div>
 
   </div>
 </section>
 
+<!-- Life Journey Section -->
+<section class="pt-8 pb-20 bg-gradient-to-br from-primary/8 via-secondary/6 to-accent/8">
+  <div class="max-w-7xl mx-auto px-5">
+    <div class="text-center mb-8">
+      <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 max-w-2xl mx-auto">
+        Nature designed us for <span class="text-primary">120 years of life</span>—vibrant, radiant, and full of possibility
+      </h2>
+      <p class="text-xl text-gray-700 max-w-2xl mx-auto mt-16">
+        We are meant to live long, grow wise, and thrive.
+      </p>
+    </div>
+    
+    <div class="max-w-5xl mx-auto">
+      <div class="relative">
+        <img src="/life-journey.png" 
+             alt="Healing journey illustration" 
+             class="w-full h-auto"
+             alt="A visual representation of the healing journey from illness to wellness">
+      </div>
+      
+      <div class="text-center mt-12">
+        <p class="text-xl text-gray-700 max-w-3xl mx-auto">
+          Yet so many people struggle everyday with their health, unable to live life and enjoy its fruits and beauty
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Value Proposition Section -->
-<section class="py-20 bg-success w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-  <div class="w-full px-5">
+<section class="py-20 bg-success w-full">
+  <div class="max-w-7xl mx-auto px-5">
     <div class="text-center mb-16">
       <h2 class="text-4xl lg:text-5xl font-bold text-success-content mb-6">
-        Why Choose <span class="text-primary">Ancient</span><span class="text-secondary">Herb</span><span class="text-primary">?</span>
+        Why Choose <span class="text-primary">Ancient</span><span class="text-secondary font-black">Herb</span><span class="text-primary">?</span>
       </h2>
       <p class="text-xl text-gray-700 max-w-3xl mx-auto">
         Unlike conventional medicine that treats symptoms, we address the root causes of chronic illness using time-tested natural principles.
@@ -145,7 +145,7 @@
 </section>
 
 <!-- Features Section -->
-<section class="py-20 bg-base-100 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+<section class="py-20 bg-base-100 w-full">
   <div class="max-w-7xl mx-auto px-5">
     <div class="text-center mb-16">
       <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
@@ -322,7 +322,7 @@
 </section>
 
 <!-- Social Proof Section -->
-<section class="py-20 bg-primary w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+<section class="py-20 bg-primary w-full">
   <div class="max-w-7xl mx-auto px-5">
     <div class="text-center mb-16">
       <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6">
@@ -377,7 +377,7 @@
 </section>
 
 <!-- Final CTA Section -->
-<section class="py-20 bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/15 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+<section class="py-20 bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/15 w-full">
   <div class="max-w-4xl mx-auto text-center px-5">
     <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
       Ready to Start Your Healing Journey?
