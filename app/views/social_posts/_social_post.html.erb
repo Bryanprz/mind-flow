@@ -30,26 +30,52 @@
 
     <% if social_post.media.attached? %>
       <div class="mt-2">
-        <div class="grid grid-cols-2 gap-2">
-          <% social_post.media.each do |media_item| %>
-            <% if media_item.blob.content_type.start_with?('image/') %>
-              <div class="aspect-square overflow-hidden rounded-lg">
-                <%= image_tag media_item, class: "w-full h-full object-cover" %>
-              </div>
-            <% elsif media_item.blob.content_type.start_with?('video/') %>
-              <div class="aspect-video">
-                <video controls class="w-full h-full rounded-lg">
-                  <source src="<%= url_for(media_item) %>" type="<%= media_item.content_type %>">
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            <% else %>
-              <div class="p-2 border rounded-lg">
-                <%= link_to media_item.filename, url_for(media_item), class: "text-xs text-blue-600 hover:underline truncate block" %>
-              </div>
-            <% end %>
+        <% if social_post.media.count == 1 %>
+          <!-- Single image - show at full width with reasonable max height -->
+          <% media_item = social_post.media.first %>
+          <% if media_item.blob.content_type.start_with?('image/') %>
+            <div class="max-h-96 overflow-hidden rounded-lg">
+              <%= link_to social_post_path(social_post) do %>
+                <%= image_tag media_item, class: "w-full h-auto object-contain cursor-pointer" %>
+              <% end %>
+            </div>
+          <% elsif media_item.blob.content_type.start_with?('video/') %>
+            <div class="aspect-video">
+              <video controls class="w-full h-full rounded-lg">
+                <source src="<%= url_for(media_item) %>" type="<%= media_item.content_type %>">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          <% else %>
+            <div class="p-4 border rounded-lg">
+              <%= link_to media_item.filename, url_for(media_item), class: "text-sm text-blue-600 hover:underline" %>
+            </div>
           <% end %>
-        </div>
+        <% else %>
+          <!-- Multiple media items - use grid layout -->
+          <div class="grid grid-cols-2 gap-2">
+            <% social_post.media.each do |media_item| %>
+              <% if media_item.blob.content_type.start_with?('image/') %>
+                <div class="aspect-square overflow-hidden rounded-lg">
+                  <%= link_to social_post_path(social_post) do %>
+                    <%= image_tag media_item, class: "w-full h-full object-cover cursor-pointer" %>
+                  <% end %>
+                </div>
+              <% elsif media_item.blob.content_type.start_with?('video/') %>
+                <div class="aspect-video">
+                  <video controls class="w-full h-full rounded-lg">
+                    <source src="<%= url_for(media_item) %>" type="<%= media_item.content_type %>">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              <% else %>
+                <div class="p-2 border rounded-lg">
+                  <%= link_to media_item.filename, url_for(media_item), class: "text-xs text-blue-600 hover:underline truncate block" %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     <% end %>
 
