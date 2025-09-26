@@ -6,17 +6,18 @@ export default class extends Controller {
   connect() {
     // Define carousel items with text, hex color, and image
     // Format: [text, hexColor, imagePath]
+    // Cache bust: v2
     this.carouselItems = [
-      ["chronic illness", "#4e4eba", "home-carousel-optimized/chronic-illness.png"],
-      ["anxiety", "#4b6ca3", "home-carousel-optimized/anxiety.png"],
-      ["asthma", "#abe5e2", "home-carousel-optimized/asthma.png"],
-      ["depression", "#2b648b", "home-carousel-optimized/depression.png"],
-      ["diabetes", "#db6f68", "home-carousel-optimized/diabetes.png"],
-      ["heart disease", "#ef7f81", "home-carousel-optimized/heart-disease.png"],
-      ["high cholesterol", "#ec2129", "home-carousel-optimized/high-cholesterol.png"],
-      ["hypertension", "#fed4e2", "home-carousel-optimized/hypertension.png"],
-      ["obesity", "#ef605d", "home-carousel-optimized/obesity.png"],
-      ["stress", "#cb4e55", "home-carousel-optimized/stress.png"]
+      ["chronic illness", "#4e4eba", "/home-carousel-optimized/chronic-illness.png"],
+      ["anxiety", "#4b6ca3", "/home-carousel-optimized/anxiety.png"],
+      ["asthma", "#abe5e2", "/home-carousel-optimized/asthma.png"],
+      ["depression", "#2b648b", "/home-carousel-optimized/depression.png"],
+      ["diabetes", "#db6f68", "/home-carousel-optimized/diabetes.png"],
+      ["heart disease", "#ef7f81", "/home-carousel-optimized/heart-disease.png"],
+      ["high cholesterol", "#ec2129", "/home-carousel-optimized/high-cholesterol.png"],
+      ["hypertension", "#fed4e2", "/home-carousel-optimized/hypertension.png"],
+      ["obesity", "#ef605d", "/home-carousel-optimized/obesity.png"],
+      ["stress", "#cb4e55", "/home-carousel-optimized/stress.png"]
     ]
     
     // Extract arrays for backward compatibility
