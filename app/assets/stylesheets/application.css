@@ -2,6 +2,24 @@
 
 /* Your custom styles here */
 
+/* Rotating Carousel Styles */
+#rotating-text {
+  transition: all 0.5s ease-in-out;
+  display: inline-block;
+}
+
+#image-carousel {
+  width: 400%; /* 4 images = 400% width */
+}
+
+.carousel-dot {
+  transition: all 0.3s ease;
+}
+
+.carousel-dot:hover {
+  transform: scale(1.2);
+}
+
 .link-button {
   background: none;
   border: none;
