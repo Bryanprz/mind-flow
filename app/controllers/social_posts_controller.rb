@@ -54,7 +54,21 @@ class SocialPostsController < ApplicationController
             ]
           end
         end
-        format.html { redirect_to community_path, notice: "Post created successfully!" }
+        format.json { 
+          render json: { 
+            success: true, 
+            message: "Reply posted successfully!",
+            reply: render_to_string(partial: "social_posts/reply", locals: { social_post: @social_post }, formats: [:html]),
+            replies_count: @social_post.parent_post.replies_count
+          } 
+        }
+        format.html do
+          if @social_post.reply?
+            redirect_to social_post_path(@social_post.parent_post), notice: "Reply posted successfully!"
+          else
+            redirect_to community_path, notice: "Post created successfully!"
+          end
+        end
       else
         format.turbo_stream do
           if request.referer&.include?('dashboard')
@@ -69,7 +83,14 @@ class SocialPostsController < ApplicationController
             )
           end
         end
-        format.html { redirect_to community_path, alert: @social_post.errors.full_messages.to_sentence }
+        format.json { render json: { success: false, errors: @social_post.errors.full_messages }, status: 422 }
+        format.html do
+          if @social_post.reply?
+            redirect_to social_post_path(@social_post.parent_post), alert: @social_post.errors.full_messages.to_sentence
+          else
+            redirect_to community_path, alert: @social_post.errors.full_messages.to_sentence
+          end
+        end
       end
     end
   end

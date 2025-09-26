@@ -59,10 +59,13 @@ export default class extends Controller {
     const form = event.target;
     const formData = new FormData(form);
     const url = form.action;
+    
+    // Get the parent post ID from the form data
+    const parentPostId = formData.get('social_post[parent_post_id]');
 
     const trixEditor = form.querySelector('trix-editor');
     if (trixEditor && trixEditor.editor) {
-      const hiddenInput = form.querySelector('input[type="hidden"][name="social_post_reply[content]"]');
+      const hiddenInput = form.querySelector('input[type="hidden"][name*="[content]"]');
       if (hiddenInput) {
         const content = trixEditor.editor.element.innerHTML;
         if (trixEditor.editor.getDocument().toString().trim() === '') {
@@ -87,7 +90,7 @@ export default class extends Controller {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        const mainRepliesList = document.querySelector(`#replies-list-for-post-${this.postIdValue}`);
+        const mainRepliesList = document.querySelector(`#replies-list-for-post-${parentPostId}`);
         if (mainRepliesList) {
           mainRepliesList.insertAdjacentHTML('beforeend', data.reply);
           const newReplyElement = mainRepliesList.lastElementChild;
@@ -100,7 +103,7 @@ export default class extends Controller {
           }
         }
         
-        const mainRepliesCount = document.querySelector(`#replies-count-for-post-${this.postIdValue}`);
+        const mainRepliesCount = document.querySelector(`#replies-count-for-post-${parentPostId}`);
         if (mainRepliesCount) {
           mainRepliesCount.textContent = data.replies_count;
         }

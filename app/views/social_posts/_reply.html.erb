@@ -29,42 +29,19 @@
         
         <!-- Reply content -->
         <div class="text-sm mt-1 prose prose-sm max-w-none">
-          <% if social_post.content.present? %>
-            <% content_text = social_post.content.to_plain_text %>
-            <% if content_text.length > 150 %>
-              <div class="reply-content">
-                <span class="truncated-content">
-                  <%= content_text.truncate(150) %>
-                </span>
-                <button class="text-blue-500 hover:text-blue-700 text-xs ml-1" onclick="this.previousSibling.style.display='none'; this.nextSibling.style.display='block'; this.style.display='none'">
-                  See More
-                </button>
-                <div class="full-content" style="display: none;">
-                  <%= social_post.content %>
-                  <button class="text-blue-500 hover:text-blue-700 text-xs ml-1" onclick="this.previousSibling.style.display='none'; this.previousSibling.previousSibling.previousSibling.style.display='inline'; this.previousSibling.previousSibling.style.display='inline'; this.style.display='none'">
-                    See Less
-                  </button>
-                </div>
-              </div>
-            <% else %>
-              <%= social_post.content %>
-            <% end %>
-          <% else %>
-            <span class="text-gray-500 italic">This reply appears to be empty</span>
-          <% end %>
+          <%= social_post.content %>
         </div>
 
-        <!-- Media attachments - CONTAINED like community page -->
         <% if social_post.media.attached? %>
           <div class="mt-2">
             <% if social_post.media.count == 1 %>
-              <!-- Single image - show contained -->
+              <!-- Single image - show at full width -->
               <% media_item = social_post.media.first %>
-              <% if media_item.blob.content_type.start_with?('image/') %>
-                <div class="max-h-96 overflow-hidden rounded-lg">
-                  <%= image_tag media_item, class: "w-full h-auto object-contain" %>
+              <% if media_item.image? %>
+                <div class="rounded-lg">
+                  <%= image_tag media_item, class: "w-full h-auto" %>
                 </div>
-              <% elsif media_item.blob.content_type.start_with?('video/') %>
+              <% elsif media_item.video? %>
                 <div class="aspect-video">
                   <video controls class="w-full h-full rounded-lg">
                     <source src="<%= url_for(media_item) %>" type="<%= media_item.content_type %>">
@@ -72,19 +49,19 @@
                   </video>
                 </div>
               <% else %>
-                <div class="p-2 border rounded-lg">
-                  <%= link_to media_item.filename, url_for(media_item), class: "text-xs text-blue-600 hover:underline" %>
+                <div class="p-4 border rounded-lg">
+                  <%= link_to media_item.filename, url_for(media_item), class: "text-sm text-blue-600 hover:underline" %>
                 </div>
               <% end %>
             <% else %>
               <!-- Multiple media items - use grid layout -->
-              <div class="grid grid-cols-2 gap-1">
+              <div class="grid grid-cols-2 gap-2">
                 <% social_post.media.each do |media_item| %>
-                  <% if media_item.blob.content_type.start_with?('image/') %>
+                  <% if media_item.image? %>
                     <div class="aspect-square overflow-hidden rounded-lg">
                       <%= image_tag media_item, class: "w-full h-full object-cover" %>
                     </div>
-                  <% elsif media_item.blob.content_type.start_with?('video/') %>
+                  <% elsif media_item.video? %>
                     <div class="aspect-video">
                       <video controls class="w-full h-full rounded-lg">
                         <source src="<%= url_for(media_item) %>" type="<%= media_item.content_type %>">
@@ -92,8 +69,8 @@
                       </video>
                     </div>
                   <% else %>
-                    <div class="p-1 border rounded-lg">
-                      <%= link_to media_item.filename, url_for(media_item), class: "text-xs text-blue-600 hover:underline truncate block" %>
+                    <div class="p-2 border rounded-lg">
+                      <%= link_to media_item.filename, url_for(media_item), class: "text-sm text-blue-600 hover:underline" %>
                     </div>
                   <% end %>
                 <% end %>
@@ -120,10 +97,10 @@
 
     <!-- Like Button -->
     <button 
-      class="flex items-center gap-1 text-gray-500 hover:text-red-500 transition-colors"
+      class="flex items-center gap-1 <%= 'text-red-500' if social_post.liked_by?(Current.user) %> hover:text-red-500 transition-colors"
       data-action="click->social-post#toggleLike"
       data-social-post-target="likeButton">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-4 h-4" fill="<%= social_post.liked_by?(Current.user) ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
       </svg>
       <span class="text-xs" data-social-post-target="likesCount"><%= social_post.likes_count %></span>
@@ -131,26 +108,27 @@
 
     <!-- Bookmark Button -->
     <button 
-      class="flex items-center gap-1 text-gray-500 hover:text-blue-500 transition-colors"
-      data-action="click->social-post#toggleBookmark"
-      data-social-post-target="bookmarkButton">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      class="flex items-center gap-1 <%= 'text-blue-500' if social_post.bookmarked_by?(Current.user) %> hover:text-blue-500 transition-colors"
+      data-action="click->social-post#toggleSave"
+      data-social-post-target="saveButton">
+      <svg class="w-4 h-4" fill="<%= social_post.bookmarked_by?(Current.user) ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
       </svg>
-      <span class="text-xs" data-social-post-target="bookmarksCount"><%= social_post.bookmarks_count %></span>
+      <span class="text-xs" data-social-post-target="savesCount"><%= social_post.bookmarks_count %></span>
     </button>
   </div>
 
   <!-- Reply Form (hidden by default) -->
   <div class="mt-2 hidden" data-social-post-target="replyForm">
-    <%= form_with model: [social_post, SocialPost.new], 
+    <%= form_with model: [social_post.original_post, SocialPost.new], 
+        url: social_post_replies_path(social_post.original_post),
         class: "space-y-3", 
         data: { 
           controller: "image-preview",
           image_preview_form_id_value: "reply_#{social_post.id}"
         },
         multipart: true do |f| %>
-      <%= f.hidden_field :parent_post_id, value: social_post.id %>
+      <%= f.hidden_field :parent_post_id, value: social_post.original_post.id %>
       
       <div class="border border-gray-300 rounded-lg overflow-hidden">
         <%= f.rich_text_area :content, 
