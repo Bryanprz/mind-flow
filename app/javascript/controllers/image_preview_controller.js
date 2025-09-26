@@ -2,15 +2,73 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="image-preview"
 export default class extends Controller {
-  static targets = ["fileInput", "preview", "form", "inputField"]
+  static targets = ["fileInput", "preview", "form", "inputField", "previewContainer", "previewGrid"]
 
   connect() {
+    this.boundHandleFileSelect = this.handleFileSelect.bind(this)
     this.setupFileInput()
+    this.setupDragAndDrop()
+  }
+
+  disconnect() {
+    if (this.hasFileInputTarget && this.boundHandleFileSelect) {
+      this.fileInputTarget.removeEventListener('change', this.boundHandleFileSelect)
+    }
   }
 
   setupFileInput() {
     if (this.hasFileInputTarget) {
-      this.fileInputTarget.addEventListener('change', this.handleFileSelect.bind(this))
+      this.fileInputTarget.addEventListener('change', this.boundHandleFileSelect)
+    }
+  }
+
+  setupDragAndDrop() {
+    // Add drag and drop to the entire form, but prevent it on the textarea
+    const form = this.element
+    if (form) {
+      form.addEventListener('dragover', this.handleDragOver.bind(this))
+      form.addEventListener('dragleave', this.handleDragLeave.bind(this))
+      form.addEventListener('drop', this.handleDrop.bind(this))
+      
+      // Prevent drag and drop on the textarea to avoid conflicts
+      const textarea = form.querySelector('textarea')
+      if (textarea) {
+        textarea.addEventListener('dragover', (e) => e.preventDefault())
+        textarea.addEventListener('drop', (e) => e.preventDefault())
+      }
+    }
+  }
+
+  handleDragOver(event) {
+    event.preventDefault()
+    event.currentTarget.classList.add('border-primary', 'bg-primary/5')
+  }
+
+  handleDragLeave(event) {
+    event.preventDefault()
+    event.currentTarget.classList.remove('border-primary', 'bg-primary/5')
+  }
+
+  handleDrop(event) {
+    event.preventDefault()
+    event.currentTarget.classList.remove('border-primary', 'bg-primary/5')
+    
+    const files = event.dataTransfer.files
+    if (files && files.length > 0) {
+      this.handleFiles(files)
+    }
+  }
+
+  handleFiles(files) {
+    // Convert FileList to Array and replace existing files
+    const fileArray = Array.from(files)
+    const dt = new DataTransfer()
+    fileArray.forEach(file => dt.items.add(file))
+    
+    if (this.hasFileInputTarget) {
+      // Clear existing files and add new ones
+      this.fileInputTarget.files = dt.files
+      this.showImagePreviews(files)
     }
   }
 
@@ -23,13 +81,13 @@ export default class extends Controller {
 
   showImagePreviews(files) {
     // Clear existing previews
-    if (this.hasPreviewTarget) {
-      this.previewTarget.innerHTML = ''
+    if (this.hasPreviewGridTarget) {
+      this.previewGridTarget.innerHTML = ''
     }
 
-    // Create preview container if it doesn't exist
-    if (!this.hasPreviewTarget) {
-      this.createPreviewContainer()
+    // Show preview container
+    if (this.hasPreviewContainerTarget) {
+      this.previewContainerTarget.classList.remove('hidden')
     }
 
     // Show each selected image
@@ -57,24 +115,24 @@ export default class extends Controller {
     const reader = new FileReader()
     reader.onload = (e) => {
       const previewItem = document.createElement('div')
-      previewItem.className = 'relative inline-block'
+      previewItem.className = 'relative aspect-square overflow-hidden rounded-lg'
       
       const img = document.createElement('img')
       img.src = e.target.result
-      img.className = 'w-20 h-20 object-cover rounded-lg border border-gray-200'
+      img.className = 'w-full h-full object-cover'
       img.alt = `Preview ${index + 1}`
       
       const removeBtn = document.createElement('button')
       removeBtn.type = 'button'
-      removeBtn.className = 'absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600'
+      removeBtn.className = 'absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600'
       removeBtn.innerHTML = '×'
       removeBtn.onclick = () => this.removeImagePreview(previewItem, index)
       
       previewItem.appendChild(img)
       previewItem.appendChild(removeBtn)
       
-      if (this.hasPreviewTarget) {
-        this.previewTarget.appendChild(previewItem)
+      if (this.hasPreviewGridTarget) {
+        this.previewGridTarget.appendChild(previewItem)
       }
     }
     reader.readAsDataURL(file)
@@ -92,8 +150,11 @@ export default class extends Controller {
       this.fileInputTarget.files = dt.files
     }
 
-    // If no more images, collapse the input field
-    if (this.hasPreviewTarget && this.previewTarget.children.length === 0) {
+    // If no more images, hide the preview container
+    if (this.hasPreviewGridTarget && this.previewGridTarget.children.length === 0) {
+      if (this.hasPreviewContainerTarget) {
+        this.previewContainerTarget.classList.add('hidden')
+      }
       this.collapseInputField()
     }
   }
