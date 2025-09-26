@@ -45,6 +45,6 @@ class SocialPostRepliesController < ApplicationController
   private
 
   def reply_params
-    params.require(:social_post_reply).permit(:content)
+    params.require(:social_post_reply).permit(:content, media: [])
   end
 end

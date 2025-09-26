@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="image-preview"
 export default class extends Controller {
   static targets = ["fileInput", "preview", "form", "inputField", "previewContainer", "previewGrid"]
+  static values = { formId: String }
 
   connect() {
     this.boundHandleFileSelect = this.handleFileSelect.bind(this)
@@ -14,6 +15,20 @@ export default class extends Controller {
     if (this.hasFileInputTarget && this.boundHandleFileSelect) {
       this.fileInputTarget.removeEventListener('change', this.boundHandleFileSelect)
     }
+    
+    // Clean up drag and drop event listeners
+    const mediaUploadArea = this.element.querySelector('.form-control')
+    if (mediaUploadArea) {
+      if (this.boundHandleDragOver) {
+        mediaUploadArea.removeEventListener('dragover', this.boundHandleDragOver)
+      }
+      if (this.boundHandleDragLeave) {
+        mediaUploadArea.removeEventListener('dragleave', this.boundHandleDragLeave)
+      }
+      if (this.boundHandleDrop) {
+        mediaUploadArea.removeEventListener('drop', this.boundHandleDrop)
+      }
+    }
   }
 
   setupFileInput() {
@@ -23,34 +38,35 @@ export default class extends Controller {
   }
 
   setupDragAndDrop() {
-    // Add drag and drop to the entire form, but prevent it on the textarea
-    const form = this.element
-    if (form) {
-      form.addEventListener('dragover', this.handleDragOver.bind(this))
-      form.addEventListener('dragleave', this.handleDragLeave.bind(this))
-      form.addEventListener('drop', this.handleDrop.bind(this))
+    // Add drag and drop to the media upload area specifically
+    const mediaUploadArea = this.element.querySelector('.form-control')
+    if (mediaUploadArea) {
+      // Store bound functions to avoid multiple bindings
+      this.boundHandleDragOver = this.handleDragOver.bind(this)
+      this.boundHandleDragLeave = this.handleDragLeave.bind(this)
+      this.boundHandleDrop = this.handleDrop.bind(this)
       
-      // Prevent drag and drop on the textarea to avoid conflicts
-      const textarea = form.querySelector('textarea')
-      if (textarea) {
-        textarea.addEventListener('dragover', (e) => e.preventDefault())
-        textarea.addEventListener('drop', (e) => e.preventDefault())
-      }
+      mediaUploadArea.addEventListener('dragover', this.boundHandleDragOver)
+      mediaUploadArea.addEventListener('dragleave', this.boundHandleDragLeave)
+      mediaUploadArea.addEventListener('drop', this.boundHandleDrop)
     }
   }
 
   handleDragOver(event) {
     event.preventDefault()
+    event.stopPropagation()
     event.currentTarget.classList.add('border-primary', 'bg-primary/5')
   }
 
   handleDragLeave(event) {
     event.preventDefault()
+    event.stopPropagation()
     event.currentTarget.classList.remove('border-primary', 'bg-primary/5')
   }
 
   handleDrop(event) {
     event.preventDefault()
+    event.stopPropagation() // Prevent event bubbling to other forms
     event.currentTarget.classList.remove('border-primary', 'bg-primary/5')
     
     const files = event.dataTransfer.files
@@ -69,6 +85,9 @@ export default class extends Controller {
       // Clear existing files and add new ones
       this.fileInputTarget.files = dt.files
       this.showImagePreviews(files)
+      
+      // Debug: Log which form is handling files
+      console.log(`Form ${this.formIdValue || 'unknown'} handling ${files.length} files`)
     }
   }
 

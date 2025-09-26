@@ -2,6 +2,7 @@ class SocialPostReply < ApplicationRecord
   belongs_to :user
   belongs_to :social_post
   has_rich_text :content
+  has_many_attached :media
   
   validate :content_is_not_just_whitespace
   validates :content, length: { maximum: 5000 }
