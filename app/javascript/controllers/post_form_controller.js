@@ -1,26 +1,21 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["formContainer", "form"]
+  static targets = ["collapsed", "expanded", "form"]
 
-  connect() {
-    // Auto-focus the content field when form is shown
-    this.formTargets[0]?.querySelector('textarea')?.focus()
-  }
-
-  toggle() {
-    this.formContainerTarget.classList.toggle("hidden")
-    if (!this.formContainerTarget.classList.contains("hidden")) {
-      this.formTargets[0]?.querySelector('textarea')?.focus()
-    }
+  expand() {
+    this.collapsedTarget.classList.add("hidden")
+    this.expandedTarget.classList.remove("hidden")
+    this.expandedTarget.querySelector('trix-editor')?.focus()
   }
 
   handleSubmit(event) {
     if (event.detail.success) {
       // Hide the form after successful submission
-      this.formContainerTarget.classList.add("hidden")
+      this.expandedTarget.classList.add("hidden")
+      this.collapsedTarget.classList.remove("hidden")
       // Reset the form
-      this.formTargets[0]?.reset()
+      this.formTarget?.reset()
     }
   }
 
@@ -28,6 +23,6 @@ export default class extends Controller {
     // Prevent default form submission
     event.preventDefault()
     // Submit the form via Turbo
-    this.formTargets[0]?.requestSubmit()
+    this.formTarget?.requestSubmit()
   }
 }

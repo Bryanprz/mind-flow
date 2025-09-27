@@ -10,16 +10,20 @@
 <% else %>
   <% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200 p-8' %>
 
-  <div class="container mx-auto max-w-md mt-8" data-controller="post-form">
-    <div class="flex justify-end mb-4">
-      <button id="create-post-button" class="btn btn-primary text-white" data-action="click->post-form#toggle">Create Post</button>
+  <div class="container mx-auto max-w-lg mt-8" data-controller="post-form">
+    <div data-post-form-target="collapsed" class="hidden">
+      <div class="card bg-base-100 shadow-xl cursor-pointer">
+        <div class="card-body p-4">
+          <input type="text" placeholder="What's happening?" class="input input-bordered w-full h-10" disabled>
+        </div>
+      </div>
     </div>
 
-    <div id="post-form-container" class="hidden mb-8" data-post-form-target="formContainer">
+    <div id="post-form-container" class="mb-8" data-post-form-target="expanded">
       <%= render "social_posts/form" %>
     </div>
 
-    <div id="social-posts" class="space-y-4">
+    <div id="social-posts" class="space-y-4 mt-8">
       <% if @social_posts.any? %>
         <%= render @social_posts %>
       <% else %>
