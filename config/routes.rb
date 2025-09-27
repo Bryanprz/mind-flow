@@ -40,7 +40,6 @@ Rails.application.routes.draw do
   end
 
   resources :verses
-  resources :books
   resource :dashboard, only: [:show]
   resource :session
   resources :passwords, param: :token

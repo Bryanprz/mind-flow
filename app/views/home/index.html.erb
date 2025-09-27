@@ -71,7 +71,7 @@
       </h2>
       
       <!-- Image Carousel -->
-      <div class="mt-12 max-w-2xl mx-auto">
+      <div class="mt-20 max-w-2xl mx-auto">
         <div class="relative h-64">
           <div id="image-carousel" data-rotating-carousel-target="carousel" class="relative h-full">
             <!-- Images will be dynamically inserted here -->
@@ -145,42 +145,74 @@
 </div>
 
 <!-- Next Section -->
-<section class="py-20 bg-[#2c4838] w-full">
+<section class="py-24 bg-[#2c4838] w-full">
   <div class="max-w-7xl mx-auto px-5">
-
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-16 pt-16">
-        <h2 class="text-4xl lg:text-5xl font-bold text-neutral-content mb-6">
-          The secret to healing is
-        </h2>
+    
+    <!-- Hero Introduction -->
+    <div class="text-center mb-20 pt-16">
+      <h2 class="text-5xl lg:text-7xl font-bold text-neutral-content mb-8 leading-tight">
+        The secret to<br>
+        <span class="text-info">true healing</span>
+      </h2>
+    </div>
+    
+    <!-- Three Pillars Layout -->
+    <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+      <!-- Pillar 1 -->
+      <div class="group relative">
+        <div class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl p-8 lg:p-10 h-full border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:transform hover:-translate-y-2">
+          <h3 class="text-3xl font-bold text-neutral-content mb-6">Heal at the Root</h3>
+          <div class="flex justify-center mb-8">
+            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-primary/30 to-primary/10 group-hover:scale-110 transition-transform duration-300">
+              <%= video_tag "/videos/home/forest-flow.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-full object-cover" %>
+            </div>
+          </div>
+                 <p class="text-lg text-neutral-content/90 leading-relaxed mb-6">
+                   Go beyond just managing symptoms for life. Discover and address the fundamental imbalances that create disease. True healing begins when you restore harmony to your body's natural systems.
+                 </p>
+          <div class="text-primary/60 text-sm font-semibold uppercase tracking-wide">
+            Foundation First
+          </div>
+        </div>
       </div>
-      
-      <div class="grid md:grid-cols-3 gap-12">
-        <div class="text-center">
-          <div class="w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
-            <span class="text-4xl">🌱</span>
-          </div>
-          <h3 class="text-2xl font-bold text-neutral-content mb-6">Heal at the root</h3>
-          <p class="text-lg text-neutral-content leading-relaxed">Symptoms are signals—true healing starts by fixing the imbalance behind them.</p>
-        </div>
 
-        <div class="text-center">
-          <div class="w-20 h-20 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-full flex items-center justify-center mx-auto mb-8">
-            <span class="text-4xl">🎯</span>
+      <!-- Pillar 2 -->
+      <div class="group relative">
+        <div class="bg-gradient-to-br from-secondary/10 to-secondary/5 rounded-3xl p-8 lg:p-10 h-full border border-secondary/20 hover:border-secondary/40 transition-all duration-300 hover:transform hover:-translate-y-2">
+          <h3 class="text-3xl font-bold text-neutral-content mb-6">Know Your Nature</h3>
+          <div class="flex justify-center mb-8">
+            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-secondary/30 to-secondary/10 group-hover:scale-110 transition-transform duration-300">
+              <%= video_tag "/videos/home/universe-flow.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-full object-cover" %>
+            </div>
           </div>
-          <h3 class="text-2xl font-bold text-neutral-content mb-6">Know your nature</h3>
-          <p class="text-lg text-neutral-content leading-relaxed">Every body is wired differently. Every healing path should be too.</p>
+                 <p class="text-lg text-neutral-content/90 leading-relaxed mb-6">
+                   Know your unique bio-energies—a powerful way to understand your energy field and how it shapes your mind, emotions, body, and behavior for personalized healing.
+                 </p>
+          <div class="text-secondary/60 text-sm font-semibold uppercase tracking-wide">
+            Personalized Path
+          </div>
         </div>
+      </div>
 
-        <div class="text-center">
-          <div class="w-20 h-20 bg-gradient-to-br from-accent/20 to-accent/10 rounded-full flex items-center justify-center mx-auto mb-8">
-            <span class="text-4xl">⚡</span>
+      <!-- Pillar 3 -->
+      <div class="group relative">
+        <div class="bg-gradient-to-br from-accent/10 to-accent/5 rounded-3xl p-8 lg:p-10 h-full border border-accent/20 hover:border-accent/40 transition-all duration-300 hover:transform hover:-translate-y-2">
+          <h3 class="text-3xl font-bold text-neutral-content mb-6">Align with Life</h3>
+          <div class="flex justify-center mb-8">
+            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-accent/30 to-accent/10 group-hover:scale-110 transition-transform duration-300">
+              <%= video_tag "/videos/home/yoga-flow.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-full object-cover" %>
+            </div>
           </div>
-          <h3 class="text-2xl font-bold text-neutral-content mb-6">Align with life</h3>
-          <p class="text-lg text-neutral-content leading-relaxed">Match nature's rhythm to your personal nature—unlock your body's healing power.</p>
+          <p class="text-lg text-neutral-content/90 leading-relaxed mb-6">
+            Synchronize your daily rhythms with nature's cycles. When your lifestyle matches your constitution, your body's innate healing power activates naturally.
+          </p>
+          <div class="text-accent/60 text-sm font-semibold uppercase tracking-wide">
+            Natural Harmony
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -189,7 +221,7 @@
   <div class="max-w-7xl mx-auto px-5">
     <div class="text-center mb-16">
       <h2 class="text-4xl lg:text-5xl font-bold text-neutral mb-6">
-        <div><span class="text-primary">🌿 Ancient</span><span class="text-secondary">Herb</span> is Your</div>
+        <div><span class="text-primary">Ancient</span><span class="text-secondary">Herb</span>🌿 is Your</div>
         <div>Complete Healing Toolkit</div>
       </h2>
       <p class="text-xl text-gray-700 max-w-3xl mx-auto">
@@ -200,14 +232,14 @@
     <!-- Bento Grid Layout -->
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <!-- Biggest Card - Daily Habit & Journal Tracking -->
-      <div class="md:col-span-2 lg:col-span-2 md:row-span-2 p-8 bg-gradient-to-br from-primary to-primary/80 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+      <div class="md:col-span-2 lg:col-span-2 md:row-span-2 p-8 bg-primary rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
         <div class="mb-6">
           <div class="flex items-center mb-4">
             <div class="text-6xl mr-4">📊</div>
             <h3 class="text-2xl lg:text-3xl font-bold text-white">Daily Habit & Journal Tracking</h3>
           </div>
-          <div class="overflow-hidden -mx-8 mb-4">
-            <%= image_tag "home/dashboard.png", alt: "Dashboard showing health tracking interface", class: "w-full h-auto" %>
+          <div class="overflow-hidden mb-4">
+            <%= image_tag "home/dashboard.png", alt: "Dashboard showing health tracking interface", class: "w-full h-auto rounded-md" %>
           </div>
         </div>
         <p class="text-white text-md leading-relaxed mb-4">Monitor symptoms, energy levels, and healing progress daily with our intuitive tracking system designed for your unique constitution.</p>
@@ -215,7 +247,7 @@
       </div>
 
       <!-- Second-Biggest Card - Personalized Healing Plan -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-gradient-to-br from-secondary to-secondary/80 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-6 bg-secondary rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
         <div class="flex items-center mb-4">
           <div class="text-4xl mr-3">🍽️</div>
           <h3 class="text-xl font-bold text-neutral">Personalized Healing Plan</h3>
@@ -225,7 +257,7 @@
       </div>
 
       <!-- Second-Biggest Card - Herbal Remedies -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-gradient-to-br from-accent to-accent/80 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-6 bg-accent rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
         <div class="mb-4">
           <div class="rounded-t-lg overflow-hidden -mx-6 -mt-6 mb-4">
             <%= video_tag "/videos/home/herbal-remedy.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-auto" %>
@@ -239,7 +271,7 @@
       </div>
 
       <!-- Second-Biggest Card - Community -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-gradient-to-br from-purple-400 to-purple-300 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-6 bg-purple-500 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
         <div class="flex items-center mb-4">
           <div class="text-4xl mr-3">🤝</div>
           <h3 class="text-xl font-bold text-neutral">Heal faster with a community</h3>
@@ -248,7 +280,7 @@
       </div>
 
       <!-- Second-Biggest Card - Learn Natural Healing Wisdom -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-gradient-to-br from-blue-500 to-blue-400 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-6 bg-blue-600 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
         <div class="flex items-center mb-4">
           <div class="text-4xl mr-3">🎓</div>
           <h3 class="text-xl font-bold text-white">Learn Natural Healing Wisdom</h3>
@@ -257,7 +289,7 @@
       </div>
 
       <!-- Third-Biggest Card - Daily Guidance -->
-      <div class="md:col-span-1 lg:col-span-1 p-5 bg-gradient-to-br from-orange-500 to-orange-400 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-5 bg-orange-500 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
         <div class="flex items-center mb-3">
           <div class="text-3xl mr-2">📱</div>
           <h3 class="text-lg font-bold text-white">Daily Guidance</h3>
@@ -266,7 +298,7 @@
       </div>
 
       <!-- Third-Biggest Card - A Place to Heal -->
-      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-gradient-to-br from-neutral to-neutral/80 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-neutral rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
         <div class="mb-4">
           <div class="rounded-t-lg overflow-hidden -mx-5 -mt-5 mb-4">
             <%= video_tag "/videos/home/meditating.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-auto" %>
@@ -486,7 +518,7 @@
 </section>
 
 <!-- Chat with Practitioner Section -->
-<section class="pt-12 pb-20 bg-gradient-to-br from-primary/12 via-secondary/8 to-accent/12 w-full">
+<section class="pt-12 pb-20 bg-gradient-to-b from-primary/12 via-secondary/8 to-primary w-full">
   <div class="max-w-7xl mx-auto px-5">
     <div class="grid lg:grid-cols-2 gap-12 items-start">
       <div class="order-1">
@@ -560,8 +592,8 @@
       <!-- Company Info -->
       <div class="lg:col-span-2">
         <div class="flex items-center mb-4">
-          <span class="text-3xl mr-3">🌿</span>
           <h3 class="text-2xl font-bold">AncientHerb</h3>
+          <span class="text-3xl mr-3">🌿</span>
         </div>
         <p class="text-neutral-content/80 mb-6 max-w-md">
           Empowering your healing journey through the ancient wisdom of Ayurveda. Transform your health naturally with personalized guidance and proven methods.
@@ -576,7 +608,6 @@
           <li><%= link_to "Health Assessment", start_prakruti_assessment_path, class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
           <li><%= link_to "Healing Plans", healing_plans_path, class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
           <li><%= link_to "Community", "/community", class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
-          <li><%= link_to "Books", books_path, class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
         </ul>
       </div>
 
