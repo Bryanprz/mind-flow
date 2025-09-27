@@ -17,7 +17,7 @@
                              action: authenticated? ? "input->auto-resize#resize" : "keydown.enter->auth-required#handleEnter input->auto-resize#resize"
                            } %>
           <div class="flex items-center gap-2">
-            <%= form.label :media, class: "cursor-pointer text-gray-400 hover:text-primary", data: { action: authenticated? ? "click->image-preview#handleFileClick" : "click->auth-required#handleSubmit" } do %>
+            <%= form.label :media, class: "cursor-pointer text-gray-400 hover:text-primary", data: { action: "click->image-preview#handleFileClick" } do %>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
               </svg>
@@ -32,6 +32,12 @@
         </div>
       </div>
 
+      <!-- Image Preview Area -->
+      <div class="mt-3 hidden" data-image-preview-target="previewContainer">
+        <div class="flex flex-wrap gap-2" data-image-preview-target="previewGrid">
+          <!-- Preview images will be inserted here -->
+        </div>
+      </div>
     </div>
   </div>
 <% end %>

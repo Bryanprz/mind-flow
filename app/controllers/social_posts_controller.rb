@@ -72,6 +72,10 @@ class SocialPostsController < ApplicationController
               ),
               turbo_stream.update("replies-count-for-post-#{@social_post.parent_post_id}", 
                 @social_post.parent_post.replies_count),
+              turbo_stream.update("main-reply-form-for-post-#{@social_post.parent_post_id}",
+                partial: "social_posts/reply_form",
+                locals: { social_post: @social_post.parent_post }
+              ),
               turbo_stream.update("flash",
                 partial: "layouts/flash"
               )
