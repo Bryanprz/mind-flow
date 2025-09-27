@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_26_070201) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_27_040828) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -258,6 +258,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_070201) do
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
     t.index ["user_id", "likeable_type", "likeable_id"], name: "index_likes_on_user_id_and_likeable_type_and_likeable_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "newsletters", force: :cascade do |t|
+    t.string "email_address", null: false
+    t.string "status", default: "subscribed"
+    t.boolean "active", default: true
+    t.datetime "subscribed_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_newsletters_on_email_address", unique: true
   end
 
   create_table "plan_item_logs", force: :cascade do |t|

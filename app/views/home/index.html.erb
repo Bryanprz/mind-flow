@@ -248,12 +248,12 @@
       </div>
 
       <!-- Second-Biggest Card - Learn Natural Healing Wisdom -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-gradient-to-br from-accent/80 to-accent/60 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-6 bg-gradient-to-br from-blue-500 to-blue-400 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
         <div class="flex items-center mb-4">
           <div class="text-4xl mr-3">🎓</div>
-          <h3 class="text-xl font-bold text-primary">Learn Natural Healing Wisdom</h3>
+          <h3 class="text-xl font-bold text-white">Learn Natural Healing Wisdom</h3>
         </div>
-        <p class="text-primary text-sm">Classroom where you learn natural self-healing techniques and ancient wisdom.</p>
+        <p class="text-white text-sm">Classroom where you learn natural self-healing techniques and ancient wisdom.</p>
       </div>
 
       <!-- Third-Biggest Card - Daily Guidance -->
@@ -280,7 +280,7 @@
       </div>
 
       <!-- Third-Biggest Card - Built by Ayurvedic Practitioners -->
-      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-gradient-to-br from-primary/70 to-primary/50 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-gradient-to-br from-emerald-600 to-emerald-500 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
         <div class="flex items-center mb-3">
           <div class="text-3xl mr-2">👨‍⚕️</div>
           <h3 class="text-lg font-bold text-white">Built by Ayurvedic Practitioners</h3>
@@ -303,12 +303,12 @@
       </div>
 
       <!-- Third-Biggest Card - AI Chat -->
-      <div class="md:col-span-1 lg:col-span-1 p-5 bg-gradient-to-br from-secondary/80 to-secondary/60 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-5 bg-gradient-to-br from-purple-600 to-purple-500 rounded-2xl shadow-lg hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
         <div class="flex items-center mb-3">
           <div class="text-3xl mr-2">🤖</div>
-          <h3 class="text-lg font-bold text-neutral">AI Chat specialized in your health</h3>
+          <h3 class="text-lg font-bold text-white">AI Chat specialized in your health</h3>
         </div>
-        <p class="text-neutral text-sm">Get instant AI-powered health insights tailored to your unique constitution.</p>
+        <p class="text-white text-sm">Get instant AI-powered health insights tailored to your unique constitution.</p>
       </div>
     </div>
   </div>
@@ -548,7 +548,7 @@
 
 <!-- Enhanced Footer for Homepage -->
 <footer class="bg-neutral text-neutral-content">
-  <div class="max-w-7xl mx-auto px-5 py-16">
+  <div class="max-w-7xl mx-auto px-5 pt-16">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
       
       <!-- Company Info -->
@@ -614,10 +614,7 @@
       <div class="max-w-md mx-auto text-center">
         <h4 class="text-lg font-semibold mb-2">Stay Connected</h4>
         <p class="text-neutral-content/80 mb-4">Get healing tips and updates delivered to your inbox</p>
-        <div class="flex gap-2">
-          <input type="email" placeholder="Enter your email" class="input input-bordered flex-1 bg-neutral-content/10 border-neutral-content/20 text-neutral-content placeholder-neutral-content/60">
-          <button class="btn btn-primary">Subscribe</button>
-        </div>
+        <%= render "newsletters/form", newsletter: nil %>
       </div>
     </div>
 
@@ -625,7 +622,7 @@
     <div class="border-t border-neutral-content/20 pt-6">
       <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
         <div class="text-center lg:text-left">
-          <p class="text-neutral-content/60">© 2024 AncientHerb. All rights reserved. 🍃 Nature is the Healer 🌿</p>
+          <p class="text-neutral-content/60">© 2024 AncientHerb. All rights reserved.</p>
         </div>
         <div class="flex flex-wrap justify-center gap-6 text-sm">
           <%= link_to "Privacy Policy", "#", class: "text-neutral-content/60 hover:text-neutral-content transition-colors" %>

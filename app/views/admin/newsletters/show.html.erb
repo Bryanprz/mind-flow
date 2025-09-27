@@ -1,0 +1,74 @@
+<% content_for :main_container_class, 'bg-base-200' %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="card bg-base-100 border border-gray-300">
+    <div class="card-body p-5">
+      <h1 class="card-title text-2xl mb-4">Newsletter Subscriber Details</h1>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold text-lg mb-3">Subscriber Information</h3>
+          <div class="space-y-2">
+            <div>
+              <span class="font-medium">Email Address:</span>
+              <span class="ml-2"><%= @newsletter.email_address %></span>
+            </div>
+            <div>
+              <span class="font-medium">Status:</span>
+              <span class="ml-2">
+                <span class="badge <%= @newsletter.status == 'subscribed' ? 'badge-success' : 'badge-error' %>">
+                  <%= @newsletter.status.titleize %>
+                </span>
+              </span>
+            </div>
+            <div>
+              <span class="font-medium">Active:</span>
+              <span class="ml-2"><%= @newsletter.active? ? 'Yes' : 'No' %></span>
+            </div>
+            <div>
+              <span class="font-medium">Subscribed At:</span>
+              <span class="ml-2"><%= @newsletter.subscribed_at&.strftime('%b %d, %Y at %H:%M') || '—' %></span>
+            </div>
+            <div>
+              <span class="font-medium">Created:</span>
+              <span class="ml-2"><%= @newsletter.created_at.strftime('%b %d, %Y at %H:%M') %></span>
+            </div>
+            <div>
+              <span class="font-medium">Last Updated:</span>
+              <span class="ml-2"><%= @newsletter.updated_at.strftime('%b %d, %Y at %H:%M') %></span>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold text-lg mb-3">Actions</h3>
+          <div class="space-y-2">
+            <% if @newsletter.subscribed? %>
+              <%= button_to "Unsubscribe", admin_newsletter_path(@newsletter), 
+                  method: :patch, 
+                  params: { newsletter: { status: 'unsubscribed' } },
+                  class: "btn btn-warning btn-sm",
+                  data: { turbo_confirm: "Are you sure you want to unsubscribe this user?" } %>
+            <% else %>
+              <%= button_to "Resubscribe", admin_newsletter_path(@newsletter), 
+                  method: :patch, 
+                  params: { newsletter: { status: 'subscribed' } },
+                  class: "btn btn-success btn-sm",
+                  data: { turbo_confirm: "Are you sure you want to resubscribe this user?" } %>
+            <% end %>
+            
+            <%= button_to "Delete Subscriber", admin_newsletter_path(@newsletter), 
+                method: :delete, 
+                class: "btn btn-error btn-sm",
+                data: { turbo_confirm: "Are you sure you want to permanently delete this subscriber?" } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-actions justify-end mt-6">
+        <%= link_to 'Back to Newsletter Subscribers', admin_newsletters_path, class: 'btn btn-ghost' %>
+        <%= link_to 'Back to Admin Dashboard', admin_root_path, class: 'btn btn-ghost' %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -19,6 +19,12 @@ Rails.application.routes.draw do
     end
 
     resources :social_posts, only: [:index, :show, :edit, :update, :destroy]
+    
+    resources :newsletters, only: [:index, :show, :update, :destroy] do
+      collection do
+        post :send_blast
+      end
+    end
 
     resources :plan_sections, only: [] do
       member do
@@ -45,6 +51,9 @@ Rails.application.routes.draw do
       patch :attach_cover_image
     end
   end
+  
+  resources :newsletters, only: [:create]
+  get 'newsletters/unsubscribe', to: 'newsletters#unsubscribe', as: :unsubscribe_newsletter
   resources :healing_plans, except: [:new, :show] do
     collection do
       post 'log_item_progress'

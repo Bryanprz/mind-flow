@@ -1,0 +1,14 @@
+<%= form_with model: (newsletter || Newsletter.new), url: newsletters_path, local: false, id: "newsletter-form", class: "flex gap-2" do |form| %>
+  <%= form.email_field :email_address, 
+      placeholder: "Enter your email", 
+      class: "input input-bordered flex-1 bg-neutral-content/10 border-neutral-content/20 text-neutral-content placeholder-neutral-content/60",
+      required: true %>
+  <%= form.submit "Subscribe", 
+      class: "btn btn-primary" %>
+  
+  <% if newsletter&.errors&.any? %>
+    <div class="text-red-400 text-sm mt-2">
+      <%= newsletter.errors.full_messages.join(", ") %>
+    </div>
+  <% end %>
+<% end %>

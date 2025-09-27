@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        text-align: center;
+        background: linear-gradient(135deg, #059669, #10b981);
+        color: white;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+      }
+      .content {
+        background: #f9fafb;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+      }
+      .footer {
+        text-align: center;
+        color: #6b7280;
+        font-size: 14px;
+      }
+      .btn {
+        display: inline-block;
+        background: #059669;
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>🌿 Welcome to AncientHerb!</h1>
+      <p>Your healing journey starts now</p>
+    </div>
+    
+    <div class="content">
+      <h2>Thank you for subscribing!</h2>
+      <p>You're now part of our community dedicated to healing chronic illness naturally through the ancient wisdom of Ayurveda.</p>
+      
+      <h3>What to expect:</h3>
+      <ul>
+        <li><strong>Weekly healing tips</strong> tailored to your constitution</li>
+        <li><strong>Ancient herbal wisdom</strong> for modern health challenges</li>
+        <li><strong>Success stories</strong> from our healing community</li>
+        <li><strong>Exclusive content</strong> on natural healing methods</li>
+      </ul>
+      
+      <p>Ready to start your healing journey? Take our free health assessment to get your personalized healing plan.</p>
+      
+      <a href="<%= root_url %>start_prakruti_assessment" class="btn">Start Your Assessment</a>
+    </div>
+    
+    <div class="footer">
+      <p>You're receiving this because you subscribed to our newsletter.</p>
+      <p>
+        <a href="<%= @unsubscribe_url %>" style="color: #6b7280;">Unsubscribe</a> | 
+        <a href="<%= root_url %>" style="color: #6b7280;">Visit AncientHerb</a>
+      </p>
+      <p>© 2024 AncientHerb. All rights reserved.</p>
+    </div>
+  </body>
+</html>
