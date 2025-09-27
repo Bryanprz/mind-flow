@@ -9,7 +9,9 @@
         </h2>
         <p class="text-xs text-gray-500">Share your wins, struggles, questions — anything on your mind</p>
       </div>
-      
+      <div class="flex-shrink-0">
+        <%= link_to "View full feed", community_path, class: "link link-primary text-xs" %>
+      </div>
     </div>
     
     <!-- Feed Content -->
@@ -25,9 +27,6 @@
           </div>
           <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-base-100 to-transparent"></div>
         </div>
-      </div>
-      <div class="px-4 py-2 text-right">
-        <%= link_to "View full feed", community_path, class: "link link-primary text-xs" %>
       </div>
     </div>
     

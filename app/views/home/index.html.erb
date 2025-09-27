@@ -27,21 +27,22 @@
           </div>
         </div>
         
-        <p class="text-xl lg:text-2xl text-neutral-content leading-relaxed">
-          Using the <span data-tip="<%= @ayurveda_tooltip_text %>" class="tooltip font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">5,000-year-old science of Ayurveda</span>, 
-          we help you achieve <strong>root healing</strong>—not just symptom management—through personalized 
-          <span class="font-semibold text-primary">food</span>, <span class="font-semibold text-secondary">herbs</span>, and <span class="font-semibold text-accent">natural cures</span>.
-        </p>
+        <div class="max-w-3xl mx-auto">
+          <p class="text-lg lg:text-xl text-neutral-content leading-loose" style="line-height:1.7;">
+            <strong>AncientHerb</strong> is a daily health tracker that heals chronic illness at the source.<br>
+            Using the <span data-tip="<%= @ayurveda_tooltip_text %>" class="tooltip font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">5,000-year-old science of Ayurveda</span>, 
+            it delivers <strong>root healing</strong>—not just symptom management—through guided habits & personalized <span class="font-semibold text-primary">food</span>, <span class="font-semibold text-secondary">herbs</span>, & <span class="font-semibold text-accent">natural cures</span>.
+          </p>
+        </div>
       </div>
 
       <!-- CTA Buttons -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
         <% if Current.user&.prakruti_entry.present? %>
-          <%= link_to "Continue Your Journey", dashboard_path, class: "btn btn-primary btn-lg text-white px-8 py-4 text-lg font-semibold" %>
+          <%= link_to "Continue Your Journey", dashboard_path, class: "btn btn-outline btn-lg text-primary border-primary hover:bg-primary hover:text-white px-8 py-4 text-lg font-semibold" %>
         <% else %>
           <%= link_to "✨ Start Your Healing Journey", start_prakruti_assessment_path, class: "btn btn-primary btn-lg text-white px-8 py-4 text-lg font-semibold" %>
         <% end %>
-        <button class="btn btn-ghost text-neutral-content btn-lg px-8 py-4 text-lg font-semibold">Learn More</button>
       </div>
     </div>
   </div>
@@ -50,16 +51,16 @@
 <!-- How it Works Section -->
 <section class="pt-32 pb-20 bg-gradient-to-br from-primary/8 via-secondary/6 to-accent/8" 
          data-controller="rotating-carousel"
-         data-rotating-carousel-chronic-illness-value="<%= asset_path('home/carousel/chronic-illness.png') %>"
-         data-rotating-carousel-anxiety-value="<%= asset_path('home/carousel/anxiety.png') %>"
-         data-rotating-carousel-asthma-value="<%= asset_path('home/carousel/asthma.png') %>"
-         data-rotating-carousel-depression-value="<%= asset_path('home/carousel/depression.png') %>"
-         data-rotating-carousel-diabetes-value="<%= asset_path('home/carousel/diabetes.png') %>"
-         data-rotating-carousel-heart-disease-value="<%= asset_path('home/carousel/heart-disease.png') %>"
-         data-rotating-carousel-high-cholesterol-value="<%= asset_path('home/carousel/high-cholesterol.png') %>"
-         data-rotating-carousel-hypertension-value="<%= asset_path('home/carousel/hypertension.png') %>"
-         data-rotating-carousel-obesity-value="<%= asset_path('home/carousel/obesity.png') %>"
-         data-rotating-carousel-stress-value="<%= asset_path('home/carousel/stress.png') %>">
+         data-rotating-carousel-chronic-illness-value="<%= asset_path('home/carousel/chronic-illness.webp') %>"
+         data-rotating-carousel-anxiety-value="<%= asset_path('home/carousel/anxiety.webp') %>"
+         data-rotating-carousel-asthma-value="<%= asset_path('home/carousel/asthma.webp') %>"
+         data-rotating-carousel-depression-value="<%= asset_path('home/carousel/depression.webp') %>"
+         data-rotating-carousel-diabetes-value="<%= asset_path('home/carousel/diabetes.webp') %>"
+         data-rotating-carousel-heart-disease-value="<%= asset_path('home/carousel/heart-disease.webp') %>"
+         data-rotating-carousel-high-cholesterol-value="<%= asset_path('home/carousel/high-cholesterol.webp') %>"
+         data-rotating-carousel-hypertension-value="<%= asset_path('home/carousel/hypertension.webp') %>"
+         data-rotating-carousel-obesity-value="<%= asset_path('home/carousel/obesity.webp') %>"
+         data-rotating-carousel-stress-value="<%= asset_path('home/carousel/stress.webp') %>">
   <div class="max-w-7xl mx-auto px-5">
     <div class="text-center mb-16">
       <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
@@ -98,9 +99,9 @@
     
     <div class="max-w-5xl mx-auto">
       <div class="relative">
-        <%= image_tag "home/life-journey.png", 
+        <%= image_tag "home/life-journey.webp", 
              alt: "Healing journey illustration", 
-             class: "w-full h-auto" %>
+             class: "w-full h-auto", loading: "lazy" %>
       </div>
       
       <div class="text-center mt-12 mb-16">
@@ -139,9 +140,9 @@
 
 <!-- Ancient Healers Image - Full Viewport Width -->
 <div class="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-  <%= image_tag "home/ancient-healers.png", 
+  <%= image_tag "home/ancient-healers.webp", 
        alt: "Ancient healers in harmony with nature", 
-       class: "w-full h-auto" %>
+       class: "w-full h-auto", loading: "lazy" %>
 </div>
 
 <!-- Next Section -->
@@ -151,66 +152,62 @@
     <!-- Hero Introduction -->
     <div class="text-center mb-20 pt-16">
       <h2 class="text-5xl lg:text-7xl font-bold text-neutral-content mb-8 leading-tight">
-        The secret to<br>
-        <span class="text-info">true healing</span>
+        The Secret to<br>
+        <span class="text-info">True Healing</span>
       </h2>
     </div>
     
-    <!-- Three Pillars Layout -->
-    <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+    <!-- Three Pillars List -->
+    <div class="max-w-md mx-auto space-y-6">
+      
       <!-- Pillar 1 -->
-      <div class="group relative">
-        <div class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl p-8 lg:p-10 h-full border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:transform hover:-translate-y-2">
-          <h3 class="text-3xl font-bold text-neutral-content mb-6">Heal at the Root</h3>
-          <div class="flex justify-center mb-8">
-            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-primary/30 to-primary/10 group-hover:scale-110 transition-transform duration-300">
-              <%= video_tag "/videos/home/forest-flow.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-full object-cover" %>
-            </div>
-          </div>
-                 <p class="text-lg text-neutral-content/90 leading-relaxed mb-6">
-                   Go beyond just managing symptoms for life. Discover and address the fundamental imbalances that create disease. True healing begins when you restore harmony to your body's natural systems.
-                 </p>
-          <div class="text-primary/60 text-sm font-semibold uppercase tracking-wide">
+      <div class="flex items-start gap-4">
+        <div class="flex-shrink-0">
+          <div class="text-xl font-bold text-primary">1</div>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-lg font-bold text-neutral-content mb-2">HEAL AT THE ROOT</h3>
+          <p class="text-md text-neutral-content/80 leading-relaxed mb-2">
+            Go beyond just managing symptoms for life. Discover and address the fundamental imbalances that create disease. True healing begins when you restore harmony to your body's natural systems.
+          </p>
+          <div class="text-primary text-xs font-semibold uppercase tracking-wide">
             Foundation First
           </div>
         </div>
       </div>
 
       <!-- Pillar 2 -->
-      <div class="group relative">
-        <div class="bg-gradient-to-br from-secondary/10 to-secondary/5 rounded-3xl p-8 lg:p-10 h-full border border-secondary/20 hover:border-secondary/40 transition-all duration-300 hover:transform hover:-translate-y-2">
-          <h3 class="text-3xl font-bold text-neutral-content mb-6">Know Your Nature</h3>
-          <div class="flex justify-center mb-8">
-            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-secondary/30 to-secondary/10 group-hover:scale-110 transition-transform duration-300">
-              <%= video_tag "/videos/home/universe-flow.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-full object-cover" %>
-            </div>
-          </div>
-                 <p class="text-lg text-neutral-content/90 leading-relaxed mb-6">
-                   Know your unique bio-energies—a powerful way to understand your energy field and how it shapes your mind, emotions, body, and behavior for personalized healing.
-                 </p>
-          <div class="text-secondary/60 text-sm font-semibold uppercase tracking-wide">
+      <div class="flex items-start gap-4">
+        <div class="flex-shrink-0">
+          <div class="text-xl font-bold text-secondary">2</div>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-lg font-bold text-neutral-content mb-2">KNOW YOUR NATURE</h3>
+          <p class="text-md text-neutral-content/80 leading-relaxed mb-2">
+            Know your unique bio-energies—a powerful way to understand your energy field and how it shapes your mind, emotions, body, and behavior for personalized healing.
+          </p>
+          <div class="text-secondary text-xs font-semibold uppercase tracking-wide">
             Personalized Path
           </div>
         </div>
       </div>
 
       <!-- Pillar 3 -->
-      <div class="group relative">
-        <div class="bg-gradient-to-br from-accent/10 to-accent/5 rounded-3xl p-8 lg:p-10 h-full border border-accent/20 hover:border-accent/40 transition-all duration-300 hover:transform hover:-translate-y-2">
-          <h3 class="text-3xl font-bold text-neutral-content mb-6">Align with Life</h3>
-          <div class="flex justify-center mb-8">
-            <div class="rounded-2xl overflow-hidden bg-gradient-to-br from-accent/30 to-accent/10 group-hover:scale-110 transition-transform duration-300">
-              <%= video_tag "/videos/home/yoga-flow.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-full object-cover" %>
-            </div>
-          </div>
-          <p class="text-lg text-neutral-content/90 leading-relaxed mb-6">
+      <div class="flex items-start gap-4">
+        <div class="flex-shrink-0">
+          <div class="text-xl font-bold text-accent">3</div>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-lg font-bold text-neutral-content mb-2">ALIGN WITH LIFE</h3>
+          <p class="text-md text-neutral-content/80 leading-relaxed mb-2">
             Synchronize your daily rhythms with nature's cycles. When your lifestyle matches your constitution, your body's innate healing power activates naturally.
           </p>
-          <div class="text-accent/60 text-sm font-semibold uppercase tracking-wide">
+          <div class="text-accent text-xs font-semibold uppercase tracking-wide">
             Natural Harmony
           </div>
         </div>
       </div>
+      
     </div>
 
   </div>
@@ -239,7 +236,7 @@
             <h3 class="text-2xl lg:text-3xl font-bold text-white">Daily Habit & Journal Tracking</h3>
           </div>
           <div class="overflow-hidden mb-4">
-            <%= image_tag "home/dashboard.png", alt: "Dashboard showing health tracking interface", class: "w-full h-auto rounded-md" %>
+            <%= image_tag "home/dashboard.webp", alt: "Dashboard showing health tracking interface", class: "w-full h-auto rounded-md", loading: "lazy" %>
           </div>
         </div>
         <p class="text-white text-md leading-relaxed mb-4">Monitor symptoms, energy levels, and healing progress daily with our intuitive tracking system designed for your unique constitution.</p>
@@ -347,19 +344,19 @@
 </section>
 
 <!-- Feature Screenshots Section -->
-<section class="py-20 bg-gradient-to-br from-primary/12 via-secondary/8 to-accent/12">
+<section class="py-20 bg-neutral">
   <div class="max-w-7xl mx-auto px-5">
     <!-- Feature 1: Health Tracking -->
-    <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
+    <div class="grid lg:grid-cols-2 gap-12 items-start mb-20">
       <div class="order-2 lg:order-1">
-        <div class="flex items-center mb-6">
+        <div class="flex items-start mb-6">
           <div class="text-6xl mr-4">📊</div>
-          <h3 class="text-4xl font-bold text-gray-900">Track Your Healing Progress</h3>
+          <h3 class="text-4xl font-bold text-neutral-content">Track Your Healing Progress</h3>
         </div>
-        <p class="text-xl text-gray-700 mb-6">
+        <p class="text-xl text-neutral-content mb-6">
           Monitor your daily symptoms, energy levels, and healing milestones. Our intuitive dashboard shows you exactly how your health is improving over time.
         </p>
-        <ul class="space-y-3 text-lg text-gray-700">
+        <ul class="space-y-3 text-lg text-neutral-content">
           <li class="flex items-center"><span class="text-primary mr-3">✓</span> Daily symptom tracking</li>
           <li class="flex items-center"><span class="text-primary mr-3">✓</span> Energy level monitoring</li>
           <li class="flex items-center"><span class="text-primary mr-3">✓</span> Healing progress charts</li>
@@ -370,7 +367,7 @@
         <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8 border-2 border-primary/20">
           <div class="bg-white rounded-xl p-6 shadow-lg">
             <div class="rounded-lg overflow-hidden">
-              <%= image_tag "home/weekly-log-ui.png", alt: "Weekly Log UI showing health tracking dashboard", class: "w-full h-auto" %>
+              <%= image_tag "home/weekly-log-ui.webp", alt: "Weekly Log UI showing health tracking dashboard", class: "w-full h-auto", loading: "lazy" %>
             </div>
           </div>
         </div>
@@ -378,7 +375,7 @@
     </div>
 
     <!-- Feature 2: Personalized Meals -->
-    <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
+    <div class="grid lg:grid-cols-2 gap-12 items-start mb-20">
       <div class="order-1">
         <div class="bg-gradient-to-br from-secondary/10 to-accent/10 rounded-2xl p-8 border-2 border-secondary/20">
           <div class="bg-white rounded-xl p-6 shadow-lg">
@@ -410,14 +407,14 @@
         </div>
       </div>
       <div class="order-2">
-        <div class="flex items-center mb-6">
+        <div class="flex items-start mb-6">
           <div class="text-6xl mr-4">🍽️</div>
-          <h3 class="text-4xl font-bold text-gray-900">Personalized Meal Plans</h3>
+          <h3 class="text-4xl font-bold text-neutral-content">Personalized Meal Plans</h3>
         </div>
-        <p class="text-xl text-gray-700 mb-6">
+        <p class="text-xl text-neutral-content mb-6">
           Get custom meal recommendations based on your constitution, current imbalances, and healing goals. Every meal is designed to support your body's natural healing process.
         </p>
-        <ul class="space-y-3 text-lg text-gray-700">
+        <ul class="space-y-3 text-lg text-neutral-content">
           <li class="flex items-center"><span class="text-secondary mr-3">✓</span> Constitution-based recipes</li>
           <li class="flex items-center"><span class="text-secondary mr-3">✓</span> Seasonal meal planning</li>
           <li class="flex items-center"><span class="text-secondary mr-3">✓</span> Healing-focused ingredients</li>
@@ -427,16 +424,16 @@
     </div>
 
     <!-- Feature 3: Herbal Remedies -->
-    <div class="grid lg:grid-cols-2 gap-12 items-center">
+    <div class="grid lg:grid-cols-2 gap-12 items-start">
       <div class="order-2 lg:order-1">
-        <div class="flex items-center mb-6">
+        <div class="flex items-start mb-6">
           <div class="text-6xl mr-4">🌿</div>
-          <h3 class="text-4xl font-bold text-gray-900">Ancient Herbal Wisdom</h3>
+          <h3 class="text-4xl font-bold text-neutral-content">Ancient Herbal Wisdom</h3>
         </div>
-        <p class="text-xl text-gray-700 mb-6">
+        <p class="text-xl text-neutral-content mb-6">
           Access time-tested herbal formulas and remedies that have been used for thousands of years to heal chronic conditions naturally.
         </p>
-        <ul class="space-y-3 text-lg text-gray-700">
+        <ul class="space-y-3 text-lg text-neutral-content">
           <li class="flex items-center"><span class="text-accent mr-3">✓</span> Traditional herbal formulas</li>
           <li class="flex items-center"><span class="text-accent mr-3">✓</span> Dosage recommendations</li>
           <li class="flex items-center"><span class="text-accent mr-3">✓</span> Quality herb sourcing</li>
@@ -467,7 +464,7 @@
     </div>
 
     <!-- Feature 4: Community for Healing -->
-    <div class="grid lg:grid-cols-2 gap-12 items-center mt-20">
+    <div class="grid lg:grid-cols-2 gap-12 items-start mt-20">
       <div class="order-2 lg:order-1">
         <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8 border-2 border-primary/20">
           <div class="bg-white rounded-xl p-6 shadow-lg">
@@ -499,14 +496,14 @@
         </div>
       </div>
       <div class="order-1 lg:order-2">
-        <div class="flex items-center mb-6">
+        <div class="flex items-start mb-6">
           <div class="text-6xl mr-4">🤝</div>
-          <h3 class="text-4xl font-bold text-gray-900">Community for Healing</h3>
+          <h3 class="text-4xl font-bold text-neutral-content">Community for Healing</h3>
         </div>
-        <p class="text-xl text-gray-700 mb-6">
+        <p class="text-xl text-neutral-content mb-6">
           Join a supportive community of people on their healing journey. Share experiences, get encouragement, and learn from others who are successfully healing chronic conditions using ancient wisdom.
         </p>
-        <ul class="space-y-3 text-lg text-gray-700">
+        <ul class="space-y-3 text-lg text-neutral-content">
           <li class="flex items-center"><span class="text-primary mr-3">✓</span> Supportive peer network</li>
           <li class="flex items-center"><span class="text-primary mr-3">✓</span> Expert practitioner access</li>
           <li class="flex items-center"><span class="text-primary mr-3">✓</span> Success story sharing</li>
@@ -518,18 +515,18 @@
 </section>
 
 <!-- Chat with Practitioner Section -->
-<section class="pt-12 pb-20 bg-gradient-to-b from-primary/12 via-secondary/8 to-primary w-full">
+<section class="pt-12 pb-20 bg-neutral w-full">
   <div class="max-w-7xl mx-auto px-5">
     <div class="grid lg:grid-cols-2 gap-12 items-start">
       <div class="order-1">
         <div class="flex items-center mb-6">
           <div class="text-6xl mr-4">💬</div>
-          <h3 class="text-4xl font-bold text-gray-900">Chat with a Practitioner</h3>
+          <h3 class="text-4xl font-bold text-neutral-content">Chat with a Practitioner</h3>
         </div>
-        <p class="text-xl text-gray-700 mb-6">
+        <p class="text-xl text-neutral-content mb-6">
           Get instant access to certified Ayurvedic practitioners who can answer your questions, provide personalized guidance, and help you navigate your healing journey with expert knowledge.
         </p>
-        <ul class="space-y-3 text-lg text-gray-700">
+        <ul class="space-y-3 text-lg text-neutral-content">
           <li class="flex items-center"><span class="text-primary mr-3">✓</span> Certified Ayurvedic practitioners</li>
           <li class="flex items-center"><span class="text-primary mr-3">✓</span> Instant chat support</li>
           <li class="flex items-center"><span class="text-primary mr-3">✓</span> Personalized recommendations</li>
@@ -579,9 +576,9 @@
 
 <!-- Healer Family Image - Full Width -->
 <div class="w-full">
-  <%= image_tag "home/healer-family.png", 
+  <%= image_tag "home/healer-family.webp", 
       alt: "Ancient healing family", 
-      class: "w-full h-auto object-cover" %>
+      class: "w-full h-auto object-cover", loading: "lazy" %>
 </div>
 
 <!-- Enhanced Footer for Homepage -->
