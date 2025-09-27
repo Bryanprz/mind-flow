@@ -2,22 +2,34 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["text", "carousel"]
+  static values = { 
+    chronicIllness: String,
+    anxiety: String,
+    asthma: String,
+    depression: String,
+    diabetes: String,
+    heartDisease: String,
+    highCholesterol: String,
+    hypertension: String,
+    obesity: String,
+    stress: String
+  }
   
   connect() {
     // Define carousel items with text, hex color, and image
     // Format: [text, hexColor, imagePath]
-    // Cache bust: v2
+    // Cache bust: v3
     this.carouselItems = [
-      ["chronic illness", "#4e4eba", "/home-carousel-optimized/chronic-illness.png"],
-      ["anxiety", "#4b6ca3", "/home-carousel-optimized/anxiety.png"],
-      ["asthma", "#abe5e2", "/home-carousel-optimized/asthma.png"],
-      ["depression", "#2b648b", "/home-carousel-optimized/depression.png"],
-      ["diabetes", "#db6f68", "/home-carousel-optimized/diabetes.png"],
-      ["heart disease", "#ef7f81", "/home-carousel-optimized/heart-disease.png"],
-      ["high cholesterol", "#ec2129", "/home-carousel-optimized/high-cholesterol.png"],
-      ["hypertension", "#fed4e2", "/home-carousel-optimized/hypertension.png"],
-      ["obesity", "#ef605d", "/home-carousel-optimized/obesity.png"],
-      ["stress", "#cb4e55", "/home-carousel-optimized/stress.png"]
+      ["chronic illness", "#4e4eba", this.chronicIllnessValue],
+      ["anxiety", "#4b6ca3", this.anxietyValue],
+      ["asthma", "#abe5e2", this.asthmaValue],
+      ["depression", "#2b648b", this.depressionValue],
+      ["diabetes", "#db6f68", this.diabetesValue],
+      ["heart disease", "#ef7f81", this.heartDiseaseValue],
+      ["high cholesterol", "#ec2129", this.highCholesterolValue],
+      ["hypertension", "#fed4e2", this.hypertensionValue],
+      ["obesity", "#ef605d", this.obesityValue],
+      ["stress", "#cb4e55", this.stressValue]
     ]
     
     // Extract arrays for backward compatibility
@@ -54,10 +66,6 @@ export default class extends Controller {
   showSlide(index) {
     this.currentIndex = index
     
-    // Update text with alternating colors
-    this.textTarget.textContent = this.textOptions[this.currentIndex]
-    this.updateTextColor()
-    
     // Fade out all images and fade in the active one
     const imageContainers = this.carouselTarget.querySelectorAll('div')
     imageContainers.forEach((container, i) => {
@@ -69,6 +77,10 @@ export default class extends Controller {
         container.classList.add('opacity-0')
       }
     })
+    
+    // Update text immediately to sync with image transition
+    this.textTarget.textContent = this.textOptions[this.currentIndex]
+    this.updateTextColor()
   }
   
   updateTextColor(index = null) {

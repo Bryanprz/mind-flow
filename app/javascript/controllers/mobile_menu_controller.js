@@ -14,11 +14,13 @@ export default class extends Controller {
   }
 
   toggle() {
-    this.menuTarget.classList.toggle("hidden")
+    if (this.hasMenuTarget) {
+      this.menuTarget.classList.toggle("hidden")
+    }
   }
 
   handleClickOutside(event) {
-    if (!this.element.contains(event.target) && !this.menuTarget.classList.contains("hidden")) {
+    if (this.hasMenuTarget && !this.element.contains(event.target) && !this.menuTarget.classList.contains("hidden")) {
       this.menuTarget.classList.add("hidden")
     }
   }
