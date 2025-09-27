@@ -1,10 +1,13 @@
+<% if social_post.present? %>
 <div class="card bg-base-100 border border-gray-300 rounded-lg overflow-hidden hover:shadow-md transition-shadow" 
      data-controller="social-post" 
      data-social-post-post-id-value="<%= social_post.id %>"
      data-social-post-url-value="<%= social_post_path(social_post) %>">
   <div class="card-body p-3">
     <div class="flex items-center mb-1 cursor-pointer" data-action="click->social-post#openPost">
-      <%= link_to user_path(social_post.user), class: "avatar placeholder mr-2 hover:opacity-80 transition-opacity" do %>
+      <%= link_to user_path(social_post.user), 
+                  class: "avatar placeholder mr-2 hover:opacity-80 transition-opacity",
+                  data: { action: "click->social-post#stopPropagation" } do %>
         <div class="rounded-full w-10 h-10 overflow-hidden">
           <% if social_post.user.avatar.attached? %>
             <%= image_tag social_post.user.avatar, class: "w-full h-full object-cover" %>
@@ -16,7 +19,12 @@
         </div>
       <% end %>
       <div class="flex-1 min-w-0">
-        <h2 class="font-medium text-sm truncate"><%= social_post.user.name.presence || social_post.user.email_address %></h2>
+        <h2 class="font-medium text-sm truncate">
+          <%= link_to social_post.user.name.presence || social_post.user.email_address, 
+                      user_path(social_post.user), 
+                      class: "hover:text-blue-600 hover:underline transition-colors",
+                      data: { action: "click->social-post#stopPropagation" } %>
+        </h2>
         <% ts = social_post.published_at || social_post.created_at %>
         <% if ts.present? %>
           <p class="text-xs text-gray-500"><%= time_ago_in_words(ts) %> ago</p>
@@ -123,7 +131,7 @@
           data: { 
             turbo: false
           } do |f| %>
-        <%= f.hidden_field :parent_post_id, value: social_post.id %>
+        <%= f.hidden_field :parent_post_id, value: social_post.id, id: "social_post_parent_post_id_#{social_post.id}" %>
         <div class="border border-gray-300 rounded-lg overflow-hidden">
           <%= f.rich_text_area :content, 
               placeholder: "Write a reply...", 
@@ -137,3 +145,4 @@
 
   </div>
 </div>
+<% end %>

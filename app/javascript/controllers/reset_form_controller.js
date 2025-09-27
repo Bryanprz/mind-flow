@@ -13,6 +13,13 @@ export default class extends Controller {
   submitOnEnter(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault()
+      
+      // Check if this is an auth-required form
+      if (this.element.dataset.controller.includes('auth-required')) {
+        // Let the auth-required controller handle this
+        return
+      }
+      
       this.element.requestSubmit()
     }
   }

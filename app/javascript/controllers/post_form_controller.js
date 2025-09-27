@@ -19,10 +19,6 @@ export default class extends Controller {
     }
   }
 
-  submit(event) {
-    // Prevent default form submission
-    event.preventDefault()
-    // Submit the form via Turbo
-    this.formTarget?.requestSubmit()
-  }
+  // Removed submit method to allow normal form submission
+  // The form should submit normally via Turbo Streams
 }

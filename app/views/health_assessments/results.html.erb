@@ -135,7 +135,7 @@ forced to the full height of the padded area.
         <strong>Sign Up to View Your Personalized Healing Plan</strong>
       </div>
 
-      <button class="btn btn-primary font-semibold text-white text-base w-1/2" data-action="click->modal#open">Sign Up</button>
+      <button class="btn btn-primary font-semibold text-white text-base w-1/2" onclick="document.getElementById('sign_up_modal').showModal()">Sign Up</button>
     <% end %>
   <%= render 'shared/sign_up_modal' %>
   </div>

@@ -1,21 +1,29 @@
-<%= form_with(model: SocialPost.new, url: social_posts_path, data: { controller: "reset-form image-preview" }, class: "w-full", multipart: true) do |form| %>
+<%= form_with(model: SocialPost.new, 
+              url: authenticated? ? social_posts_path : "#", 
+              data: { 
+                controller: authenticated? ? "image-preview auto-resize form-submit" : "image-preview auth-required"
+              }, 
+              class: "w-full", 
+              multipart: true) do |form| %>
   <div class="card bg-base-100">
     <div class="card-body p-4">
       <div class="flex items-start gap-3">
         <div class="flex-1 relative min-w-0 flex items-center gap-2 mb-2" data-image-preview-target="inputField">
           <%= form.rich_text_area :content,
-                           class: "textarea textarea-bordered flex-1 social-feed-input",
-                           placeholder: "What's happening?",
-                           required: true,
-                           data: { action: "keydown.enter->reset-form#submitOnEnter" } %>
+                           class: "textarea textarea-bordered flex-1 social-feed-input resize-none overflow-hidden",
+                           placeholder: authenticated? ? "What's happening?" : "Sign up to share your healing journey...",
+                           style: "min-height: 40px; max-height: 200px;",
+                           data: { 
+                             action: authenticated? ? "input->auto-resize#resize" : "keydown.enter->auth-required#handleEnter input->auto-resize#resize"
+                           } %>
           <div class="flex items-center gap-2">
-            <%= form.label :media, class: "cursor-pointer text-gray-400 hover:text-primary" do %>
+            <%= form.label :media, class: "cursor-pointer text-gray-400 hover:text-primary", data: { action: authenticated? ? "click->image-preview#handleFileClick" : "click->auth-required#handleSubmit" } do %>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
               </svg>
               <%= form.file_field :media, multiple: true, class: "hidden", data: { image_preview_target: "fileInput" } %>
             <% end %>
-            <%= button_tag type: 'submit', class: "text-primary hover:text-gray-400" do %>
+            <%= button_tag type: 'submit', class: "text-primary hover:text-gray-400", data: { action: authenticated? ? "click->form-submit#handleClick" : "click->auth-required#handleSubmit" } do %>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
               </svg>

@@ -1,33 +1,55 @@
 <% content_for :main_container_class, 'bg-base-200' %>
 
-<div class="container mx-auto px-4 max-w-lg">
-  <% content_for :title, "Users" %>
+<div class="container mx-auto px-4 py-8">
+  <div class="card bg-base-100 border border-gray-300">
+    <div class="card-body p-5">
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="card-title text-2xl">All Users</h1>
+        <%= link_to "New user", new_admin_user_path, class: "btn btn-primary" %>
+      </div>
 
-  <div class="flex justify-between items-center my-6">
-    <h1 class="text-3xl font-bold">Users</h1>
-    <%= link_to "New user", new_admin_user_path, class: "btn btn-primary" %>
-  </div>
+      <% if @users.any? %>
+        <div class="overflow-x-auto">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin_users">
+              <% @users.each do |user| %>
+                <tr id="<%= dom_id user %>">
+                  <td><%= user.id %></td>
+                  <td>
+                    <div class="font-medium"><%= user.name %></div>
+                    <% if user.handle.present? %>
+                      <div class="text-sm text-gray-500">@<%= user.handle %></div>
+                    <% end %>
+                  </td>
+                  <td><%= user.email_address %></td>
+                  <td><%= user.created_at.strftime('%b %d, %Y') %></td>
+                  <td class="text-right whitespace-nowrap">
+                    <div class="flex items-center justify-end gap-2">
+                      <%= link_to 'Show', [:admin, user], class: 'btn btn-ghost btn-sm' %>
+                      <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-secondary btn-sm' %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <p>No users yet.</p>
+      <% end %>
 
-  <div class="overflow-x-auto rounded-lg border border-gray-300">
-    <table class="table w-full">
-      <thead class="bg-gray-50">
-        <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-        </tr>
-      </thead>
-      <tbody id="admin_users" class="bg-white">
-        <% @users.each do |user| %>
-          <tr id="<%= dom_id user %>" class="hover:bg-accent hover:text-white">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900"><%= user.name %></div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <%= link_to "Show", [:admin, user], class: "btn btn-ghost btn-sm" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+      <div class="card-actions justify-end mt-4">
+        <%= link_to 'Back to Admin Dashboard', admin_root_path, class: 'btn btn-ghost' %>
+      </div>
+    </div>
   </div>
 </div>

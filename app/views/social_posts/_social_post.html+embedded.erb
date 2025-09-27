@@ -1,7 +1,10 @@
+<% if social_post.present? %>
 <div class="card bg-base-100 border-b border-gray-200 first:border-t-0 last:border-b-0 rounded-none [&>*]:rounded-none">
   <div class="<%= 'pb-2' if social_post.media.attached? %> card-body py-3">
     <div class="flex items-center mb-2">
-      <div class="avatar placeholder mr-3">
+      <%= link_to user_path(social_post.user), 
+                  class: "avatar placeholder mr-3 hover:opacity-80 transition-opacity",
+                  data: { action: "click->social-post#stopPropagation" } do %>
         <div class="rounded-full w-8 h-8 overflow-hidden">
           <% if social_post.user.avatar.attached? %>
             <%= image_tag social_post.user.avatar, class: "w-full h-full object-cover" %>
@@ -11,9 +14,14 @@
             </div>
           <% end %>
         </div>
-      </div>
+      <% end %>
       <div>
-        <h2 class="card-title text-sm"><%= social_post.user.name.presence || social_post.user.email_address %></h2>
+        <h2 class="card-title text-sm">
+          <%= link_to social_post.user.name.presence || social_post.user.email_address, 
+                      user_path(social_post.user), 
+                      class: "hover:text-blue-600 hover:underline transition-colors",
+                      data: { action: "click->social-post#stopPropagation" } %>
+        </h2>
         <% ts = social_post.published_at || social_post.created_at %>
         <% if ts.present? %>
           <p class="text-xs text-gray-500"><%= ts.strftime('%b %-d, %Y') %></p>
@@ -57,3 +65,4 @@
     </div>
   </div>
 </div>
+<% end %>

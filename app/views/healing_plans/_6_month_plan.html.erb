@@ -40,7 +40,7 @@
 
   <%# Render all sections for this plan %>
   <% if @healing_plan&.sections&.any? %>
-    <% @healing_plan.sections.order(:ordering).each do |section| %>
+    <% @healing_plan.sections.order(:position).each do |section| %>
       <div class="collapse collapse-arrow bg-base-100 border border-gray-300">
         <input type="checkbox" id="section-<%= section.id %>-checkbox" checked="checked" />
         <div class="collapse-title text-lg font-medium">

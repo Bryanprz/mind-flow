@@ -15,7 +15,9 @@
   <div class="card bg-base-100 border border-gray-300 rounded-lg overflow-hidden mb-6" data-controller="social-post" data-social-post-post-id-value="<%= @social_post.id %>" data-social-post-original-post-id-value="<%= @social_post.id %>">
     <div class="card-body p-4">
       <div class="flex items-start mb-3">
-        <%= link_to user_path(@social_post.user), class: "avatar placeholder mr-3 hover:opacity-80 transition-opacity" do %>
+        <%= link_to user_path(@social_post.user), 
+                    class: "avatar placeholder mr-3 hover:opacity-80 transition-opacity",
+                    data: { action: "click->social-post#stopPropagation" } do %>
           <div class="rounded-full w-12 h-12 overflow-hidden">
             <% if @social_post.user.avatar.attached? %>
               <%= image_tag @social_post.user.avatar, class: "w-full h-full object-cover" %>
@@ -27,8 +29,15 @@
           </div>
         <% end %>
         <div class="flex-1 min-w-0">
-          <h2 class="font-bold text-base truncate"><%= @social_post.user.name %></h2>
-          <%= link_to user_path(@social_post.user), class: "text-gray-500 text-sm truncate hover:text-blue-500 transition-colors -mt-1" do %>
+          <h2 class="font-bold text-base truncate">
+            <%= link_to @social_post.user.name, 
+                        user_path(@social_post.user), 
+                        class: "hover:text-blue-600 hover:underline transition-colors",
+                        data: { action: "click->social-post#stopPropagation" } %>
+          </h2>
+          <%= link_to user_path(@social_post.user), 
+                      class: "text-gray-500 text-sm truncate hover:text-blue-500 transition-colors -mt-1",
+                      data: { action: "click->social-post#stopPropagation" } do %>
             @<%= @social_post.user.handle.presence || @social_post.user.name.downcase.gsub(' ', '_') %>
           <% end %>
         </div>
@@ -135,11 +144,10 @@
             url: social_post_replies_path(@social_post),
             class: "space-y-3", 
             data: { 
-              turbo: false,
               controller: "image-preview"
             },
             multipart: true do |f| %>
-          <%= f.hidden_field :parent_post_id, value: @social_post.id %>
+          <%= f.hidden_field :parent_post_id, value: @social_post.id, id: "social_post_parent_post_id_#{@social_post.id}" %>
           <div class="border border-gray-300 rounded-lg overflow-hidden">
             <%= f.rich_text_area :content, 
                 placeholder: "Write a reply...", 

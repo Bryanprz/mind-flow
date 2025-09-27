@@ -174,10 +174,10 @@ class UsersController < ApplicationController
   private
 
   def set_user
-    if Current.user # If a user is logged in via Current.user
-      @user = Current.user
-    elsif params[:id].present? # Otherwise, try to find by ID from params
+    if params[:id].present? # If an ID is provided, find that specific user
       @user = User.find(params[:id])
+    elsif Current.user # Otherwise, if a user is logged in, show their profile
+      @user = Current.user
     end
   end
 

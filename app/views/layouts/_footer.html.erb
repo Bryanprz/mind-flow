@@ -1,5 +1,7 @@
 <footer class="flex justify-center footer sm:footer-horizontal bg-neutral text-neutral-content items-center p-4">
   <aside class="grid-flow-col items-center">
-    <p></p>
+    <% unless current_page?(root_path) %>
+      <p>🌿 Nature is the Healer 🌱</p>
+    <% end %>
   </aside>
 </footer>

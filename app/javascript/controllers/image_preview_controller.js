@@ -11,6 +11,13 @@ export default class extends Controller {
     this.setupDragAndDrop()
   }
 
+  handleFileClick(event) {
+    // Trigger the hidden file input when the icon is clicked
+    if (this.hasFileInputTarget) {
+      this.fileInputTarget.click()
+    }
+  }
+
   disconnect() {
     if (this.hasFileInputTarget && this.boundHandleFileSelect) {
       this.fileInputTarget.removeEventListener('change', this.boundHandleFileSelect)

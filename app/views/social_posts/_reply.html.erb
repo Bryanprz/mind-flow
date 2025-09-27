@@ -8,7 +8,9 @@
   <!-- Make reply clickable to show page -->
   <div class="flex-1 cursor-pointer" data-action="click->social-post#openPost">
     <div class="flex items-start gap-2">
-      <%= link_to user_path(social_post.user), class: "avatar placeholder hover:opacity-80 transition-opacity" do %>
+      <%= link_to user_path(social_post.user), 
+                  class: "avatar placeholder hover:opacity-80 transition-opacity",
+                  data: { action: "click->social-post#stopPropagation" } do %>
         <div class="rounded-full w-6 h-6 overflow-hidden">
           <% if social_post.user.avatar.attached? %>
             <%= image_tag social_post.user.avatar, class: "w-full h-full object-cover" %>
@@ -21,8 +23,13 @@
       <% end %>
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2">
-          <span class="font-bold text-sm"><%= social_post.user.name %></span>
-          <%= link_to user_path(social_post.user), class: "text-gray-500 text-xs hover:text-blue-500 transition-colors" do %>
+          <%= link_to social_post.user.name, 
+                      user_path(social_post.user), 
+                      class: "font-bold text-sm hover:text-blue-600 hover:underline transition-colors",
+                      data: { action: "click->social-post#stopPropagation" } %>
+          <%= link_to user_path(social_post.user), 
+                      class: "text-gray-500 text-xs hover:text-blue-500 transition-colors",
+                      data: { action: "click->social-post#stopPropagation" } do %>
             @<%= social_post.user.handle.presence || social_post.user.name.downcase.gsub(' ', '_') %>
           <% end %>
           <span class="text-xs text-gray-500"><%= time_ago_in_words(social_post.created_at) %> ago</span>
@@ -133,12 +140,10 @@
       class: "space-y-3", 
       data: { 
         controller: "image-preview",
-        image_preview_form_id_value: "reply_#{social_post.id}",
-        turbo: false,
-        action: "submit->social-post#createReply"
+        image_preview_form_id_value: "reply_#{social_post.id}"
       },
       multipart: true do |f| %>
-    <%= f.hidden_field :parent_post_id, value: social_post.id %>
+    <%= f.hidden_field :parent_post_id, value: social_post.id, id: "social_post_parent_post_id_#{social_post.id}" %>
     
     <div class="border border-gray-300 rounded-lg overflow-hidden">
       <%= f.rich_text_area :content, 

@@ -1,5 +1,5 @@
 class SocialPostsController < ApplicationController
-  before_action :require_authentication
+  allow_unauthenticated_access only: [:index]
 
   def index
     @social_posts = SocialPost.top_level_posts
@@ -15,28 +15,6 @@ class SocialPostsController < ApplicationController
                             .find(params[:id])
     # Get all replies in the conversation thread (direct replies and nested replies)
     @replies = get_all_replies_in_thread(@social_post)
-  end
-
-  private
-
-  def get_all_replies_in_thread(main_post)
-    # Get all social posts that are part of this conversation thread
-    # This includes direct replies and all nested replies
-    all_replies = []
-    
-    # Start with direct replies
-    direct_replies = main_post.replies.includes(:user, :rich_text_content, media_attachments: :blob).order(:created_at)
-    
-    # Recursively get all nested replies
-    direct_replies.each do |reply|
-      all_replies << reply
-      # Get nested replies for this reply
-      nested_replies = get_all_replies_in_thread(reply)
-      all_replies.concat(nested_replies)
-    end
-    
-    Rails.logger.info "Found #{all_replies.count} total replies in thread"
-    all_replies
   end
 
   def create
@@ -85,7 +63,20 @@ class SocialPostsController < ApplicationController
       format.turbo_stream do
         if @social_post.save
           Rails.logger.info "Social post saved successfully: #{@social_post.id}"
-          if request.referer&.include?('dashboard')
+          if @social_post.reply?
+            # For replies, append to the replies list
+            render turbo_stream: [
+              turbo_stream.append("replies-list-for-post-#{@social_post.parent_post_id}", 
+                partial: "social_posts/reply",
+                locals: { social_post: @social_post, main_post_id: @social_post.original_post.id }
+              ),
+              turbo_stream.update("replies-count-for-post-#{@social_post.parent_post_id}", 
+                @social_post.parent_post.replies_count),
+              turbo_stream.update("flash",
+                partial: "layouts/flash"
+              )
+            ]
+          elsif request.referer&.include?('dashboard')
             render turbo_stream: [
               turbo_stream.prepend("social_feed", 
                 partial: "social_posts/social_post",
@@ -115,7 +106,13 @@ class SocialPostsController < ApplicationController
             ]
           end
         else
-          if request.referer&.include?('dashboard')
+          if @social_post.reply?
+            # For failed replies, show errors in the form
+            render turbo_stream: turbo_stream.update("reply-form-for-post-#{@social_post.parent_post_id}",
+              partial: "social_posts/reply_form",
+              locals: { social_post: @social_post.parent_post }
+            )
+          elsif request.referer&.include?('dashboard')
             render turbo_stream: turbo_stream.update("new_post_form",
               partial: "dashboards/social_feed_form",
               locals: { social_post: @social_post }
@@ -132,15 +129,19 @@ class SocialPostsController < ApplicationController
       format.html do
         if @social_post.save
           if @social_post.reply?
+            # For replies, redirect to the original post's show page
             redirect_to social_post_path(@social_post.original_post), notice: "Reply posted successfully!"
           else
-            redirect_to community_path, notice: "Post created successfully!"
+            # For new posts, redirect to community page
+            redirect_to social_posts_path, notice: "Post created successfully!"
           end
         else
           if @social_post.reply?
+            # For failed replies, redirect back to the parent post with errors
             redirect_to social_post_path(@social_post.parent_post), alert: @social_post.errors.full_messages.to_sentence
           else
-            redirect_to community_path, alert: @social_post.errors.full_messages.to_sentence
+            # For failed new posts, redirect to community page with errors
+            redirect_to social_posts_path, alert: @social_post.errors.full_messages.to_sentence
           end
         end
       end
@@ -148,6 +149,26 @@ class SocialPostsController < ApplicationController
   end
 
   private
+
+  def get_all_replies_in_thread(main_post)
+    # Get all social posts that are part of this conversation thread
+    # This includes direct replies and all nested replies
+    all_replies = []
+    
+    # Start with direct replies
+    direct_replies = main_post.replies.includes(:user, :rich_text_content, media_attachments: :blob).order(:created_at)
+    
+    # Recursively get all nested replies
+    direct_replies.each do |reply|
+      all_replies << reply
+      # Get nested replies for this reply
+      nested_replies = get_all_replies_in_thread(reply)
+      all_replies.concat(nested_replies)
+    end
+    
+    Rails.logger.info "Found #{all_replies.count} total replies in thread"
+    all_replies
+  end
 
   def social_post_params
     params.require(:social_post).permit(:content, :parent_post_id, media: [])
