@@ -1,100 +1,99 @@
-<div class="flex items-start gap-2 py-2 border-b border-gray-100 last:border-b-0" 
+<div class="py-2 border-b border-gray-100 last:border-b-0" 
      data-controller="social-post" 
      data-social-post-post-id-value="<%= social_post.id %>"
      data-social-post-url-value="<%= social_post_path(social_post) %>"
      data-social-post-original-post-id-value="<%= main_post_id %>"
      data-action="submit->social-post#createReply">
   
-  <!-- Make reply clickable to show page -->
-  <div class="flex-1 cursor-pointer" data-action="click->social-post#openPost">
-    <div class="flex items-start gap-2">
-      <%= link_to user_path(social_post.user), 
-                  class: "avatar placeholder hover:opacity-80 transition-opacity",
-                  data: { action: "click->social-post#stopPropagation" } do %>
-        <div class="rounded-full w-6 h-6 overflow-hidden">
-          <% if social_post.user.avatar.attached? %>
-            <%= image_tag social_post.user.avatar, class: "w-full h-full object-cover" %>
+  <!-- Reply Content -->
+  <div class="flex items-start gap-2 cursor-pointer" data-action="click->social-post#openPost">
+    <%= link_to user_path(social_post.user), 
+                class: "avatar placeholder hover:opacity-80 transition-opacity flex-shrink-0",
+                data: { action: "click->social-post#stopPropagation" } do %>
+      <div class="rounded-full w-6 h-6 overflow-hidden">
+        <% if social_post.user.avatar.attached? %>
+          <%= image_tag social_post.user.avatar, class: "w-full h-full object-cover" %>
+        <% else %>
+          <div class="w-full h-full bg-neutral text-neutral-content flex items-center justify-center text-[10px]">
+            <%= social_post.user.name.first.upcase %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <%= link_to social_post.user.name, 
+                    user_path(social_post.user), 
+                    class: "font-bold text-sm hover:text-blue-600 hover:underline transition-colors",
+                    data: { action: "click->social-post#stopPropagation" } %>
+        <%= link_to user_path(social_post.user), 
+                    class: "text-gray-500 text-xs hover:text-blue-500 transition-colors",
+                    data: { action: "click->social-post#stopPropagation" } do %>
+          @<%= social_post.user.handle.presence || social_post.user.name.downcase.gsub(' ', '_') %>
+        <% end %>
+        <span class="text-xs text-gray-500"><%= time_ago_in_words(social_post.created_at) %> ago</span>
+      </div>
+      
+      <!-- Reply content -->
+      <div class="text-sm mt-1 prose prose-sm max-w-none">
+        <%= social_post.content %>
+      </div>
+
+      <% if social_post.media.attached? %>
+        <div class="mt-2">
+          <% if social_post.media.count == 1 %>
+            <!-- Single image - show contained like community page -->
+            <% media_item = social_post.media.first %>
+            <% if media_item.blob.content_type.start_with?('image/') %>
+              <div class="max-h-96 overflow-hidden rounded-lg">
+                <%= image_tag media_item, class: "w-full h-auto object-contain" %>
+              </div>
+            <% elsif media_item.blob.content_type.start_with?('video/') %>
+              <div class="aspect-video">
+                <video controls class="w-full h-full rounded-lg">
+                  <source src="<%= url_for(media_item) %>" type="<%= media_item.content_type %>">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            <% else %>
+              <div class="p-4 border rounded-lg">
+                <%= link_to media_item.filename, url_for(media_item), class: "text-sm text-blue-600 hover:underline" %>
+              </div>
+            <% end %>
           <% else %>
-            <div class="w-full h-full bg-neutral text-neutral-content flex items-center justify-center text-[10px]">
-              <%= social_post.user.name.first.upcase %>
+            <!-- Multiple media items - use grid layout -->
+            <div class="grid grid-cols-2 gap-2">
+              <% social_post.media.each do |media_item| %>
+                <% if media_item.blob.content_type.start_with?('image/') %>
+                  <div class="aspect-square overflow-hidden rounded-lg">
+                    <%= image_tag media_item, class: "w-full h-full object-cover" %>
+                  </div>
+                <% elsif media_item.blob.content_type.start_with?('video/') %>
+                  <div class="aspect-video">
+                    <video controls class="w-full h-full rounded-lg">
+                      <source src="<%= url_for(media_item) %>" type="<%= media_item.content_type %>">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                <% else %>
+                  <div class="p-2 border rounded-lg">
+                    <%= link_to media_item.filename, url_for(media_item), class: "text-sm text-blue-600 hover:underline" %>
+                  </div>
+                <% end %>
+              <% end %>
             </div>
           <% end %>
         </div>
       <% end %>
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-2">
-          <%= link_to social_post.user.name, 
-                      user_path(social_post.user), 
-                      class: "font-bold text-sm hover:text-blue-600 hover:underline transition-colors",
-                      data: { action: "click->social-post#stopPropagation" } %>
-          <%= link_to user_path(social_post.user), 
-                      class: "text-gray-500 text-xs hover:text-blue-500 transition-colors",
-                      data: { action: "click->social-post#stopPropagation" } do %>
-            @<%= social_post.user.handle.presence || social_post.user.name.downcase.gsub(' ', '_') %>
-          <% end %>
-          <span class="text-xs text-gray-500"><%= time_ago_in_words(social_post.created_at) %> ago</span>
-        </div>
-        
-        <!-- Reply content -->
-        <div class="text-sm mt-1 prose prose-sm max-w-none">
-          <%= social_post.content %>
-        </div>
-
-        <% if social_post.media.attached? %>
-          <div class="mt-2">
-            <% if social_post.media.count == 1 %>
-              <!-- Single image - show contained like community page -->
-              <% media_item = social_post.media.first %>
-              <% if media_item.blob.content_type.start_with?('image/') %>
-                <div class="max-h-96 overflow-hidden rounded-lg">
-                  <%= image_tag media_item, class: "w-full h-auto object-contain" %>
-                </div>
-              <% elsif media_item.blob.content_type.start_with?('video/') %>
-                <div class="aspect-video">
-                  <video controls class="w-full h-full rounded-lg">
-                    <source src="<%= url_for(media_item) %>" type="<%= media_item.content_type %>">
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              <% else %>
-                <div class="p-4 border rounded-lg">
-                  <%= link_to media_item.filename, url_for(media_item), class: "text-sm text-blue-600 hover:underline" %>
-                </div>
-              <% end %>
-            <% else %>
-              <!-- Multiple media items - use grid layout -->
-              <div class="grid grid-cols-2 gap-2">
-                <% social_post.media.each do |media_item| %>
-                  <% if media_item.blob.content_type.start_with?('image/') %>
-                    <div class="aspect-square overflow-hidden rounded-lg">
-                      <%= image_tag media_item, class: "w-full h-full object-cover" %>
-                    </div>
-                  <% elsif media_item.blob.content_type.start_with?('video/') %>
-                    <div class="aspect-video">
-                      <video controls class="w-full h-full rounded-lg">
-                        <source src="<%= url_for(media_item) %>" type="<%= media_item.content_type %>">
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                  <% else %>
-                    <div class="p-2 border rounded-lg">
-                      <%= link_to media_item.filename, url_for(media_item), class: "text-sm text-blue-600 hover:underline" %>
-                    </div>
-                  <% end %>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
     </div>
   </div>
+  <!-- End Reply Content -->
 
   <!-- Interaction Bar -->
   <div class="flex items-center justify-around mt-3 pt-2 border-t border-gray-100">
     <!-- Reply Button -->
     <button 
-      class="flex items-center gap-1 text-gray-500 hover:text-blue-500 transition-colors"
+      class="flex items-center gap-1 hover:text-blue-500 transition-colors"
       data-action="click->social-post#toggleReplyForm"
       data-social-post-target="replyButton">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,9 +125,8 @@
     </button>
   </div>
 
-
   <!-- Replies List (for nested replies) -->
-  <div class="mt-2" data-social-post-target="repliesList" id="replies-list-for-post-<%= social_post.id %>">
+  <div class="mt-4 ml-6 space-y-3" data-social-post-target="repliesList" id="replies-list-for-post-<%= social_post.id %>">
     <!-- Replies will be inserted here -->
   </div>
 </div>
@@ -138,9 +136,13 @@
   <%= form_with model: [social_post, SocialPost.new], 
       url: social_post_replies_path(social_post),
       class: "space-y-3", 
+      id: "reply-form-#{social_post.id}",
       data: { 
-        controller: "image-preview",
-        image_preview_form_id_value: "reply_#{social_post.id}"
+        controller: "image-preview social-post",
+        action: "submit->social-post#createReply",
+        image_preview_form_id_value: "reply_#{social_post.id}",
+        social_post_post_id_value: social_post.id,
+        social_post_original_post_id_value: main_post_id
       },
       multipart: true do |f| %>
     <%= f.hidden_field :parent_post_id, value: social_post.id, id: "social_post_parent_post_id_#{social_post.id}" %>
@@ -155,7 +157,7 @@
     <div class="form-control">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <%= f.label :media, class: "cursor-pointer text-gray-500 hover:text-primary transition-colors flex items-center gap-2" do %>
+          <%= f.label :media, class: "cursor-pointer text-gray-500 hover:text-primary transition-colors flex items-center gap-2", data: { action: "click->image-preview#handleFileClick" } do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
             </svg>

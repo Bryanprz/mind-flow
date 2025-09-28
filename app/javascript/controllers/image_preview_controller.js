@@ -14,17 +14,13 @@ export default class extends Controller {
   }
 
   handleFileClick(event) {
-    console.log('handleFileClick triggered', event.target)
-    
     // Prevent recursive calls from file input clicks
     if (event.target.type === 'file' || event.target === this.fileInputTarget) {
-      console.log('Ignoring file input click to prevent recursion')
       return
     }
     
     // Prevent double processing
     if (this.processingFiles) {
-      console.log('File processing already in progress, ignoring click')
       return
     }
     
@@ -34,7 +30,6 @@ export default class extends Controller {
     
     // Trigger the hidden file input when the icon is clicked
     if (this.hasFileInputTarget) {
-      console.log('Clicking file input')
       this.fileInputTarget.click()
     }
   }
@@ -140,11 +135,8 @@ export default class extends Controller {
   }
 
   handleFileSelect(event) {
-    console.log('handleFileSelect triggered', event.target.files?.length)
-    
     // Prevent double processing
     if (this.processingFiles) {
-      console.log('File processing already in progress, ignoring')
       return
     }
     
@@ -152,10 +144,7 @@ export default class extends Controller {
     
     const files = event.target.files
     if (files && files.length > 0) {
-      console.log('Files selected:', files.length)
       this.showImagePreviews(files)
-    } else {
-      console.log('No files selected or files cleared')
     }
     
     // Reset processing flag after a short delay
@@ -165,30 +154,27 @@ export default class extends Controller {
   }
 
   showImagePreviews(files) {
-    console.log('showImagePreviews called with', files.length, 'files')
-    
-    // Clear existing previews
+    // Clear existing previews in this specific form only
     if (this.hasPreviewGridTarget) {
       this.previewGridTarget.innerHTML = ''
     }
 
-    // Show preview container
+    // Show preview container for this specific form only
     if (this.hasPreviewContainerTarget) {
       this.previewContainerTarget.classList.remove('hidden')
-      console.log('Preview container shown')
     }
 
-    // Show each selected image
+    // Show each selected image in this specific form
     Array.from(files).forEach((file, index) => {
       if (file.type.startsWith('image/')) {
         this.createImagePreview(file, index)
       }
     })
 
-    // Expand the input field
+    // Expand the input field for this specific form
     this.expandInputField()
     
-    // Expand the card to accommodate images
+    // Expand the card to accommodate images for this specific form
     this.expandCard()
   }
 

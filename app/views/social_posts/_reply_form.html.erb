@@ -2,7 +2,10 @@
     url: social_post_replies_path(social_post),
     class: "space-y-3", 
     data: { 
-      controller: "image-preview"
+      controller: "image-preview social-post",
+      action: "submit->social-post#createReply",
+      social_post_post_id_value: social_post.id,
+      social_post_original_post_id_value: social_post.id
     },
     multipart: true do |f| %>
   <%= f.hidden_field :parent_post_id, value: social_post.id, id: "social_post_parent_post_id_#{social_post.id}" %>
@@ -16,7 +19,7 @@
   <div class="form-control">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <%= f.label :media, class: "cursor-pointer text-gray-500 hover:text-primary transition-colors flex items-center gap-2" do %>
+        <%= f.label :media, class: "cursor-pointer text-gray-500 hover:text-primary transition-colors flex items-center gap-2", data: { action: "click->image-preview#handleFileClick" } do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
           </svg>

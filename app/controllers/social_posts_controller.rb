@@ -23,10 +23,13 @@ class SocialPostsController < ApplicationController
     Rails.logger.info "Request format: #{request.format}"
     Rails.logger.info "Request headers Accept: #{request.headers['Accept']}"
     Rails.logger.info "Request content type: #{request.content_type}"
+    Rails.logger.info "Social post params: #{social_post_params.inspect}"
+    Rails.logger.info "Content param: #{params[:social_post][:content]}" if params[:social_post]
     
     begin
       @social_post = SocialPost.new(social_post_params)
       Rails.logger.info "Social post created: #{@social_post.inspect}"
+      Rails.logger.info "Social post content body: #{@social_post.content.body}" if @social_post.content
       @social_post.user = Current.user
       @social_post.published_at = Time.current
       Rails.logger.info "Social post after setting user and time: #{@social_post.inspect}"
@@ -40,6 +43,7 @@ class SocialPostsController < ApplicationController
     Rails.logger.info "Request format: #{request.format}"
     Rails.logger.info "Is reply?: #{@social_post.reply?}"
     Rails.logger.info "Content: #{@social_post.content}"
+    Rails.logger.info "Content body: #{@social_post.content.body}" if @social_post.content
     Rails.logger.info "Parent post ID: #{@social_post.parent_post_id}"
 
     respond_to do |format|
@@ -66,6 +70,8 @@ class SocialPostsController < ApplicationController
           if @social_post.reply?
             # For replies, append to the replies list and update the replies section
             render turbo_stream: [
+              # Remove the "No replies yet" message first
+              turbo_stream.remove("no-replies-message-#{@social_post.parent_post_id}"),
               turbo_stream.append("replies-list-for-post-#{@social_post.parent_post_id}", 
                 partial: "social_posts/reply",
                 locals: { social_post: @social_post, main_post_id: @social_post.original_post.id }

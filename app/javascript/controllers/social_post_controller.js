@@ -65,16 +65,20 @@ export default class extends Controller {
     console.log("createReply triggered");
     event.preventDefault();
     const form = event.target;
-    const formData = new FormData(form);
     const url = form.action;
     
-    // Get the parent post ID from the form data
-    const parentPostId = formData.get('social_post[parent_post_id]');
+    // Get the parent post ID from the form data first
+    const parentPostIdInput = form.querySelector('input[name="social_post[parent_post_id]"]');
+    const parentPostId = parentPostIdInput ? parentPostIdInput.value : null;
 
+    // Ensure Trix editor content is properly synchronized before creating FormData
     const trixEditor = form.querySelector('trix-editor');
     if (trixEditor && trixEditor.editor) {
       const hiddenInput = form.querySelector('input[type="hidden"][name*="[content]"]');
       if (hiddenInput) {
+        // Force Trix to sync its content to the hidden input
+        trixEditor.dispatchEvent(new Event('change', { bubbles: true }));
+        
         const content = trixEditor.editor.element.innerHTML;
         const textContent = trixEditor.editor.getDocument().toString().trim();
         console.log('Trix content:', content);
@@ -89,20 +93,40 @@ export default class extends Controller {
         }
         
         console.log('Hidden input value after:', hiddenInput.value);
-        
-        // Also set it in formData
-        formData.set(hiddenInput.name, hiddenInput.value);
       }
     }
 
-    const statusMessages = document.getElementById('reply-status-messages');
-    if (statusMessages) statusMessages.innerHTML = '';
+    // Small delay to ensure Trix content is fully processed
+    setTimeout(() => {
+      // Create FormData after ensuring Trix content is synced
+      const formData = new FormData(form);
 
-    // Debug: Log what we're sending
-    console.log('Form data entries:');
-    for (let [key, value] of formData.entries()) {
-      console.log(key, ':', value);
-    }
+      const statusMessages = document.getElementById('reply-status-messages');
+      if (statusMessages) statusMessages.innerHTML = '';
+
+      // Debug: Log what we're sending
+      console.log('Form data entries:');
+      for (let [key, value] of formData.entries()) {
+        console.log(key, ':', value);
+      }
+      
+      // Additional debugging for content field
+      const contentValue = formData.get('social_post[content]');
+      console.log('Content field value:', contentValue);
+      console.log('Content field length:', contentValue ? contentValue.length : 0);
+      
+      // Fallback: If content is empty but Trix editor has content, force it
+      if ((!contentValue || contentValue.trim() === '') && trixEditor && trixEditor.editor) {
+        const trixContent = trixEditor.editor.element.innerHTML;
+        const trixText = trixEditor.editor.getDocument().toString().trim();
+        console.log('Fallback: Trix content detected:', trixContent);
+        console.log('Fallback: Trix text detected:', trixText);
+        
+        if (trixText !== '') {
+          formData.set('social_post[content]', trixContent);
+          console.log('Fallback: Content set to:', trixContent);
+        }
+      }
 
     fetch(url, {
       method: 'POST',
@@ -123,11 +147,30 @@ export default class extends Controller {
         
         // Try to find the replies list for the parent post
         const repliesList = document.querySelector(`#replies-list-for-post-${parentPostId}`);
+        
         if (repliesList) {
-          // Hide the "No replies yet" message if it exists
-          const noRepliesMessage = repliesList.querySelector('.text-center.py-8.text-gray-500');
+          // Remove the "No replies yet" message using the specific ID
+          const noRepliesMessage = document.getElementById(`no-replies-message-${parentPostId}`);
+          
           if (noRepliesMessage) {
             noRepliesMessage.remove();
+          }
+          
+          // More aggressive fallback: Search the entire page for any "No replies yet" message
+          const allNoRepliesMessages = document.querySelectorAll('*');
+          allNoRepliesMessages.forEach(element => {
+            if (element.textContent && element.textContent.includes('No replies yet')) {
+              element.remove();
+            }
+          });
+          
+          // Also check if the replies list itself contains the message
+          if (repliesList.textContent && repliesList.textContent.includes('No replies yet')) {
+            Array.from(repliesList.children).forEach(child => {
+              if (child.textContent && child.textContent.includes('No replies yet')) {
+                child.remove();
+              }
+            });
           }
           
           repliesList.insertAdjacentHTML('beforeend', data.reply);
@@ -150,6 +193,22 @@ export default class extends Controller {
         if (repliesCount) {
           repliesCount.textContent = data.replies_count;
         }
+        
+        // Additional cleanup: Use setTimeout to ensure DOM is fully updated
+        setTimeout(() => {
+          const noRepliesMessage = document.getElementById(`no-replies-message-${parentPostId}`);
+          if (noRepliesMessage) {
+            noRepliesMessage.remove();
+          }
+          
+          // Final sweep for any remaining "No replies yet" messages
+          const remainingMessages = document.querySelectorAll('*');
+          remainingMessages.forEach(element => {
+            if (element.textContent && element.textContent.includes('No replies yet')) {
+              element.remove();
+            }
+          });
+        }, 100);
 
         // Reset form
         form.reset();
@@ -176,6 +235,7 @@ export default class extends Controller {
       }
     })
     .catch(error => console.error('Error:', error));
+    }, 100); // End of setTimeout
   }
 
 
