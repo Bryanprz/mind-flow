@@ -1,34 +1,62 @@
-<div class="flex gap-3 p-3 hover:bg-gray-50 rounded-lg">
-  <div class="avatar">
-    <div class="w-8 h-8 rounded-full bg-primary text-primary-content flex items-center justify-center text-sm font-semibold">
-      <%= message.user.name[0].upcase %>
-    </div>
-  </div>
-  
-  <div class="flex-1">
-    <div class="flex items-center gap-2 mb-1">
-      <span class="font-semibold text-sm"><%= message.user.name %></span>
-      <span class="text-xs text-gray-500">
-        <%= message.created_at.strftime("%l:%M %p") %>
-      </span>
+<% 
+  # Use message_user if provided (for broadcasts), otherwise use message.user
+  message_user = local_assigns[:message_user] || message.user
+  is_current_user = message_user == Current.user 
+%>
+<!-- Debug: Current user: <%= Current.user&.id %>, Message user: <%= message_user.id %>, Is current: <%= is_current_user %> -->
+<div class="flex mb-4 <%= is_current_user ? 'justify-end' : 'justify-start' %>" 
+     data-controller="message-position"
+     data-message-user-id="<%= message_user.id %>"
+     data-current-user-id="<%= Current.user&.id %>"
+     data-action="turbo:load->message-position#positionMessage turbo:stream-render->message-position#positionMessage">
+  <div class="flex items-end gap-2 max-w-xs lg:max-w-md">
+    <!-- Avatar (only for other users) -->
+    <div class="avatar" data-message-position-target="otherAvatar">
+      <div class="w-8 h-8 rounded-full bg-primary text-primary-content flex items-center justify-center text-sm font-semibold">
+        <%= message_user.name[0].upcase %>
+      </div>
     </div>
     
-    <div class="prose prose-sm max-w-none">
-      <%= message.content %>
-    </div>
-    
-    <% if message.attachments.any? %>
-      <div class="mt-2 space-y-2">
-        <% message.attachments.each do |attachment| %>
-          <% if attachment.image? %>
-            <%= image_tag attachment, class: "max-w-xs rounded" %>
-          <% else %>
-            <%= link_to attachment.filename, 
-                rails_blob_path(attachment), 
-                class: "text-blue-600 hover:underline" %>
-          <% end %>
+    <!-- Message Bubble -->
+    <div class="relative">
+      <div class="bg-gray-200 text-gray-900 rounded-2xl px-4 py-2 shadow-sm" data-message-position-target="bubble">
+        <div class="prose prose-sm max-w-none">
+          <%= message.content %>
+        </div>
+        
+        <!-- Attachments -->
+        <% if message.attachments.any? %>
+          <div class="mt-2 space-y-2">
+            <% message.attachments.each do |attachment| %>
+              <% if attachment.image? %>
+                <%= image_tag attachment, class: "max-w-xs rounded" %>
+              <% else %>
+                <%= link_to attachment.filename, 
+                    rails_blob_path(attachment), 
+                    class: "text-blue-600 hover:underline" %>
+              <% end %>
+            <% end %>
+          </div>
         <% end %>
       </div>
-    <% end %>
+      
+      <!-- Message Tail -->
+      <div class="absolute left-0 bottom-0 w-0 h-0 border-r-8 border-r-gray-200 border-t-8 border-t-transparent border-b-8 border-b-transparent" data-message-position-target="tail">
+      </div>
+    </div>
+    
+    <!-- Avatar (only for current user) -->
+    <div class="avatar" data-message-position-target="currentAvatar" style="display: none;">
+      <div class="w-8 h-8 rounded-full bg-primary text-primary-content flex items-center justify-center text-sm font-semibold">
+        <%= message_user.name[0].upcase %>
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- Timestamp -->
+<div class="flex mb-2" data-message-position-target="timestamp">
+  <span class="text-xs text-gray-500 px-2">
+    <%= message.created_at.strftime("%l:%M %p") %>
+  </span>
 </div>

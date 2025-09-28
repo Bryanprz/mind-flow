@@ -13,11 +13,12 @@ class Message < ApplicationRecord
   
   def broadcast_message
     # Use broadcast_append_later_to for async, non-blocking broadcasting
+    # Pass the message user so each client can determine their own positioning
     broadcast_append_later_to(
       "room_#{room.id}",
       target: "messages",
       partial: "messages/message",
-      locals: { message: self }
+      locals: { message: self, message_user: user }
     )
   end
   

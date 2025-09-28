@@ -19,7 +19,9 @@
   </head>
 
   <body class="min-h-screen flex flex-col" data-controller="modal">
-    <%= render "layouts/navigation" %>
+    <% unless content_for?(:hide_navigation) %>
+      <%= render "layouts/navigation" %>
+    <% end %>
     <%= render "layouts/flash" %>
 
     <div class="flex-1 flex flex-col">

@@ -581,6 +581,19 @@ body.social-posts-page #main_content_area {
   object-fit: cover;
 }
 
+/* Image preview styling for chat messages */
+.messages .image-preview-container {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.messages .image-preview-container img {
+  max-width: 80px;
+  max-height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
 /* Ensure image previews don't break dashboard layout */
 .dashboard-content .expanded-card {
   max-height: none !important;
