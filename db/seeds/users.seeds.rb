@@ -28,10 +28,10 @@ end
 
 # Create a PrakrutiPlan for Hector if he doesn't have one
 if hector.prakruti_plans.empty?
-  template = HealingPlanTemplate.find_by(name: "Vata Balancing Plan - Daily")
+  template = HealingPlanTemplate.find_by(name: "Vata Balancing Plan")
 
   if template.nil?
-    puts "Could not find the 'Vata Balancing Plan - Daily' template. Skipping PrakrutiPlan creation for Hector."
+    puts "Could not find the 'Vata Balancing Plan' template. Skipping PrakrutiPlan creation for Hector."
   else
     prakruti_plan = hector.prakruti_plans.create!(
       description: "Initial constitutional healing plan for Hector.",

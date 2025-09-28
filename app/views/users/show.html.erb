@@ -229,4 +229,15 @@
       </div>
     </div>
   <% end %>
+
+  <!-- Private Message Button -->
+  <% if @user != Current.user %>
+    <div class="px-6 py-4 border-t border-gray-200">
+      <%= form_with url: create_private_room_path, method: :post, local: true do |f| %>
+        <%= f.hidden_field :user_id, value: @user.id %>
+        <%= f.submit "💬 Send Private Message", 
+            class: "btn btn-primary w-full" %>
+      <% end %>
+    </div>
+  <% end %>
 </div>

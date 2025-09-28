@@ -18,14 +18,16 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA.each do |dosha_name, plans_data_array| # plans
   puts "Creating Healing Plan Templates for #{dosha_name}..."
 
   plans_data_array.each do |data| # Loop through each plan config (daily, 3month, 6month)
-    name = "#{dosha_name} Balancing Plan - #{data[:duration_type].titleize}"
+    name = "#{dosha_name} Balancing Plan"
     
-    # Find or create the template with all required attributes
-    healing_plan_template = HealingPlanTemplate.find_or_initialize_by(name: name)
+    # Find or create the template with all required attributes - include duration_type to make it unique
+    healing_plan_template = HealingPlanTemplate.find_or_initialize_by(
+      name: name,
+      duration_type: data[:duration_type],
+      dosha: dosha
+    )
     healing_plan_template.assign_attributes(
-      description: data[:description],
-      dosha: dosha,
-      duration_type: data[:duration_type]
+      description: data[:description]
     )
     healing_plan_template.save!
 

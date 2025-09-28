@@ -1,0 +1,51 @@
+<% content_for :main_container_class, 'min-h-screen bg-base-200' %>
+
+<div class="max-w-4xl mx-auto p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Chat Rooms</h1>
+    <%= link_to "💬 Private Messages", private_messages_path, 
+        class: "btn btn-primary" %>
+  </div>
+  
+  <!-- Create Room Form -->
+  <div class="bg-white rounded-lg shadow p-6 mb-6">
+    <%= form_with model: @room, local: true do |f| %>
+      <div class="flex gap-4">
+        <%= f.text_field :name, placeholder: "Room name", 
+            class: "input input-bordered flex-1" %>
+        <%= f.text_area :description, placeholder: "Description (optional)", 
+            class: "textarea textarea-bordered flex-1" %>
+        <%= f.submit "Create Room", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+  
+  <!-- Rooms List -->
+  <div class="space-y-4">
+    <% @rooms.each do |room| %>
+      <div class="bg-white rounded-lg shadow p-4 hover:shadow-md transition-shadow">
+        <%= link_to room_path(room), class: "block" do %>
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-semibold text-lg"><%= room.name %></h3>
+              <p class="text-gray-600 text-sm"><%= room.description %></p>
+              <p class="text-xs text-gray-500">
+                <%= pluralize(room.users.count, 'member') %>
+              </p>
+            </div>
+            <div class="text-right">
+              <% if room.last_message %>
+                <p class="text-sm text-gray-600 truncate max-w-xs">
+                  <%= room.last_message.content.to_plain_text.truncate(50) %>
+                </p>
+                <p class="text-xs text-gray-500">
+                  <%= time_ago_in_words(room.last_message.created_at) %> ago
+                </p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_27_040828) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_28_222106) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -260,6 +260,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_27_040828) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "memberships", force: :cascade do |t|
+    t.integer "room_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "last_read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id", "user_id"], name: "index_memberships_on_room_id_and_user_id", unique: true
+    t.index ["room_id"], name: "index_memberships_on_room_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "room_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_messages_on_room_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
   create_table "newsletters", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "status", default: "subscribed"
@@ -320,6 +340,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_27_040828) do
     t.datetime "updated_at", null: false
     t.index ["healing_plan_id", "position"], name: "index_plan_sections_on_healing_plan_id_and_position"
     t.index ["healing_plan_id"], name: "index_plan_sections_on_healing_plan_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "room_type", default: "public", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_type"], name: "index_rooms_on_room_type"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -483,6 +512,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_27_040828) do
   add_foreign_key "healing_plans", "healing_plan_templates"
   add_foreign_key "healing_plans", "users"
   add_foreign_key "likes", "users"
+  add_foreign_key "memberships", "rooms"
+  add_foreign_key "memberships", "users"
+  add_foreign_key "messages", "rooms"
+  add_foreign_key "messages", "users"
   add_foreign_key "plan_item_logs", "healing_plan_logs"
   add_foreign_key "plan_item_logs", "plan_items"
   add_foreign_key "plan_item_templates", "plan_section_templates"

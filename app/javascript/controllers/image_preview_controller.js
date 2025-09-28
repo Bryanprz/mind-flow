@@ -6,11 +6,23 @@ export default class extends Controller {
   static values = { formId: String }
 
   connect() {
+    console.log('Image preview controller connected')
     this.boundHandleFileSelect = this.handleFileSelect.bind(this)
     this.isFileInputClicking = false // Flag to prevent recursive clicks
     this.processingFiles = false // Flag to prevent double processing
     this.setupFileInput()
     this.setupDragAndDrop()
+    
+    // Debug: Log available targets
+    console.log('Available targets:', {
+      fileInput: this.hasFileInputTarget,
+      preview: this.hasPreviewTarget,
+      form: this.hasFormTarget,
+      inputField: this.hasInputFieldTarget,
+      previewContainer: this.hasPreviewContainerTarget,
+      previewGrid: this.hasPreviewGridTarget,
+      card: this.hasCardTarget
+    })
   }
 
   handleFileClick(event) {
@@ -61,9 +73,15 @@ export default class extends Controller {
       
       // Add a small delay to ensure the element is ready
       setTimeout(() => {
-        this.fileInputTarget.addEventListener('change', this.boundHandleFileSelect)
-        console.log('File input setup complete')
-      }, 10)
+        if (this.hasFileInputTarget) {
+          this.fileInputTarget.addEventListener('change', this.boundHandleFileSelect)
+          console.log('File input setup complete')
+        } else {
+          console.log('File input target not found during setup')
+        }
+      }, 100) // Increased delay for turbo stream updates
+    } else {
+      console.log('No file input target found during setup')
     }
   }
 
@@ -264,40 +282,79 @@ export default class extends Controller {
     if (this.hasCardTarget) {
       console.log('Expanding card for image previews')
       
+      // Check if we're in a dashboard context
+      const isDashboard = this.element.closest('.dashboard-content') || 
+                         this.element.closest('.social-feed-card') ||
+                         this.element.closest('#social_feed')
+      
       // Add CSS class for expansion
       this.cardTarget.classList.add('expanded-card')
       
-      // Also set inline styles as backup
-      this.cardTarget.style.transition = 'all 0.3s ease-in-out'
-      this.cardTarget.style.overflow = 'visible'
-      this.cardTarget.style.height = 'auto'
-      this.cardTarget.style.maxHeight = 'none'
-      this.cardTarget.style.minHeight = 'auto'
-      
-      // Force card-body to expand
-      const cardBody = this.cardTarget.querySelector('.card-body')
-      if (cardBody) {
-        cardBody.style.height = 'auto'
-        cardBody.style.maxHeight = 'none'
-        cardBody.style.overflow = 'visible'
-        console.log('Card body expanded')
+      if (isDashboard) {
+        console.log('Dashboard context - using conservative card expansion')
+        // For dashboard, only expand the preview container, not the entire card
+        this.cardTarget.style.transition = 'all 0.3s ease-in-out'
+        
+        // Only expand the preview container, not the card itself
+        if (this.hasPreviewContainerTarget) {
+          this.previewContainerTarget.style.display = 'block'
+          this.previewContainerTarget.style.height = 'auto'
+          this.previewContainerTarget.style.maxHeight = 'none'
+          this.previewContainerTarget.style.overflow = 'visible'
+          console.log('Preview container expanded (dashboard mode)')
+        }
+      } else {
+        console.log('Non-dashboard context - using full card expansion')
+        // For non-dashboard, use the original aggressive expansion
+        this.cardTarget.style.transition = 'all 0.3s ease-in-out'
+        this.cardTarget.style.overflow = 'visible'
+        this.cardTarget.style.height = 'auto'
+        this.cardTarget.style.maxHeight = 'none'
+        this.cardTarget.style.minHeight = 'auto'
+        
+        // Force card-body to expand
+        const cardBody = this.cardTarget.querySelector('.card-body')
+        if (cardBody) {
+          cardBody.style.height = 'auto'
+          cardBody.style.maxHeight = 'none'
+          cardBody.style.overflow = 'visible'
+          console.log('Card body expanded')
+        }
+        
+        // Force preview container to be visible and unconstrained
+        if (this.hasPreviewContainerTarget) {
+          this.previewContainerTarget.style.display = 'block'
+          this.previewContainerTarget.style.height = 'auto'
+          this.previewContainerTarget.style.maxHeight = 'none'
+          this.previewContainerTarget.style.overflow = 'visible'
+          console.log('Preview container expanded')
+        }
+        
+        // Check and override any parent container constraints
+        this.overrideParentConstraints()
       }
-      
-      // Force preview container to be visible and unconstrained
-      if (this.hasPreviewContainerTarget) {
-        this.previewContainerTarget.style.display = 'block'
-        this.previewContainerTarget.style.height = 'auto'
-        this.previewContainerTarget.style.maxHeight = 'none'
-        this.previewContainerTarget.style.overflow = 'visible'
-        console.log('Preview container expanded')
-      }
-      
-      // Check and override any parent container constraints
-      this.overrideParentConstraints()
       
       console.log('Card expanded with classes:', this.cardTarget.classList.toString())
     } else {
-      console.log('No card target found for expansion')
+      console.log('No card target found for expansion - trying fallback')
+      // Fallback: try to find the card element manually
+      const cardElement = this.element.querySelector('[data-image-preview-target="card"]')
+      if (cardElement) {
+        console.log('Found card element via fallback')
+        cardElement.classList.add('expanded-card')
+        cardElement.style.transition = 'all 0.3s ease-in-out'
+        
+        // Only expand the preview container
+        if (this.hasPreviewContainerTarget) {
+          this.previewContainerTarget.style.display = 'block'
+          this.previewContainerTarget.style.height = 'auto'
+          this.previewContainerTarget.style.maxHeight = 'none'
+          this.previewContainerTarget.style.overflow = 'visible'
+          console.log('Preview container expanded (fallback mode)')
+        }
+      } else {
+        console.log('No card element found even with fallback')
+      }
     }
   }
 
@@ -332,53 +389,75 @@ export default class extends Controller {
   }
 
   overrideParentConstraints() {
-    // Check parent containers for height constraints
-    let currentElement = this.cardTarget.parentElement
-    let depth = 0
-    const maxDepth = 8 // Increased depth to reach more parent containers
+    // Check if we're in a dashboard context - be more conservative
+    const isDashboard = this.element.closest('.dashboard-content') || 
+                       this.element.closest('.social-feed-card') ||
+                       this.element.closest('#social_feed')
     
-    while (currentElement && depth < maxDepth) {
-      // Check if parent has height constraints
-      const computedStyle = window.getComputedStyle(currentElement)
-      const height = computedStyle.height
-      const maxHeight = computedStyle.maxHeight
-      const overflow = computedStyle.overflow
-      const minHeight = computedStyle.minHeight
+    if (isDashboard) {
+      console.log('Dashboard context detected - using conservative constraint override')
+      // Only override immediate parent constraints, not the entire hierarchy
+      let currentElement = this.cardTarget.parentElement
+      let depth = 0
+      const maxDepth = 3 // Reduced depth for dashboard
       
-      // More aggressive constraint detection
-      if (height !== 'auto' || maxHeight !== 'none' || overflow === 'hidden' || overflow === 'auto' || minHeight !== '0px') {
-        console.log('Found constraining parent at depth', depth, ':', currentElement.className, {
-          height, maxHeight, overflow, minHeight
-        })
-        
-        // Override parent constraints more aggressively
-        currentElement.style.height = 'auto'
-        currentElement.style.maxHeight = 'none'
-        currentElement.style.minHeight = 'auto'
-        currentElement.style.overflow = 'visible'
-        currentElement.style.overflowY = 'visible'
-        currentElement.style.overflowX = 'visible'
-        
-        // Remove flex constraints that might limit height
-        if (currentElement.classList.contains('flex-1')) {
-          currentElement.style.flex = 'none'
+      while (currentElement && depth < maxDepth) {
+        // Only override if it's not a dashboard grid container
+        if (!currentElement.classList.contains('dashboard-grid') && 
+            !currentElement.classList.contains('social-feed-card') &&
+            !currentElement.classList.contains('card')) {
+          
+          const computedStyle = window.getComputedStyle(currentElement)
+          const height = computedStyle.height
+          const maxHeight = computedStyle.maxHeight
+          const overflow = computedStyle.overflow
+          
+          // Only override if it's clearly constraining the preview
+          if (maxHeight !== 'none' && maxHeight !== '100%') {
+            console.log('Overriding constraint at depth', depth, ':', currentElement.className)
+            currentElement.style.maxHeight = 'none'
+            currentElement.style.overflow = 'visible'
+            currentElement.classList.add('image-preview-expanded')
+          }
         }
         
-        // Add a temporary class to mark this element
-        currentElement.classList.add('image-preview-expanded')
+        currentElement = currentElement.parentElement
+        depth++
       }
+    } else {
+      // Non-dashboard context - use original aggressive approach
+      let currentElement = this.cardTarget.parentElement
+      let depth = 0
+      const maxDepth = 8
       
-      currentElement = currentElement.parentElement
-      depth++
+      while (currentElement && depth < maxDepth) {
+        const computedStyle = window.getComputedStyle(currentElement)
+        const height = computedStyle.height
+        const maxHeight = computedStyle.maxHeight
+        const overflow = computedStyle.overflow
+        const minHeight = computedStyle.minHeight
+        
+        if (height !== 'auto' || maxHeight !== 'none' || overflow === 'hidden' || overflow === 'auto' || minHeight !== '0px') {
+          console.log('Found constraining parent at depth', depth, ':', currentElement.className)
+          
+          currentElement.style.height = 'auto'
+          currentElement.style.maxHeight = 'none'
+          currentElement.style.minHeight = 'auto'
+          currentElement.style.overflow = 'visible'
+          currentElement.style.overflowY = 'visible'
+          currentElement.style.overflowX = 'visible'
+          
+          if (currentElement.classList.contains('flex-1')) {
+            currentElement.style.flex = 'none'
+          }
+          
+          currentElement.classList.add('image-preview-expanded')
+        }
+        
+        currentElement = currentElement.parentElement
+        depth++
+      }
     }
-    
-    // Also check body and html elements
-    document.body.style.height = 'auto'
-    document.body.style.maxHeight = 'none'
-    document.body.style.overflow = 'visible'
-    document.documentElement.style.height = 'auto'
-    document.documentElement.style.maxHeight = 'none'
-    document.documentElement.style.overflow = 'visible'
   }
 
   // Method to be called when input content changes

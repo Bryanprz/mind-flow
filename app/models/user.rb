@@ -11,6 +11,9 @@ class User < ApplicationRecord
   has_many :social_posts, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :social_post_bookmarks, dependent: :destroy
+  has_many :messages, dependent: :destroy
+  has_many :memberships, dependent: :destroy
+  has_many :rooms, through: :memberships
   has_one :prakruti_entry, class_name: 'PrakrutiEntry'
   has_one :vikruti_entry, class_name: 'VikrutiEntry'
 
@@ -113,5 +116,17 @@ class User < ApplicationRecord
 
   def has_streak?
     current_streak > 0
+  end
+
+  def private_rooms_with(user)
+    # Find private rooms where both current user and other user are members
+    # Get all private rooms for current user
+    my_private_rooms = rooms.where(room_type: 'private')
+    
+    # Get all private rooms for the other user
+    their_private_rooms = user.rooms.where(room_type: 'private')
+    
+    # Find intersection (rooms that both users are members of)
+    my_private_rooms.where(id: their_private_rooms.select(:id))
   end
 end

@@ -341,32 +341,89 @@ body.social-posts-page #main_content_area {
 
 /* Mobile: ensure dashboard cards have proper minimum heights */
 @media (max-width: 1023px) {
-  .grid > * {
-    min-height: 400px;
-  }
   
   /* Ensure dashboard card content areas are properly sized - only target dashboard cards */
   .dashboard-content .card {
     min-height: 400px;
+    height: auto;
+    max-height: none;
   }
   
   .dashboard-content .card-body {
     min-height: 350px;
+    height: auto;
+    max-height: none;
+  }
+  
+  /* Override dashboard grid constraints on mobile */
+  .dashboard-grid {
+    height: auto;
+    max-height: none;
+    min-height: 400px;
+  }
+  
+  .dashboard-grid > * {
+    height: auto;
+    max-height: none;
+    min-height: 400px;
   }
 }
 
 /* Medium screens: slightly larger minimum height */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .grid > * {
-    min-height: 500px;
-  }
   
   .dashboard-content .card {
     min-height: 500px;
+    height: auto;
+    max-height: none;
   }
   
   .dashboard-content .card-body {
     min-height: 450px;
+    height: auto;
+    max-height: none;
+  }
+  
+  /* Override dashboard grid constraints on medium screens */
+  .dashboard-grid {
+    height: auto;
+    max-height: none;
+    min-height: 500px;
+  }
+  
+  .dashboard-grid > * {
+    height: auto;
+    max-height: none;
+    min-height: 500px;
+  }
+}
+
+/* Fix the 1020px breakpoint issue - extend mobile rules to cover the gap */
+@media (max-width: 1024px) {
+  .dashboard-content .card {
+    min-height: 500px;
+    height: auto;
+    max-height: none;
+  }
+  
+  .dashboard-content .card-body {
+    min-height: 450px;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+  
+  .dashboard-grid {
+    height: auto;
+    max-height: none;
+    min-height: 500px;
+  }
+  
+  .dashboard-grid > * {
+    height: auto;
+    max-height: none;
+    min-height: 500px;
+    overflow: visible;
   }
 }
 
@@ -377,17 +434,174 @@ body.social-posts-page #main_content_area {
   align-items: stretch;
   height: 100%;
   min-height: 0;
+  max-height: calc(100vh - 200px); /* Prevent viewport overflow */
 }
 
 .dashboard-grid > * {
   height: 100%;
   min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* Mobile-specific dashboard grid overrides */
+@media (max-width: 1023px) {
+  .dashboard-grid {
+    height: auto;
+    max-height: none;
+    min-height: 400px;
+  }
+  
+  .dashboard-grid > * {
+    height: auto;
+    max-height: none;
+    min-height: 400px;
+    overflow: visible;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .dashboard-grid {
+    height: auto;
+    max-height: none;
+    min-height: 500px;
+  }
+  
+  .dashboard-grid > * {
+    height: auto;
+    max-height: none;
+    min-height: 500px;
+    overflow: visible;
+  }
+}
+
+/* Fix 1020px breakpoint - extend mobile grid overrides */
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    height: auto;
+    max-height: none;
+    min-height: 500px;
+  }
+  
+  .dashboard-grid > * {
+    height: auto;
+    max-height: none;
+    min-height: 500px;
+    overflow: visible;
+  }
+}
+
+/* Ensure dashboard cards maintain height after turbo updates */
+.dashboard-content .card {
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+}
+
+.dashboard-content .card-body {
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* Mobile-specific dashboard card overrides */
+@media (max-width: 1023px) {
+  .dashboard-content .card {
+    height: auto;
+    min-height: 400px;
+    max-height: none;
+  }
+  
+  .dashboard-content .card-body {
+    height: auto;
+    min-height: 350px;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .dashboard-content .card {
+    height: auto;
+    min-height: 500px;
+    max-height: none;
+  }
+  
+  .dashboard-content .card-body {
+    height: auto;
+    min-height: 450px;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* Fix 1020px breakpoint - extend mobile card overrides */
+@media (max-width: 1024px) {
+  .dashboard-content .card {
+    height: auto;
+    min-height: 500px;
+    max-height: none;
+  }
+  
+  .dashboard-content .card-body {
+    height: auto;
+    min-height: 450px;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* Prevent social feed content from affecting card height */
+#social-feed-scroll {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+#social_feed {
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* Ensure social posts with images don't break layout */
+.social-feed-card .border-b {
+  max-height: none;
+  overflow: visible;
+}
+
+/* Image preview styling for dashboard context */
+.social-feed-card .image-preview-container {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.social-feed-card .image-preview-container img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+}
+
+/* Ensure image previews don't break dashboard layout */
+.dashboard-content .expanded-card {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.dashboard-content .expanded-card .card-body {
+  max-height: none !important;
+  overflow: visible !important;
 }
 
 /* Fix embedded social posts prose spacing */
 .dashboard-content .prose {
   margin: 0 !important;
   padding: 0 !important;
+}
+
+/* Remove navbar padding and min-height only for logged-in users */
+body:has(.navbar .avatar) .navbar {
+  padding: 0 !important;
+  min-height: 0 !important;
 }
 
 .dashboard-content .prose p {

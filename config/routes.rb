@@ -78,6 +78,15 @@ Rails.application.routes.draw do
   get 'profile', to: 'users#show', as: :profile
   post 'ai/ask', to: 'ai#ask'
 
+  # Chat routes
+  resources :rooms do
+    resources :messages, only: [:create]
+  end
+  
+  # Private messaging routes
+  get "/messages", to: "rooms#private_index", as: :private_messages
+  post "/rooms/private", to: "rooms#create_private", as: :create_private_room
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check

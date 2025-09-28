@@ -46,8 +46,8 @@ Rails.application.configure do
     address: 'smtp.gmail.com',
     port: 587,
     domain: 'gmail.com',
-    user_name: Rails.application.credentials.gmail[:user_name],
-    password: Rails.application.credentials.gmail[:password],
+    user_name: Rails.application.credentials.dig(:gmail, :user_name) || 'your-email@gmail.com',
+    password: Rails.application.credentials.dig(:gmail, :password) || 'your-password',
     authentication: 'plain',
     enable_starttls_auto: true
   }
@@ -69,6 +69,9 @@ config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
+  
+  # Use async adapter for development (single process)
+  config.active_job.queue_adapter = :async
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

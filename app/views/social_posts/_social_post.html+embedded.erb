@@ -1,10 +1,10 @@
 <% if social_post.present? %>
-<div class="border-b border-gray-200 last:border-b-0">
-  <div class="px-3 py-2 sm:py-1">
-    <div class="flex items-center mb-0.5">
+<div class="border-b border-gray-200 last:border-b-0 hover:bg-gray-100 transition-colors cursor-pointer" data-controller="social-post" data-action="click->social-post#openPost" data-social-post-url-value="<%= social_post_path(social_post) %>">
+  <div class="px-3 py-2 sm:py-1 last:pb-0 mt-2 mb-2">
+    <div class="flex items-start gap-2 mb-0.5 mt-1">
       <%= link_to user_path(social_post.user), 
-                  class: "avatar placeholder mr-1.5 hover:opacity-80 transition-opacity",
-                  data: { action: "click->social-post#stopPropagation" } do %>
+                  class: "avatar placeholder hover:opacity-80 transition-opacity",
+                  data: { action: "click->social-post#stopPropagation", turbo: false } do %>
         <div class="rounded-full w-5 h-5 overflow-hidden">
           <% if social_post.user.avatar.attached? %>
             <%= image_tag social_post.user.avatar, class: "w-full h-full object-cover" %>
@@ -16,12 +16,12 @@
         </div>
       <% end %>
       <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-1 mb-1">
           <h2 class="text-xs font-medium truncate">
             <%= link_to social_post.user.name.presence || social_post.user.email_address, 
                         user_path(social_post.user), 
                         class: "hover:text-blue-600 hover:underline transition-colors",
-                        data: { action: "click->social-post#stopPropagation" } %>
+                        data: { action: "click->social-post#stopPropagation", turbo: false } %>
           </h2>
           <% ts = social_post.published_at || social_post.created_at %>
           <% if ts.present? %>
@@ -29,19 +29,16 @@
             <span class="text-[10px] text-gray-400"><%= time_ago_in_words(ts) %> ago</span>
           <% end %>
         </div>
-      </div>
-    </div>
-
-    <% if social_post.media.attached? %>
-      <div class="flex gap-2 items-start">
-        <div class="flex-1 text-xs leading-tight">
+        <div class="text-sm leading-tight">
           <%= social_post.content %>
         </div>
+      </div>
+      <% if social_post.media.attached? %>
         <div class="flex-shrink-0 w-12 h-12">
           <% media_item = social_post.media.first %>
           <% if media_item.image? %>
             <%= image_tag media_item, 
-                         class: "w-12 h-12 object-cover rounded border border-gray-200", 
+                         class: "w-12 h-12 object-cover object-top rounded border border-gray-200", 
                          alt: "Post image" %>
           <% elsif media_item.video? %>
             <div class="relative w-12 h-12 bg-gray-100 rounded border border-gray-200 flex items-center justify-center">
@@ -58,12 +55,8 @@
             </div>
           <% end %>
         </div>
-      </div>
-    <% else %>
-      <div class="text-xs leading-tight">
-        <%= social_post.content %>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 <% end %>

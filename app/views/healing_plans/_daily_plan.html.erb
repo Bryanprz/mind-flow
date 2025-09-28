@@ -6,7 +6,7 @@
   <div class="card bg-base-100 border border-gray-300">
     <div class="card-body">
       <h1 class="card-title text-2xl">
-        <%= @healing_plan.name %> - Daily for <%= @date.strftime("%B %d") %>
+        <%= @healing_plan.name %> for <%= @date.strftime("%b %d") %>
       </h1>
       <% if @healing_plan.description.present? %>
         <div class="prose max-w-none mt-3">

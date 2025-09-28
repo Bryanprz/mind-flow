@@ -13,16 +13,34 @@ class HealingPlansController < ApplicationController
       return
     end
 
+    # Check if user has any healing plans at all
+    unless Current.user.healing_plans.any?
+      redirect_to prakruti_assessment_intro_path, alert: "No healing plans found. Please complete your assessment to generate healing plans."
+      return
+    end
+
     # Prioritize showing Vikruti plans, fall back to Prakruti plans
     plan_set = Current.user.vikruti_plans.presence || Current.user.prakruti_plans
-    @duration_type = params[:duration_type] || HealingPlan::DAILY
+    @duration_type = params[:duration_type] || 'daily'
 
+    # Debug logging
+    Rails.logger.info "🔍 Looking for healing plan with duration_type: #{@duration_type}"
+    Rails.logger.info "🔍 Available plans: #{plan_set.pluck(:duration_type, :id)}"
+    Rails.logger.info "🔍 Plan set count: #{plan_set.count}"
+    Rails.logger.info "🔍 All user healing plans: #{Current.user.healing_plans.pluck(:duration_type, :id)}"
+    Rails.logger.info "🔍 Raw duration_type values: #{plan_set.pluck(:duration_type)}"
+    Rails.logger.info "🔍 Enum mapping: daily=#{HealingPlan.duration_types['daily']}, three_month=#{HealingPlan.duration_types['three_month']}, six_month=#{HealingPlan.duration_types['six_month']}"
+    
     # Find the specific plan for the selected duration
     @healing_plan = plan_set.find_by(duration_type: @duration_type)
 
     if @healing_plan.nil?
-      # Handle case where no plan is found for the duration type
-      redirect_to healing_plans_path, alert: "No healing plan found for the selected duration."
+      # If no plan found for this duration type, show a message instead of redirecting
+      Rails.logger.info "🔍 No #{@duration_type} plan found"
+      @healing_plan = nil
+      @duration_type = params[:duration_type] || 'daily'
+      @date = params[:date] ? Time.zone.parse(params[:date]).to_date : Time.zone.today
+      @healing_plan_log = nil
       return
     end
 

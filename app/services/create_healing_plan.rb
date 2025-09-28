@@ -12,9 +12,9 @@ class CreateHealingPlan
 
   def create_plans
     plan_duration_types = [
-      HealingPlan::DAILY, 
-      HealingPlan::THREE_MONTH, 
-      HealingPlan::SIX_MONTH
+      'daily', 
+      'three_month', 
+      'six_month'
     ]
 
     plan_duration_types.each do |duration_type|

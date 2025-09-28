@@ -1,0 +1,36 @@
+<%= form_with model: [room, message], 
+    data: { turbo_stream: true, controller: "image-preview auto-resize message-form", message_form_target: "form" }, 
+    multipart: true do |f| %>
+  <div class="flex items-start gap-3" data-image-preview-target="card">
+    <div class="flex-1 relative min-w-0 flex items-center gap-2 mb-2" data-image-preview-target="inputField">
+      <%= f.rich_text_area :content, 
+          class: "textarea textarea-bordered flex-1 social-feed-input",
+          placeholder: "Type your message...",
+          style: "min-height: 40px;",
+          data: { 
+            action: "input->auto-resize#resize keydown->message-form#handleKeydown",
+            message_form_target: "content"
+          } %>
+      <div class="flex items-center gap-2">
+        <%= f.label :attachments, class: "cursor-pointer text-gray-400 hover:text-primary", data: { action: "click->image-preview#handleFileClick" } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+          </svg>
+          <%= f.file_field :attachments, multiple: true, class: "hidden", data: { image_preview_target: "fileInput" } %>
+        <% end %>
+        <%= f.submit "Send", class: "text-gray-400 hover:text-primary" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+          </svg>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Preview Area -->
+  <div class="mt-3 hidden" data-image-preview-target="previewContainer">
+    <div class="flex flex-wrap gap-2" data-image-preview-target="previewGrid">
+      <!-- Preview images will be inserted here -->
+    </div>
+  </div>
+<% end %>
