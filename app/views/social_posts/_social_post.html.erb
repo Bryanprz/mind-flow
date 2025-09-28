@@ -127,18 +127,52 @@
     <div class="mt-3 hidden" data-social-post-target="replyForm">
       <%= form_with model: [social_post, SocialPost.new], 
           url: social_post_replies_path(social_post),
-          class: "space-y-2", 
+          class: "space-y-3", 
+          id: "reply-form-#{social_post.id}",
           data: { 
+            controller: "image-preview social-post",
+            action: "submit->social-post#createReply",
+            image_preview_form_id_value: "reply_#{social_post.id}",
+            social_post_post_id_value: social_post.id,
+            social_post_original_post_id_value: social_post.id,
             turbo: false
-          } do |f| %>
+          },
+          multipart: true do |f| %>
         <%= f.hidden_field :parent_post_id, value: social_post.id, id: "social_post_parent_post_id_#{social_post.id}" %>
+        
         <div class="border border-gray-300 rounded-lg overflow-hidden">
           <%= f.rich_text_area :content, 
               placeholder: "Write a reply...", 
               class: "w-full min-h-[80px] p-3 border-0 resize-none focus:ring-0 focus:outline-none" %>
         </div>
-        <div class="flex justify-end">
-          <%= f.submit "Reply", class: "btn btn-sm btn-primary text-white" %>
+        
+        <!-- Media Upload Section -->
+        <div class="form-control">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <%= f.label :media, class: "cursor-pointer text-gray-500 hover:text-primary transition-colors flex items-center gap-2", data: { action: "click->image-preview#handleFileClick" } do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                </svg>
+                <span class="text-sm">Add Media</span>
+                <%= f.file_field :media, multiple: true, class: "hidden", data: { image_preview_target: "fileInput" } %>
+              <% end %>
+              
+              <div class="text-xs text-gray-400">
+                Drag and drop images here or click to upload
+              </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <%= f.submit "Reply", class: "btn btn-sm btn-primary text-white" %>
+          </div>
+          
+          <!-- Image Preview Area -->
+          <div class="mt-3 hidden" data-image-preview-target="previewContainer">
+            <div class="grid grid-cols-2 gap-2" data-image-preview-target="previewGrid">
+              <!-- Preview images will be inserted here -->
+            </div>
+          </div>
         </div>
       <% end %>
     </div>

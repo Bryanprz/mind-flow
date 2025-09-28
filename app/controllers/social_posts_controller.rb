@@ -53,7 +53,10 @@ class SocialPostsController < ApplicationController
           render json: { 
             success: true, 
             message: "Reply posted successfully!",
-            redirect_url: social_post_path(@social_post.original_post)
+            redirect_url: social_post_path(@social_post.original_post),
+            replies_count: @social_post.original_post.total_replies_count,
+            reply_replies_count: @social_post.parent_post&.total_replies_count,
+            reply: render_to_string(partial: "social_posts/reply", formats: [:html], locals: { social_post: @social_post, main_post_id: @social_post.original_post.id })
           }
         else
           Rails.logger.error "Social post save failed: #{@social_post.errors.full_messages}"
@@ -77,14 +80,14 @@ class SocialPostsController < ApplicationController
                 locals: { social_post: @social_post, main_post_id: @social_post.original_post.id }
               ),
               turbo_stream.update("replies-count-for-post-#{@social_post.parent_post_id}", 
-                @social_post.parent_post.replies_count),
+                @social_post.parent_post.total_replies_count),
               turbo_stream.update("main-reply-form-for-post-#{@social_post.parent_post_id}",
                 partial: "social_posts/reply_form",
                 locals: { social_post: @social_post.parent_post }
               ),
               # Update the replies section header with new count
               turbo_stream.update("replies-section-header-#{@social_post.parent_post_id}",
-                "Replies (#{@social_post.parent_post.replies_count})"),
+                "Replies (#{@social_post.parent_post.total_replies_count})"),
               turbo_stream.update("flash",
                 partial: "layouts/flash"
               )

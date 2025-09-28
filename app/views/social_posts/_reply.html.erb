@@ -1,4 +1,4 @@
-<div class="py-2 border-b border-gray-100 last:border-b-0" 
+<div class="border-b border-gray-200 last:border-b-0" 
      data-controller="social-post" 
      data-social-post-post-id-value="<%= social_post.id %>"
      data-social-post-url-value="<%= social_post_path(social_post) %>"
@@ -90,10 +90,10 @@
   <!-- End Reply Content -->
 
   <!-- Interaction Bar -->
-  <div class="flex items-center justify-around mt-3 pt-2 border-t border-gray-100">
+  <div class="flex items-center justify-around mt-3 pt-2 border-gray-200">
     <!-- Reply Button -->
     <button 
-      class="flex items-center gap-1 hover:text-blue-500 transition-colors"
+      class="flex items-center gap-1 text-gray-500 hover:text-blue-500 transition-colors"
       data-action="click->social-post#toggleReplyForm"
       data-social-post-target="replyButton">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,7 +104,7 @@
 
     <!-- Like Button -->
     <button 
-      class="flex items-center gap-1 <%= 'text-red-500' if social_post.liked_by?(Current.user) %> hover:text-red-500 transition-colors"
+      class="flex items-center gap-1 text-gray-500 <%= 'text-red-500' if social_post.liked_by?(Current.user) %> hover:text-red-500 transition-colors"
       data-action="click->social-post#toggleLike"
       data-social-post-target="likeButton">
       <svg class="w-4 h-4" fill="<%= social_post.liked_by?(Current.user) ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +115,7 @@
 
     <!-- Bookmark Button -->
     <button 
-      class="flex items-center gap-1 <%= 'text-blue-500' if social_post.bookmarked_by?(Current.user) %> hover:text-blue-500 transition-colors"
+      class="flex items-center gap-1 text-gray-500 <%= 'text-blue-500' if social_post.bookmarked_by?(Current.user) %> hover:text-blue-500 transition-colors"
       data-action="click->social-post#toggleSave"
       data-social-post-target="saveButton">
       <svg class="w-4 h-4" fill="<%= social_post.bookmarked_by?(Current.user) ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">

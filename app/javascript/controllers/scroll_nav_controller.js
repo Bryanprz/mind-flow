@@ -6,53 +6,48 @@ export default class extends Controller {
   connect() {
     this.lastScrollY = window.scrollY
     this.ticking = false
-    
-    // Add scroll event listener
-    window.addEventListener('scroll', this.handleScroll.bind(this))
+    this.bindScroll()
   }
   
   disconnect() {
-    // Remove scroll event listener
+    this.unbindScroll()
+  }
+  
+  bindScroll() {
+    window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true })
+  }
+  
+  unbindScroll() {
     window.removeEventListener('scroll', this.handleScroll.bind(this))
   }
   
   handleScroll() {
     if (!this.ticking) {
-      requestAnimationFrame(this.updateNavbar.bind(this))
+      requestAnimationFrame(() => {
+        this.updateNavbar()
+        this.ticking = false
+      })
       this.ticking = true
     }
   }
   
   updateNavbar() {
-    // Apply scroll behavior on homepage and community page
-    const currentPath = window.location.pathname
-    const isHomePage = currentPath === '/' || currentPath === ''
-    const isCommunityPage = currentPath.includes('/community')
-    
-    if (!isHomePage && !isCommunityPage) {
-      return
-    }
-    
     const currentScrollY = window.scrollY
+    const navbar = this.hasNavbarTarget ? this.navbarTarget : document.querySelector('nav')
     
-    // Only apply after scrolling past a certain point
-    if (currentScrollY > 100) {
-      if (currentScrollY > this.lastScrollY) {
-        // Scrolling down - hide navbar
-        this.navbarTarget.classList.add('transform', '-translate-y-full')
-        this.navbarTarget.classList.remove('transform', 'translate-y-0')
-      } else {
-        // Scrolling up - show navbar
-        this.navbarTarget.classList.remove('transform', '-translate-y-full')
-        this.navbarTarget.classList.add('transform', 'translate-y-0')
-      }
+    if (!navbar) return
+    
+    // Hide navbar when scrolling down, show when scrolling up
+    if (currentScrollY > this.lastScrollY && currentScrollY > 100) {
+      // Scrolling down and past 100px - hide navbar
+      navbar.style.transform = 'translateY(-100%)'
+      navbar.style.transition = 'transform 0.3s ease-in-out'
     } else {
-      // Near top of page - always show navbar
-      this.navbarTarget.classList.remove('transform', '-translate-y-full')
-      this.navbarTarget.classList.add('transform', 'translate-y-0')
+      // Scrolling up or at top - show navbar
+      navbar.style.transform = 'translateY(0)'
+      navbar.style.transition = 'transform 0.3s ease-in-out'
     }
     
     this.lastScrollY = currentScrollY
-    this.ticking = false
   }
 }

@@ -63,4 +63,24 @@ class SocialPost < ApplicationRecord
   def replies_count
     replies.count
   end
+  
+  def total_replies_count
+    # Count all replies in the thread including nested replies
+    all_replies_in_thread.count
+  end
+  
+  def all_replies_in_thread
+    # Recursively get all replies in this thread
+    all_replies = []
+    direct_replies = replies.includes(:replies)
+    
+    direct_replies.each do |reply|
+      all_replies << reply
+      all_replies.concat(reply.all_replies_in_thread)
+    end
+    
+    all_replies
+  end
+  
+  private
 end

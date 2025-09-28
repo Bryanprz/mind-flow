@@ -139,8 +139,8 @@ export default class extends Controller {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // If we have a redirect URL, navigate to it
-        if (data.redirect_url) {
+        // If we have a redirect URL, navigate to it (only if we're not already on the show page)
+        if (data.redirect_url && !window.location.pathname.includes('/social_posts/')) {
           window.location.href = data.redirect_url;
           return;
         }
@@ -176,22 +176,54 @@ export default class extends Controller {
           repliesList.insertAdjacentHTML('beforeend', data.reply);
           const newReplyElement = repliesList.lastElementChild;
           if (newReplyElement) {
+            // Add a unique ID to the new reply for better scrolling
+            newReplyElement.id = `reply-${Date.now()}`;
+            
+            // Add a temporary success message
             const messageElement = document.createElement('div');
-            messageElement.className = 'text-green-600 mb-2';
+            messageElement.className = 'text-green-600 mb-2 text-sm';
             messageElement.textContent = 'Your reply has been posted!';
             newReplyElement.before(messageElement);
             setTimeout(() => { messageElement.remove(); }, 5000);
+            
+            // Auto-scroll to the new reply with a slight delay to ensure DOM is updated
+            setTimeout(() => {
+              newReplyElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center',
+                inline: 'nearest'
+              });
+              
+              // Add a subtle highlight effect
+              newReplyElement.style.backgroundColor = '#f0f9ff';
+              newReplyElement.style.transition = 'background-color 0.3s ease';
+              setTimeout(() => {
+                newReplyElement.style.backgroundColor = '';
+              }, 2000);
+            }, 200);
           }
+          
+          // Add a flash notice at the top of the page
+          this.showFlashNotice('Reply posted successfully!');
         } else {
           // If no replies list found, reload the page to show the new reply
           window.location.reload();
           return;
         }
         
-        // Update replies count
+        // Update replies count for the parent post
         const repliesCount = document.querySelector(`#replies-count-for-post-${parentPostId}`);
         if (repliesCount) {
           repliesCount.textContent = data.replies_count;
+        }
+        
+        // Update replies count for the specific reply that received a new reply (if it's a nested reply)
+        if (data.reply_replies_count !== undefined) {
+          // Find the reply that received the new reply (the parent of the new reply)
+          const replyRepliesCount = document.querySelector(`#replies-count-for-post-${parentPostId}`);
+          if (replyRepliesCount) {
+            replyRepliesCount.textContent = data.reply_replies_count;
+          }
         }
         
         // Additional cleanup: Use setTimeout to ensure DOM is fully updated
@@ -301,5 +333,28 @@ export default class extends Controller {
 
   stopPropagation(event) {
     event.stopPropagation()
+  }
+  
+  showFlashNotice(message) {
+    // Create a flash notice element that works with the existing flash controller
+    const flashContainer = document.createElement('div');
+    flashContainer.setAttribute('role', 'alert');
+    flashContainer.setAttribute('data-controller', 'flash');
+    flashContainer.setAttribute('data-action', 'transitionend->flash#remove');
+    flashContainer.className = 'fixed top-16 left-1/2 transform -translate-x-1/2 z-50 max-w-md px-5 alert alert-success shadow-lg transition-opacity transition-transform duration-1000 ease-out';
+    
+    flashContainer.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>${message}</span>
+    `;
+    
+    // Add to body
+    document.body.appendChild(flashContainer);
+    
+    // Let the flash controller handle the auto-removal
+    // The flash controller will automatically add opacity-0 and -translate-y-4 after 5 seconds
+    // and remove the element when the transition ends
   }
 }
