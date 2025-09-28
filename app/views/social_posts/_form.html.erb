@@ -5,14 +5,14 @@
               }, 
               class: "w-full", 
               multipart: true) do |form| %>
-  <div class="card bg-base-100">
-    <div class="card-body p-4">
-      <div class="flex items-start gap-3">
+  <div class="card bg-base-100 border border-gray-300 rounded-lg" data-image-preview-target="card">
+    <div class="card-body px-4 pt-3 pb-2">
+      <div class="flex items-center gap-3">
         <div class="flex-1 relative min-w-0 flex items-center gap-2 mb-2" data-image-preview-target="inputField">
           <%= form.rich_text_area :content,
-                           class: "textarea textarea-bordered flex-1 social-feed-input resize-none overflow-hidden",
+                           class: "textarea textarea-bordered flex-1 social-feed-input",
                            placeholder: authenticated? ? "What's happening?" : "Sign up to share your healing journey...",
-                           style: "min-height: 40px; max-height: 200px;",
+                           style: "min-height: 40px;",
                            data: { 
                              action: authenticated? ? "input->auto-resize#resize" : "keydown.enter->auth-required#handleEnter input->auto-resize#resize"
                            } %>

@@ -108,6 +108,9 @@ class HealingPlan < ApplicationRecord
     last_completion = healing_plan_logs.maximum(:completed_at)&.to_date
     return unless last_completion == Date.current
     
+    # Don't show milestone messages for now to avoid stuck notifications
+    return nil
+    
     STREAK_MILESTONES[current] % current
   end
 

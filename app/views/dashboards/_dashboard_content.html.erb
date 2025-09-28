@@ -1,17 +1,15 @@
-<div class="text-md space-y-3 py-4 flex flex-col h-full" data-controller="modal">
+<div class="text-md space-y-3 flex flex-col lg:h-full h-auto dashboard-content" data-controller="modal">
   <% if Current.user&.prakruti %>
     <!-- First Row - 2 equal columns -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 flex-shrink-0">
       <%= render 'dashboards/streak_card' %>
       <%= render 'dashboards/calendar_card' %>
     </div>
 
-    <!-- Second Row - 2 equal columns -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1 min-h-0" style="grid-template-rows: 1fr;">
+    <!-- Second Row - 2 equal columns that expand to fill remaining space on desktop, fixed height on mobile -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 lg:flex-1 lg:min-h-0 min-h-[400px] md:min-h-[500px]">
       <%= render 'dashboards/ai_chat_card' %>
-      <div class="mb-8 md:mb-0">
-        <%= render 'dashboards/social_feed_card' %>
-      </div>
+      <%= render 'dashboards/social_feed_card' %>
     </div>
   <% end %>
 </div>

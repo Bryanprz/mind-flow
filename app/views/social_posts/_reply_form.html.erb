@@ -2,26 +2,15 @@
     url: social_post_replies_path(social_post),
     class: "space-y-3", 
     data: { 
-      controller: "image-preview",
-      image_preview_form_id_value: "reply_#{social_post.id}"
+      controller: "image-preview"
     },
     multipart: true do |f| %>
   <%= f.hidden_field :parent_post_id, value: social_post.id, id: "social_post_parent_post_id_#{social_post.id}" %>
-  
   <div class="border border-gray-300 rounded-lg overflow-hidden">
     <%= f.rich_text_area :content, 
-        placeholder: "Reply to @#{social_post.user.handle.presence || social_post.user.name.downcase.gsub(' ', '_')}...", 
+        placeholder: "Write a reply...", 
         class: "w-full min-h-[100px] p-3 border-0 resize-none focus:ring-0 focus:outline-none" %>
   </div>
-  
-  <!-- Show validation errors if any -->
-  <% if social_post.errors.any? %>
-    <div class="text-red-500 text-sm">
-      <% social_post.errors.full_messages.each do |message| %>
-        <p><%= message %></p>
-      <% end %>
-    </div>
-  <% end %>
   
   <!-- Media Upload Section -->
   <div class="form-control">
@@ -46,7 +35,7 @@
     
     <!-- Image Preview Area -->
     <div class="mt-3 hidden" data-image-preview-target="previewContainer">
-      <div class="flex flex-wrap gap-2" data-image-preview-target="previewGrid">
+      <div class="grid grid-cols-2 gap-2" data-image-preview-target="previewGrid">
         <!-- Preview images will be inserted here -->
       </div>
     </div>

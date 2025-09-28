@@ -2,12 +2,13 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="image-preview"
 export default class extends Controller {
-  static targets = ["fileInput", "preview", "form", "inputField", "previewContainer", "previewGrid"]
+  static targets = ["fileInput", "preview", "form", "inputField", "previewContainer", "previewGrid", "card"]
   static values = { formId: String }
 
   connect() {
     this.boundHandleFileSelect = this.handleFileSelect.bind(this)
     this.isFileInputClicking = false // Flag to prevent recursive clicks
+    this.processingFiles = false // Flag to prevent double processing
     this.setupFileInput()
     this.setupDragAndDrop()
   }
@@ -21,8 +22,15 @@ export default class extends Controller {
       return
     }
     
+    // Prevent double processing
+    if (this.processingFiles) {
+      console.log('File processing already in progress, ignoring click')
+      return
+    }
+    
     // Prevent event bubbling to avoid multiple triggers
     event.stopPropagation()
+    event.preventDefault()
     
     // Trigger the hidden file input when the icon is clicked
     if (this.hasFileInputTarget) {
@@ -55,8 +63,12 @@ export default class extends Controller {
     if (this.hasFileInputTarget) {
       // Remove any existing listeners to avoid duplicates
       this.fileInputTarget.removeEventListener('change', this.boundHandleFileSelect)
-      this.fileInputTarget.addEventListener('change', this.boundHandleFileSelect)
-      console.log('File input setup complete')
+      
+      // Add a small delay to ensure the element is ready
+      setTimeout(() => {
+        this.fileInputTarget.addEventListener('change', this.boundHandleFileSelect)
+        console.log('File input setup complete')
+      }, 10)
     }
   }
 
@@ -99,6 +111,14 @@ export default class extends Controller {
   }
 
   handleFiles(files) {
+    // Prevent double processing
+    if (this.processingFiles) {
+      console.log('File processing already in progress, ignoring drag/drop')
+      return
+    }
+    
+    this.processingFiles = true
+    
     // Convert FileList to Array and replace existing files
     const fileArray = Array.from(files)
     const dt = new DataTransfer()
@@ -112,10 +132,24 @@ export default class extends Controller {
       // Debug: Log which form is handling files
       console.log(`Form ${this.formIdValue || 'unknown'} handling ${files.length} files`)
     }
+    
+    // Reset processing flag after a short delay
+    setTimeout(() => {
+      this.processingFiles = false
+    }, 200)
   }
 
   handleFileSelect(event) {
     console.log('handleFileSelect triggered', event.target.files?.length)
+    
+    // Prevent double processing
+    if (this.processingFiles) {
+      console.log('File processing already in progress, ignoring')
+      return
+    }
+    
+    this.processingFiles = true
+    
     const files = event.target.files
     if (files && files.length > 0) {
       console.log('Files selected:', files.length)
@@ -123,9 +157,16 @@ export default class extends Controller {
     } else {
       console.log('No files selected or files cleared')
     }
+    
+    // Reset processing flag after a short delay
+    setTimeout(() => {
+      this.processingFiles = false
+    }, 200)
   }
 
   showImagePreviews(files) {
+    console.log('showImagePreviews called with', files.length, 'files')
+    
     // Clear existing previews
     if (this.hasPreviewGridTarget) {
       this.previewGridTarget.innerHTML = ''
@@ -134,6 +175,7 @@ export default class extends Controller {
     // Show preview container
     if (this.hasPreviewContainerTarget) {
       this.previewContainerTarget.classList.remove('hidden')
+      console.log('Preview container shown')
     }
 
     // Show each selected image
@@ -145,6 +187,9 @@ export default class extends Controller {
 
     // Expand the input field
     this.expandInputField()
+    
+    // Expand the card to accommodate images
+    this.expandCard()
   }
 
   createPreviewContainer() {
@@ -211,6 +256,9 @@ export default class extends Controller {
       if (textarea) {
         textarea.classList.add('expanded')
       }
+      
+      // Also expand the card to accommodate growing input
+      this.expandCard()
     }
   }
 
@@ -221,5 +269,157 @@ export default class extends Controller {
         textarea.classList.remove('expanded')
       }
     }
+    
+    // Collapse the card
+    this.collapseCard()
+  }
+
+  expandCard() {
+    if (this.hasCardTarget) {
+      console.log('Expanding card for image previews')
+      
+      // Add CSS class for expansion
+      this.cardTarget.classList.add('expanded-card')
+      
+      // Also set inline styles as backup
+      this.cardTarget.style.transition = 'all 0.3s ease-in-out'
+      this.cardTarget.style.overflow = 'visible'
+      this.cardTarget.style.height = 'auto'
+      this.cardTarget.style.maxHeight = 'none'
+      this.cardTarget.style.minHeight = 'auto'
+      
+      // Force card-body to expand
+      const cardBody = this.cardTarget.querySelector('.card-body')
+      if (cardBody) {
+        cardBody.style.height = 'auto'
+        cardBody.style.maxHeight = 'none'
+        cardBody.style.overflow = 'visible'
+        console.log('Card body expanded')
+      }
+      
+      // Force preview container to be visible and unconstrained
+      if (this.hasPreviewContainerTarget) {
+        this.previewContainerTarget.style.display = 'block'
+        this.previewContainerTarget.style.height = 'auto'
+        this.previewContainerTarget.style.maxHeight = 'none'
+        this.previewContainerTarget.style.overflow = 'visible'
+        console.log('Preview container expanded')
+      }
+      
+      // Check and override any parent container constraints
+      this.overrideParentConstraints()
+      
+      console.log('Card expanded with classes:', this.cardTarget.classList.toString())
+    } else {
+      console.log('No card target found for expansion')
+    }
+  }
+
+  collapseCard() {
+    if (this.hasCardTarget) {
+      // Remove CSS class
+      this.cardTarget.classList.remove('expanded-card')
+      
+      // Reset card styling
+      this.cardTarget.style.transition = ''
+      this.cardTarget.style.overflow = ''
+      this.cardTarget.style.height = ''
+      this.cardTarget.style.maxHeight = ''
+      this.cardTarget.style.minHeight = ''
+      
+      // Reset card-body styling
+      const cardBody = this.cardTarget.querySelector('.card-body')
+      if (cardBody) {
+        cardBody.style.height = ''
+        cardBody.style.maxHeight = ''
+        cardBody.style.overflow = ''
+      }
+      
+      // Reset preview container styling
+      if (this.hasPreviewContainerTarget) {
+        this.previewContainerTarget.style.display = ''
+        this.previewContainerTarget.style.height = ''
+        this.previewContainerTarget.style.maxHeight = ''
+        this.previewContainerTarget.style.overflow = ''
+      }
+    }
+  }
+
+  overrideParentConstraints() {
+    // Check parent containers for height constraints
+    let currentElement = this.cardTarget.parentElement
+    let depth = 0
+    const maxDepth = 8 // Increased depth to reach more parent containers
+    
+    while (currentElement && depth < maxDepth) {
+      // Check if parent has height constraints
+      const computedStyle = window.getComputedStyle(currentElement)
+      const height = computedStyle.height
+      const maxHeight = computedStyle.maxHeight
+      const overflow = computedStyle.overflow
+      const minHeight = computedStyle.minHeight
+      
+      // More aggressive constraint detection
+      if (height !== 'auto' || maxHeight !== 'none' || overflow === 'hidden' || overflow === 'auto' || minHeight !== '0px') {
+        console.log('Found constraining parent at depth', depth, ':', currentElement.className, {
+          height, maxHeight, overflow, minHeight
+        })
+        
+        // Override parent constraints more aggressively
+        currentElement.style.height = 'auto'
+        currentElement.style.maxHeight = 'none'
+        currentElement.style.minHeight = 'auto'
+        currentElement.style.overflow = 'visible'
+        currentElement.style.overflowY = 'visible'
+        currentElement.style.overflowX = 'visible'
+        
+        // Remove flex constraints that might limit height
+        if (currentElement.classList.contains('flex-1')) {
+          currentElement.style.flex = 'none'
+        }
+        
+        // Add a temporary class to mark this element
+        currentElement.classList.add('image-preview-expanded')
+      }
+      
+      currentElement = currentElement.parentElement
+      depth++
+    }
+    
+    // Also check body and html elements
+    document.body.style.height = 'auto'
+    document.body.style.maxHeight = 'none'
+    document.body.style.overflow = 'visible'
+    document.documentElement.style.height = 'auto'
+    document.documentElement.style.maxHeight = 'none'
+    document.documentElement.style.overflow = 'visible'
+  }
+
+  // Method to be called when input content changes
+  handleInputGrowth() {
+    // Expand the card to accommodate growing input
+    this.expandCard()
+    
+    // Also ensure the card stays expanded
+    if (this.hasCardTarget) {
+      this.cardTarget.classList.add('expanded-card')
+      
+      // Remove any height constraints from the card
+      this.cardTarget.style.maxHeight = 'none'
+      this.cardTarget.style.height = 'auto'
+      this.cardTarget.style.overflow = 'visible'
+      
+      // Also ensure the card body can expand
+      const cardBody = this.cardTarget.querySelector('.card-body')
+      if (cardBody) {
+        cardBody.style.maxHeight = 'none'
+        cardBody.style.height = 'auto'
+        cardBody.style.overflow = 'visible'
+      }
+    }
+    
+    // Ensure the page can scroll to accommodate the growing content
+    document.body.style.height = 'auto'
+    document.documentElement.style.height = 'auto'
   }
 }

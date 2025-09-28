@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
   
-  resources :social_posts, only: [:show, :create] do
+  resources :social_posts, only: [:show, :create, :destroy] do
     resources :social_posts, only: [:create], as: :replies
   end
   

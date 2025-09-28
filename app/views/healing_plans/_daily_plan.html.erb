@@ -114,14 +114,26 @@
         <!-- User has already completed their daily plan -->
         <p class="mb-3">Great job! You've completed your daily plan for <%= @date.strftime("%B %d") %> 🎉</p>
         <div class="flex justify-center gap-4">
-          <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-primary text-white", data: { turbo: false } %>
+          <button type="button" 
+                  data-action="healing-plan-progress#savePlan" 
+                  data-healing-plan-progress-target="saveButton"
+                  class="btn btn-primary text-white <%= 'btn-disabled' if @healing_plan_log&.journal_entry.present? %>"
+                  <%= 'disabled' if @healing_plan_log&.journal_entry.present? %>>
+            Save Daily Plan
+          </button>
           <%= button_to "Export as PDF", "#", method: :get, class: "btn btn-outline" %>
         </div>
       <% else %>
         <!-- User hasn't completed their daily plan yet -->
         <p class="mb-3">Follow this plan for 7 days, then reflect on your progress 🌱</p>
         <div class="flex justify-center gap-4">
-          <button type="button" data-action="healing-plan-progress#savePlan" class="btn btn-primary text-white">Save Daily Plan</button>
+          <button type="button" 
+                  data-action="healing-plan-progress#savePlan" 
+                  data-healing-plan-progress-target="saveButton"
+                  class="btn btn-primary text-white <%= 'btn-disabled' if @healing_plan_log&.journal_entry.present? %>"
+                  <%= 'disabled' if @healing_plan_log&.journal_entry.present? %>>
+            Save Daily Plan
+          </button>
           <%= button_to "Export as PDF", "#", method: :get, class: "btn btn-outline" %>
         </div>
       <% end %>

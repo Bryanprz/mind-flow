@@ -124,6 +124,12 @@ export default class extends Controller {
         // Try to find the replies list for the parent post
         const repliesList = document.querySelector(`#replies-list-for-post-${parentPostId}`);
         if (repliesList) {
+          // Hide the "No replies yet" message if it exists
+          const noRepliesMessage = repliesList.querySelector('.text-center.py-8.text-gray-500');
+          if (noRepliesMessage) {
+            noRepliesMessage.remove();
+          }
+          
           repliesList.insertAdjacentHTML('beforeend', data.reply);
           const newReplyElement = repliesList.lastElementChild;
           if (newReplyElement) {

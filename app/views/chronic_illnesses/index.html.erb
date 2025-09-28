@@ -1,5 +1,5 @@
 <turbo-frame id="assessment_frame">
-  <% content_for :main_container_class, 'w-full flex-1 flex justify-center items-stretch bg-base-200' %>
+  <% content_for :main_container_class, 'w-full h-full flex justify-center items-stretch bg-base-200' %>
 
   <%= form_with(url: health_assessment_submit_answers_path(@health_assessment), method: :post) do |form| %>
     <div class="w-full flex flex-col items-center p-8">

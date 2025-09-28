@@ -24,8 +24,12 @@ export default class extends Controller {
   }
   
   updateNavbar() {
-    // Only apply scroll behavior on homepage
-    if (window.location.pathname !== '/' && window.location.pathname !== '') {
+    // Apply scroll behavior on homepage and community page
+    const currentPath = window.location.pathname
+    const isHomePage = currentPath === '/' || currentPath === ''
+    const isCommunityPage = currentPath.includes('/community')
+    
+    if (!isHomePage && !isCommunityPage) {
       return
     }
     

@@ -31,7 +31,7 @@
           <p class="text-lg lg:text-xl text-neutral-content leading-loose" style="line-height:1.7;">
             <strong>AncientHerb</strong> is a daily health tracker that heals chronic illness at the source.<br>
             Using the <span data-tip="<%= @ayurveda_tooltip_text %>" class="tooltip font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">5,000-year-old science of Ayurveda</span>, 
-            it delivers <strong>root healing</strong>—not just symptom management—through guided habits & personalized <span class="font-semibold text-primary">food</span>, <span class="font-semibold text-secondary">herbs</span>, & <span class="font-semibold text-accent">natural cures</span>.
+            it delivers <strong>root healing</strong>—not just symptom management—through personalized <span class="font-semibold text-primary">food</span>, <span class="font-semibold text-secondary">herbs</span>, & <span class="font-semibold text-accent">natural cures</span>.
           </p>
         </div>
       </div>
@@ -39,9 +39,9 @@
       <!-- CTA Buttons -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
         <% if Current.user&.prakruti_entry.present? %>
-          <%= link_to "Continue Your Journey", dashboard_path, class: "btn btn-outline btn-lg text-primary border-primary hover:bg-primary hover:text-white px-8 py-4 text-lg font-semibold" %>
+          <%= link_to "Continue Your Journey", dashboard_path, class: "btn btn-ghost btn-lg text-primary border-2 border-primary hover:bg-primary hover:text-white px-8 py-4 text-lg font-semibold" %>
         <% else %>
-          <%= link_to "✨ Start Your Healing Journey", start_prakruti_assessment_path, class: "btn btn-primary btn-lg text-white px-8 py-4 text-lg font-semibold" %>
+          <%= link_to "✨ Start Your Healing Journey", start_prakruti_assessment_path, class: "btn btn-ghost btn-lg text-primary border-2 border-primary hover:bg-primary hover:text-white px-8 py-4 text-lg font-semibold" %>
         <% end %>
       </div>
     </div>
@@ -106,7 +106,7 @@
       
       <div class="text-center mt-12 mb-16">
         <p class="text-xl text-gray-700 max-w-3xl mx-auto">
-          Yet so many people struggle everyday with their health, unable to live life and enjoy its fruits and beauty
+          Yet so many people struggle everyday with their health,<br>unable to live life and enjoy its fruits and beauty
         </p>
       </div>
     </div>
@@ -217,127 +217,127 @@
 <section class="py-20 bg-[#2c4838] w-full">
   <div class="max-w-7xl mx-auto px-5">
     <div class="text-center mb-16">
-      <h2 class="text-4xl lg:text-5xl font-bold text-neutral-content mb-6">
+      <h2 class="text-4xl lg:text-5xl font-bold text-neutral-content mb-6" style="line-height:1.2;">
         <div><span class="text-primary">Ancient</span><span class="text-secondary">Herb</span> is Your</div>
         <div>Complete Healing Toolkit</div>
       </h2>
-      <p class="text-xl text-neutral-content max-w-3xl mx-auto">
-        Track your progress every day, from meals, to morning and night routines, to herbal recipes, all customized to your unique nature with Ayurveda.
+      <p class="text-xl text-neutral-content max-w-3xl mx-auto" style="line-height:1.6;">
+        Designed to take away the complexity of healing from lifelong chronic illness. Simply start your day, follow the daily plan, and watch your health slowly transform from chronically ill to chronically healthy and happy
       </p>
     </div>
 
     <!-- Bento Grid Layout -->
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
       <!-- Biggest Card - Daily Habit & Journal Tracking -->
-      <div class="md:col-span-2 lg:col-span-2 md:row-span-2 p-8 bg-primary rounded-2xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-2 lg:col-span-2 md:row-span-2 p-8 bg-transparent rounded-lg  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
         <div class="mb-6">
           <div class="flex items-center mb-4">
             <div class="text-6xl mr-4">📊</div>
-            <h3 class="text-2xl lg:text-3xl font-bold text-white">Daily Habit & Journal Tracking</h3>
+            <h3 class="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Daily Habit & Journal Tracking</h3>
           </div>
           <div class="overflow-hidden mb-4">
             <%= image_tag "home/dashboard.webp", alt: "Dashboard showing health tracking interface", class: "w-full h-auto rounded-md", loading: "lazy" %>
           </div>
         </div>
-        <p class="text-white text-md leading-relaxed mb-4">Monitor symptoms, energy levels, and healing progress daily with our intuitive tracking system designed for your unique constitution.</p>
-        <p class="text-white text-md leading-relaxed">Our app is designed to help you build healthy habits that, over time, will heal you of chronic issues. Track your daily routines, meals, sleep patterns, and emotional well-being to identify patterns and make lasting improvements to your health.</p>
+        <p class="text-neutral-content text-md leading-relaxed mb-4">Monitor symptoms, energy levels, and healing progress daily with our intuitive tracking system designed for your unique constitution.</p>
+        <p class="text-neutral-content text-md leading-relaxed">Our app is designed to help you build healthy habits that, over time, will heal you of chronic issues. Track your daily routines, meals, sleep patterns, and emotional well-being to identify patterns and make lasting improvements to your health.</p>
       </div>
 
       <!-- Second-Biggest Card - Personalized Healing Plan -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-secondary rounded-2xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-6 bg-transparent rounded-lg  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
         <div class="flex items-center mb-4">
           <div class="text-4xl mr-3">🍽️</div>
-          <h3 class="text-xl font-bold text-neutral">Personalized Healing Plan</h3>
+          <h3 class="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Personalized Healing Plan</h3>
         </div>
-        <p class="text-neutral text-sm">Get custom meal plans based on your constitution and healing needs.</p>
-        <p class="text-neutral text-sm mt-3">Ayurveda uses the right food as medicine—this is what differentiates it from conventional approaches. Every meal becomes a healing opportunity tailored to your unique nature.</p>
+        <p class="text-neutral-content text-md">Get custom meal plans based on your constitution and healing needs.</p>
+        <p class="text-neutral-content text-md mt-3">Ayurveda uses the right food as medicine—this is what differentiates it from conventional approaches. Every meal becomes a healing opportunity tailored to your unique nature.</p>
       </div>
 
       <!-- Second-Biggest Card - Herbal Remedies -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-accent rounded-2xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-6 bg-transparent rounded-lg  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
         <div class="mb-4">
           <div class="rounded-t-lg overflow-hidden -mx-6 -mt-6 mb-4">
             <%= video_tag "/videos/home/herbal-remedy.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-auto" %>
           </div>
           <div class="flex items-center">
             <div class="text-4xl mr-3">🌿</div>
-            <h3 class="text-xl font-bold text-neutral">Herbal Remedies</h3>
+            <h3 class="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Herbal Remedies</h3>
           </div>
         </div>
-        <p class="text-neutral text-sm">Access time-tested herbal formulas for your specific imbalances.</p>
+        <p class="text-neutral-content text-md">Access time-tested herbal formulas for your specific imbalances.</p>
       </div>
 
       <!-- Second-Biggest Card - Community -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-purple-500 rounded-2xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-6 bg-transparent rounded-lg  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
         <div class="flex items-center mb-4">
           <div class="text-4xl mr-3">🤝</div>
-          <h3 class="text-xl font-bold text-neutral">Heal faster with a community</h3>
+          <h3 class="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Heal faster with a community</h3>
         </div>
-        <p class="text-neutral text-sm">Connect with others on similar healing journeys and accelerate your progress.</p>
+        <p class="text-neutral-content text-md">Connect with others on similar healing journeys and accelerate your progress.</p>
       </div>
 
       <!-- Second-Biggest Card - Learn Natural Healing Wisdom -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-blue-600 rounded-2xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-6 bg-transparent rounded-lg  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
         <div class="flex items-center mb-4">
           <div class="text-4xl mr-3">🎓</div>
-          <h3 class="text-xl font-bold text-white">Learn Natural Healing Wisdom</h3>
+          <h3 class="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Learn Natural Healing Wisdom</h3>
         </div>
-        <p class="text-white text-sm">Classroom where you learn natural self-healing techniques and ancient wisdom.</p>
+        <p class="text-neutral-content text-md">Classroom where you learn natural self-healing techniques and ancient wisdom.</p>
       </div>
 
       <!-- Third-Biggest Card - Daily Guidance -->
-      <div class="md:col-span-1 lg:col-span-1 p-5 bg-orange-500 rounded-2xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-5 bg-transparent rounded-lg  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
         <div class="flex items-center mb-3">
           <div class="text-3xl mr-2">📱</div>
-          <h3 class="text-lg font-bold text-white">Daily Guidance</h3>
+          <h3 class="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Daily Guidance</h3>
         </div>
-        <p class="text-white text-sm">Personalized recommendations daily.</p>
+        <p class="text-neutral-content text-md">Personalized recommendations daily.</p>
       </div>
 
       <!-- Third-Biggest Card - A Place to Heal -->
-      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-neutral rounded-2xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-transparent rounded-lg  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
         <div class="mb-4">
           <div class="rounded-t-lg overflow-hidden -mx-5 -mt-5 mb-4">
             <%= video_tag "/videos/home/meditating.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-auto" %>
           </div>
           <div class="flex items-center">
             <div class="text-3xl mr-2">🧘‍♀️</div>
-            <h3 class="text-lg font-bold text-neutral-content">A Place to Heal Mind Body and Soul</h3>
+            <h3 class="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">A Place to Heal Mind Body and Soul</h3>
           </div>
         </div>
-        <p class="text-neutral-content text-sm">Holistic healing environment for complete wellness transformation.</p>
+        <p class="text-neutral-content text-md">Holistic healing environment for complete wellness transformation.</p>
       </div>
 
       <!-- Third-Biggest Card - Built by Ayurvedic Practitioners -->
-      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-gradient-to-br from-slate-700 to-slate-600 rounded-2xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-transparent rounded-lg  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
         <div class="flex items-center mb-3">
           <div class="text-3xl mr-2">👨‍⚕️</div>
-          <h3 class="text-lg font-bold text-white">Built by Ayurvedic Practitioners</h3>
+          <h3 class="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Built by Ayurvedic Practitioners</h3>
         </div>
-        <p class="text-white text-sm">Created by certified experts with deep knowledge of ancient healing.</p>
+        <p class="text-neutral-content text-md">Created by certified experts with deep knowledge of ancient healing.</p>
       </div>
 
       <!-- Third-Biggest Card - Talk to Practitioners -->
-      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-primary rounded-2xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-transparent rounded-lg  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
         <div class="mb-4">
           <div class="rounded-t-lg overflow-hidden -mx-5 -mt-5 mb-4">
             <%= video_tag "/videos/home/telehealth-ayurveda-two.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-auto" %>
           </div>
           <div class="flex items-center">
             <div class="text-3xl mr-2">👨‍⚕️</div>
-            <h3 class="text-lg font-bold text-white">Talk to Practitioners</h3>
+            <h3 class="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Talk to Practitioners</h3>
           </div>
         </div>
-        <p class="text-white text-sm">Get expert guidance.</p>
+        <p class="text-neutral-content text-md">Get expert guidance.</p>
       </div>
 
       <!-- Third-Biggest Card - AI Chat -->
-      <div class="md:col-span-1 lg:col-span-1 p-5 bg-gradient-to-br from-purple-600 to-purple-500 rounded-2xl hover:scale-[1.02] transition-all duration-300">
+      <div class="md:col-span-1 lg:col-span-1 p-5 bg-transparent rounded-lg  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
         <div class="flex items-center mb-3">
           <div class="text-3xl mr-2">🤖</div>
-          <h3 class="text-lg font-bold text-white">AI Chat specialized in your health</h3>
+          <h3 class="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">AI Chat specialized in your health</h3>
         </div>
-        <p class="text-white text-sm">Get instant AI-powered health insights tailored to your unique constitution.</p>
+        <p class="text-neutral-content text-md">Get instant AI-powered health insights tailored to your unique constitution.</p>
       </div>
     </div>
   </div>
@@ -367,7 +367,7 @@
         <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8 border-2 border-primary/20">
           <div class="bg-white rounded-xl p-6 shadow-lg">
             <div class="rounded-lg overflow-hidden">
-              <%= image_tag "home/weekly-log-ui.webp", alt: "Weekly Log UI showing health tracking dashboard", class: "w-full h-auto", loading: "lazy" %>
+              <%= image_tag "home/weekly-log-ui.png", alt: "Weekly Log UI showing health tracking dashboard", class: "w-full h-auto", loading: "lazy" %>
             </div>
           </div>
         </div>
@@ -562,9 +562,9 @@
     
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
       <% if Current.user&.prakruti_entry.present? %>
-        <%= link_to "Continue Your Journey", dashboard_path, class: "btn btn-primary btn-lg text-white px-8 py-4 text-lg font-semibold" %>
+        <%= link_to "Continue Your Journey", dashboard_path, class: "btn btn-ghost btn-lg text-primary border-2 border-primary hover:bg-primary hover:text-white px-8 py-4 text-lg font-semibold" %>
       <% else %>
-        <%= link_to "🌿 Start Your Healing Journey", start_prakruti_assessment_path, class: "btn btn-primary btn-lg text-white px-8 py-4 text-lg font-semibold" %>
+        <%= link_to "🌿 Start Your Healing Journey", start_prakruti_assessment_path, class: "btn btn-ghost btn-lg text-primary border-2 border-primary hover:bg-primary hover:text-white px-8 py-4 text-lg font-semibold" %>
       <% end %>
     </div>
     

@@ -85,26 +85,26 @@ trix-toolbar {
   display: none !important;
 }
 
-/* Constrain social feed rich text input height to match AI chat input */
+/* Social feed rich text input with unlimited height growth */
 .social-feed-input {
-  height: 2rem !important; /* Slightly reduced height */
   min-height: 2rem !important;
-  max-height: 2rem !important;
+  max-height: none !important; /* Remove height constraint */
   resize: none !important;
-  overflow: hidden !important;
+  overflow: visible !important; /* Allow content to flow naturally */
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Changed from center to flex-start for multi-line */
+  transition: all 0.3s ease !important;
 }
 
 .social-feed-input trix-editor {
-  height: 2.25rem !important;
   min-height: 2.25rem !important;
-  max-height: 2.25rem !important;
-  overflow: hidden !important;
-  padding: 0 !important; /* Removed internal padding for centered placeholder text */
+  max-height: none !important; /* Remove height constraint */
+  overflow: visible !important; /* Allow content to flow naturally */
+  padding: 0.5rem !important; /* Add some padding for better text appearance */
   border: none !important;
   outline: none !important;
   transition: all 0.3s ease !important;
+  line-height: 1.4 !important; /* Better line spacing for readability */
 }
 
 /* Image preview styles */
@@ -149,15 +149,252 @@ trix-toolbar {
   background-color: #dc2626;
 }
 
-/* Expanded input field styles */
+/* Expanded input field styles - unlimited height */
 .social-feed-input.expanded {
-  min-height: 4rem !important;
-  height: auto !important;
+  /* Allow unlimited height growth */
+  min-height: 2rem !important;
+  max-height: none !important;
 }
 
 .social-feed-input.expanded trix-editor {
-  min-height: 4rem !important;
+  /* Allow unlimited height growth */
+  min-height: 2.25rem !important;
+  max-height: none !important;
+}
+
+/* Expanded card styles for image previews and unlimited input growth */
+.expanded-card {
   height: auto !important;
-  max-height: 8rem !important;
-  overflow-y: auto !important;
+  max-height: none !important;
+  min-height: auto !important;
+  overflow: visible !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+/* Force card body to expand */
+.expanded-card .card-body {
+  height: auto !important;
+  max-height: none !important;
+  min-height: auto !important;
+  overflow: visible !important;
+  padding-bottom: 1rem !important;
+}
+
+/* Ensure card grows with input content */
+.card {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.card .card-body {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Ensure social feed input container grows */
+[data-image-preview-target="inputField"] {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Ensure preview container is visible and not constrained */
+.expanded-card [data-image-preview-target="previewContainer"] {
+  display: block !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Make sure preview grid can expand */
+.expanded-card [data-image-preview-target="previewGrid"] {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Override parent container constraints */
+.image-preview-expanded {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Social posts page layout - allow natural height */
+body.social-posts-page {
+  height: auto !important;
+  min-height: 100vh !important;
+}
+
+body.social-posts-page .flex-1 {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+body.social-posts-page #main_content_area {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Override flex constraints on social posts page */
+.w-full.flex-1.flex.justify-center.items-stretch {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  align-items: flex-start !important;
+}
+
+.container.mx-auto.max-w-lg {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Specific overrides for social posts page */
+.social-posts-page {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  align-items: flex-start !important;
+}
+
+.social-posts-page .container {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.social-posts-page #post-form-container {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.social-posts-page #social-posts {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Ensure main content area background extends fully */
+#main_content_area {
+  min-height: 100% !important;
+}
+
+/* Dashboard specific fixes - ensure proper height constraints */
+.drawer {
+  min-height: calc(100vh - 5rem); /* Account for footer height with padding */
+}
+
+/* Allow scrolling on mobile, prevent on desktop */
+.drawer-content {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-content > div {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Mobile: allow scrolling */
+@media (max-width: 1023px) {
+  .drawer-content > div {
+    overflow-y: auto;
+  }
+}
+
+/* Desktop: prevent overflow for full-height layout */
+@media (min-width: 1024px) {
+  .drawer {
+    height: calc(100vh - 5rem);
+    max-height: calc(100vh - 5rem);
+    overflow: hidden;
+  }
+  
+  .drawer-content {
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+  }
+  
+  .drawer-content > div {
+    overflow: hidden;
+  }
+}
+
+/* Ensure grid items stretch to fill their containers */
+.grid > * {
+  height: 100%;
+  min-height: 0;
+}
+
+/* Mobile: ensure dashboard cards have proper minimum heights */
+@media (max-width: 1023px) {
+  .grid > * {
+    min-height: 400px;
+  }
+  
+  /* Ensure dashboard card content areas are properly sized - only target dashboard cards */
+  .dashboard-content .card {
+    min-height: 400px;
+  }
+  
+  .dashboard-content .card-body {
+    min-height: 350px;
+  }
+}
+
+/* Medium screens: slightly larger minimum height */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid > * {
+    min-height: 500px;
+  }
+  
+  .dashboard-content .card {
+    min-height: 500px;
+  }
+  
+  .dashboard-content .card-body {
+    min-height: 450px;
+  }
+}
+
+/* Dashboard specific grid fixes for bottom row */
+.dashboard-grid {
+  display: grid;
+  grid-template-rows: 1fr;
+  align-items: stretch;
+  height: 100%;
+  min-height: 0;
+}
+
+.dashboard-grid > * {
+  height: 100%;
+  min-height: 0;
+}
+
+/* Fix embedded social posts prose spacing */
+.dashboard-content .prose {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.dashboard-content .prose p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.dashboard-content .prose > * + * {
+  margin-top: 0 !important;
 }

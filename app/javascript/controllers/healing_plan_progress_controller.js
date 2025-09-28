@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["progress", "item", "journal", "journalView"]
+  static targets = ["progress", "item", "journal", "journalView", "saveButton"]
   static values = { healingPlanId: Number, healingPlanLogId: Number, date: String } // Added static values
 
   connect() {
@@ -430,12 +430,21 @@ export default class extends Controller {
         }
       }
     }
+    
+    // Enable the save button when editing
+    if (this.hasSaveButtonTarget) {
+      this.saveButtonTarget.disabled = false
+      this.saveButtonTarget.classList.remove('btn-disabled')
+    }
   }
 
   async savePlan() {
     try {
-      // Ensure we have a valid healing plan log
-      await this.ensureHealingPlanLogExists();
+      
+      // Only ensure healing plan log exists if we don't already have one
+      if (!this.healingPlanLogIdValue || this.healingPlanLogIdValue === 0) {
+        await this.ensureHealingPlanLogExists();
+      }
       
       if (!this.healingPlanLogIdValue) {
         const error = new Error('Could not create or find a daily log');
@@ -452,6 +461,12 @@ export default class extends Controller {
       if (result && result.status === 'success') {
         this.triggerConfetti();
         this.showSuccessMessage();
+        
+        // Disable the save button after successful save
+        if (this.hasSaveButtonTarget) {
+          this.saveButtonTarget.disabled = true
+          this.saveButtonTarget.classList.add('btn-disabled')
+        }
       }
       
       // Force UI update

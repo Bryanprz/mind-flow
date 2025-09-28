@@ -64,7 +64,7 @@ class SocialPostsController < ApplicationController
         if @social_post.save
           Rails.logger.info "Social post saved successfully: #{@social_post.id}"
           if @social_post.reply?
-            # For replies, append to the replies list
+            # For replies, append to the replies list and update the replies section
             render turbo_stream: [
               turbo_stream.append("replies-list-for-post-#{@social_post.parent_post_id}", 
                 partial: "social_posts/reply",
@@ -76,6 +76,9 @@ class SocialPostsController < ApplicationController
                 partial: "social_posts/reply_form",
                 locals: { social_post: @social_post.parent_post }
               ),
+              # Update the replies section header with new count
+              turbo_stream.update("replies-section-header-#{@social_post.parent_post_id}",
+                "Replies (#{@social_post.parent_post.replies_count})"),
               turbo_stream.update("flash",
                 partial: "layouts/flash"
               )
@@ -150,6 +153,19 @@ class SocialPostsController < ApplicationController
         end
       end
     end
+  end
+
+  def destroy
+    @social_post = SocialPost.find(params[:id])
+    
+    # Only allow the post owner to delete their own posts
+    if @social_post.user != Current.user
+      redirect_to social_post_path(@social_post), alert: "You can only delete your own posts."
+      return
+    end
+    
+    @social_post.destroy!
+    redirect_to community_path, notice: "Your post has been deleted successfully."
   end
 
   private
