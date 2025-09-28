@@ -9,8 +9,8 @@ export default class extends Controller {
   }
   
   handleClick(event) {
-    // Only prevent default and show modal for submit button clicks
-    if (event.target.type === 'submit' || event.target.closest('button[type="submit"]')) {
+    // Prevent default and show modal for submit button clicks and media icon clicks
+    if (event.target.type === 'submit' || event.target.closest('button[type="submit"]') || event.target.closest('label[for*="media"]')) {
       event.preventDefault()
       this.showSignUpModal()
     }

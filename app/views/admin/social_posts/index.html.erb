@@ -23,7 +23,7 @@
                 <tr>
                   <td><%= post.id %></td>
                   <td><%= post.respond_to?(:user) ? post.user&.name : '-' %></td>
-                  <td class="max-w-[400px] truncate"><%= post.content %></td>
+                  <td class="max-w-[400px] truncate"><%= post.content.to_plain_text %></td>
                   <td><%= post.published_at&.in_time_zone&.strftime('%b %d %Y %H:%M') || '—' %></td>
                   <td>
                     <% img = (post.respond_to?(:media) ? post.media.find { |f| f.image? } : nil) %>

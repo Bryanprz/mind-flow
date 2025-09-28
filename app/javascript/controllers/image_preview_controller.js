@@ -7,13 +7,26 @@ export default class extends Controller {
 
   connect() {
     this.boundHandleFileSelect = this.handleFileSelect.bind(this)
+    this.isFileInputClicking = false // Flag to prevent recursive clicks
     this.setupFileInput()
     this.setupDragAndDrop()
   }
 
   handleFileClick(event) {
+    console.log('handleFileClick triggered', event.target)
+    
+    // Prevent recursive calls from file input clicks
+    if (event.target.type === 'file' || event.target === this.fileInputTarget) {
+      console.log('Ignoring file input click to prevent recursion')
+      return
+    }
+    
+    // Prevent event bubbling to avoid multiple triggers
+    event.stopPropagation()
+    
     // Trigger the hidden file input when the icon is clicked
     if (this.hasFileInputTarget) {
+      console.log('Clicking file input')
       this.fileInputTarget.click()
     }
   }
@@ -40,7 +53,10 @@ export default class extends Controller {
 
   setupFileInput() {
     if (this.hasFileInputTarget) {
+      // Remove any existing listeners to avoid duplicates
+      this.fileInputTarget.removeEventListener('change', this.boundHandleFileSelect)
       this.fileInputTarget.addEventListener('change', this.boundHandleFileSelect)
+      console.log('File input setup complete')
     }
   }
 
@@ -99,9 +115,13 @@ export default class extends Controller {
   }
 
   handleFileSelect(event) {
+    console.log('handleFileSelect triggered', event.target.files?.length)
     const files = event.target.files
     if (files && files.length > 0) {
+      console.log('Files selected:', files.length)
       this.showImagePreviews(files)
+    } else {
+      console.log('No files selected or files cleared')
     }
   }
 
