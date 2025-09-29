@@ -2,7 +2,7 @@
 <% if authenticated? %>
   <li><%= link_to "Dashboard", dashboard_path, class: nav_link_class(dashboard_path) %></li>
   <li><%= link_to "Healing Plan", my_healing_plan_path, class: nav_link_class(my_healing_plan_path) %></li>
-  <li><%= link_to "💬 Chat", rooms_path, class: nav_link_class(rooms_path) %></li>
+  <li><%= link_to "Messages", private_messages_path, class: nav_link_class(private_messages_path) %></li>
 <% end %>
 <li><%= link_to "Community", community_path, class: nav_link_class(community_path) %></li>
 <% if Rails.env.development? %>

@@ -7,7 +7,13 @@
   <!-- Header -->
   <div class="flex-shrink-0 px-2 md:p-4 border-b border-primary">
     <div class="flex justify-between items-center">
-      <%= link_to "← Back to Messages", private_messages_path, 
+      <% 
+        # Check if user came from a user profile page
+        came_from_profile = request.referer&.include?('/users/') && !request.referer&.include?('/messages')
+        back_text = came_from_profile ? "← Back" : "← Back to Messages"
+        back_path = came_from_profile ? :back : private_messages_path
+      %>
+      <%= link_to back_text, back_path, 
           class: "text-primary hover:text-primary-focus hover:bg-primary/10 text-sm font-medium px-2 py-1 rounded transition-colors" %>
       <h1 class="md:text-2xl text-lg font-bold text-primary">
         <% if @room.room_type == 'private' && @other_user %>
