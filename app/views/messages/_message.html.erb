@@ -13,7 +13,7 @@
       <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
     </div>
   </div>
-  <div class="chat-header <%= is_current_user ? 'text-primary' : 'text-secondary' %>">
+  <div class="chat-header <%= is_current_user ? 'text-primary text-right' : 'text-secondary' %>">
     <%= message.user.name %>
     <time class="text-xs opacity-50"><%= message.created_at.strftime("%l:%M %p") %></time>
   </div>
