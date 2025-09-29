@@ -6,23 +6,12 @@ export default class extends Controller {
   static values = { formId: String }
 
   connect() {
-    console.log('Image preview controller connected')
     this.boundHandleFileSelect = this.handleFileSelect.bind(this)
     this.isFileInputClicking = false // Flag to prevent recursive clicks
     this.processingFiles = false // Flag to prevent double processing
     this.setupFileInput()
     this.setupDragAndDrop()
     
-    // Debug: Log available targets
-    console.log('Available targets:', {
-      fileInput: this.hasFileInputTarget,
-      preview: this.hasPreviewTarget,
-      form: this.hasFormTarget,
-      inputField: this.hasInputFieldTarget,
-      previewContainer: this.hasPreviewContainerTarget,
-      previewGrid: this.hasPreviewGridTarget,
-      card: this.hasCardTarget
-    })
   }
 
   handleFileClick(event) {
@@ -91,13 +80,10 @@ export default class extends Controller {
       setTimeout(() => {
         if (this.hasFileInputTarget) {
           this.fileInputTarget.addEventListener('change', this.boundHandleFileSelect)
-          console.log('File input setup complete')
         } else {
-          console.log('File input target not found during setup')
         }
       }, 100) // Increased delay for turbo stream updates
     } else {
-      console.log('No file input target found during setup')
     }
   }
 
@@ -142,7 +128,6 @@ export default class extends Controller {
   handleFiles(files) {
     // Prevent double processing
     if (this.processingFiles) {
-      console.log('File processing already in progress, ignoring drag/drop')
       return
     }
     
@@ -159,7 +144,6 @@ export default class extends Controller {
       this.showImagePreviews(files)
       
       // Debug: Log which form is handling files
-      console.log(`Form ${this.formIdValue || 'unknown'} handling ${files.length} files`)
     }
     
     // Reset processing flag after a short delay
@@ -305,7 +289,6 @@ export default class extends Controller {
 
   expandCard() {
     if (this.hasCardTarget) {
-      console.log('Expanding card for image previews')
       
       // Check if we're in a room/chat context
       const isRoomContext = this.element.closest('#messages') || 
@@ -316,7 +299,6 @@ export default class extends Controller {
       this.cardTarget.classList.add('expanded-card')
       
       if (isRoomContext) {
-        console.log('Room context - using conservative card expansion to prevent scroll issues')
         // For room context, only expand the preview container, not the entire card
         this.cardTarget.style.transition = 'all 0.3s ease-in-out'
         
@@ -326,13 +308,11 @@ export default class extends Controller {
           this.previewContainerTarget.style.height = 'auto'
           this.previewContainerTarget.style.maxHeight = 'none'
           this.previewContainerTarget.style.overflow = 'visible'
-          console.log('Preview container expanded (room mode)')
         }
         
         // Prevent scroll to top by maintaining current scroll position
         this.restoreScrollPosition()
       } else {
-        console.log('Non-room context - using balanced card expansion for image previews')
         // For non-room, use balanced expansion that shows image previews but preserves scroll
         this.cardTarget.style.transition = 'all 0.3s ease-in-out'
         
@@ -346,7 +326,6 @@ export default class extends Controller {
           cardBody.style.height = 'auto'
           cardBody.style.maxHeight = 'none'
           cardBody.style.overflow = 'visible'
-          console.log('Card body expanded for image previews')
         }
         
         // Ensure preview container is fully visible
@@ -356,22 +335,17 @@ export default class extends Controller {
           this.previewContainerTarget.style.maxHeight = 'none'
           this.previewContainerTarget.style.overflow = 'visible'
           this.previewContainerTarget.style.minHeight = '80px' // Ensure enough space for images
-          console.log('Preview container expanded for image visibility')
         }
         
         // Override parent constraints more aggressively for image preview visibility
         this.overrideParentConstraintsForImagePreview()
         
-        console.log('Card expansion completed (balanced mode)')
       }
       
-      console.log('Card expanded with classes:', this.cardTarget.classList.toString())
     } else {
-      console.log('No card target found for expansion - trying fallback')
       // Fallback: try to find the card element manually
       const cardElement = this.element.querySelector('[data-image-preview-target="card"]')
       if (cardElement) {
-        console.log('Found card element via fallback')
         cardElement.classList.add('expanded-card')
         cardElement.style.transition = 'all 0.3s ease-in-out'
         
@@ -381,10 +355,8 @@ export default class extends Controller {
           this.previewContainerTarget.style.height = 'auto'
           this.previewContainerTarget.style.maxHeight = 'none'
           this.previewContainerTarget.style.overflow = 'visible'
-          console.log('Preview container expanded (fallback mode)')
         }
       } else {
-        console.log('No card element found even with fallback')
       }
     }
   }
@@ -426,7 +398,6 @@ export default class extends Controller {
                          this.element.closest('[data-controller*="room-channel"]')
     
     if (isRoomContext) {
-      console.log('Room context detected - using minimal constraint override to preserve scroll')
       // In room context, only override the immediate parent of the card
       // Don't touch the messages container or its parents
       let currentElement = this.cardTarget.parentElement
@@ -438,7 +409,6 @@ export default class extends Controller {
         if (currentElement.id === 'messages' || 
             currentElement.classList.contains('h-full') ||
             currentElement.classList.contains('overflow-y-auto')) {
-          console.log('Skipping messages container to preserve scroll')
           break
         }
         
@@ -447,7 +417,6 @@ export default class extends Controller {
         
         // Only override if it's clearly constraining the preview and not critical for layout
         if (maxHeight !== 'none' && maxHeight !== '100%' && !currentElement.classList.contains('flex-1')) {
-          console.log('Overriding constraint at depth', depth, ':', currentElement.className)
           currentElement.style.maxHeight = 'none'
           currentElement.style.overflow = 'visible'
           currentElement.classList.add('image-preview-expanded')
@@ -470,7 +439,6 @@ export default class extends Controller {
         const minHeight = computedStyle.minHeight
         
         if (height !== 'auto' || maxHeight !== 'none' || overflow === 'hidden' || overflow === 'auto' || minHeight !== '0px') {
-          console.log('Found constraining parent at depth', depth, ':', currentElement.className)
           
           currentElement.style.height = 'auto'
           currentElement.style.maxHeight = 'none'
@@ -494,7 +462,6 @@ export default class extends Controller {
   
   // Method specifically for overriding constraints to show image previews
   overrideParentConstraintsForImagePreview() {
-    console.log('Overriding parent constraints for image preview visibility')
     let currentElement = this.cardTarget.parentElement
     let depth = 0
     const maxDepth = 6 // More aggressive for image preview visibility
@@ -508,7 +475,6 @@ export default class extends Controller {
       
       // Be more aggressive about removing constraints for image preview visibility
       if (height !== 'auto' || maxHeight !== 'none' || overflow === 'hidden' || overflow === 'auto' || minHeight !== '0px') {
-        console.log('Removing constraint for image preview at depth', depth, ':', currentElement.className)
         
         currentElement.style.height = 'auto'
         currentElement.style.maxHeight = 'none'
@@ -538,20 +504,12 @@ export default class extends Controller {
       this.storedScrollHeight = messagesContainer.scrollHeight
       this.storedClientHeight = messagesContainer.clientHeight
       
-      console.log('Stored scroll position:', {
-        scrollTop: this.storedScrollTop,
-        scrollHeight: this.storedScrollHeight,
-        clientHeight: this.storedClientHeight,
-        isAtBottom: this.storedScrollTop >= (this.storedScrollHeight - this.storedClientHeight - 50)
-      })
-      
       // Create anchor element at the bottom of messages
       this.createScrollAnchor()
       
       // Temporarily disable auto-scrolling in the scroll-to controller
       const scrollToController = this.getScrollToController()
       if (scrollToController) {
-        console.log('Disabling auto-scroll in scroll-to controller')
         scrollToController.disableAutoScroll()
         // Store reference for later re-enabling
         this.scrollToController = scrollToController
@@ -559,12 +517,7 @@ export default class extends Controller {
       
       // Add scroll event listener to monitor what's happening
       this.scrollMonitor = (event) => {
-        console.log('Scroll event detected:', {
-          scrollTop: messagesContainer.scrollTop,
-          scrollHeight: messagesContainer.scrollHeight,
-          clientHeight: messagesContainer.clientHeight,
-          target: event.target
-        })
+        // Monitor scroll events
       }
       messagesContainer.addEventListener('scroll', this.scrollMonitor)
     }
@@ -585,16 +538,13 @@ export default class extends Controller {
     // Add anchor to the preview container if it exists, otherwise to the card
     if (this.hasPreviewContainerTarget) {
       this.previewContainerTarget.appendChild(this.scrollAnchor)
-      console.log('Created scroll anchor at preview container:', this.scrollAnchor.id)
     } else if (this.hasCardTarget) {
       this.cardTarget.appendChild(this.scrollAnchor)
-      console.log('Created scroll anchor at card:', this.scrollAnchor.id)
     } else {
       // Fallback to messages container
       const messagesContainer = document.getElementById('messages')
       if (messagesContainer) {
         messagesContainer.appendChild(this.scrollAnchor)
-        console.log('Created scroll anchor at messages container:', this.scrollAnchor.id)
       }
     }
   }
@@ -604,7 +554,6 @@ export default class extends Controller {
     if (this.scrollAnchor && this.scrollAnchor.parentNode) {
       this.scrollAnchor.parentNode.removeChild(this.scrollAnchor)
       this.scrollAnchor = null
-      console.log('Removed scroll anchor')
     }
   }
 
@@ -617,20 +566,12 @@ export default class extends Controller {
         const currentScrollHeight = messagesContainer.scrollHeight
         const heightDifference = currentScrollHeight - this.storedScrollHeight
         
-        console.log('Scroll restoration details:', {
-          storedScrollTop: this.storedScrollTop,
-          storedScrollHeight: this.storedScrollHeight,
-          currentScrollHeight: currentScrollHeight,
-          heightDifference: heightDifference
-        })
-        
         // If we were at the bottom before, use anchor to scroll to bottom
         const bottomThreshold = 50 // pixels from bottom
         const wasAtBottom = this.storedScrollTop >= (this.storedScrollHeight - this.storedClientHeight - bottomThreshold)
         
         if (wasAtBottom) {
           // User was at the bottom - scroll to anchor
-          console.log('User was at bottom, scrolling to anchor')
           this.scrollToAnchor()
         } else {
           // User was scrolled up, maintain their relative position
@@ -639,13 +580,11 @@ export default class extends Controller {
           const finalScrollTop = Math.min(newScrollTop, maxScrollTop)
           
           messagesContainer.scrollTop = finalScrollTop
-          console.log('Maintained relative position:', finalScrollTop)
         }
         
         // Re-enable auto-scrolling after a delay
         setTimeout(() => {
           if (this.scrollToController) {
-            console.log('Re-enabling auto-scroll after delay')
             this.scrollToController.enableAutoScroll()
             this.scrollToController = null
           }
@@ -666,7 +605,6 @@ export default class extends Controller {
   // Method to scroll to the anchor
   scrollToAnchor() {
     if (this.scrollAnchor) {
-      console.log('Scrolling to anchor:', this.scrollAnchor.id)
       this.scrollAnchor.scrollIntoView({ 
         behavior: 'auto', // Remove smooth animation
         block: 'start', // Scroll to show the image preview from the top
@@ -677,7 +615,6 @@ export default class extends Controller {
       const messagesContainer = document.getElementById('messages')
       if (messagesContainer) {
         messagesContainer.scrollTop = messagesContainer.scrollHeight
-        console.log('Fallback: scrolled to bottom')
       }
     }
   }
@@ -703,7 +640,6 @@ export default class extends Controller {
 
   // Method to restore layout when scroll area is broken
   restoreLayoutForScroll() {
-    console.log('Attempting to restore layout for scroll')
     const messagesContainer = document.getElementById('messages')
     if (!messagesContainer) return
     
@@ -715,7 +651,6 @@ export default class extends Controller {
     while (currentElement && depth < maxDepth) {
       // Reset any problematic styles that might be preventing proper height
       if (currentElement.classList.contains('image-preview-expanded')) {
-        console.log('Resetting expanded parent at depth', depth)
         currentElement.style.height = ''
         currentElement.style.maxHeight = ''
         currentElement.style.minHeight = ''
@@ -741,7 +676,6 @@ export default class extends Controller {
   
   // Method to force messages container to have proper height
   forceMessagesContainerHeight() {
-    console.log('Forcing messages container height')
     const messagesContainer = document.getElementById('messages')
     if (!messagesContainer) return
     
@@ -777,7 +711,6 @@ export default class extends Controller {
     const wasAtBottom = this.storedScrollTop >= (this.storedScrollHeight - this.storedClientHeight - 50)
     
     if (wasAtBottom) {
-      console.log('Locking scroll position at bottom')
       
       // Immediately set scroll to bottom
       messagesContainer.scrollTop = messagesContainer.scrollHeight
@@ -808,7 +741,6 @@ export default class extends Controller {
     const wasAtBottom = this.storedScrollTop >= (this.storedScrollHeight - this.storedClientHeight - 50)
     
     if (wasAtBottom) {
-      console.log('Starting continuous scroll maintenance with anchor')
       
       // Scroll to anchor every 100ms for 1 second
       let attempts = 0
@@ -819,7 +751,6 @@ export default class extends Controller {
         this.scrollToAnchor()
         
         if (attempts >= maxAttempts) {
-          console.log('Continuous scroll maintenance completed')
           clearInterval(this.scrollMaintenanceInterval)
           
           // Remove scroll prevention handler

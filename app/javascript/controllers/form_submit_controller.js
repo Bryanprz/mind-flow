@@ -6,14 +6,9 @@ export default class extends Controller {
   }
 
   handleClick(event) {
-    console.log("Submit button clicked!")
-    console.log("Form element:", this.element)
-    console.log("Form action:", this.element.action)
-    console.log("Form method:", this.element.method)
     
     // Prevent double submission
     if (this.submitting) {
-      console.log("Form already submitting, preventing double submission")
       event.preventDefault()
       event.stopPropagation()
       return false
@@ -21,10 +16,8 @@ export default class extends Controller {
     
     // Check if form is valid
     const isValid = this.element.checkValidity()
-    console.log("Form is valid:", isValid)
     
     if (!isValid) {
-      console.log("Form validation failed!")
       this.element.reportValidity()
       return false
     }

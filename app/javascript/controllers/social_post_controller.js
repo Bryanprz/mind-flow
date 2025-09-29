@@ -62,7 +62,6 @@ export default class extends Controller {
   }
 
   createReply(event) {
-    console.log("createReply triggered");
     event.preventDefault();
     const form = event.target;
     const url = form.action;
@@ -81,9 +80,6 @@ export default class extends Controller {
         
         const content = trixEditor.editor.element.innerHTML;
         const textContent = trixEditor.editor.getDocument().toString().trim();
-        console.log('Trix content:', content);
-        console.log('Trix text:', textContent);
-        console.log('Hidden input value before:', hiddenInput.value);
         
         // Force update the hidden input with the current content
         if (textContent === '') {
@@ -92,7 +88,6 @@ export default class extends Controller {
           hiddenInput.value = content;
         }
         
-        console.log('Hidden input value after:', hiddenInput.value);
       }
     }
 
@@ -105,26 +100,19 @@ export default class extends Controller {
       if (statusMessages) statusMessages.innerHTML = '';
 
       // Debug: Log what we're sending
-      console.log('Form data entries:');
       for (let [key, value] of formData.entries()) {
-        console.log(key, ':', value);
       }
       
       // Additional debugging for content field
       const contentValue = formData.get('social_post[content]');
-      console.log('Content field value:', contentValue);
-      console.log('Content field length:', contentValue ? contentValue.length : 0);
       
       // Fallback: If content is empty but Trix editor has content, force it
       if ((!contentValue || contentValue.trim() === '') && trixEditor && trixEditor.editor) {
         const trixContent = trixEditor.editor.element.innerHTML;
         const trixText = trixEditor.editor.getDocument().toString().trim();
-        console.log('Fallback: Trix content detected:', trixContent);
-        console.log('Fallback: Trix text detected:', trixText);
         
         if (trixText !== '') {
           formData.set('social_post[content]', trixContent);
-          console.log('Fallback: Content set to:', trixContent);
         }
       }
 

@@ -191,7 +191,6 @@ export default class extends Controller {
 
   submit() {
     try {
-      console.log('Submitting form...')
       // Use the form's submit method which is more widely supported
       const form = this.element.querySelector('form')
       if (form) {

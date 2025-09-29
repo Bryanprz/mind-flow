@@ -10,7 +10,6 @@ export default class extends Controller {
   }
 
   selectFile(event) {
-    console.log("selectFile called");
     this.fileInputTarget.click();
   }
 
