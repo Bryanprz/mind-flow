@@ -3,10 +3,12 @@
 <div class="max-w-2xl mx-auto pb-6">
   <!-- Cover Photo Section -->
   <div class="relative">
-    <div class="h-48 w-full cursor-pointer group relative overflow-hidden" 
-         data-controller="cover-image-upload" 
-         data-cover-image-upload-user-id-value="<%= @user.id %>" 
-         data-action="click->cover-image-upload#selectFile dragover->cover-image-upload#dragOver dragleave->cover-image-upload#dragLeave drop->cover-image-upload#drop">
+    <div class="h-48 w-full <%= 'cursor-pointer group' if authenticated? && Current.user == @user %> relative overflow-hidden" 
+         <% if authenticated? && Current.user == @user %>
+           data-controller="cover-image-upload" 
+           data-cover-image-upload-user-id-value="<%= @user.id %>" 
+           data-action="click->cover-image-upload#selectFile dragover->cover-image-upload#dragOver dragleave->cover-image-upload#dragLeave drop->cover-image-upload#drop"
+         <% end %>>
       <% if @user.cover_image.attached? %>
         <%= image_tag @user.cover_image, class: "w-full h-full object-cover" %>
       <% else %>
@@ -15,26 +17,35 @@
             <svg class="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
-            <p class="text-sm opacity-75">Click to upload cover photo</p>
+            <% if authenticated? && Current.user == @user %>
+              <p class="text-sm opacity-75">Click to upload cover photo</p>
+            <% end %>
           </div>
         </div>
       <% end %>
-      <input type="file" accept="image/*" class="hidden" data-cover-image-upload-target="fileInput" data-action="change->cover-image-upload#uploadFile">
-      <div data-cover-image-upload-target="progress" class="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center text-white text-lg font-bold opacity-0 transition-opacity duration-200">0%</div>
-      <!-- Upload overlay on hover -->
-      <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center">
-        <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-          </svg>
+      <% if authenticated? && Current.user == @user %>
+        <input type="file" accept="image/*" class="hidden" data-cover-image-upload-target="fileInput" data-action="change->cover-image-upload#uploadFile">
+        <div data-cover-image-upload-target="progress" class="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center text-white text-lg font-bold opacity-0 transition-opacity duration-200">0%</div>
+        <!-- Upload overlay on hover -->
+        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center">
+          <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
     
     <!-- Profile Picture -->
     <div class="absolute -bottom-16 left-6">
-      <div class="avatar group" data-controller="avatar-upload" data-avatar-upload-user-id-value="<%= @user.id %>" data-action="click->avatar-upload#selectFile dragover->avatar-upload#dragOver dragleave->avatar-upload#dragLeave drop->avatar-upload#drop">
-        <div class="w-32 h-32 rounded-full ring-4 ring-white relative overflow-hidden cursor-pointer">
+      <div class="avatar <%= 'group' if authenticated? && Current.user == @user %>" 
+           <% if authenticated? && Current.user == @user %>
+             data-controller="avatar-upload" 
+             data-avatar-upload-user-id-value="<%= @user.id %>" 
+             data-action="click->avatar-upload#selectFile dragover->avatar-upload#dragOver dragleave->avatar-upload#dragLeave drop->avatar-upload#drop"
+           <% end %>>
+        <div class="w-32 h-32 rounded-full ring-4 ring-white relative overflow-hidden <%= 'cursor-pointer' if authenticated? && Current.user == @user %>">
           <% if @user.avatar.attached? %>
             <%= image_tag @user.avatar, class: "w-full h-full object-cover" %>
           <% else %>
@@ -42,17 +53,21 @@
               <%= @user.name[0].upcase %>
             </div>
           <% end %>
-          <input type="file" accept="image/*" class="hidden" data-avatar-upload-target="fileInput" data-action="change->avatar-upload#uploadFile">
-          <!-- Upload overlay on hover -->
-          <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center z-10">
-            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-              </svg>
+          <% if authenticated? && Current.user == @user %>
+            <input type="file" accept="image/*" class="hidden" data-avatar-upload-target="fileInput" data-action="change->avatar-upload#uploadFile">
+            <!-- Upload overlay on hover -->
+            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center z-10">
+              <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+              </div>
             </div>
-          </div>
+          <% end %>
         </div>
-        <div data-avatar-upload-target="progress" class="absolute inset-0 bg-blue-500 bg-opacity-75 flex items-center justify-center text-white text-lg font-bold opacity-0 transition-opacity duration-200 z-20">0%</div>
+        <% if authenticated? && Current.user == @user %>
+          <div data-avatar-upload-target="progress" class="absolute inset-0 bg-blue-500 bg-opacity-75 flex items-center justify-center text-white text-lg font-bold opacity-0 transition-opacity duration-200 z-20">0%</div>
+        <% end %>
       </div>
     </div>
   </div>

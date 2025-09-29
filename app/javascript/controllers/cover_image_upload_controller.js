@@ -77,7 +77,8 @@ export default class extends Controller {
         window.location.reload(); // Reload page to show new cover image
       } else {
         console.error("Failed to attach cover image:", data.errors);
-        alert('Failed to attach cover image. Please try again.');
+        const errorMessage = data.errors && data.errors.length > 0 ? data.errors.join(', ') : 'Failed to attach cover image. Please try again.';
+        alert(errorMessage);
       }
     })
     .catch(error => {

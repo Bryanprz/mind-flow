@@ -142,6 +142,13 @@ class UsersController < ApplicationController
     else
       @user = User.all.find { |user| user.slug == params[:slug] }
     end
+    
+    # Authorization check: Only the profile owner can upload their avatar
+    unless authenticated? && Current.user == @user
+      render json: { success: false, errors: ["Unauthorized: You can only upload your own avatar"] }, status: :forbidden
+      return
+    end
+    
     begin
       if @user.update(avatar: params[:avatar])
         render json: { success: true, avatar_url: url_for(@user.avatar) }
@@ -164,6 +171,13 @@ class UsersController < ApplicationController
     else
       @user = User.all.find { |user| user.slug == params[:slug] }
     end
+    
+    # Authorization check: Only the profile owner can upload their cover image
+    unless authenticated? && Current.user == @user
+      render json: { success: false, errors: ["Unauthorized: You can only upload your own cover image"] }, status: :forbidden
+      return
+    end
+    
     begin
       if @user.update(cover_image: params[:cover_image])
         render json: { success: true, cover_image_url: url_for(@user.cover_image) }

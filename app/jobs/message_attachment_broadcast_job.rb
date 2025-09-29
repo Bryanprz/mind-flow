@@ -3,7 +3,7 @@ class MessageAttachmentBroadcastJob < ApplicationJob
 
   def perform(message_id)
     Rails.logger.info "🔄 MessageAttachmentBroadcastJob: Re-broadcasting message #{message_id}"
-    message = Message.find(message_id)
+    message = Message.includes(:user).find(message_id)
     
     Rails.logger.info "🔄 Message attachments: #{message.attachments.attached? ? 'attached' : 'not attached'}"
     

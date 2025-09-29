@@ -12,8 +12,20 @@
      data-has-attachments="<%= message.attachments.attached? %>"
      data-auto-refresh="<%= message.attachments.attached? && (Time.current - message.created_at) < 5.seconds %>">
   <div class="chat-image avatar">
-    <div class="w-10 rounded-full">
-      <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+    <div class="w-10 rounded-full overflow-hidden">
+      <% if message.user.avatar.attached? %>
+        <%= image_tag message.user.avatar, 
+                      class: "w-full h-full object-cover", 
+                      loading: "eager",
+                      onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
+        <div class="w-full h-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold" style="display: none;">
+          <%= message.user.name[0].upcase %>
+        </div>
+      <% else %>
+        <div class="w-full h-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold">
+          <%= message.user.name[0].upcase %>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="chat-header <%= is_current_user ? 'text-primary text-right' : 'text-secondary' %>">

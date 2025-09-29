@@ -121,7 +121,15 @@
                   <%= 'disabled' if @healing_plan_log&.journal_entry.present? %>>
             Save Daily Plan
           </button>
-          <%= button_to "Export as PDF", "#", method: :get, class: "btn btn-outline" %>
+          <button type="button" 
+                  data-controller="share-button" 
+                  data-action="click->share-button#share"
+                  data-share-button-url-value="<%= request.original_url %>"
+                  data-share-button-title-value="<%= @healing_plan.name %> for <%= @date.strftime("%b %d") %>"
+                  data-share-button-text-value="Check out my daily healing plan progress!"
+                  class="btn btn-outline">
+            📤 Share
+          </button>
         </div>
       <% else %>
         <!-- User hasn't completed their daily plan yet -->
@@ -134,7 +142,15 @@
                   <%= 'disabled' if @healing_plan_log&.journal_entry.present? %>>
             Save Daily Plan
           </button>
-          <%= button_to "Export as PDF", "#", method: :get, class: "btn btn-outline" %>
+          <button type="button" 
+                  data-controller="share-button" 
+                  data-action="click->share-button#share"
+                  data-share-button-url-value="<%= request.original_url %>"
+                  data-share-button-title-value="<%= @healing_plan.name %> for <%= @date.strftime("%b %d") %>"
+                  data-share-button-text-value="Check out my daily healing plan progress!"
+                  class="btn btn-outline">
+            📤 Share
+          </button>
         </div>
       <% end %>
     </div>

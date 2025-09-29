@@ -15,11 +15,13 @@ class Message < ApplicationRecord
     # Use broadcast_append_later_to for async, non-blocking broadcasting
     # Pass the message user so each client can determine their own positioning
     # Ensure attachments are loaded before broadcasting
+    # Reload with associations to ensure avatar is available
+    message_with_user = Message.includes(:user).find(id)
     broadcast_append_later_to(
       "room_#{room.id}",
       target: "messages",
       partial: "messages/message",
-      locals: { message: self.reload, message_user: user }
+      locals: { message: message_with_user, message_user: user }
     )
     
     # If message has attachments, also schedule a delayed broadcast to ensure images show

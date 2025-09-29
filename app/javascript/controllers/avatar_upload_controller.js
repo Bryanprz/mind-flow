@@ -78,7 +78,8 @@ export default class extends Controller {
         window.location.reload(); // Reload page to show new avatar
       } else {
         console.error("Failed to attach avatar:", data.errors);
-        alert('Failed to attach avatar. Please try again.');
+        const errorMessage = data.errors && data.errors.length > 0 ? data.errors.join(', ') : 'Failed to attach avatar. Please try again.';
+        alert(errorMessage);
       }
     })
     .catch(error => {
