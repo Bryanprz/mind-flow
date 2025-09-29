@@ -18,6 +18,7 @@ class RoomsController < ApplicationController
   def show
     @messages = @room.messages.includes(:user, :rich_text_content).order(:created_at)
     @message = Message.new
+    @other_user = @room.other_user(Current.user) if @room.room_type == 'private'
   end
   
   def create

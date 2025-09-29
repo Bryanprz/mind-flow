@@ -28,4 +28,9 @@ class Room < ApplicationRecord
     return false unless room_type == 'private'
     users.include?(user1) && users.include?(user2) && users.count == 2
   end
+  
+  def other_user(current_user)
+    return nil unless room_type == 'private' && users.count == 2
+    users.find { |user| user != current_user }
+  end
 end

@@ -9,7 +9,13 @@
     <div class="flex justify-between items-center">
       <%= link_to "← Back to Messages", private_messages_path, 
           class: "text-primary hover:text-primary-focus hover:bg-primary/10 text-sm font-medium px-2 py-1 rounded transition-colors" %>
-      <h1 class="md:text-2xl text-lg font-bold text-primary"><%= @room.name %></h1>
+      <h1 class="md:text-2xl text-lg font-bold text-primary">
+        <% if @room.room_type == 'private' && @other_user %>
+          Private chat with <%= @other_user.name %>
+        <% else %>
+          <%= @room.name %>
+        <% end %>
+      </h1>
     </div>
   </div>
   
