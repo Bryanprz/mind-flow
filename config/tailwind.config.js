@@ -83,6 +83,7 @@ module.exports = {
     'h-36',
     'h-40',
     'w-[40rem]',
+    'p-7',
     'mb-8',
     'rounded-xl',
     'timeline', 

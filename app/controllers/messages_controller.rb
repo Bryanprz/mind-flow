@@ -6,21 +6,14 @@ class MessagesController < ApplicationController
     
     respond_to do |format|
       if @message.save
-        # Broadcasting now happens automatically via the model callback
+        # Broadcasting happens automatically via the model callback
         format.turbo_stream do
-          # Reset form for sender and append the new message
-          render turbo_stream: [
-            turbo_stream.update(
-              "message_form",
-              partial: "messages/form",
-              locals: { message: Message.new, room: @room }
-            ),
-            turbo_stream.append(
-              "messages",
-              partial: "messages/message",
-              locals: { message: @message }
-            )
-          ]
+          # Only reset form for sender
+          render turbo_stream: turbo_stream.update(
+            "message_form",
+            partial: "messages/form",
+            locals: { message: Message.new, room: @room }
+          )
         end
         format.html { redirect_to @room }
       else
@@ -31,7 +24,7 @@ class MessagesController < ApplicationController
             locals: { message: @message, room: @room }
           )
         end
-        format.html { render :show }
+        format.html { redirect_to @room, alert: "Message could not be sent" }
       end
     end
   end

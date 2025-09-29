@@ -5,15 +5,7 @@ class Message < ApplicationRecord
   has_rich_text :content
   has_many_attached :attachments
   
-  validate :content_or_attachments_present
-  
-  private
-  
-  def content_or_attachments_present
-    if content.blank? && attachments.empty?
-      errors.add(:base, "Message must have either content or attachments")
-    end
-  end
+  validates :content, presence: true, unless: -> { attachments.attached? }
   
   after_create_commit :broadcast_message, :update_memberships_last_read
   

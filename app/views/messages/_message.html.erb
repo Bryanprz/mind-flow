@@ -32,17 +32,8 @@
           
           <% case attachment_status[:status] %>
           <% when :image %>
-            <div class="relative">
-              <%= image_tag attachment, class: "max-w-xs max-h-48 rounded-lg object-cover cursor-pointer", 
-                          data: { action: "click->image-preview#openModal" },
-                          onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
-              <!-- Fallback for broken images -->
-              <div class="hidden flex items-center gap-2 p-2 bg-gray-100 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
-                </svg>
-                <span class="text-sm text-gray-600">Image loading...</span>
-              </div>
+            <div class="rounded-lg">
+              <%= image_tag attachment, class: "max-w-xs max-h-48 rounded-lg object-cover" %>
             </div>
           <% when :file %>
             <div class="flex items-center gap-2 p-2 bg-gray-100 rounded-lg">

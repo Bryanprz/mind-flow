@@ -43,7 +43,12 @@ module ApplicationHelper
     begin
       if attachment.respond_to?(:attached?) && attachment.attached?
         if attachment.respond_to?(:image?) && attachment.image?
-          { status: :image, message: 'Image ready' }
+          # Check if the attachment is ready for display
+          if attachment.respond_to?(:analyzed?) && attachment.analyzed?
+            { status: :image, message: 'Image ready' }
+          else
+            { status: :processing, message: 'Processing attachment...' }
+          end
         else
           { status: :file, message: 'File ready' }
         end

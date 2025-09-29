@@ -19,7 +19,14 @@ export default class extends Controller {
   submitForm() {
     // Check if there's any content
     const content = this.contentTarget.value.trim()
-    if (content === '' || content === '<div><br></div>' || content === '<p><br></p>') {
+    const hasContent = content && content !== '<div><br></div>' && content !== '<p><br></p>'
+    
+    // Check if there are any file attachments
+    const fileInput = this.formTarget.querySelector('input[type="file"]')
+    const hasAttachments = fileInput && fileInput.files && fileInput.files.length > 0
+    
+    // Only submit if there's content OR attachments
+    if (!hasContent && !hasAttachments) {
       return
     }
     
