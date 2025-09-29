@@ -64,6 +64,22 @@ export default class extends Controller {
         mediaUploadArea.removeEventListener('drop', this.boundHandleDrop)
       }
     }
+    
+    // Clean up scroll maintenance
+    if (this.scrollMaintenanceInterval) {
+      clearInterval(this.scrollMaintenanceInterval)
+    }
+    
+    // Clean up scroll monitor and prevention handler
+    const messagesContainer = document.getElementById('messages')
+    if (messagesContainer) {
+      if (this.scrollMonitor) {
+        messagesContainer.removeEventListener('scroll', this.scrollMonitor)
+      }
+      if (this.scrollPreventionHandler) {
+        messagesContainer.removeEventListener('scroll', this.scrollPreventionHandler)
+      }
+    }
   }
 
   setupFileInput() {
@@ -175,6 +191,9 @@ export default class extends Controller {
     // Store current scroll position before making any changes
     this.storeScrollPosition()
     
+    // Lock scroll position immediately
+    this.lockScrollPosition()
+    
     // Clear existing previews in this specific form only
     if (this.hasPreviewGridTarget) {
       this.previewGridTarget.innerHTML = ''
@@ -198,10 +217,8 @@ export default class extends Controller {
     // Expand the card to accommodate images for this specific form
     this.expandCard()
     
-    // Restore scroll position after expansion with a delay to ensure DOM is updated
-    setTimeout(() => {
-      this.restoreScrollPosition()
-    }, 100)
+    // Continuously maintain scroll position
+    this.continuousScrollMaintenance()
   }
 
   createPreviewContainer() {
@@ -236,9 +253,6 @@ export default class extends Controller {
       
       if (this.hasPreviewGridTarget) {
         this.previewGridTarget.appendChild(previewItem)
-        
-        // Ensure the image preview is visible by scrolling if necessary
-        this.ensureImagePreviewVisible(previewItem)
       }
     }
     reader.readAsDataURL(file)
@@ -531,11 +545,16 @@ export default class extends Controller {
         isAtBottom: this.storedScrollTop >= (this.storedScrollHeight - this.storedClientHeight - 50)
       })
       
+      // Create anchor element at the bottom of messages
+      this.createScrollAnchor()
+      
       // Temporarily disable auto-scrolling in the scroll-to controller
       const scrollToController = this.getScrollToController()
       if (scrollToController) {
         console.log('Disabling auto-scroll in scroll-to controller')
         scrollToController.disableAutoScroll()
+        // Store reference for later re-enabling
+        this.scrollToController = scrollToController
       }
       
       // Add scroll event listener to monitor what's happening
@@ -550,8 +569,46 @@ export default class extends Controller {
       messagesContainer.addEventListener('scroll', this.scrollMonitor)
     }
   }
+  
+  // Method to create a scroll anchor at the image preview
+  createScrollAnchor() {
+    // Remove existing anchor if any
+    this.removeScrollAnchor()
+    
+    // Create anchor element and place it at the image preview container
+    this.scrollAnchor = document.createElement('div')
+    this.scrollAnchor.id = 'scroll-anchor-' + Date.now()
+    this.scrollAnchor.style.height = '1px'
+    this.scrollAnchor.style.width = '1px'
+    this.scrollAnchor.style.visibility = 'hidden'
+    
+    // Add anchor to the preview container if it exists, otherwise to the card
+    if (this.hasPreviewContainerTarget) {
+      this.previewContainerTarget.appendChild(this.scrollAnchor)
+      console.log('Created scroll anchor at preview container:', this.scrollAnchor.id)
+    } else if (this.hasCardTarget) {
+      this.cardTarget.appendChild(this.scrollAnchor)
+      console.log('Created scroll anchor at card:', this.scrollAnchor.id)
+    } else {
+      // Fallback to messages container
+      const messagesContainer = document.getElementById('messages')
+      if (messagesContainer) {
+        messagesContainer.appendChild(this.scrollAnchor)
+        console.log('Created scroll anchor at messages container:', this.scrollAnchor.id)
+      }
+    }
+  }
+  
+  // Method to remove scroll anchor
+  removeScrollAnchor() {
+    if (this.scrollAnchor && this.scrollAnchor.parentNode) {
+      this.scrollAnchor.parentNode.removeChild(this.scrollAnchor)
+      this.scrollAnchor = null
+      console.log('Removed scroll anchor')
+    }
+  }
 
-  // Method to restore scroll position
+  // Method to restore scroll position using anchor
   restoreScrollPosition() {
     const messagesContainer = document.getElementById('messages')
     if (messagesContainer && this.storedScrollTop !== undefined) {
@@ -567,106 +624,14 @@ export default class extends Controller {
           heightDifference: heightDifference
         })
         
-        // If we were at the bottom before, stay at the bottom
-        // Use a more generous threshold to detect if user was at bottom
+        // If we were at the bottom before, use anchor to scroll to bottom
         const bottomThreshold = 50 // pixels from bottom
         const wasAtBottom = this.storedScrollTop >= (this.storedScrollHeight - this.storedClientHeight - bottomThreshold)
         
         if (wasAtBottom) {
-          // User was at the bottom - use multiple attempts to ensure we stay at bottom
-          console.log('User was at bottom, ensuring we stay at bottom')
-          
-          // Check if there's actually scrollable content
-          const hasScrollableContent = messagesContainer.scrollHeight > messagesContainer.clientHeight
-          console.log('Scrollable content check:', {
-            scrollHeight: messagesContainer.scrollHeight,
-            clientHeight: messagesContainer.clientHeight,
-            hasScrollableContent: hasScrollableContent
-          })
-          
-          if (hasScrollableContent) {
-            // Immediate scroll to bottom
-            messagesContainer.scrollTop = messagesContainer.scrollHeight
-            console.log('Immediate scroll to bottom:', {
-              scrollTop: messagesContainer.scrollTop,
-              scrollHeight: messagesContainer.scrollHeight,
-              clientHeight: messagesContainer.clientHeight
-            })
-          } else {
-            console.log('No scrollable content - this indicates a layout issue')
-            // The layout has been broken by the card expansion
-            // Try to restore the layout by resetting some parent constraints
-            this.restoreLayoutForScroll()
-            
-            // Wait for layout to stabilize and try again
-            setTimeout(() => {
-              const newScrollHeight = messagesContainer.scrollHeight
-              const newClientHeight = messagesContainer.clientHeight
-              console.log('After layout restoration:', {
-                scrollHeight: newScrollHeight,
-                clientHeight: newClientHeight,
-                hasScrollableContent: newScrollHeight > newClientHeight
-              })
-              
-              if (newScrollHeight > newClientHeight) {
-                messagesContainer.scrollTop = newScrollHeight
-                console.log('Scroll to bottom after layout restoration')
-              } else {
-                console.log('Layout still broken - trying alternative approach')
-                // Alternative: try to force the messages container to have proper height
-                this.forceMessagesContainerHeight()
-              }
-            }, 300)
-          }
-          
-          // Multiple fallback attempts to ensure we stay at bottom
-          const fallbackDelays = [10, 50, 100, 200, 500]
-          fallbackDelays.forEach(delay => {
-            setTimeout(() => {
-              const currentScrollTop = messagesContainer.scrollTop
-              const maxScrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight
-              const hasScrollableContent = messagesContainer.scrollHeight > messagesContainer.clientHeight
-              
-              console.log(`Fallback check at ${delay}ms:`, {
-                currentScrollTop,
-                maxScrollTop,
-                hasScrollableContent,
-                isAtBottom: hasScrollableContent ? currentScrollTop >= maxScrollTop - 50 : true
-              })
-              
-              if (hasScrollableContent && currentScrollTop < maxScrollTop - 50) {
-                console.log(`Fallback attempt at ${delay}ms: forcing scroll to bottom`)
-                messagesContainer.scrollTop = messagesContainer.scrollHeight
-                console.log('After forcing scroll:', {
-                  scrollTop: messagesContainer.scrollTop,
-                  scrollHeight: messagesContainer.scrollHeight
-                })
-              }
-            }, delay)
-          })
-          
-          // Additional persistent approach - keep trying until we're at bottom
-          let persistentAttempts = 0
-          const persistentScroll = setInterval(() => {
-            persistentAttempts++
-            const currentScrollTop = messagesContainer.scrollTop
-            const maxScrollTop = messagesContainer.scrollHeight - messagesContainer.clientHeight
-            const hasScrollableContent = messagesContainer.scrollHeight > messagesContainer.clientHeight
-            
-            if (hasScrollableContent && currentScrollTop < maxScrollTop - 10) {
-              console.log(`Persistent scroll attempt ${persistentAttempts}: forcing to bottom`)
-              messagesContainer.scrollTop = messagesContainer.scrollHeight
-            } else {
-              console.log(`Persistent scroll succeeded after ${persistentAttempts} attempts`)
-              clearInterval(persistentScroll)
-            }
-            
-            // Stop after 20 attempts (2 seconds)
-            if (persistentAttempts >= 20) {
-              console.log('Persistent scroll stopped after 20 attempts')
-              clearInterval(persistentScroll)
-            }
-          }, 100)
+          // User was at the bottom - scroll to anchor
+          console.log('User was at bottom, scrolling to anchor')
+          this.scrollToAnchor()
         } else {
           // User was scrolled up, maintain their relative position
           const newScrollTop = this.storedScrollTop + heightDifference
@@ -677,21 +642,43 @@ export default class extends Controller {
           console.log('Maintained relative position:', finalScrollTop)
         }
         
-        // Re-enable auto-scrolling after a longer delay to ensure scroll position is stable
+        // Re-enable auto-scrolling after a delay
         setTimeout(() => {
-          const scrollToController = this.getScrollToController()
-          if (scrollToController) {
+          if (this.scrollToController) {
             console.log('Re-enabling auto-scroll after delay')
-            scrollToController.enableAutoScroll()
+            this.scrollToController.enableAutoScroll()
+            this.scrollToController = null
           }
           
-          // Remove scroll monitor
+          // Remove scroll monitor and anchor
           if (this.scrollMonitor) {
             messagesContainer.removeEventListener('scroll', this.scrollMonitor)
             this.scrollMonitor = null
           }
-        }, 2000) // Increased delay to 2 seconds
+          
+          // Remove anchor after use
+          this.removeScrollAnchor()
+        }, 1000)
       })
+    }
+  }
+  
+  // Method to scroll to the anchor
+  scrollToAnchor() {
+    if (this.scrollAnchor) {
+      console.log('Scrolling to anchor:', this.scrollAnchor.id)
+      this.scrollAnchor.scrollIntoView({ 
+        behavior: 'auto', // Remove smooth animation
+        block: 'start', // Scroll to show the image preview from the top
+        inline: 'nearest'
+      })
+    } else {
+      // Fallback to scroll to bottom
+      const messagesContainer = document.getElementById('messages')
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight
+        console.log('Fallback: scrolled to bottom')
+      }
     }
   }
 
@@ -780,48 +767,78 @@ export default class extends Controller {
     }
   }
 
-  // Method to ensure image preview is visible
-  ensureImagePreviewVisible(previewItem) {
-    // Use requestAnimationFrame to ensure the DOM is updated
-    requestAnimationFrame(() => {
-      const previewRect = previewItem.getBoundingClientRect()
-      const viewportHeight = window.innerHeight
+
+  // Method to lock scroll position immediately
+  lockScrollPosition() {
+    const messagesContainer = document.getElementById('messages')
+    if (!messagesContainer || !this.storedScrollTop) return
+    
+    // Check if user was at bottom
+    const wasAtBottom = this.storedScrollTop >= (this.storedScrollHeight - this.storedClientHeight - 50)
+    
+    if (wasAtBottom) {
+      console.log('Locking scroll position at bottom')
       
-      console.log('Image preview visibility check:', {
-        previewTop: previewRect.top,
-        previewBottom: previewRect.bottom,
-        viewportHeight: viewportHeight,
-        isVisible: previewRect.top >= 0 && previewRect.bottom <= viewportHeight
-      })
+      // Immediately set scroll to bottom
+      messagesContainer.scrollTop = messagesContainer.scrollHeight
       
-      // If the image preview is not fully visible, scroll to show it
-      if (previewRect.bottom > viewportHeight || previewRect.top < 0) {
-        console.log('Image preview not fully visible, scrolling to show it')
-        
-        // Scroll the preview into view
-        previewItem.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'nearest',
-          inline: 'nearest'
-        })
-        
-        // Also ensure the messages container shows the preview
-        const messagesContainer = document.getElementById('messages')
-        if (messagesContainer) {
-          const messagesRect = messagesContainer.getBoundingClientRect()
-          const previewInMessages = previewRect.top >= messagesRect.top && previewRect.bottom <= messagesRect.bottom
-          
-          if (!previewInMessages) {
-            console.log('Image preview not in messages container, adjusting scroll')
-            // Scroll the messages container to show the preview
-            const scrollAmount = previewRect.bottom - messagesRect.bottom + 20 // Add some padding
-            if (scrollAmount > 0) {
-              messagesContainer.scrollTop += scrollAmount
-            }
-          }
+      // Prevent any scroll events from changing position
+      this.scrollLockActive = true
+      
+      // Add scroll event listener to prevent unwanted scrolling
+      this.scrollPreventionHandler = (event) => {
+        if (this.scrollLockActive) {
+          event.preventDefault()
+          event.stopPropagation()
+          messagesContainer.scrollTop = messagesContainer.scrollHeight
+          return false
         }
       }
-    })
+      
+      messagesContainer.addEventListener('scroll', this.scrollPreventionHandler, { passive: false })
+    }
+  }
+  
+  // Method for continuous scroll position maintenance using anchor
+  continuousScrollMaintenance() {
+    const messagesContainer = document.getElementById('messages')
+    if (!messagesContainer || !this.storedScrollTop) return
+    
+    // Check if user was at bottom
+    const wasAtBottom = this.storedScrollTop >= (this.storedScrollHeight - this.storedClientHeight - 50)
+    
+    if (wasAtBottom) {
+      console.log('Starting continuous scroll maintenance with anchor')
+      
+      // Scroll to anchor every 100ms for 1 second
+      let attempts = 0
+      const maxAttempts = 10 // 1 second at 100ms intervals
+      
+      this.scrollMaintenanceInterval = setInterval(() => {
+        attempts++
+        this.scrollToAnchor()
+        
+        if (attempts >= maxAttempts) {
+          console.log('Continuous scroll maintenance completed')
+          clearInterval(this.scrollMaintenanceInterval)
+          
+          // Remove scroll prevention handler
+          if (this.scrollPreventionHandler) {
+            messagesContainer.removeEventListener('scroll', this.scrollPreventionHandler)
+            this.scrollPreventionHandler = null
+          }
+          
+          // Re-enable auto-scrolling
+          setTimeout(() => {
+            if (this.scrollToController) {
+              this.scrollToController.enableAutoScroll()
+              this.scrollToController = null
+            }
+            this.scrollLockActive = false
+          }, 500)
+        }
+      }, 100)
+    }
   }
 
   // Method to get the scroll-to controller instance
