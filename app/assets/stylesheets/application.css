@@ -292,7 +292,7 @@ body.social-posts-page #main_content_area {
 }
 
 /* Mobile and small screen responsive styles for social posts */
-@media (max-width: 640px) {
+@media (max-width: 480px) {
   .social-posts-page {
     padding: 0 !important;
     padding-top: 1rem !important; /* Space below nav bar */
@@ -370,7 +370,7 @@ body.social-posts-page #main_content_area {
 }
 
 /* Small screen responsive styles (sm breakpoint) */
-@media (max-width: 768px) {
+@media (max-width: 576px) {
   .social-posts-page {
     padding: 0 !important;
     padding-top: 1rem !important; /* Space below nav bar */
@@ -448,7 +448,7 @@ body.social-posts-page #main_content_area {
 }
 
 /* Mobile and small screen responsive styles for social post show page */
-@media (max-width: 640px) {
+@media (max-width: 480px) {
   .social-post-show-page {
     padding: 0 !important;
     padding-top: 1rem !important; /* Space below nav bar */
@@ -539,7 +539,7 @@ body.social-posts-page #main_content_area {
 }
 
 /* Small screen responsive styles for social post show page (sm breakpoint) */
-@media (max-width: 768px) {
+@media (max-width: 576px) {
   .social-post-show-page {
     padding: 0 !important;
     padding-top: 1rem !important; /* Space below nav bar */
@@ -983,4 +983,77 @@ body:has(.navbar .avatar) .navbar {
   align-items: center;
   justify-content: center;
   min-height: 1.5rem;
+}
+
+/* Assessment page responsive styles */
+@media (max-width: 640px) {
+  /* Mobile styles for assessment questions */
+  .card[data-controller="assessment"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    border-radius: 0.5rem !important; /* rounded-lg */
+    padding: 1rem !important;
+  }
+  
+  /* Question text - text-xl on mobile */
+  .card[data-controller="assessment"] h2 {
+    font-size: 1.25rem !important; /* text-xl */
+    line-height: 1.4 !important;
+    min-height: auto !important;
+  }
+  
+  /* Answer options - text-md on mobile */
+  .card[data-controller="assessment"] .grid button,
+  .card[data-controller="assessment"] .grid div {
+    font-size: 0.875rem !important; /* text-md */
+    line-height: 1.4 !important;
+  }
+  
+  /* Make options stack properly on mobile */
+  .card[data-controller="assessment"] .grid {
+    gap: 0.75rem !important;
+  }
+  
+  /* Ensure buttons are touch-friendly */
+  .card[data-controller="assessment"] button {
+    min-height: 44px !important;
+    padding: 0.75rem 1rem !important;
+  }
+}
+
+/* Desktop styles to maintain consistent container size */
+@media (min-width: 641px) {
+  .card[data-controller="assessment"] {
+    width: 40rem !important;
+    height: 38rem !important;
+    min-height: 38rem !important;
+    max-height: 38rem !important;
+  }
+}
+
+/* Intro page mobile styles */
+@media (max-width: 640px) {
+  /* Add rounded corners and make full width on mobile for intro page */
+  #assessment_frame .card {
+    border-radius: 0.5rem !important; /* rounded-lg */
+    margin: 0 !important;
+    margin-top: 1rem !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: 1px solid #d1d5db !important;
+    border-bottom: 1px solid #d1d5db !important;
+  }
+  
+  /* Ensure intro page scrolls to top */
+  #assessment_frame {
+    scroll-margin-top: 0 !important;
+  }
+  
+  /* Force scroll to top for assessment pages */
+  body:has(#assessment_frame) {
+    scroll-behavior: smooth !important;
+  }
 }

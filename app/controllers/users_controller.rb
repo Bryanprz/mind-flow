@@ -82,6 +82,7 @@ class UsersController < ApplicationController
         end
 
         format.html { redirect_to dashboard_path, notice: "Account created successfully!" }
+        format.turbo_stream { render :create }
         format.json { render :show, status: :created, location: dashboard_path }
       else
         format.html { render :new, status: :unprocessable_entity } # Fallback for non-Turbo requests

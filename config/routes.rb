@@ -63,7 +63,6 @@ Rails.application.routes.draw do
   resource :healing_plan, only: [:show], as: :my_healing_plan
 
   # Assessment routes
-  get 'prakruti_assessment_intro', to: 'health_assessments#intro_prakruti_assessment', as: :prakruti_assessment_intro
   get 'vikruti_assessment_intro', to: 'health_assessments#intro_vikruti_assessment', as: :vikruti_assessment_intro
 
   get '/start_prakruti_assessment', to: 'health_assessments#start_prakruti_assessment', as: :start_prakruti_assessment

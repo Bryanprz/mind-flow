@@ -1,7 +1,7 @@
 <turbo-frame id="assessment_frame">
   <% content_for :main_container_class, "bg-base-200" %>
-  <div class="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] px-4 py-8">
-    <div class="card card-border max-w-full bg-neutral p-8 flex flex-col" style="color:#d2d3c8; width:40rem; height:38rem;"
+  <div class="max-w-lg sm:max-w-full flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] px-4 py-8">
+    <div class="card card-border max-w-full bg-neutral p-8 flex flex-col min-h-[38rem] w-full max-w-sm sm:max-w-[40rem] mx-auto" style="color:#d2d3c8;"
          data-controller="assessment"
          data-assessment-questions-value="<%= questions.to_json(include: :assessment_options) %>"
          data-assessment-answers-value="[]">
@@ -14,7 +14,7 @@
 
       <!-- Question Area -->
       <div data-assessment-target="questionContainer">
-        <h2 class="text-2xl font-bold mb-8 mt-5 text-center min-h-20" data-assessment-target="questionText"></h2>
+        <h2 class="text-lg sm:text-2xl font-bold mb-8 mt-5 text-center min-h-20" data-assessment-target="questionText"></h2>
         <div class="grid grid-cols-1 gap-4" data-assessment-target="optionsContainer">
           <!-- Options will be rendered here by Stimulus -->
         </div>
@@ -32,7 +32,7 @@
       <% end %>
 
       <!-- Navigation -->
-      <div class="flex justify-end items-center mt-auto">
+      <div class="flex justify-end items-center mt-auto mt-4 md:mt-auto">
         <div class="flex-1">
           <button data-action="click->assessment#back" 
                   data-assessment-target="backButton" 

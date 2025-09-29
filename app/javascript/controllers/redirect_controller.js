@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { Turbo } from "@hotwired/turbo-rails"
 
 // Handles delayed redirects with a loading state
 // 
@@ -19,7 +20,7 @@ export default class extends Controller {
 
   connect() {
     setTimeout(() => {
-      window.location.href = this.urlValue
+      Turbo.visit(this.urlValue)
     }, this.delayValue)
   }
 }

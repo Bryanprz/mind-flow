@@ -54,6 +54,20 @@ export default class extends Controller {
       }
     }
     
+    // Clean up Trix editor drag and drop event listeners
+    const trixEditor = this.element.querySelector('trix-editor')
+    if (trixEditor) {
+      if (this.boundTrixDragOver) {
+        trixEditor.removeEventListener('dragover', this.boundTrixDragOver, true)
+      }
+      if (this.boundTrixDragLeave) {
+        trixEditor.removeEventListener('dragleave', this.boundTrixDragLeave, true)
+      }
+      if (this.boundTrixDrop) {
+        trixEditor.removeEventListener('drop', this.boundTrixDrop, true)
+      }
+    }
+    
     // Clean up scroll maintenance
     if (this.scrollMaintenanceInterval) {
       clearInterval(this.scrollMaintenanceInterval)
@@ -100,6 +114,20 @@ export default class extends Controller {
       mediaUploadArea.addEventListener('dragleave', this.boundHandleDragLeave)
       mediaUploadArea.addEventListener('drop', this.boundHandleDrop)
     }
+    
+    // ALSO add drag and drop to the Trix editor to prevent inline image insertion
+    const trixEditor = this.element.querySelector('trix-editor')
+    if (trixEditor) {
+      // Store bound functions for Trix editor
+      this.boundTrixDragOver = this.handleTrixDragOver.bind(this)
+      this.boundTrixDragLeave = this.handleTrixDragLeave.bind(this)
+      this.boundTrixDrop = this.handleTrixDrop.bind(this)
+      
+      // Use capture phase to intercept before Trix processes the events
+      trixEditor.addEventListener('dragover', this.boundTrixDragOver, true)
+      trixEditor.addEventListener('dragleave', this.boundTrixDragLeave, true)
+      trixEditor.addEventListener('drop', this.boundTrixDrop, true)
+    }
   }
 
   handleDragOver(event) {
@@ -123,6 +151,45 @@ export default class extends Controller {
     if (files && files.length > 0) {
       this.handleFiles(files)
     }
+  }
+
+  // Trix-specific drag and drop handlers
+  handleTrixDragOver(event) {
+    event.preventDefault()
+    event.stopPropagation()
+    event.stopImmediatePropagation() // Prevent any other handlers
+    // Show visual feedback that we can accept the drop
+    event.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.05)'
+    event.currentTarget.style.border = '2px dashed #3b82f6'
+    return false // Additional prevention
+  }
+
+  handleTrixDragLeave(event) {
+    event.preventDefault()
+    event.stopPropagation()
+    event.stopImmediatePropagation() // Prevent any other handlers
+    // Remove visual feedback
+    event.currentTarget.style.backgroundColor = ''
+    event.currentTarget.style.border = ''
+    return false // Additional prevention
+  }
+
+  handleTrixDrop(event) {
+    event.preventDefault()
+    event.stopPropagation() // Prevent Trix from handling the drop
+    event.stopImmediatePropagation() // Prevent any other handlers
+    
+    // Remove visual feedback
+    event.currentTarget.style.backgroundColor = ''
+    event.currentTarget.style.border = ''
+    
+    const files = event.dataTransfer.files
+    if (files && files.length > 0) {
+      // Route through the same handler as media icon clicks
+      this.handleFiles(files)
+    }
+    
+    return false // Additional prevention
   }
 
   handleFiles(files) {

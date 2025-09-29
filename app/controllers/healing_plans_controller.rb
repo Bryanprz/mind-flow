@@ -9,13 +9,13 @@ class HealingPlansController < ApplicationController
 
   def show
     unless Current.user.prakruti_plans.any?
-      redirect_to prakruti_assessment_intro_path, alert: "You must take this assessment first before we can build your healing plan."
+      redirect_to start_prakruti_assessment_path, alert: "You must take this assessment first before we can build your healing plan."
       return
     end
 
     # Check if user has any healing plans at all
     unless Current.user.healing_plans.any?
-      redirect_to prakruti_assessment_intro_path, alert: "No healing plans found. Please complete your assessment to generate healing plans."
+      redirect_to start_prakruti_assessment_path, alert: "No healing plans found. Please complete your assessment to generate healing plans."
       return
     end
 
