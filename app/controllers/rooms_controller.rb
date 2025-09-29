@@ -8,9 +8,11 @@ class RoomsController < ApplicationController
   end
   
   def private_index
-    @private_rooms = Current.user.rooms.private_rooms
-                                .includes(:users, :messages)
-                                .order(updated_at: :desc)
+    # Get all rooms where the user is a participant (both private and public)
+    # Order by most recent activity (last message or room update)
+    @user_rooms = Current.user.rooms
+                          .includes(:users, :messages)
+                          .order(updated_at: :desc)
   end
   
   def show
