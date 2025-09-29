@@ -4,14 +4,14 @@
       <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
     </div>
   </div>
-  <div class="chat-header">
+  <div class="chat-header <%= message.user == Current.user ? 'text-primary' : 'text-secondary' %>">
     <%= message.user.name %>
-    <time class="text-xs opacity-50"><%= message.created_at.strftime("%l:%M %p") %></time>
+    <time class="text-xs opacity-50 ml-2"><%= message.created_at.strftime("%l:%M %p") %></time>
   </div>
-  <div class="chat-bubble <%= message.user == Current.user ? 'chat-bubble-primary' : 'chat-bubble-secondary' %>">
+  <div class="chat-bubble <%= message.user == Current.user ? 'chat-bubble-primary' : 'chat-bubble-secondary' %> flex items-center">
     <%= message.content %>
   </div>
-  <div class="chat-footer opacity-50">
+  <div class="chat-footer opacity-50 text-gray-400">
     Delivered
   </div>
 </div>
