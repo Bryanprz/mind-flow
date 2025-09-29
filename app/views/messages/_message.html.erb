@@ -4,7 +4,7 @@
   is_current_user = message.user == Current.user
 %>
 <div id="message_<%= message.id %>" class="chat <%= is_current_user ? 'chat-end' : 'chat-start' %>" 
-     data-controller="message-attachment"
+     data-controller="message-attachment avatar-loader"
      data-message-id="<%= message.id %>"
      data-message-user-id="<%= message.user.id %>"
      data-current-user-id="<%= Current.user&.id %>"
@@ -14,11 +14,16 @@
   <div class="chat-image avatar">
     <div class="w-10 rounded-full overflow-hidden">
       <% if message.user.avatar.attached? %>
-        <%= image_tag message.user.avatar, 
-                      class: "w-full h-full object-cover", 
-                      loading: "eager",
-                      onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
-        <div class="w-full h-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold" style="display: none;">
+        <%= avatar_image_with_cache(message.user, "w-full h-full object-cover", 
+                                   loading: "eager",
+                                   data: { 
+                                     avatar_loader_target: "avatarImage",
+                                     user_name: message.user.name,
+                                     user_id: message.user.id
+                                   }) %>
+        <div class="w-full h-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold"
+             data-avatar_loader_target="avatarFallback"
+             style="display: none;">
           <%= message.user.name[0].upcase %>
         </div>
       <% else %>
