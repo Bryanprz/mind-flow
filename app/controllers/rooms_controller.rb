@@ -16,9 +16,12 @@ class RoomsController < ApplicationController
   end
   
   def show
-    @messages = @room.messages.includes(:user, :rich_text_content).order(:created_at)
+    @messages = @room.messages.with_author_and_attachments.chronological
     @message = Message.new
     @other_user = @room.other_user(Current.user) if @room.room_type == 'private'
+    
+    # Add HTTP caching - if messages haven't changed, return 304 Not Modified
+    fresh_when @messages
   end
   
   def create

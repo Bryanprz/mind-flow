@@ -38,7 +38,7 @@
          data-room-channel-current-user-id-value="<%= Current.user.id %>"
          data-message-positioning-current-user-id-value="<%= Current.user.id %>"
          data-action="turbo:stream-render->scroll-to#scrollToBottom">
-      <%= render @messages %>
+      <%= render partial: "messages/message", collection: @messages, cached: true %>
     </div>
   </div>
   

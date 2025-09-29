@@ -25,18 +25,59 @@
       
       <!-- Messages Container -->
       <div class="flex-1 relative overflow-hidden">
-        <div class="overflow-y-auto p-4">
+        <div class="overflow-y-auto p-4" data-controller="avatar-loader">
           <% if @user_rooms.any? %>
             <% @user_rooms.each do |room| %>
               <% last_message = room.messages.order(created_at: :desc).first %>
               <%= link_to room_path(room), class: "group block mb-4 p-4 hover:bg-primary/10 hover:text-primary transition-all duration-200 rounded-lg" do %>
                 <div class="flex justify-between items-start mb-2">
                   <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full bg-primary text-primary-content flex items-center justify-center text-sm font-semibold">
-                      <%= room.name.first.upcase %>
+                    <div class="w-8 h-8 rounded-full overflow-hidden">
+                      <% if room.room_type == 'private' %>
+                        <% other_user = room.other_user(Current.user) %>
+                        <% if other_user %>
+                          <% if other_user.avatar.attached? %>
+                            <%= avatar_image_with_cache(other_user, "w-full h-full object-cover", 
+                                                       loading: "eager",
+                                                       data: { 
+                                                         avatar_loader_target: "avatarImage",
+                                                         user_name: other_user.name,
+                                                         user_id: other_user.id
+                                                       }) %>
+                            <div class="w-full h-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold"
+                                 data-avatar_loader_target="avatarFallback"
+                                 style="display: none;">
+                              <%= other_user.name[0].upcase %>
+                            </div>
+                          <% else %>
+                            <div class="w-full h-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold">
+                              <%= other_user.name[0].upcase %>
+                            </div>
+                          <% end %>
+                        <% else %>
+                          <div class="w-full h-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold">
+                            <%= room.name.first.upcase %>
+                          </div>
+                        <% end %>
+                      <% else %>
+                        <div class="w-full h-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold">
+                          <%= room.name.first.upcase %>
+                        </div>
+                      <% end %>
                     </div>
                     <div>
-                      <h3 class="font-semibold text-sm text-neutral-content group-hover:text-primary"><%= room.name %></h3>
+                      <h3 class="font-semibold text-sm text-neutral-content group-hover:text-primary">
+                        <% if room.room_type == 'private' %>
+                          <% other_user = room.other_user(Current.user) %>
+                          <% if other_user %>
+                            <%= other_user.name %>
+                          <% else %>
+                            <%= room.name %>
+                          <% end %>
+                        <% else %>
+                          <%= room.name %>
+                        <% end %>
+                      </h3>
                       <p class="text-xs text-gray-400 group-hover:text-primary">
                         <% if room.room_type == 'private' %>
                           <span class="text-blue-600 group-hover:text-primary">Private conversation</span>
