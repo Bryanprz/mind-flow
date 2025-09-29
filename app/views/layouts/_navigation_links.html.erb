@@ -8,16 +8,6 @@
   <li><%= link_to "Classroom", "#", class: nav_link_class(lifestyle_plans_path) %></li>
 <% end %>
 
-<!-- Additional Dashboard Links (mobile only) -->
-<div class="lg:hidden">
-  <li><%= link_to "Messages", private_messages_path, class: nav_link_class(private_messages_path) %></li>
-  <li><%= link_to "Assessments", assessment_results_path, class: nav_link_class(assessment_results_path) %></li>
-  <% if authenticated? %>
-    <li><%= link_to "Check Ins", healing_plan_logs_path, class: nav_link_class(healing_plan_logs_path) %></li>
-    <li><%= link_to "Profile", profile_path, class: nav_link_class(profile_path) %></li>
-  <% end %>
-</div>
-
 <% if Current.user&.admin? %>
   <li class="text-info"><%= link_to "Admin", admin_root_path %></li>
 <% end %>

@@ -7,8 +7,8 @@
     <% end %>
   </div>
 
-  <div class="navbar-center hidden lg:flex">
-    <ul class="menu menu-horizontal px-1">
+  <div class="navbar-center hidden sm:flex">
+    <ul class="menu menu-horizontal px-1 text-sm lg:text-base">
       <%= render "layouts/navigation_links" %>
     </ul>
   </div>
@@ -16,8 +16,9 @@
   <div class="navbar-end" style="padding-right: 0.7rem;">
 
     <% if authenticated? %>
-      <div class="dropdown dropdown-end" data-controller="dropdown">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar" data-action="click->dropdown#toggle">
+      <!-- Avatar Dropdown for All Screen Sizes -->
+      <div data-controller="mobile-menu">
+        <div class="btn btn-ghost btn-circle avatar" data-action="click->mobile-menu#toggle">
           <div class="w-10 rounded-full overflow-hidden">
             <% if Current.user.avatar.attached? %>
               <%= image_tag Current.user.avatar, class: "w-full h-full object-cover" %>
@@ -28,24 +29,11 @@
             <% end %>
           </div>
         </div>
-        <ul
-            tabindex="0"
-            class="menu menu-sm dropdown-content text-neutral <%= current_page?(root_path) ? 'bg-base-100' : 'bg-base-100' %> rounded-box z-1 mt-3 w-52 p-2 shadow hidden">
-          <li class="font-light menu-title italic"><span>Logged in as <%= Current.user.name %></span></li>
-          <li><%= link_to "Profile", profile_path %></li>
-          <li><a>Settings</a></li>
-          <li><%= button_to "Logout", session_path, method: :delete, class: "link-button" %></li>
-        </ul>
-      </div>
-      <div class="lg:hidden">
-        <button type="button" class="btn btn-ghost <%= current_page?(root_path) ? 'text-neutral-content' : '' %>" data-action="click->mobile-menu#toggle">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
         <div class="absolute left-0 right-0 top-full <%= current_page?(root_path) ? 'bg-neutral' : 'bg-base-100' %> shadow-lg z-50 hidden" data-mobile-menu-target="menu">
           <ul class="menu menu-vertical p-2 w-full">
+            <li class="font-light text-gray-500 italic" style="margin-left:-0.3rem;"><span>Logged in as <%= Current.user.name %></span></li>
             <%= render "layouts/navigation_links" %>
+            <%= render "layouts/avatar_dropdown_links" %>
           </ul>
         </div>
       </div>

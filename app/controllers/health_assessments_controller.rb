@@ -174,8 +174,8 @@ class HealthAssessmentsController < ApplicationController
     end
 
     unless @assessment_entry
-      redirect_to root_path,
-        alert: "Assessment results not found or your session has expired. Please try again."
+      redirect_to start_prakruti_assessment_path,
+        alert: "Please complete your assessment first to view your results. This will help us create a personalized healing plan for you."
       return
     end
   end
