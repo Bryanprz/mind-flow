@@ -7,7 +7,10 @@
      data-controller="message-attachment"
      data-message-id="<%= message.id %>"
      data-message-user-id="<%= message.user.id %>"
-     data-current-user-id="<%= Current.user&.id %>">
+     data-current-user-id="<%= Current.user&.id %>"
+     data-message-created-at="<%= message.created_at.to_i %>"
+     data-has-attachments="<%= message.attachments.attached? %>"
+     data-auto-refresh="<%= message.attachments.attached? && (Time.current - message.created_at) < 5.seconds %>">
   <div class="chat-image avatar">
     <div class="w-10 rounded-full">
       <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
@@ -22,6 +25,21 @@
       <div class="flex items-center justify-center min-h-[2rem]">
         <%= message.content %>
       </div>
+    <% end %>
+    
+    <!-- Show processing spinner for attachments -->
+    <% if message.attachments.any? %>
+      <% has_processing_attachments = message.attachments.any? { |attachment| safe_attachment_status(attachment)[:status] == :processing } %>
+      <% if has_processing_attachments %>
+        <div class="flex items-center justify-center mt-2 py-1">
+          <div class="flex items-center gap-2 text-xs text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 animate-spin" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+            </svg>
+            <span>Processing image...</span>
+          </div>
+        </div>
+      <% end %>
     <% end %>
     
     <!-- Display attachments if any -->

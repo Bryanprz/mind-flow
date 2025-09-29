@@ -14,6 +14,16 @@ export default class extends Controller {
     
     // Check if we need to refresh this message (for Turbo Stream updates)
     this.checkForRefresh()
+    
+    // For new messages with attachments, always try to refresh after a short delay
+    const shouldAutoRefresh = this.element.dataset.autoRefresh === 'true'
+    
+    if (shouldAutoRefresh) {
+      console.log('🔄 Auto-refresh enabled for new message with attachments')
+      setTimeout(() => {
+        this.refreshMessage()
+      }, 2000) // Refresh after 2 seconds for new messages
+    }
   }
   
   handleImageLoading() {
@@ -41,20 +51,23 @@ export default class extends Controller {
   checkForRefresh() {
     // If this message has processing attachments, try to refresh it
     const processingElements = this.element.querySelectorAll('.animate-spin')
-    console.log(`🔍 Processing elements found: ${processingElements.length}, refresh count: ${this.refreshCount}, scheduled: ${this.refreshScheduled}`)
+    const processingText = this.element.querySelector('span:contains("Processing image...")')
+    const hasProcessingIndicator = processingElements.length > 0 || processingText
     
-    if (processingElements.length > 0 && this.refreshCount < this.maxRefreshes && !this.refreshScheduled) {
-      console.log(`Found processing elements, will refresh message in 15 seconds (attempt ${this.refreshCount + 1}/${this.maxRefreshes})`)
-      // Set up a timer to refresh this message after a longer delay
+    console.log(`🔍 Processing elements found: ${processingElements.length}, processing text: ${!!processingText}, refresh count: ${this.refreshCount}, scheduled: ${this.refreshScheduled}`)
+    
+    if (hasProcessingIndicator && this.refreshCount < this.maxRefreshes && !this.refreshScheduled) {
+      console.log(`Found processing indicators, will refresh message in 3 seconds (attempt ${this.refreshCount + 1}/${this.maxRefreshes})`)
+      // Set up a timer to refresh this message after a shorter delay
       // Only refresh once to avoid multiple requests
       this.refreshScheduled = true
       setTimeout(() => {
         this.refreshMessage()
-      }, 15000) // Refresh after 15 seconds - even longer delay
+      }, 3000) // Refresh after 3 seconds - shorter delay for better UX
     } else if (this.refreshCount >= this.maxRefreshes) {
       console.log('Maximum refresh attempts reached, stopping refresh loop')
-    } else if (processingElements.length === 0 && !this.refreshScheduled) {
-      console.log('No processing elements found, no refresh needed')
+    } else if (!hasProcessingIndicator && !this.refreshScheduled) {
+      console.log('No processing indicators found, no refresh needed')
     } else if (this.refreshScheduled) {
       console.log('Refresh already scheduled, skipping')
     }
@@ -64,10 +77,23 @@ export default class extends Controller {
     // Increment refresh counter
     this.refreshCount++
     
-    // Check if message still has processing elements before refreshing
+    // Check if message has attachments and if images are actually visible
+    const hasAttachments = this.element.dataset.hasAttachments === 'true'
+    const visibleImages = this.element.querySelectorAll('img[src*="rails/active_storage"]:not([style*="display: none"])')
     const processingElements = this.element.querySelectorAll('.animate-spin')
-    if (processingElements.length === 0) {
-      console.log('No processing elements found, skipping refresh')
+    const processingText = this.element.querySelector('span:contains("Processing image...")')
+    const hasProcessingIndicator = processingElements.length > 0 || processingText
+    
+    console.log(`🔄 Refresh check: hasAttachments=${hasAttachments}, visibleImages=${visibleImages.length}, processingElements=${processingElements.length}, processingText=${!!processingText}`)
+    
+    // Refresh if we have attachments but no visible images, or if there are still processing elements
+    if (!hasAttachments) {
+      console.log('No need to refresh - no attachments')
+      return
+    }
+    
+    if (visibleImages.length > 0 && !hasProcessingIndicator) {
+      console.log('No need to refresh - images already visible and no processing indicators')
       return
     }
     
@@ -76,7 +102,8 @@ export default class extends Controller {
     const roomId = this.getRoomId()
     
     if (messageId && roomId) {
-      console.log(`Refreshing message: ${messageId} (attempt ${this.refreshCount}/${this.maxRefreshes})`)
+      console.log(`🔄 Proceeding with refresh: ${messageId} (attempt ${this.refreshCount}/${this.maxRefreshes})`)
+      console.log(`🔄 Reason: hasAttachments=${hasAttachments}, visibleImages=${visibleImages.length}, processingElements=${processingElements.length}`)
       // Make a request to refresh this specific message using the correct nested route
       fetch(`/rooms/${roomId}/messages/${messageId}/refresh`, {
         method: 'GET',
@@ -92,16 +119,16 @@ export default class extends Controller {
         return response.text()
       })
       .then(html => {
-        console.log('Message refresh response received')
+        console.log('🔄 Message refresh response received')
         // Use Turbo to handle the stream properly instead of manual replacement
         Turbo.renderStreamMessage(html)
       })
       .catch(error => {
-        console.log('Message refresh failed:', error)
+        console.log('🔄 Message refresh failed:', error)
         // Don't remove the message if refresh fails
       })
     } else {
-      console.log('Cannot refresh message - missing messageId or roomId')
+      console.log('🔄 Cannot refresh message - missing messageId or roomId')
     }
   }
   

@@ -8,7 +8,6 @@ class Message < ApplicationRecord
   validates :content, presence: true, unless: -> { attachments.attached? }
   
   after_create_commit :broadcast_message, :update_memberships_last_read
-  after_update_commit :broadcast_message_update, if: :saved_change_to_attachments?
   
   private
   
@@ -22,16 +21,14 @@ class Message < ApplicationRecord
       partial: "messages/message",
       locals: { message: self.reload, message_user: user }
     )
-  end
-  
-  def broadcast_message_update
-    # Re-broadcast the message when attachments are updated/processed
-    broadcast_replace_later_to(
-      "room_#{room.id}",
-      target: "message_#{id}",
-      partial: "messages/message",
-      locals: { message: self.reload, message_user: user }
-    )
+    
+    # If message has attachments, also schedule a delayed broadcast to ensure images show
+    if attachments.attached?
+      Rails.logger.info "🔄 Scheduling MessageAttachmentBroadcastJob for message #{id}"
+      MessageAttachmentBroadcastJob.set(wait: 1.second).perform_later(id)
+    else
+      Rails.logger.info "🔄 No attachments for message #{id}, skipping broadcast job"
+    end
   end
   
   def update_memberships_last_read
