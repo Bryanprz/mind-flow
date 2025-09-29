@@ -112,12 +112,13 @@ class Message < ApplicationRecord
       locals: { message: message_with_author, message_user: message_with_author.user }
     )
     
-    # If message has attachments, also schedule a delayed broadcast to ensure images show
-    if attachments.attached?
-      Rails.logger.info "🔄 Scheduling MessageAttachmentBroadcastJob for message #{id}"
-      MessageAttachmentBroadcastJob.set(wait: 1.second).perform_later(id)
+    # If message has attachments, process them in background and re-broadcast
+    # In Rails 8, use the more reliable way to check for attachments
+    if message_with_author.attachments.any?
+      Rails.logger.info "🔄 Scheduling ProcessMessageAttachmentsJob for message #{id}"
+      ProcessMessageAttachmentsJob.set(wait: 2.seconds).perform_later(id)
     else
-      Rails.logger.info "🔄 No attachments for message #{id}, skipping broadcast job"
+      Rails.logger.info "🔄 No attachments for message #{id}, skipping processing job"
     end
   end
   

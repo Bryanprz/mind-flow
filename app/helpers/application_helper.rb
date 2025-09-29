@@ -42,29 +42,28 @@ module ApplicationHelper
     return { status: :error, message: 'Attachment not found' } unless attachment.present?
     
     begin
-      attached = attachment.respond_to?(:attached?) && attachment.attached?
-      Rails.logger.info "🔍 Attachment attached?: #{attached}"
-      
-      if attached
-        is_image = attachment.respond_to?(:image?) && attachment.image?
-        Rails.logger.info "🔍 Attachment is image?: #{is_image}"
+      # Rails 8 approach: Check if attachment exists and is processable
+      if attachment.respond_to?(:image?) && attachment.image?
+        Rails.logger.info "🔍 Attachment is image - checking if ready"
         
-        if is_image
-          Rails.logger.info "🔍 Returning image status"
-          { status: :image, message: 'Image ready' }
-        else
-          Rails.logger.info "🔍 Returning file status"
-          { status: :file, message: 'File ready' }
+        # Check if the image is ready to display
+        begin
+          # Try to access the blob to see if it's ready
+          blob = attachment.blob
+          if blob.present? && blob.analyzed?
+            Rails.logger.info "🔍 Image blob is ready and analyzed"
+            { status: :image, message: 'Image ready' }
+          else
+            Rails.logger.info "🔍 Image blob not ready yet (not analyzed)"
+            { status: :processing, message: 'Processing image...' }
+          end
+        rescue => e
+          Rails.logger.info "🔍 Image not ready yet: #{e.message}"
+          { status: :processing, message: 'Processing image...' }
         end
       else
-        Rails.logger.info "🔍 Returning processing status - not attached"
-        # TEMPORARY: Force images to show even if not "attached" - this might be the issue
-        if attachment.respond_to?(:image?) && attachment.image?
-          Rails.logger.info "🔍 TEMP: Forcing image status despite not being 'attached'"
-          { status: :image, message: 'Image ready' }
-        else
-          { status: :processing, message: 'Processing attachment...' }
-        end
+        Rails.logger.info "🔍 Attachment is file"
+        { status: :file, message: 'File ready' }
       end
     rescue => e
       Rails.logger.error "🔍 Attachment error: #{e.message}"
