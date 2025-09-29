@@ -1,62 +1,17 @@
-<% 
-  # Use message_user if provided (for broadcasts), otherwise use message.user
-  message_user = local_assigns[:message_user] || message.user
-  is_current_user = message_user == Current.user 
-%>
-<!-- Debug: Current user: <%= Current.user&.id %>, Message user: <%= message_user.id %>, Is current: <%= is_current_user %> -->
-<div class="flex mb-4 <%= is_current_user ? 'justify-end' : 'justify-start' %>" 
-     data-controller="message-position"
-     data-message-user-id="<%= message_user.id %>"
-     data-current-user-id="<%= Current.user&.id %>"
-     data-action="turbo:load->message-position#positionMessage turbo:stream-render->message-position#positionMessage">
-  <div class="flex items-end gap-2 max-w-xs lg:max-w-md">
-    <!-- Avatar (only for other users) -->
-    <div class="avatar" data-message-position-target="otherAvatar">
-      <div class="w-8 h-8 rounded-full bg-primary text-primary-content flex items-center justify-center text-sm font-semibold">
-        <%= message_user.name[0].upcase %>
-      </div>
-    </div>
-    
-    <!-- Message Bubble -->
-    <div class="relative">
-      <div class="bg-gray-200 text-gray-900 rounded-2xl px-4 py-2 shadow-sm" data-message-position-target="bubble">
-        <div class="prose prose-sm max-w-none">
-          <%= message.content %>
-        </div>
-        
-        <!-- Attachments -->
-        <% if message.attachments.any? %>
-          <div class="mt-2 space-y-2">
-            <% message.attachments.each do |attachment| %>
-              <% if attachment.image? %>
-                <%= image_tag attachment, class: "max-w-xs rounded" %>
-              <% else %>
-                <%= link_to attachment.filename, 
-                    rails_blob_path(attachment), 
-                    class: "text-blue-600 hover:underline" %>
-              <% end %>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-      
-      <!-- Message Tail -->
-      <div class="absolute left-0 bottom-0 w-0 h-0 border-r-8 border-r-gray-200 border-t-8 border-t-transparent border-b-8 border-b-transparent" data-message-position-target="tail">
-      </div>
-    </div>
-    
-    <!-- Avatar (only for current user) -->
-    <div class="avatar" data-message-position-target="currentAvatar" style="display: none;">
-      <div class="w-8 h-8 rounded-full bg-primary text-primary-content flex items-center justify-center text-sm font-semibold">
-        <%= message_user.name[0].upcase %>
-      </div>
+<div class="chat <%= message.user == Current.user ? 'chat-end' : 'chat-start' %>">
+  <div class="chat-image avatar">
+    <div class="w-10 rounded-full">
+      <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
     </div>
   </div>
-</div>
-
-<!-- Timestamp -->
-<div class="flex mb-2" data-message-position-target="timestamp">
-  <span class="text-xs text-gray-500 px-2">
-    <%= message.created_at.strftime("%l:%M %p") %>
-  </span>
+  <div class="chat-header">
+    <%= message.user.name %>
+    <time class="text-xs opacity-50"><%= message.created_at.strftime("%l:%M %p") %></time>
+  </div>
+  <div class="chat-bubble <%= message.user == Current.user ? 'chat-bubble-primary' : 'chat-bubble-secondary' %>">
+    <%= message.content %>
+  </div>
+  <div class="chat-footer opacity-50">
+    Delivered
+  </div>
 </div>
