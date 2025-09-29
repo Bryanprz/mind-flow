@@ -238,6 +238,9 @@ export default class extends Controller {
       if (this.hasPreviewGridTarget) {
         this.previewGridTarget.appendChild(previewItem)
       }
+      
+      // Maintain scroll position at bottom when image preview is added
+      this.maintainScrollPosition()
     }
     reader.readAsDataURL(file)
   }
@@ -260,6 +263,24 @@ export default class extends Controller {
         this.previewContainerTarget.classList.add('hidden')
       }
       this.collapseInputField()
+    }
+    
+    // Maintain scroll position when image preview is removed
+    this.maintainScrollPosition()
+  }
+  
+  maintainScrollPosition() {
+    // Find the scroll-to controller in the messages container
+    const messagesContainer = document.getElementById('messages')
+    if (messagesContainer) {
+      const scrollToController = messagesContainer.closest('[data-controller*="scroll-to"]')
+      if (scrollToController) {
+        // Use the scroll-to controller's method to maintain bottom scroll
+        const controller = this.application.getControllerForElementAndIdentifier(scrollToController, 'scroll-to')
+        if (controller && controller.handleImagePreviewAddition) {
+          controller.handleImagePreviewAddition()
+        }
+      }
     }
   }
 

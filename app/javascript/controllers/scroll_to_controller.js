@@ -51,9 +51,25 @@ export default class extends Controller {
                     node.getAttribute?.('data-controller')?.includes('message'))
           })
           
-          // Only auto-scroll for actual message additions, not image previews
+          // Check if image previews are being added (which should maintain bottom scroll)
+          const isImagePreviewAddition = Array.from(mutation.addedNodes).some(node => {
+            return node.nodeType === Node.ELEMENT_NODE && 
+                   (node.classList?.contains('image-preview') || 
+                    node.querySelector?.('.image-preview') ||
+                    node.querySelector?.('[data-image-preview-target]'))
+          })
+          
+          // Auto-scroll for message additions
           if (isMessageAddition && this.autoScrollEnabled) {
             this.scrollToBottom()
+          }
+          
+          // Maintain bottom scroll for image preview additions
+          if (isImagePreviewAddition && this.autoScrollEnabled) {
+            // Use a small delay to ensure the preview is rendered
+            setTimeout(() => {
+              this.scrollToBottom()
+            }, 50)
           }
         }
       })
@@ -92,5 +108,15 @@ export default class extends Controller {
   // Method to manually scroll to bottom (ignores auto-scroll setting)
   forceScrollToBottom() {
     this.scrollToBottom()
+  }
+  
+  // Method to handle image preview additions - maintains bottom scroll
+  handleImagePreviewAddition() {
+    if (this.autoScrollEnabled) {
+      // Use requestAnimationFrame to ensure DOM is ready
+      requestAnimationFrame(() => {
+        this.scrollToBottom()
+      })
+    }
   }
 }
