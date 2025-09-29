@@ -16,7 +16,7 @@
       <div class="flex-shrink-0 px-2 md:p-4 border-b border-primary">
         <div class="flex justify-between items-center">
           <%= link_to "← Back to Dashboard", dashboard_path, 
-              class: "text-primary hover:text-primary-focus text-sm font-medium" %>
+              class: "text-primary hover:text-primary-focus hover:bg-primary/10 text-sm font-medium px-2 py-1 rounded transition-colors" %>
           <h1 class="md:text-2xl pr-4 sm:pr-0 text-lg font-bold text-primary">Messages</h1>
           <%= link_to "🏠 Public Rooms", rooms_path, 
               class: "btn btn-ghost btn-sm border border-primary text-primary hover:bg-primary hover:text-primary-content" %>
@@ -29,24 +29,24 @@
           <% if @user_rooms.any? %>
             <% @user_rooms.each do |room| %>
               <% last_message = room.messages.order(created_at: :desc).first %>
-              <%= link_to room_path(room), class: "group block mb-4 p-4 hover:bg-green-800/80 hover:text-green-300 transition-all duration-200 rounded-lg" do %>
+              <%= link_to room_path(room), class: "group block mb-4 p-4 hover:bg-primary/10 hover:text-primary transition-all duration-200 rounded-lg" do %>
                 <div class="flex justify-between items-start mb-2">
                   <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-primary text-primary-content flex items-center justify-center text-sm font-semibold">
                       <%= room.name.first.upcase %>
                     </div>
                     <div>
-                      <h3 class="font-semibold text-sm text-neutral-content group-hover:text-green-300"><%= room.name %></h3>
-                      <p class="text-xs text-gray-400 group-hover:text-green-300">
+                      <h3 class="font-semibold text-sm text-neutral-content group-hover:text-primary"><%= room.name %></h3>
+                      <p class="text-xs text-gray-400 group-hover:text-primary">
                         <% if room.room_type == 'private' %>
-                          <span class="text-blue-600 group-hover:text-green-300">Private conversation</span>
+                          <span class="text-blue-600 group-hover:text-primary">Private conversation</span>
                         <% else %>
-                          <span class="text-green-600 group-hover:text-green-300">Public room</span>
+                          <span class="text-green-600 group-hover:text-primary">Public room</span>
                         <% end %>
                       </p>
                     </div>
                   </div>
-                  <span class="text-xs text-gray-500 group-hover:text-green-300">
+                  <span class="text-xs text-gray-500 group-hover:text-primary">
                     <% if last_message %>
                       <%= time_ago_in_words(last_message.created_at) %> ago
                     <% else %>
@@ -58,12 +58,12 @@
                 <div class="ml-10">
                   <% if last_message %>
                     <div class="flex items-center gap-2 mb-1">
-                      <span class="text-xs text-gray-500 group-hover:text-green-300">
+                      <span class="text-xs text-gray-500 group-hover:text-primary">
                         <%= last_message.user.name %>:
                       </span>
                     </div>
                     <% if last_message.content.present? %>
-                      <p class="text-neutral-content group-hover:text-green-300 mb-2">
+                      <p class="text-neutral-content group-hover:text-primary mb-2">
                         <%= last_message.content.to_plain_text.truncate(100) %>
                       </p>
                     <% end %>

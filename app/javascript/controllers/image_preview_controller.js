@@ -426,10 +426,13 @@ export default class extends Controller {
       const maxDepth = 2 // Very limited depth for room context
       
       while (currentElement && depth < maxDepth) {
-        // Don't modify the messages container or its parents
+        // Don't modify the messages container, header, or its parents
         if (currentElement.id === 'messages' || 
             currentElement.classList.contains('h-full') ||
-            currentElement.classList.contains('overflow-y-auto')) {
+            currentElement.classList.contains('overflow-y-auto') ||
+            currentElement.classList.contains('flex-shrink-0') ||
+            currentElement.querySelector('h1') ||
+            currentElement.querySelector('[class*="Back to"]')) {
           break
         }
         
@@ -453,6 +456,15 @@ export default class extends Controller {
       const maxDepth = 8
       
       while (currentElement && depth < maxDepth) {
+        // Don't modify header containers
+        if (currentElement.classList.contains('flex-shrink-0') || 
+            currentElement.querySelector('h1') ||
+            currentElement.querySelector('[class*="Back to"]')) {
+          currentElement = currentElement.parentElement
+          depth++
+          continue
+        }
+        
         const computedStyle = window.getComputedStyle(currentElement)
         const height = computedStyle.height
         const maxHeight = computedStyle.maxHeight
@@ -488,6 +500,17 @@ export default class extends Controller {
     const maxDepth = 6 // More aggressive for image preview visibility
     
     while (currentElement && depth < maxDepth) {
+      // Don't modify the header container or its parents
+      if (currentElement.classList.contains('flex-shrink-0') || 
+          currentElement.querySelector('h1') ||
+          currentElement.querySelector('[class*="Back to"]') ||
+          currentElement.id === 'messages' ||
+          currentElement.classList.contains('h-screen')) {
+        currentElement = currentElement.parentElement
+        depth++
+        continue
+      }
+      
       const computedStyle = window.getComputedStyle(currentElement)
       const height = computedStyle.height
       const maxHeight = computedStyle.maxHeight
