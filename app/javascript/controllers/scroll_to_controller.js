@@ -3,7 +3,27 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   connect() {
     this.autoScrollEnabled = true
+    
+    // Ensure we scroll to bottom on page load/reload
     this.scrollToBottom()
+    
+    // Add a small delay to ensure content is fully loaded
+    setTimeout(() => {
+      this.scrollToBottom()
+    }, 100)
+    
+    // Also scroll when the page is fully loaded (for page reloads)
+    if (document.readyState === 'complete') {
+      setTimeout(() => {
+        this.scrollToBottom()
+      }, 200)
+    } else {
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          this.scrollToBottom()
+        }, 200)
+      })
+    }
     
     // Listen for turbo:frame-render to auto-scroll when new messages arrive
     this.element.addEventListener('turbo:frame-render', () => {
@@ -53,7 +73,10 @@ export default class extends Controller {
   }
   
   scrollToBottom() {
-    this.element.scrollTop = this.element.scrollHeight
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      this.element.scrollTop = this.element.scrollHeight
+    })
   }
   
   // Method to temporarily disable auto-scrolling

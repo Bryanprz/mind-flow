@@ -38,25 +38,37 @@ module ApplicationHelper
   end
 
   def safe_attachment_status(attachment)
+    Rails.logger.info "🔍 Checking attachment status for: #{attachment.inspect}"
     return { status: :error, message: 'Attachment not found' } unless attachment.present?
     
     begin
-      if attachment.respond_to?(:attached?) && attachment.attached?
-        if attachment.respond_to?(:image?) && attachment.image?
-          # Check if the attachment is ready for display
-          if attachment.respond_to?(:analyzed?) && attachment.analyzed?
-            { status: :image, message: 'Image ready' }
-          else
-            { status: :processing, message: 'Processing attachment...' }
-          end
+      attached = attachment.respond_to?(:attached?) && attachment.attached?
+      Rails.logger.info "🔍 Attachment attached?: #{attached}"
+      
+      if attached
+        is_image = attachment.respond_to?(:image?) && attachment.image?
+        Rails.logger.info "🔍 Attachment is image?: #{is_image}"
+        
+        if is_image
+          Rails.logger.info "🔍 Returning image status"
+          { status: :image, message: 'Image ready' }
         else
+          Rails.logger.info "🔍 Returning file status"
           { status: :file, message: 'File ready' }
         end
       else
-        { status: :processing, message: 'Processing attachment...' }
+        Rails.logger.info "🔍 Returning processing status - not attached"
+        # TEMPORARY: Force images to show even if not "attached" - this might be the issue
+        if attachment.respond_to?(:image?) && attachment.image?
+          Rails.logger.info "🔍 TEMP: Forcing image status despite not being 'attached'"
+          { status: :image, message: 'Image ready' }
+        else
+          { status: :processing, message: 'Processing attachment...' }
+        end
       end
     rescue => e
-      Rails.logger.error "Attachment error: #{e.message}"
+      Rails.logger.error "🔍 Attachment error: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
       { status: :error, message: 'Loading attachment...' }
     end
   end
