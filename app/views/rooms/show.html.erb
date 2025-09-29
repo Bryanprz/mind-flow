@@ -12,9 +12,10 @@
   <div class="flex-1 relative overflow-hidden">
     <div id="messages" 
          class="h-full overflow-y-auto p-4"
-         data-controller="scroll-to room-channel"
+         data-controller="scroll-to room-channel message-positioning"
          data-room-channel-room-id-value="<%= @room.id %>"
          data-room-channel-current-user-id-value="<%= Current.user.id %>"
+         data-message-positioning-current-user-id-value="<%= Current.user.id %>"
          data-action="turbo:stream-render->scroll-to#scrollToBottom">
       <%= render @messages %>
     </div>

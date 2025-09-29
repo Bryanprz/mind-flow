@@ -80,7 +80,11 @@ Rails.application.routes.draw do
 
   # Chat routes
   resources :rooms do
-    resources :messages, only: [:create]
+    resources :messages, only: [:create] do
+      member do
+        get :refresh
+      end
+    end
   end
   
   # Private messaging routes

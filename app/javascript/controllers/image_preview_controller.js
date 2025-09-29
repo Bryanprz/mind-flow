@@ -210,16 +210,16 @@ export default class extends Controller {
     const reader = new FileReader()
     reader.onload = (e) => {
       const previewItem = document.createElement('div')
-      previewItem.className = 'relative aspect-square overflow-hidden rounded-lg'
+      previewItem.className = 'relative'
       
       const img = document.createElement('img')
       img.src = e.target.result
-      img.className = 'w-full h-full object-cover'
+      img.className = 'w-20 h-20 object-cover rounded-lg border border-gray-200'
       img.alt = `Preview ${index + 1}`
       
       const removeBtn = document.createElement('button')
       removeBtn.type = 'button'
-      removeBtn.className = 'absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600'
+      removeBtn.className = 'absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600'
       removeBtn.innerHTML = '×'
       removeBtn.onclick = () => this.removeImagePreview(previewItem, index)
       
@@ -282,17 +282,17 @@ export default class extends Controller {
     if (this.hasCardTarget) {
       console.log('Expanding card for image previews')
       
-      // Check if we're in a dashboard context
-      const isDashboard = this.element.closest('.dashboard-content') || 
-                         this.element.closest('.social-feed-card') ||
-                         this.element.closest('#social_feed')
+      // Check if we're in a room/chat context
+      const isRoomContext = this.element.closest('#messages') || 
+                           this.element.closest('.room') ||
+                           this.element.closest('[data-controller*="room-channel"]')
       
       // Add CSS class for expansion
       this.cardTarget.classList.add('expanded-card')
       
-      if (isDashboard) {
-        console.log('Dashboard context - using conservative card expansion')
-        // For dashboard, only expand the preview container, not the entire card
+      if (isRoomContext) {
+        console.log('Room context - using conservative card expansion to prevent scroll issues')
+        // For room context, only expand the preview container, not the entire card
         this.cardTarget.style.transition = 'all 0.3s ease-in-out'
         
         // Only expand the preview container, not the card itself
@@ -301,11 +301,14 @@ export default class extends Controller {
           this.previewContainerTarget.style.height = 'auto'
           this.previewContainerTarget.style.maxHeight = 'none'
           this.previewContainerTarget.style.overflow = 'visible'
-          console.log('Preview container expanded (dashboard mode)')
+          console.log('Preview container expanded (room mode)')
         }
+        
+        // Prevent scroll to top by maintaining current scroll position
+        this.maintainScrollPosition()
       } else {
-        console.log('Non-dashboard context - using full card expansion')
-        // For non-dashboard, use the original aggressive expansion
+        console.log('Non-room context - using full card expansion')
+        // For non-room, use the original aggressive expansion
         this.cardTarget.style.transition = 'all 0.3s ease-in-out'
         this.cardTarget.style.overflow = 'visible'
         this.cardTarget.style.height = 'auto'
@@ -457,6 +460,25 @@ export default class extends Controller {
         currentElement = currentElement.parentElement
         depth++
       }
+    }
+  }
+
+  // Method to maintain scroll position when expanding card in room context
+  maintainScrollPosition() {
+    // Store current scroll position
+    const messagesContainer = document.getElementById('messages')
+    if (messagesContainer) {
+      const currentScrollTop = messagesContainer.scrollTop
+      const currentScrollHeight = messagesContainer.scrollHeight
+      
+      // Use requestAnimationFrame to maintain scroll position after DOM changes
+      requestAnimationFrame(() => {
+        // Only adjust scroll if the content height changed
+        if (messagesContainer.scrollHeight > currentScrollHeight) {
+          const heightDifference = messagesContainer.scrollHeight - currentScrollHeight
+          messagesContainer.scrollTop = currentScrollTop + heightDifference
+        }
+      })
     }
   }
 

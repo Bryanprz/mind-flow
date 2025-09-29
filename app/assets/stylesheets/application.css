@@ -285,6 +285,344 @@ body.social-posts-page #main_content_area {
   overflow: visible !important;
 }
 
+/* Mobile and small screen responsive styles for social posts */
+@media (max-width: 640px) {
+  .social-posts-page {
+    padding: 0 !important;
+    padding-top: 1rem !important; /* Space below nav bar */
+  }
+  
+  .social-posts-page .container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+  }
+  
+  .social-posts-page #social-posts {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Add space above the input form */
+  .social-posts-page #post-form-container {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Remove padding and rounded borders from social post cards on mobile */
+  .social-posts-page .card {
+    border-radius: 0 !important;
+    margin-bottom: 0.5rem !important; /* Add vertical spacing between cards */
+    border-left: none !important;
+    border-right: none !important;
+    border-top: 1px solid #d1d5db !important; /* Same color as before */
+    border-bottom: 1px solid #d1d5db !important; /* Same color as before */
+  }
+  
+  .social-posts-page .card:first-child {
+    border-top: 1px solid #d1d5db !important; /* Keep top border */
+  }
+  
+  .social-posts-page .card:last-child {
+    border-bottom: 1px solid #d1d5db !important; /* Keep bottom border */
+  }
+  
+  /* Ensure card body has no horizontal padding on mobile */
+  .social-posts-page .card .card-body {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Keep rounded corners on media elements for social posts index */
+  .social-posts-page .card img,
+  .social-posts-page .card video {
+    border-radius: 0.5rem !important;
+  }
+  
+  /* Keep rounded corners on all image containers for social posts index */
+  .social-posts-page .card .rounded-lg {
+    border-radius: 0.5rem !important;
+  }
+  
+  /* Keep images with rounded borders and padding on social posts index */
+  .social-posts-page .card .max-h-96,
+  .social-posts-page .card .aspect-video,
+  .social-posts-page .card .aspect-square {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    border-radius: 0.5rem !important;
+  }
+  
+  /* Ensure images have rounded corners on social posts index */
+  .social-posts-page .card img,
+  .social-posts-page .card video {
+    border-radius: 0.5rem !important;
+  }
+}
+
+/* Small screen responsive styles (sm breakpoint) */
+@media (max-width: 768px) {
+  .social-posts-page {
+    padding: 0 !important;
+    padding-top: 1rem !important; /* Space below nav bar */
+  }
+  
+  .social-posts-page .container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+  }
+  
+  .social-posts-page #social-posts {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Add space above the input form */
+  .social-posts-page #post-form-container {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Remove padding and rounded borders from social post cards on small screens */
+  .social-posts-page .card {
+    border-radius: 0 !important;
+    margin-bottom: 0.5rem !important; /* Add vertical spacing between cards */
+    border-left: none !important;
+    border-right: none !important;
+    border-top: 1px solid #d1d5db !important; /* Same color as before */
+    border-bottom: 1px solid #d1d5db !important; /* Same color as before */
+  }
+  
+  .social-posts-page .card:first-child {
+    border-top: 1px solid #d1d5db !important; /* Keep top border */
+  }
+  
+  .social-posts-page .card:last-child {
+    border-bottom: 1px solid #d1d5db !important; /* Keep bottom border */
+  }
+  
+  /* Ensure card body has no horizontal padding on small screens */
+  .social-posts-page .card .card-body {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Keep rounded corners on media elements for social posts index */
+  .social-posts-page .card img,
+  .social-posts-page .card video {
+    border-radius: 0.5rem !important;
+  }
+  
+  /* Keep rounded corners on all image containers for social posts index */
+  .social-posts-page .card .rounded-lg {
+    border-radius: 0.5rem !important;
+  }
+  
+  /* Keep images with rounded borders and padding on social posts index */
+  .social-posts-page .card .max-h-96,
+  .social-posts-page .card .aspect-video,
+  .social-posts-page .card .aspect-square {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    border-radius: 0.5rem !important;
+  }
+  
+  /* Ensure images have rounded corners on social posts index */
+  .social-posts-page .card img,
+  .social-posts-page .card video {
+    border-radius: 0.5rem !important;
+  }
+}
+
+/* Mobile and small screen responsive styles for social post show page */
+@media (max-width: 640px) {
+  .social-post-show-page {
+    padding: 0 !important;
+    padding-top: 1rem !important; /* Space below nav bar */
+  }
+  
+  .social-post-show-page .max-w-2xl {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+  }
+  
+  /* Remove padding and rounded borders from social post card on mobile */
+  .social-post-show-page .card {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: 1px solid #d1d5db !important;
+    border-bottom: 1px solid #d1d5db !important;
+  }
+  
+  /* Ensure card body maintains proper padding for text content */
+  .social-post-show-page .card .card-body {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Remove rounded corners from media elements on mobile */
+  .social-post-show-page .card img,
+  .social-post-show-page .card video {
+    border-radius: 0 !important;
+  }
+  
+  /* Remove rounded corners from all image containers on mobile */
+  .social-post-show-page .card .rounded-lg {
+    border-radius: 0 !important;
+  }
+  
+  /* Ensure media containers extend to edges on mobile */
+  .social-post-show-page .card .aspect-video,
+  .social-post-show-page .card .aspect-square {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+  }
+  
+  /* Expand single images to full screen width on mobile */
+  .social-post-show-page .card .rounded-lg {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure single images extend to screen edges */
+  .social-post-show-page .card img {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+  
+  /* Target only media containers for edge-to-edge display */
+  .social-post-show-page .card .mb-4:has(img),
+  .social-post-show-page .card .mb-4:has(video) {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure media containers with images/videos extend to edges */
+  .social-post-show-page .card div[class*="mb-4"]:has(img),
+  .social-post-show-page .card div[class*="mb-4"]:has(video) {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    padding: 0 !important;
+  }
+  
+  /* Override any potential padding from parent containers */
+  .social-post-show-page .card-body {
+    overflow-x: hidden !important;
+  }
+}
+
+/* Small screen responsive styles for social post show page (sm breakpoint) */
+@media (max-width: 768px) {
+  .social-post-show-page {
+    padding: 0 !important;
+    padding-top: 1rem !important; /* Space below nav bar */
+  }
+  
+  .social-post-show-page .max-w-2xl {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+  }
+  
+  /* Remove padding and rounded borders from social post card on small screens */
+  .social-post-show-page .card {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: 1px solid #d1d5db !important;
+    border-bottom: 1px solid #d1d5db !important;
+  }
+  
+  /* Ensure card body has no horizontal padding on small screens */
+  .social-post-show-page .card .card-body {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Remove rounded corners from media elements on small screens */
+  .social-post-show-page .card img,
+  .social-post-show-page .card video {
+    border-radius: 0 !important;
+  }
+  
+  /* Remove rounded corners from all image containers on small screens */
+  .social-post-show-page .card .rounded-lg {
+    border-radius: 0 !important;
+  }
+  
+  /* Ensure media containers extend to edges on small screens */
+  .social-post-show-page .card .aspect-video,
+  .social-post-show-page .card .aspect-square {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+  }
+  
+  /* Expand single images to full screen width on small screens */
+  .social-post-show-page .card .rounded-lg {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure single images extend to screen edges */
+  .social-post-show-page .card img {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+  
+  /* Target only media containers for edge-to-edge display */
+  .social-post-show-page .card .mb-4:has(img),
+  .social-post-show-page .card .mb-4:has(video) {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure media containers with images/videos extend to edges */
+  .social-post-show-page .card div[class*="mb-4"]:has(img),
+  .social-post-show-page .card div[class*="mb-4"]:has(video) {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    width: calc(100% + 2rem) !important;
+    padding: 0 !important;
+  }
+  
+  /* Override any potential padding from parent containers */
+  .social-post-show-page .card-body {
+    overflow-x: hidden !important;
+  }
+}
+
 /* Ensure main content area background extends fully */
 #main_content_area {
   min-height: 100% !important;
@@ -624,4 +962,19 @@ body:has(.navbar .avatar) .navbar {
 
 .dashboard-content .prose > * + * {
   margin-top: 0 !important;
+}
+
+/* Chat bubble vertical centering */
+.chat-bubble {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 2.5rem;
+}
+
+.chat-bubble > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.5rem;
 }

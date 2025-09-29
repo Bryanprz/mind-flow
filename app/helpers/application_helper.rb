@@ -36,4 +36,23 @@ module ApplicationHelper
       'text-gray-500'
     end
   end
+
+  def safe_attachment_status(attachment)
+    return { status: :error, message: 'Attachment not found' } unless attachment.present?
+    
+    begin
+      if attachment.respond_to?(:attached?) && attachment.attached?
+        if attachment.respond_to?(:image?) && attachment.image?
+          { status: :image, message: 'Image ready' }
+        else
+          { status: :file, message: 'File ready' }
+        end
+      else
+        { status: :processing, message: 'Processing attachment...' }
+      end
+    rescue => e
+      Rails.logger.error "Attachment error: #{e.message}"
+      { status: :error, message: 'Loading attachment...' }
+    end
+  end
 end

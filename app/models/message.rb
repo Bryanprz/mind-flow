@@ -5,7 +5,15 @@ class Message < ApplicationRecord
   has_rich_text :content
   has_many_attached :attachments
   
-  validates :content, presence: true
+  validate :content_or_attachments_present
+  
+  private
+  
+  def content_or_attachments_present
+    if content.blank? && attachments.empty?
+      errors.add(:base, "Message must have either content or attachments")
+    end
+  end
   
   after_create_commit :broadcast_message, :update_memberships_last_read
   
@@ -14,11 +22,12 @@ class Message < ApplicationRecord
   def broadcast_message
     # Use broadcast_append_later_to for async, non-blocking broadcasting
     # Pass the message user so each client can determine their own positioning
+    # Ensure attachments are loaded before broadcasting
     broadcast_append_later_to(
       "room_#{room.id}",
       target: "messages",
       partial: "messages/message",
-      locals: { message: self, message_user: user }
+      locals: { message: self.reload, message_user: user }
     )
   end
   

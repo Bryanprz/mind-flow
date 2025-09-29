@@ -1,15 +1,75 @@
-<div class="chat <%= message.user == Current.user ? 'chat-end' : 'chat-start' %>">
+<% 
+  # For initial page load, use Current.user comparison
+  # For broadcasts, we'll use JavaScript to handle positioning
+  is_current_user = message.user == Current.user
+%>
+<div id="message_<%= message.id %>" class="chat <%= is_current_user ? 'chat-end' : 'chat-start' %>" 
+     data-controller="message-attachment"
+     data-message-id="<%= message.id %>"
+     data-message-user-id="<%= message.user.id %>"
+     data-current-user-id="<%= Current.user&.id %>">
   <div class="chat-image avatar">
     <div class="w-10 rounded-full">
       <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
     </div>
   </div>
-  <div class="chat-header <%= message.user == Current.user ? 'text-primary' : 'text-secondary' %>">
+  <div class="chat-header <%= is_current_user ? 'text-primary' : 'text-secondary' %>">
     <%= message.user.name %>
-    <time class="text-xs opacity-50 ml-2"><%= message.created_at.strftime("%l:%M %p") %></time>
+    <time class="text-xs opacity-50"><%= message.created_at.strftime("%l:%M %p") %></time>
   </div>
-  <div class="chat-bubble <%= message.user == Current.user ? 'chat-bubble-primary' : 'chat-bubble-secondary' %> flex items-center">
-    <%= message.content %>
+  <div class="chat-bubble <%= is_current_user ? 'chat-bubble-primary' : 'chat-bubble-secondary' %>">
+    <% if message.content.present? %>
+      <div class="flex items-center justify-center min-h-[2rem]">
+        <%= message.content %>
+      </div>
+    <% end %>
+    
+    <!-- Display attachments if any -->
+    <% if message.attachments.any? %>
+      <div class="<%= 'mt-2' if message.content.present? %> flex flex-wrap gap-2">
+        <% message.attachments.each do |attachment| %>
+          <% attachment_status = safe_attachment_status(attachment) %>
+          
+          <% case attachment_status[:status] %>
+          <% when :image %>
+            <div class="relative">
+              <%= image_tag attachment, class: "max-w-xs max-h-48 rounded-lg object-cover cursor-pointer", 
+                          data: { action: "click->image-preview#openModal" },
+                          onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';" %>
+              <!-- Fallback for broken images -->
+              <div class="hidden flex items-center gap-2 p-2 bg-gray-100 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                </svg>
+                <span class="text-sm text-gray-600">Image loading...</span>
+              </div>
+            </div>
+          <% when :file %>
+            <div class="flex items-center gap-2 p-2 bg-gray-100 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+              <%= link_to attachment.filename, rails_blob_path(attachment, disposition: "attachment"), 
+                          class: "text-sm text-blue-600 hover:text-blue-800" %>
+            </div>
+          <% when :processing %>
+            <div class="flex items-center gap-2 p-2 bg-gray-100 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 animate-spin" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm text-gray-600"><%= attachment_status[:message] %></span>
+            </div>
+          <% when :error %>
+            <div class="flex items-center gap-2 p-2 bg-yellow-100 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm text-yellow-600"><%= attachment_status[:message] %></span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
   <div class="chat-footer opacity-50 text-gray-400">
     Delivered
