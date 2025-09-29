@@ -3,7 +3,7 @@ class Message < ApplicationRecord
   belongs_to :user
   
   has_rich_text :content
-  has_many_attached :attachments
+  has_many_attached :attachments, service: :google_message_attachments
   
   validates :content, presence: true, unless: -> { attachments.attached? }
   

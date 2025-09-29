@@ -72,6 +72,9 @@ config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   
   # Use async adapter for development (single process)
   config.active_job.queue_adapter = :async
+  
+  # Use Vips for faster image processing in development too
+  config.active_storage.variant_processor = :vips
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

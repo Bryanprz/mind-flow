@@ -8,12 +8,18 @@ local:
 
 google_social_posts:
   service: GCS
-  project: ancient-herb
-  bucket: ancientherb-social-posts
+  project: <%= Rails.application.credentials.gcs[:project_id] %>
+  bucket: <%= Rails.application.credentials.gcs[:bucket] %>
   credentials: <%= Rails.application.credentials.gcs[:credentials].to_json %>
 
 google_avatars:
   service: GCS
-  project: ancient-herb
+  project: <%= Rails.application.credentials.gcs[:project_id] %>
   bucket: ancientherb-avatars
+  credentials: <%= Rails.application.credentials.gcs[:credentials].to_json %>
+
+google_message_attachments:
+  service: GCS
+  project: <%= Rails.application.credentials.gcs[:project_id] %>
+  bucket: ancientherb-message-attachments
   credentials: <%= Rails.application.credentials.gcs[:credentials].to_json %>

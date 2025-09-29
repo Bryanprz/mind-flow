@@ -23,6 +23,11 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :google_social_posts
+  
+  # Use Vips for faster image processing
+  config.active_storage.variant_processor = :vips
+  config.active_storage.analyze_on_upload = true
+  config.active_storage.draw_routes = false
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   config.assume_ssl = true
