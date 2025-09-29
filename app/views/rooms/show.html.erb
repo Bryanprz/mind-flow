@@ -4,6 +4,15 @@
 
 <div class="max-w-2xl mx-auto h-screen flex flex-col relative">
   
+  <!-- Header -->
+  <div class="flex-shrink-0 px-2 md:p-4 border-b border-primary">
+    <div class="flex justify-between items-center">
+      <%= link_to "← Back to Messages", private_messages_path, 
+          class: "text-primary hover:text-primary-focus text-sm font-medium" %>
+      <h1 class="md:text-2xl text-lg font-bold text-primary"><%= @room.name %></h1>
+    </div>
+  </div>
+  
   <!-- Vertical Lines (covering entire height) -->
   <div class="absolute left-0 top-0 bottom-0 w-px bg-primary z-10"></div>
   <div class="absolute right-0 top-0 bottom-0 w-px bg-primary z-10"></div>

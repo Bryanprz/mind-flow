@@ -3,20 +3,6 @@
 <% content_for :hide_navigation, true %>
 
 <div class="min-h-full">
-  <!-- Sidebar -->
-  <div class="drawer-side">
-    <label for="sidebar-toggle" class="drawer-overlay"></label>
-    <ul class="menu p-4 w-[11rem] mt-5 bg-base-200 text-base-content">
-      <!-- Sidebar items -->
-      <li><%= link_to "Dashboard", dashboard_path %></li>
-      <li><%= link_to "Messages", private_messages_path, class: "active" %></li>
-      <li><%= link_to "Healing Plan", my_healing_plan_path %></li>
-      <li><%= link_to "Assessments", assessment_results_path %></li>
-      <li><%= link_to "Check Ins", healing_plan_logs_path %></li>
-      <li><%= link_to "Profile", user_path(Current.user) %></li>
-    </ul>
-  </div>
-  
   <!-- Main content -->
   <div class="drawer-content flex flex-col h-screen">
     <div class="flex-1 overflow-y-auto lg:overflow-hidden">
@@ -27,9 +13,11 @@
       <div class="absolute right-0 top-0 bottom-0 w-px bg-primary z-10"></div>
       
       <!-- Header -->
-      <div class="flex-shrink-0 p-4 border-b border-primary">
+      <div class="flex-shrink-0 px-2 md:p-4 border-b border-primary">
         <div class="flex justify-between items-center">
-          <h1 class="text-2xl font-bold text-primary">Messages</h1>
+          <%= link_to "← Back to Dashboard", dashboard_path, 
+              class: "text-primary hover:text-primary-focus text-sm font-medium" %>
+          <h1 class="md:text-2xl pr-4 sm:pr-0 text-lg font-bold text-primary">Messages</h1>
           <%= link_to "🏠 Public Rooms", rooms_path, 
               class: "btn btn-ghost btn-sm border border-primary text-primary hover:bg-primary hover:text-primary-content" %>
         </div>
