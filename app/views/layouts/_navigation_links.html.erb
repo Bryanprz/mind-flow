@@ -1,4 +1,4 @@
-<!-- Main Navigation Links (visible on all screens) -->
+<!-- Main Navigation Links (visible on desktop navbar only) -->
 <% if authenticated? %>
   <li><%= link_to "Dashboard", dashboard_path, class: nav_link_class(dashboard_path) %></li>
   <li><%= link_to "Healing Plan", my_healing_plan_path, class: nav_link_class(my_healing_plan_path) %></li>
@@ -8,6 +8,3 @@
   <li><%= link_to "Classroom", "#", class: nav_link_class(lifestyle_plans_path) %></li>
 <% end %>
 
-<% if Current.user&.admin? %>
-  <li class="text-info"><%= link_to "Admin", admin_root_path %></li>
-<% end %>
