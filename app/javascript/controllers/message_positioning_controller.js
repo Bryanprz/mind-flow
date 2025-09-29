@@ -9,14 +9,22 @@ export default class extends Controller {
     
     // Listen for new messages being added via Turbo Streams
     this.element.addEventListener('turbo:stream-render', () => {
-      setTimeout(() => this.positionMessages(), 10)
+      setTimeout(() => {
+        this.positionMessages()
+        // Trigger scroll after positioning is complete
+        this.triggerScrollToBottom()
+      }, 10)
     })
     
     // Listen for DOM changes to position new messages
     this.observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-          setTimeout(() => this.positionMessages(), 10)
+          setTimeout(() => {
+            this.positionMessages()
+            // Trigger scroll after positioning is complete
+            this.triggerScrollToBottom()
+          }, 10)
         }
       })
     })
@@ -78,5 +86,16 @@ export default class extends Controller {
         }
       }
     })
+  }
+  
+  triggerScrollToBottom() {
+    // Find the scroll-to controller and trigger scroll
+    const scrollController = this.element.closest('[data-controller*="scroll-to"]')
+    if (scrollController) {
+      const scrollToController = this.application.getControllerForElementAndIdentifier(scrollController, 'scroll-to')
+      if (scrollToController && scrollToController.scrollToBottom) {
+        scrollToController.scrollToBottom()
+      }
+    }
   }
 }

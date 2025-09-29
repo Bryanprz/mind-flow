@@ -129,4 +129,12 @@ class User < ApplicationRecord
     # Find intersection (rooms that both users are members of)
     my_private_rooms.where(id: their_private_rooms.select(:id))
   end
+
+  def slug
+    name.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9\-]/, '')
+  end
+
+  def to_param
+    slug
+  end
 end

@@ -2,7 +2,6 @@
 <% if authenticated? %>
   <li><%= link_to "Dashboard", dashboard_path, class: nav_link_class(dashboard_path) %></li>
   <li><%= link_to "Healing Plan", my_healing_plan_path, class: nav_link_class(my_healing_plan_path) %></li>
-  <li><%= link_to "Messages", private_messages_path, class: nav_link_class(private_messages_path) %></li>
 <% end %>
 <li><%= link_to "Community", community_path, class: nav_link_class(community_path) %></li>
 <% if Rails.env.development? %>
@@ -11,6 +10,7 @@
 
 <!-- Additional Dashboard Links (mobile only) -->
 <div class="lg:hidden">
+  <li><%= link_to "Messages", private_messages_path, class: nav_link_class(private_messages_path) %></li>
   <li><%= link_to "Assessments", assessment_results_path, class: nav_link_class(assessment_results_path) %></li>
   <% if authenticated? %>
     <li><%= link_to "Check Ins", healing_plan_logs_path, class: nav_link_class(healing_plan_logs_path) %></li>

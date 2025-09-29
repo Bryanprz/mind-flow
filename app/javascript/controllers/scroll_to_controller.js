@@ -28,14 +28,20 @@ export default class extends Controller {
     // Listen for turbo:frame-render to auto-scroll when new messages arrive
     this.element.addEventListener('turbo:frame-render', () => {
       if (this.autoScrollEnabled) {
-        this.scrollToBottom()
+        // Use a longer delay to allow message positioning to complete
+        setTimeout(() => {
+          this.scrollToBottom()
+        }, 50)
       }
     })
     
     // Listen for turbo:stream-render to auto-scroll when new messages arrive via Turbo Streams
     this.element.addEventListener('turbo:stream-render', (event) => {
       if (this.autoScrollEnabled) {
-        this.scrollToBottom()
+        // Use a longer delay to allow message positioning to complete
+        setTimeout(() => {
+          this.scrollToBottom()
+        }, 50)
       }
     })
     
@@ -59,9 +65,11 @@ export default class extends Controller {
                     node.querySelector?.('[data-image-preview-target]'))
           })
           
-          // Auto-scroll for message additions
+          // Auto-scroll for message additions with delay to allow positioning
           if (isMessageAddition && this.autoScrollEnabled) {
-            this.scrollToBottom()
+            setTimeout(() => {
+              this.scrollToBottom()
+            }, 50)
           }
           
           // Maintain bottom scroll for image preview additions
@@ -91,7 +99,13 @@ export default class extends Controller {
   scrollToBottom() {
     // Use requestAnimationFrame to ensure DOM is ready
     requestAnimationFrame(() => {
+      // Ensure we're at the very bottom
       this.element.scrollTop = this.element.scrollHeight
+      
+      // Double-check after a brief moment to handle any layout changes
+      setTimeout(() => {
+        this.element.scrollTop = this.element.scrollHeight
+      }, 10)
     })
   }
   

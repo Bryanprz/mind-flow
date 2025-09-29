@@ -44,7 +44,7 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :lifestyle_plans
-  resources :users do
+  resources :users, param: :slug do
     member do
       patch :attach_avatar
       patch :attach_cover_image

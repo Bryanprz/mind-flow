@@ -237,6 +237,9 @@ export default class extends Controller {
           trixEditor.editor.loadHTML('');
         }
         
+        // Clear image previews
+        this.clearImagePreviews(form);
+        
         // Hide the reply form
         if (this.hasReplyFormTarget) {
           this.replyFormTarget.classList.add('hidden');
@@ -344,5 +347,13 @@ export default class extends Controller {
     // Let the flash controller handle the auto-removal
     // The flash controller will automatically add opacity-0 and -translate-y-4 after 5 seconds
     // and remove the element when the transition ends
+  }
+
+  clearImagePreviews(form) {
+    // Find the image-preview controller associated with this form
+    const imagePreviewController = this.application.getControllerForElementAndIdentifier(form, 'image-preview');
+    if (imagePreviewController && imagePreviewController.clearPreviews) {
+      imagePreviewController.clearPreviews();
+    }
   }
 }

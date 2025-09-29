@@ -857,4 +857,44 @@ export default class extends Controller {
     document.body.style.height = 'auto'
     document.documentElement.style.height = 'auto'
   }
+
+  // Method to clear all image previews and reset the form
+  clearPreviews() {
+    // Clear the file input
+    if (this.hasFileInputTarget) {
+      this.fileInputTarget.value = ''
+    }
+    
+    // Clear the preview container
+    if (this.hasPreviewContainerTarget) {
+      this.previewContainerTarget.classList.add('hidden')
+    }
+    
+    // Clear the preview grid
+    if (this.hasPreviewGridTarget) {
+      this.previewGridTarget.innerHTML = ''
+    }
+    
+    // Clear any existing previews
+    if (this.hasPreviewTarget) {
+      this.previewTarget.innerHTML = ''
+    }
+    
+    // Reset the form if it exists
+    const form = this.element.closest('form')
+    if (form) {
+      form.reset()
+    }
+    
+    // Clear any drag and drop state
+    this.clearDragAndDropState()
+  }
+
+  // Method to clear drag and drop visual state
+  clearDragAndDropState() {
+    const mediaUploadArea = this.element.querySelector('.form-control')
+    if (mediaUploadArea) {
+      mediaUploadArea.classList.remove('drag-over')
+    }
+  }
 }

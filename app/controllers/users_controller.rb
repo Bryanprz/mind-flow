@@ -136,7 +136,11 @@ class UsersController < ApplicationController
   end
 
   def attach_avatar
-    @user = User.find(params[:id])
+    if params[:slug].match?(/^\d+$/)
+      @user = User.find_by(id: params[:slug])
+    else
+      @user = User.all.find { |user| user.slug == params[:slug] }
+    end
     begin
       if @user.update(avatar: params[:avatar])
         render json: { success: true, avatar_url: url_for(@user.avatar) }
@@ -154,7 +158,11 @@ class UsersController < ApplicationController
   end
 
   def attach_cover_image
-    @user = User.find(params[:id])
+    if params[:slug].match?(/^\d+$/)
+      @user = User.find_by(id: params[:slug])
+    else
+      @user = User.all.find { |user| user.slug == params[:slug] }
+    end
     begin
       if @user.update(cover_image: params[:cover_image])
         render json: { success: true, cover_image_url: url_for(@user.cover_image) }
@@ -174,8 +182,26 @@ class UsersController < ApplicationController
   private
 
   def set_user
-    if params[:id].present? # If an ID is provided, find that specific user
-      @user = User.find(params[:id])
+    if params[:slug].present? # If a slug is provided, find that specific user
+      # Try to find by ID first (for numeric IDs), then search by slug
+      if params[:slug].match?(/^\d+$/)
+        @user = User.find_by(id: params[:slug])
+      else
+        # Search for user with matching slug
+        # We need to check all users since slug is a computed method, not a database column
+        @user = User.all.find { |user| user.slug == params[:slug] }
+      end
+      
+      # Debug logging
+      Rails.logger.info "Looking for user with slug: #{params[:slug]}"
+      Rails.logger.info "Found user: #{@user&.name} (ID: #{@user&.id})"
+      
+      # If still no user found, redirect to current user's profile
+      if @user.nil?
+        Rails.logger.info "No user found with slug: #{params[:slug]}, redirecting to current user"
+        redirect_to Current.user, notice: "User not found"
+        return
+      end
     elsif Current.user # Otherwise, if a user is logged in, show their profile
       @user = Current.user
     end

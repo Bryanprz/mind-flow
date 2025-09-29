@@ -162,6 +162,12 @@ trix-toolbar {
   max-height: none !important;
 }
 
+/* Focus state to prevent double borders */
+.social-feed-input:focus-within {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 1px #3b82f6 !important;
+}
+
 /* Expanded card styles for image previews and unlimited input growth */
 .expanded-card {
   height: auto !important;
