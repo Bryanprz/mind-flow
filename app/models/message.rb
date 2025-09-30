@@ -107,6 +107,18 @@ class Message < ApplicationRecord
   def broadcast_message
     Rails.logger.info "📡 Broadcasting message #{id} to room #{room.id}"
     
+    # Extract content safely to avoid serialization issues
+    content_text = begin
+      if content.present?
+        content.to_plain_text
+      else
+        ""
+      end
+    rescue => e
+      Rails.logger.error "Error extracting content for message #{id}: #{e.message}"
+      ""
+    end
+    
     # Use simple data broadcast to avoid all Turbo Streams issues
     # The client will handle rendering with proper styling
     ActionCable.server.broadcast(
@@ -116,7 +128,7 @@ class Message < ApplicationRecord
         message_id: id,
         user_name: user.name,
         user_id: user.id,
-        content: content.to_s,
+        content: content_text,
         created_at: created_at.iso8601,
         has_attachments: attachments.any?
       }
