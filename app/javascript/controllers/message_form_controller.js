@@ -17,6 +17,8 @@ export default class extends Controller {
   }
 
   submitForm() {
+    console.log('📝 Message form submitForm called')
+    
     // Check if there's any content
     const content = this.contentTarget.value.trim()
     const hasContent = content && content !== '<div><br></div>' && content !== '<p><br></p>'
@@ -25,8 +27,11 @@ export default class extends Controller {
     const fileInput = this.formTarget.querySelector('input[type="file"]')
     const hasAttachments = fileInput && fileInput.files && fileInput.files.length > 0
     
+    console.log('📝 Form data:', { hasContent, hasAttachments, content: content.substring(0, 100) })
+    
     // Only submit if there's content OR attachments
     if (!hasContent && !hasAttachments) {
+      console.log('📝 No content or attachments, not submitting')
       return
     }
     

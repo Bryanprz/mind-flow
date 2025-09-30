@@ -105,10 +105,14 @@ class Message < ApplicationRecord
   private
   
   def broadcast_message
+    Rails.logger.info "📡 Broadcasting message #{id} to room #{room.id}"
+    
     # Use broadcast_append_to for instant message display
     # Pass the message user so each client can determine their own positioning
     # Use a simpler query for immediate broadcasting
     message_with_author = Message.includes(:user).find(id)
+    
+    Rails.logger.info "📡 Message details: user=#{message_with_author.user.name}, content=#{message_with_author.content.present? ? 'present' : 'empty'}, attachments=#{message_with_author.attachments.count}"
     
     # Broadcast the message synchronously for instant display
     broadcast_append_to(
@@ -118,9 +122,12 @@ class Message < ApplicationRecord
       locals: { message: message_with_author, message_user: message_with_author.user }
     )
     
+    Rails.logger.info "📡 Broadcast completed for message #{id}"
+    
     # If message has attachments, process them in background and re-broadcast
     # Check attachments without expensive includes
     if attachments.any?
+      Rails.logger.info "📡 Message #{id} has attachments, scheduling background processing"
       ProcessMessageAttachmentsJob.perform_later(id)
     end
   end

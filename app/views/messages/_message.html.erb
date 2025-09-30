@@ -1,4 +1,4 @@
-<% cache message do %>
+<% cache [message, Current.user&.id] do %>
 <% 
   # For initial page load, use Current.user comparison
   # For broadcasts, we'll use JavaScript to handle positioning
@@ -53,8 +53,10 @@
           
           <% case attachment_status[:status] %>
           <% when :image %>
-            <div class="rounded-lg">
-              <%= image_tag attachment, class: "max-w-xs max-h-48 rounded-lg object-cover" %>
+            <div class="rounded-lg max-w-full">
+              <%= image_tag attachment, class: "max-w-[280px] max-h-48 w-auto h-auto rounded-lg object-cover cursor-pointer", 
+                  style: "max-width: 280px; width: auto; height: auto;",
+                  data: { action: "click->image-modal#openModal" } %>
             </div>
           <% when :file %>
             <div class="flex items-center gap-2 p-2 bg-gray-100 rounded-lg">

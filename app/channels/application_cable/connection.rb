@@ -3,7 +3,13 @@ module ApplicationCable
     identified_by :current_user
 
     def connect
-      set_current_user || reject_unauthorized_connection
+      Rails.logger.info "🔌 ActionCable connection attempt for session: #{cookies.signed[:session_id]}"
+      if set_current_user
+        Rails.logger.info "✅ ActionCable connected for user: #{current_user&.name}"
+      else
+        Rails.logger.error "❌ ActionCable connection rejected - no valid session"
+        reject_unauthorized_connection
+      end
     end
 
     private

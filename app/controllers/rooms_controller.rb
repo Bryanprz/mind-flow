@@ -16,17 +16,30 @@ class RoomsController < ApplicationController
   end
   
   def show
-    # Load only recent messages (last 10) for ultra-fast initial page load
-    @messages = @room.messages.with_author_and_attachments.recent.limit(10)
+    # Load recent messages with proper includes for attachments
+    @messages = @room.messages.with_author_and_attachments.recent.limit(50)
+    
+    Rails.logger.info "📱 Loading messages for room #{@room.id}:"
+    Rails.logger.info "📱 Total messages in room: #{@room.messages.count}"
+    Rails.logger.info "📱 Messages loaded: #{@messages.count}"
+    Rails.logger.info "📱 Messages with attachments: #{@messages.count { |m| m.attachments.attached? }}"
+    Rails.logger.info "📱 Message IDs: #{@messages.pluck(:id)}"
+    Rails.logger.info "📱 Message details:"
+    @messages.each do |msg|
+      Rails.logger.info "📱   - ID: #{msg.id}, User: #{msg.user.name}, Content: #{msg.content.present? ? 'present' : 'empty'}, Attachments: #{msg.attachments.count}, Created: #{msg.created_at}"
+    end
+    
     @message = Message.new
     @other_user = @room.other_user(Current.user) if @room.room_type == 'private'
-    @has_more_messages = @room.messages.count > 10
+    @has_more_messages = @room.messages.count > 50
     
     # Add HTTP caching - if messages haven't changed, return 304 Not Modified
     fresh_when @messages
   end
   
   def load_more_messages
+    Rails.logger.info "🔄 Loading more messages for room #{params[:id]}, last_message_id: #{params[:last_message_id]}"
+    
     @room = Room.find(params[:id])
     last_message_id = params[:last_message_id]
     
@@ -38,6 +51,8 @@ class RoomsController < ApplicationController
                           .limit(30)
     
     @has_more_messages = @room.messages.where('id < ?', last_message_id).count > 30
+    
+    Rails.logger.info "🔄 Found #{@older_messages.count} older messages, has_more: #{@has_more_messages}"
     
     respond_to do |format|
       format.turbo_stream do

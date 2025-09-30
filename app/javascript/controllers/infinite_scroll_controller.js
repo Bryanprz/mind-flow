@@ -33,7 +33,15 @@ export default class extends Controller {
     const scrollTop = messagesContainer.scrollTop
     const threshold = 100 // Load more when 100px from top (more responsive)
 
+    console.log('Infinite scroll check:', {
+      scrollTop,
+      threshold,
+      loading: this.loadingValue,
+      hasMore: this.hasMoreMessagesValue
+    })
+
     if (scrollTop <= threshold) {
+      console.log('Triggering load more messages')
       this.loadMoreMessages()
     }
   }
@@ -55,9 +63,11 @@ export default class extends Controller {
 
   async loadMoreMessages() {
     if (this.loadingValue || !this.hasMoreMessagesValue) {
+      console.log('Load more messages blocked:', { loading: this.loadingValue, hasMore: this.hasMoreMessagesValue })
       return
     }
 
+    console.log('Starting to load more messages')
     this.loadingValue = true
     this.updateLoadingState(true)
 
@@ -65,10 +75,12 @@ export default class extends Controller {
       // Get the first message ID (oldest visible message)
       const firstMessage = this.element.querySelector('.chat')
       if (!firstMessage) {
+        console.log('No first message found')
         return
       }
 
       const firstMessageId = firstMessage.id.replace('message_', '')
+      console.log('Loading messages before ID:', firstMessageId)
       
       // Make request to load more messages
       const response = await fetch(`/rooms/${this.roomIdValue}/load_more_messages?last_message_id=${firstMessageId}`, {
@@ -79,19 +91,24 @@ export default class extends Controller {
         }
       })
 
+      console.log('Response status:', response.status)
       if (response.ok) {
         const turboStream = await response.text()
+        console.log('Turbo stream response:', turboStream)
         Turbo.renderStreamMessage(turboStream)
         
         // Update hasMoreMessages value based on response
         // This would need to be handled by the server response
         // For now, we'll assume there are more messages until we get a signal otherwise
+      } else {
+        console.error('Response not ok:', response.status, response.statusText)
       }
     } catch (error) {
       console.error('Error loading more messages:', error)
     } finally {
       this.loadingValue = false
       this.updateLoadingState(false)
+      console.log('Finished loading more messages')
     }
   }
 

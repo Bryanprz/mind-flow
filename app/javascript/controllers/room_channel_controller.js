@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { roomId: Number }
+  static values = { roomId: Number, currentUserId: Number }
 
   connect() {
     this.subscribeToRoom()
@@ -14,14 +14,17 @@ export default class extends Controller {
   }
 
   subscribeToRoom() {
+    console.log('🔌 Attempting to subscribe to room channel:', this.roomIdValue)
+    
     if (window.App && window.App.cable) {
       this.subscription = window.App.cable.subscriptions.create(
         { channel: "RoomChannel", id: this.roomIdValue },
         {
           connected: () => {
-            // Connected to room channel
+            console.log('✅ Connected to room channel for room:', this.roomIdValue)
           },
           received: (data) => {
+            console.log('📨 Received data from room channel:', data)
             // Process the Turbo Stream
             if (data && typeof data === 'string') {
               // Let Turbo handle the stream
@@ -29,11 +32,12 @@ export default class extends Controller {
             }
           },
           disconnected: () => {
-            // Disconnected from room channel
+            console.log('❌ Disconnected from room channel for room:', this.roomIdValue)
           }
         }
       )
     } else {
+      console.log('⏳ ActionCable not ready, retrying in 500ms...')
       setTimeout(() => this.subscribeToRoom(), 500)
     }
   }

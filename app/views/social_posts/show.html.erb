@@ -2,7 +2,7 @@
 
 <div data-controller="scroll-nav">
 
-<div class="max-w-2xl mx-auto px-4 py-6">
+<div class="max-w-2xl mx-auto px-4 py-6" data-controller="image-modal">
   <!-- Back button -->
   <div class="mb-4">
     <%= link_to community_path, class: "flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors" do %>
@@ -83,7 +83,9 @@
             <% media_item = @social_post.media.first %>
             <% if media_item.image? %>
               <div class="rounded-lg">
-                <%= image_tag media_item, class: "w-full h-auto" %>
+                <%= image_tag media_item, class: "w-full h-auto cursor-pointer", 
+                    style: "cursor: pointer;",
+                    data: { action: "click->image-modal#openModal" } %>
               </div>
             <% elsif media_item.video? %>
               <div class="aspect-video">
@@ -103,7 +105,9 @@
               <% @social_post.media.each do |media_item| %>
                 <% if media_item.image? %>
                   <div class="aspect-square overflow-hidden rounded-lg">
-                    <%= image_tag media_item, class: "w-full h-full object-cover" %>
+                    <%= image_tag media_item, class: "w-full h-full object-cover cursor-pointer", 
+                        style: "cursor: pointer;",
+                        data: { action: "click->image-modal#openModal" } %>
                   </div>
                 <% elsif media_item.video? %>
                   <div class="aspect-video">
