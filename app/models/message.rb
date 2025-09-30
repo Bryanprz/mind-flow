@@ -107,18 +107,24 @@ class Message < ApplicationRecord
   def broadcast_message
     Rails.logger.info "📡 Broadcasting message #{id} to room #{room.id}"
     
-    # Use proper Turbo Streams broadcast_append_to method
-    # This handles all internal tracking correctly and avoids unique index errors
-    broadcast_append_to(
+    # Use simple data broadcast to avoid all Turbo Streams issues
+    # The client will handle rendering with proper styling
+    ActionCable.server.broadcast(
       "room_#{room.id}",
-      target: "messages",
-      partial: "messages/message",
-      locals: { message: self, message_user: user }
+      {
+        type: "new_message",
+        message_id: id,
+        user_name: user.name,
+        user_id: user.id,
+        content: content.to_s,
+        created_at: created_at.iso8601,
+        has_attachments: attachments.any?
+      }
     )
     
     Rails.logger.info "📡 Broadcast completed for message #{id}"
     
-    # If message has attachments, process them in background and re-broadcast
+    # If message has attachments, process them in background
     if attachments.any?
       Rails.logger.info "📡 Message #{id} has attachments, scheduling background processing"
       ProcessMessageAttachmentsJob.perform_later(id)

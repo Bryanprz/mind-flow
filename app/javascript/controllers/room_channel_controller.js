@@ -26,9 +26,13 @@ export default class extends Controller {
           received: (data) => {
             console.log('📨 Received data from room channel:', data)
             
-            // Handle Turbo Streams format (the proper way)
-            if (data && typeof data === 'string') {
-              // Let Turbo handle the stream - this preserves all styling and functionality
+            // Handle new message data format
+            if (data && data.type === 'new_message') {
+              this.handleNewMessage(data)
+            }
+            // Process the Turbo Stream (fallback)
+            else if (data && typeof data === 'string') {
+              // Let Turbo handle the stream
               Turbo.renderStreamMessage(data)
             }
           },
@@ -41,5 +45,50 @@ export default class extends Controller {
       console.log('⏳ ActionCable not ready, retrying in 500ms...')
       setTimeout(() => this.subscribeToRoom(), 500)
     }
+  }
+
+  handleNewMessage(data) {
+    const messagesContainer = document.getElementById('messages')
+    if (!messagesContainer) return
+
+    // Determine if this is the current user's message
+    const isCurrentUser = data.user_id === this.currentUserIdValue
+    
+    // Create message HTML with proper styling (matching the original partial)
+    const messageHtml = `
+      <div id="message_${data.message_id}" class="chat ${isCurrentUser ? 'chat-end' : 'chat-start'}" 
+           data-controller="message-attachment avatar-loader"
+           data-message-id="${data.message_id}"
+           data-message-user-id="${data.user_id}"
+           data-current-user-id="${this.currentUserIdValue}"
+           data-message-created-at="${new Date(data.created_at).getTime() / 1000}"
+           data-has-attachments="${data.has_attachments}">
+        <div class="chat-image avatar">
+          <div class="w-10 rounded-full overflow-hidden">
+            <div class="w-full h-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold">
+              ${data.user_name[0].toUpperCase()}
+            </div>
+          </div>
+        </div>
+        <div class="chat-header ${isCurrentUser ? 'text-primary text-right' : 'text-secondary'}">
+          ${data.user_name}
+          <time class="text-xs opacity-50">${new Date(data.created_at).toLocaleTimeString()}</time>
+        </div>
+        <div class="chat-bubble ${isCurrentUser ? 'chat-bubble-primary' : 'chat-bubble-secondary'}">
+          <div class="flex items-center justify-center min-h-[2rem]">
+            ${data.content}
+          </div>
+        </div>
+        <div class="chat-footer opacity-50 text-gray-400">
+          Delivered
+        </div>
+      </div>
+    `
+
+    // Append the message
+    messagesContainer.insertAdjacentHTML('beforeend', messageHtml)
+    
+    // Scroll to bottom
+    messagesContainer.scrollTop = messagesContainer.scrollHeight
   }
 }
