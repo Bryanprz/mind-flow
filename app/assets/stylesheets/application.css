@@ -1308,3 +1308,40 @@ body:has(.navbar .avatar) .navbar {
 .dashboard-content .social-feed-card .flex.items-start.gap-3 {
   align-items: flex-start !important;
 }
+
+/* Remove border from social feed input field container */
+.dashboard-content .social-feed-card [data-image-preview-target="inputField"] {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove border from social feed textarea specifically */
+.dashboard-content .social-feed-card .social-feed-input {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove border from social feed textarea focus state */
+.dashboard-content .social-feed-card .social-feed-input:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove all borders from social feed form elements */
+.dashboard-content .social-feed-card form {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.dashboard-content .social-feed-card form div,
+.dashboard-content .social-feed-card form textarea,
+.dashboard-content .social-feed-card form button,
+.dashboard-content .social-feed-card form label {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
