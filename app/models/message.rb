@@ -107,6 +107,16 @@ class Message < ApplicationRecord
   def broadcast_message
     Rails.logger.info "📡 Broadcasting message #{id} to room #{room.id}"
     
+    # DEBUG: Log all message attributes
+    Rails.logger.info "🔍 DEBUG - Message attributes:"
+    Rails.logger.info "  - ID: #{id}"
+    Rails.logger.info "  - Room ID: #{room.id}"
+    Rails.logger.info "  - User ID: #{user.id}"
+    Rails.logger.info "  - User name: #{user.name}"
+    Rails.logger.info "  - Created at: #{created_at}"
+    Rails.logger.info "  - Content present: #{content.present?}"
+    Rails.logger.info "  - Attachments count: #{attachments.count}"
+    
     # Extract content safely to avoid serialization issues
     content_text = begin
       if content.present?
@@ -119,22 +129,57 @@ class Message < ApplicationRecord
       ""
     end
     
-    # Use simple data broadcast to avoid all Turbo Streams issues
-    # The client will handle rendering with proper styling
-    ActionCable.server.broadcast(
-      "room_#{room.id}",
-      {
-        type: "new_message",
-        message_id: id,
-        user_name: user.name,
-        user_id: user.id,
-        content: content_text,
-        created_at: created_at.iso8601,
-        has_attachments: attachments.any?
-      }
-    )
+    Rails.logger.info "🔍 DEBUG - Extracted content: '#{content_text}'"
     
-    Rails.logger.info "📡 Broadcast completed for message #{id}"
+    # Prepare broadcast data
+    broadcast_data = {
+      type: "new_message",
+      message_id: id,
+      user_name: user.name,
+      user_id: user.id,
+      content: content_text,
+      created_at: created_at.iso8601,
+      has_attachments: attachments.any?
+    }
+    
+    Rails.logger.info "🔍 DEBUG - Broadcast data: #{broadcast_data.inspect}"
+    
+    # Test simple broadcast first
+    begin
+      Rails.logger.info "🔍 DEBUG - Testing simple broadcast first..."
+      ActionCable.server.broadcast("room_#{room.id}", { test: "simple test message" })
+      Rails.logger.info "✅ Simple broadcast successful"
+    rescue => e
+      Rails.logger.error "❌ Simple broadcast failed: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      return
+    end
+    
+    # Now try the full broadcast
+    begin
+      Rails.logger.info "🔍 DEBUG - Attempting full broadcast..."
+      ActionCable.server.broadcast("room_#{room.id}", broadcast_data)
+      Rails.logger.info "✅ Full broadcast successful for message #{id}"
+    rescue => e
+      Rails.logger.error "❌ Full broadcast failed for message #{id}: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      
+      # Try with minimal data
+      begin
+        Rails.logger.info "🔍 DEBUG - Trying minimal broadcast..."
+        minimal_data = {
+          type: "new_message",
+          message_id: id,
+          content: content_text
+        }
+        ActionCable.server.broadcast("room_#{room.id}", minimal_data)
+        Rails.logger.info "✅ Minimal broadcast successful"
+      rescue => e2
+        Rails.logger.error "❌ Even minimal broadcast failed: #{e2.message}"
+      end
+    end
+    
+    Rails.logger.info "📡 Broadcast process completed for message #{id}"
     
     # If message has attachments, process them in background
     if attachments.any?
