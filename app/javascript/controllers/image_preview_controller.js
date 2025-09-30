@@ -6,7 +6,11 @@ export default class extends Controller {
   static values = { formId: String }
 
   connect() {
+    console.log('Image preview controller connected')
+    console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(this)))
+    console.log('handleFormSubmit exists:', typeof this.handleFormSubmit)
     this.boundHandleFileSelect = this.handleFileSelect.bind(this)
+    this.boundHandleFormSubmit = this.handleFormSubmit.bind(this)
     this.isFileInputClicking = false // Flag to prevent recursive clicks
     this.processingFiles = false // Flag to prevent double processing
     this.setupFileInput()
@@ -368,6 +372,14 @@ export default class extends Controller {
       const textarea = this.inputFieldTarget.querySelector('.social-feed-input')
       if (textarea) {
         textarea.classList.remove('expanded')
+        
+        // Force remove any extra borders that might appear after form submission
+        const trixEditor = textarea.querySelector('trix-editor')
+        if (trixEditor) {
+          trixEditor.style.border = 'none'
+          trixEditor.style.boxShadow = 'none'
+          trixEditor.style.outline = 'none'
+        }
       }
     }
     
@@ -401,19 +413,27 @@ export default class extends Controller {
         // Prevent scroll to top by maintaining current scroll position
         this.restoreScrollPosition()
       } else {
+        // Check if this is a social feed card - if so, don't apply conflicting styles
+        const isSocialFeedCard = this.cardTarget.classList.contains('social-feed-card')
+        
         // For non-room, use balanced expansion that shows image previews but preserves scroll
         this.cardTarget.style.transition = 'all 0.3s ease-in-out'
         
-        // Expand the card to accommodate image previews
-        this.cardTarget.style.overflow = 'visible'
-        this.cardTarget.style.maxHeight = 'none'
-        
-        // Expand the card body to accommodate images
-        const cardBody = this.cardTarget.querySelector('.card-body')
-        if (cardBody) {
-          cardBody.style.height = 'auto'
-          cardBody.style.maxHeight = 'none'
-          cardBody.style.overflow = 'visible'
+        if (!isSocialFeedCard) {
+          // Expand the card to accommodate image previews (only for non-social-feed cards)
+          this.cardTarget.style.overflow = 'visible'
+          this.cardTarget.style.maxHeight = 'none'
+          
+          // Expand the card body to accommodate images (only for non-social-feed cards)
+          const cardBody = this.cardTarget.querySelector('.card-body')
+          if (cardBody) {
+            cardBody.style.height = 'auto'
+            cardBody.style.maxHeight = 'none'
+            cardBody.style.overflow = 'visible'
+          }
+        } else {
+          // For social feed cards, only set overflow to visible, let CSS handle the rest
+          this.cardTarget.style.overflow = 'visible'
         }
         
         // Ensure preview container is fully visible
@@ -812,7 +832,6 @@ export default class extends Controller {
     }
   }
 
-
   // Method to lock scroll position immediately
   lockScrollPosition() {
     const messagesContainer = document.getElementById('messages')
@@ -963,5 +982,143 @@ export default class extends Controller {
     if (mediaUploadArea) {
       mediaUploadArea.classList.remove('drag-over')
     }
+  }
+
+  handleFormSubmit(event) {
+    console.log('handleFormSubmit called', event)
+    
+    try {
+      if (event.detail && event.detail.success !== false) {
+        this.clearPreviews()
+        this.collapseCard()
+        this.collapseInputField()
+        this.resetTrixEditorStyling()
+        
+        this.storedScrollTop = null
+        this.storedScrollHeight = null
+        this.storedClientHeight = null
+        
+        this.removeScrollAnchor()
+        
+        if (this.scrollMaintenanceInterval) {
+          clearInterval(this.scrollMaintenanceInterval)
+          this.scrollMaintenanceInterval = null
+        }
+        
+        if (this.scrollToController) {
+          this.scrollToController.enableAutoScroll()
+          this.scrollToController = null
+        }
+        
+        this.processingFiles = false
+        this.scrollLockActive = false
+      }
+    } catch (error) {
+      console.error('Error in handleFormSubmit:', error)
+    }
+  }
+
+  // Test method to verify controller is working
+  testMethod() {
+    console.log('Test method called - controller is working')
+    return true
+  }
+
+  // Simple form submission handler similar to chat controller
+  clearForm() {
+    console.log('clearForm called')
+    try {
+      this.clearPreviews()
+      this.collapseInputField()
+      this.resetTrixEditorStyling()
+      console.log('Form cleared successfully')
+      
+      // Debug: Check if border was actually removed
+      if (this.hasInputFieldTarget) {
+        const textarea = this.inputFieldTarget.querySelector('.social-feed-input')
+        if (textarea) {
+          const computedStyle = window.getComputedStyle(textarea)
+          console.log('Textarea border after clear:', computedStyle.border)
+          console.log('Textarea classes after clear:', textarea.className)
+        }
+      }
+    } catch (error) {
+      console.error('Error in clearForm:', error)
+    }
+  }
+  
+  resetTrixEditorStyling() {
+    // Force reset any Trix editor styling that might cause extra borders
+    if (this.hasInputFieldTarget) {
+      const textarea = this.inputFieldTarget.querySelector('.social-feed-input')
+      if (textarea) {
+        const trixEditor = textarea.querySelector('trix-editor')
+        if (trixEditor) {
+          // Force remove any borders, shadows, or outlines
+          trixEditor.style.border = 'none'
+          trixEditor.style.boxShadow = 'none'
+          trixEditor.style.outline = 'none'
+          trixEditor.style.background = 'transparent'
+          
+          // Also ensure the input field container doesn't have extra borders
+          textarea.style.boxShadow = 'none'
+          textarea.style.outline = 'none'
+          
+          // Add CSS class to remove border
+          textarea.classList.add('social-feed-input-no-border')
+        }
+        
+        // Also check for any wrapper elements that might have borders
+        const inputContainer = textarea.closest('.flex-1')
+        if (inputContainer) {
+          inputContainer.style.border = 'none'
+          inputContainer.style.boxShadow = 'none'
+          inputContainer.style.outline = 'none'
+        }
+        
+        // Check the parent form container
+        const formContainer = textarea.closest('.flex.items-start.gap-3')
+        if (formContainer) {
+          formContainer.style.border = 'none'
+          formContainer.style.boxShadow = 'none'
+          formContainer.style.outline = 'none'
+        }
+      }
+    }
+    
+    // Also try again after a short delay in case Trix editor is being re-initialized
+    setTimeout(() => {
+      if (this.hasInputFieldTarget) {
+        const textarea = this.inputFieldTarget.querySelector('.social-feed-input')
+        if (textarea) {
+          const trixEditor = textarea.querySelector('trix-editor')
+          if (trixEditor) {
+            trixEditor.style.border = 'none'
+            trixEditor.style.boxShadow = 'none'
+            trixEditor.style.outline = 'none'
+            trixEditor.style.background = 'transparent'
+            
+            textarea.style.boxShadow = 'none'
+            textarea.style.outline = 'none'
+            textarea.classList.add('social-feed-input-no-border')
+          }
+          
+          // Reset wrapper elements again
+          const inputContainer = textarea.closest('.flex-1')
+          if (inputContainer) {
+            inputContainer.style.border = 'none'
+            inputContainer.style.boxShadow = 'none'
+            inputContainer.style.outline = 'none'
+          }
+          
+          const formContainer = textarea.closest('.flex.items-start.gap-3')
+          if (formContainer) {
+            formContainer.style.border = 'none'
+            formContainer.style.boxShadow = 'none'
+            formContainer.style.outline = 'none'
+          }
+        }
+      }
+    }, 100)
   }
 }

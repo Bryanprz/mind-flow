@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import url("actiontext.css");
 @import url("message_transitions.css");
 
@@ -104,8 +107,139 @@ trix-toolbar {
   padding: 0.5rem !important; /* Add some padding for better text appearance */
   border: none !important;
   outline: none !important;
+  box-shadow: none !important;
   transition: all 0.3s ease !important;
   line-height: 1.4 !important; /* Better line spacing for readability */
+}
+
+/* Override Trix editor default border to prevent extra border */
+.social-feed-input trix-toolbar {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.social-feed-input trix-editor:focus {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Ensure Trix editor never shows extra borders, even after form submission */
+.social-feed-input trix-editor {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Override any Trix editor default styling that might cause extra borders */
+.social-feed-input trix-editor[contenteditable] {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Ensure the input field container doesn't get extra borders after form submission */
+.social-feed-input:not(:focus-within) {
+  box-shadow: none !important;
+}
+
+/* More aggressive overrides for post-submission border issues */
+.social-feed-input {
+  border: 1px solid #d1d5db !important; /* Force the intended border */
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.social-feed-input:focus-within {
+  border: 1px solid #3b82f6 !important; /* Force blue border on focus */
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Override any Trix editor styling that might cause double borders */
+.social-feed-input trix-editor {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+/* Ensure Trix editor never gets its own border */
+.social-feed-input trix-editor:before,
+.social-feed-input trix-editor:after {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Override any Trix editor focus states */
+.social-feed-input trix-editor:focus,
+.social-feed-input trix-editor:focus-visible,
+.social-feed-input trix-editor:focus-within {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Prevent any border from appearing around the input container after form submission */
+.social-feed-input {
+  border: 1px solid #d1d5db !important; /* Only the intended border */
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Ensure the input container never gets an extra wrapper border */
+.social-feed-input:after,
+.social-feed-input:before {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Override any form or container styling that might add borders */
+.social-feed-input,
+.social-feed-input * {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Re-apply the intended border only to the input field itself */
+.social-feed-input {
+  border: 1px solid #d1d5db !important;
+}
+
+.social-feed-input:focus-within {
+  border: 1px solid #3b82f6 !important;
+}
+
+/* Prevent any wrapper border around the input field and icons */
+.flex.items-start.gap-3 {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.flex-1.relative.min-w-0.flex.items-center.gap-2.mb-2 {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Ensure no border appears around the entire input container */
+.flex.items-start.gap-3,
+.flex.items-start.gap-3 * {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Re-apply only the intended border to the input field */
+.flex.items-start.gap-3 .social-feed-input {
+  border: 1px solid #d1d5db !important;
+}
+
+.flex.items-start.gap-3 .social-feed-input:focus-within {
+  border: 1px solid #3b82f6 !important;
 }
 
 /* Image preview styles */
@@ -113,7 +247,7 @@ trix-toolbar {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0;
 }
 
 .image-preview-container .relative {
@@ -166,7 +300,8 @@ trix-toolbar {
 /* Focus state to prevent double borders */
 .social-feed-input:focus-within {
   border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 1px #3b82f6 !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 /* Expanded card styles for image previews and unlimited input growth */
@@ -926,6 +1061,7 @@ body.social-posts-page #main_content_area {
   object-fit: cover;
 }
 
+
 /* Image preview styling for chat messages */
 .messages .image-preview-container {
   max-height: 150px;
@@ -1057,4 +1193,118 @@ body:has(.navbar .avatar) .navbar {
   body:has(#assessment_frame) {
     scroll-behavior: smooth !important;
   }
+}
+
+/* CRITICAL: Prevent social feed card from collapsing when form expands - MAXIMUM SPECIFICITY */
+.social-feed-card.expanded-card {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+  /* Override any conflicting general expanded-card rules */
+  transition: none !important;
+}
+
+.social-feed-card.expanded-card .card-body {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding-bottom: 0 !important; /* Override general expanded-card padding */
+}
+
+/* Allow the form area to expand within the card */
+.social-feed-card.expanded-card .px-3 {
+  flex-shrink: 0 !important;
+  overflow: visible !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: auto !important;
+}
+
+/* Ensure the feed content area maintains its scrollable height */
+.social-feed-card.expanded-card .flex-1 {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  height: 100% !important;
+  max-height: 100% !important;
+}
+
+/* Allow image preview container to be visible */
+.social-feed-card.expanded-card [data-image-preview-target="previewContainer"] {
+  display: block !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Allow image preview grid to be visible */
+.social-feed-card.expanded-card [data-image-preview-target="previewGrid"] {
+  display: flex !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Override ALL conflicting expanded-card rules for social feed with maximum specificity */
+.social-feed-card.expanded-card * {
+  /* Reset any auto height that might be applied by general expanded-card rules */
+}
+
+.social-feed-card.expanded-card .card-body * {
+  /* Ensure card body maintains its structure */
+}
+
+/* Additional override for dashboard context */
+.dashboard-content .social-feed-card.expanded-card {
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow: visible !important;
+}
+
+.dashboard-content .social-feed-card.expanded-card .card-body {
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow: visible !important;
+}
+
+/* CSS class to remove border from social feed input after submission */
+.social-feed-input-no-border {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.social-feed-input-no-border:focus {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Override social-feed-input border for messages form specifically */
+#message_form .social-feed-input.border-primary {
+  border: 1px solid var(--fallback-p, oklch(var(--p) / 1)) !important;
+}
+
+/* Fix social feed card height collapse when images are added */
+.dashboard-grid .social-feed-card:has([data-image-preview-target="previewContainer"]:not(.hidden)) {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.dashboard-grid .social-feed-card:has([data-image-preview-target="previewContainer"]:not(.hidden)) .card-body {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Ensure social feed form layout works with image previews */
+.dashboard-content .social-feed-card .flex.items-start.gap-3 {
+  align-items: flex-start !important;
 }

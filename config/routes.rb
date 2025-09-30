@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
   
+  # Active Storage direct uploads
+  direct :rails_direct_uploads do
+    "/rails/active_storage/direct_uploads"
+  end
+  
   resources :social_posts, only: [:show, :create, :destroy] do
     resources :social_posts, only: [:create], as: :replies
   end
