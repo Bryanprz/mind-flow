@@ -999,6 +999,17 @@ body.social-posts-page #main_content_area {
     max-height: none;
     overflow: visible;
   }
+  
+  /* Preserve social feed card height in single column mode */
+  .dashboard-content .social-feed-card {
+    height: 100% !important;
+    min-height: 400px;
+  }
+  
+  .dashboard-content .social-feed-card .card-body {
+    height: 100% !important;
+    min-height: 350px;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -1013,6 +1024,17 @@ body.social-posts-page #main_content_area {
     min-height: 450px;
     max-height: none;
     overflow: visible;
+  }
+  
+  /* Preserve social feed card height in medium screen single column mode */
+  .dashboard-content .social-feed-card {
+    height: 100% !important;
+    min-height: 500px;
+  }
+  
+  .dashboard-content .social-feed-card .card-body {
+    height: 100% !important;
+    min-height: 450px;
   }
 }
 
@@ -1029,6 +1051,17 @@ body.social-posts-page #main_content_area {
     min-height: 450px;
     max-height: none;
     overflow: visible;
+  }
+  
+  /* Preserve social feed card height at 1020px breakpoint */
+  .dashboard-content .social-feed-card {
+    height: 100% !important;
+    min-height: 500px;
+  }
+  
+  .dashboard-content .social-feed-card .card-body {
+    height: 100% !important;
+    min-height: 450px;
   }
 }
 
@@ -1304,6 +1337,84 @@ body:has(.navbar .avatar) .navbar {
   overflow: visible !important;
 }
 
+/* Fix social feed card height collapse in single column mode */
+.social-feed-card:has([data-image-preview-target="previewContainer"]:not(.hidden)) {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.social-feed-card:has([data-image-preview-target="previewContainer"]:not(.hidden)) .card-body {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Ensure mobile responsive rules take precedence over image preview rules */
+@media (max-width: 1024px) {
+  .social-feed-card:has([data-image-preview-target="previewContainer"]:not(.hidden)) {
+    height: 100% !important;
+    min-height: 400px !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  
+  .social-feed-card:has([data-image-preview-target="previewContainer"]:not(.hidden)) .card-body {
+    height: 100% !important;
+    min-height: 350px !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+/* Additional mobile-specific rules for image previews */
+@media (max-width: 1023px) {
+  .social-feed-card:has([data-image-preview-target="previewContainer"]:not(.hidden)) {
+    height: 100% !important;
+    min-height: 400px !important;
+  }
+  
+  .social-feed-card:has([data-image-preview-target="previewContainer"]:not(.hidden)) .card-body {
+    height: 100% !important;
+    min-height: 350px !important;
+  }
+  
+  /* Ensure social feed card maintains height on smaller mobile screens */
+  .dashboard-content .social-feed-card {
+    height: 100% !important;
+    min-height: 400px !important;
+  }
+  
+  .dashboard-content .social-feed-card .card-body {
+    height: 100% !important;
+    min-height: 350px !important;
+  }
+}
+
+/* Ensure mobile social feed card maintains height even after form submission */
+@media (max-width: 1024px) {
+  .dashboard-content .social-feed-card {
+    height: 100% !important;
+    min-height: 400px !important;
+  }
+  
+  .dashboard-content .social-feed-card .card-body {
+    height: 100% !important;
+    min-height: 350px !important;
+  }
+  
+  /* Override any image preview rules that might interfere */
+  .dashboard-content .social-feed-card:has([data-image-preview-target="previewContainer"]) {
+    height: 100% !important;
+    min-height: 400px !important;
+  }
+  
+  .dashboard-content .social-feed-card:has([data-image-preview-target="previewContainer"]) .card-body {
+    height: 100% !important;
+    min-height: 350px !important;
+  }
+}
+
 /* Ensure social feed form layout works with image previews */
 .dashboard-content .social-feed-card .flex.items-start.gap-3 {
   align-items: flex-start !important;
@@ -1344,4 +1455,9 @@ body:has(.navbar .avatar) .navbar {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
+}
+
+/* Ensure card header has bottom border - separate from input styling */
+.social-feed-card .card-body > div:first-child {
+  border-bottom: 1px solid #e5e7eb !important;
 }
