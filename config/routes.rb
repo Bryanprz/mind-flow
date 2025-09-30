@@ -79,6 +79,9 @@ Rails.application.routes.draw do
 
   # Chat routes
   resources :rooms do
+    member do
+      get :load_more_messages
+    end
     resources :messages, only: [:create] do
       member do
         get :refresh

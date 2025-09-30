@@ -73,6 +73,11 @@ class Message < ApplicationRecord
     end
   end
   
+  def invalidate_room_caches_later
+    # Run cache invalidation asynchronously to avoid blocking message creation
+    InvalidateRoomCachesJob.perform_later(room_id)
+  end
+  
   # Class methods for room-level caching
   def self.room_message_count(room_id)
     Rails.cache.fetch("room_#{room_id}_message_count", expires_in: 5.minutes) do
@@ -92,20 +97,21 @@ class Message < ApplicationRecord
     end
   end
   
-  after_create_commit :broadcast_message, :update_memberships_last_read, :invalidate_room_caches
+  after_create_commit :broadcast_message, :update_memberships_last_read
+  after_create_commit :invalidate_room_caches_later
   after_update_commit :invalidate_content_cache
   after_update_commit :invalidate_attachments_cache, if: :saved_change_to_attachments?
   
   private
   
   def broadcast_message
-    # Use broadcast_append_later_to for async, non-blocking broadcasting
+    # Use broadcast_append_to for instant message display
     # Pass the message user so each client can determine their own positioning
-    # Ensure attachments and avatar are loaded before broadcasting
-    message_with_author = Message.with_author_and_attachments.find(id)
+    # Use a simpler query for immediate broadcasting
+    message_with_author = Message.includes(:user).find(id)
     
-    # Broadcast the message
-    broadcast_append_later_to(
+    # Broadcast the message synchronously for instant display
+    broadcast_append_to(
       "room_#{room.id}",
       target: "messages",
       partial: "messages/message",
@@ -113,12 +119,9 @@ class Message < ApplicationRecord
     )
     
     # If message has attachments, process them in background and re-broadcast
-    # In Rails 8, use the more reliable way to check for attachments
-    if message_with_author.attachments.any?
-      Rails.logger.info "🔄 Scheduling ProcessMessageAttachmentsJob for message #{id}"
-      ProcessMessageAttachmentsJob.set(wait: 2.seconds).perform_later(id)
-    else
-      Rails.logger.info "🔄 No attachments for message #{id}, skipping processing job"
+    # Check attachments without expensive includes
+    if attachments.any?
+      ProcessMessageAttachmentsJob.perform_later(id)
     end
   end
   

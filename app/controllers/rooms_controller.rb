@@ -16,12 +16,39 @@ class RoomsController < ApplicationController
   end
   
   def show
-    @messages = @room.messages.with_author_and_attachments.chronological
+    # Load only recent messages (last 10) for ultra-fast initial page load
+    @messages = @room.messages.with_author_and_attachments.recent.limit(10)
     @message = Message.new
     @other_user = @room.other_user(Current.user) if @room.room_type == 'private'
+    @has_more_messages = @room.messages.count > 10
     
     # Add HTTP caching - if messages haven't changed, return 304 Not Modified
     fresh_when @messages
+  end
+  
+  def load_more_messages
+    @room = Room.find(params[:id])
+    last_message_id = params[:last_message_id]
+    
+    # Load older messages before the last message (load 30 for better efficiency)
+    @older_messages = @room.messages
+                          .with_author_and_attachments
+                          .where('id < ?', last_message_id)
+                          .recent
+                          .limit(30)
+    
+    @has_more_messages = @room.messages.where('id < ?', last_message_id).count > 30
+    
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.prepend(
+          "messages",
+          partial: "messages/message",
+          collection: @older_messages.reverse,
+          locals: { message: nil }
+        )
+      end
+    end
   end
   
   def create

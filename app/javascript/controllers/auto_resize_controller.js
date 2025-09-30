@@ -47,8 +47,11 @@ export default class extends Controller {
         // Get the natural content height
         const naturalHeight = trixEditor.scrollHeight
         
+        // Ensure minimum height is maintained
+        const finalHeight = Math.max(naturalHeight, 40)
+        
         // Set the height to the natural content height
-        trixEditor.style.height = naturalHeight + 'px'
+        trixEditor.style.height = finalHeight + 'px'
         
         // Ensure the card can accommodate the growing input
         this.expandParentCard(element)

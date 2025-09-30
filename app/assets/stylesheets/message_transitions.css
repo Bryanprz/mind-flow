@@ -1,0 +1,24 @@
+/* Ensure avatars are visible for both left and right aligned messages */
+.chat .chat-image {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure chat-end avatars are positioned correctly */
+.chat-end .chat-image {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  grid-column-start: 2 !important;
+  grid-row: span 2 / span 2 !important;
+}
+
+/* Ensure chat-start avatars are positioned correctly */
+.chat-start .chat-image {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  grid-column-start: 1 !important;
+  grid-row: span 2 / span 2 !important;
+}
