@@ -1,13 +1,10 @@
 <%= turbo_stream.prepend "messages" do %>
-  <%= render partial: "messages/message", collection: @older_messages.reverse, cached: true %>
+  <%= render partial: "messages/message", collection: @older_messages.reverse %>
 <% end %>
 
-<% if @has_more_messages %>
-  <%= turbo_stream.update "load-more-trigger" do %>
-    <div class="text-center py-4 text-gray-500 text-sm">Scroll up to load older messages...</div>
-  <% end %>
-<% else %>
-  <%= turbo_stream.update "load-more-trigger" do %>
-    <div class="text-center py-4 text-gray-400 text-sm">No more messages to load</div>
-  <% end %>
+<%= turbo_stream.replace "load_more_trigger" do %>
+  <%= render "messages/load_more_trigger", 
+      has_more_messages: @has_more_messages, 
+      room: @room,
+      last_message_id: @older_messages.last&.id %>
 <% end %>

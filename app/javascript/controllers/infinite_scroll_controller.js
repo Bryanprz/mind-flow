@@ -1,135 +1,140 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["loadMoreTrigger"]
   static values = { 
-    roomId: Number,
-    hasMoreMessages: Boolean,
-    loading: Boolean
+    roomId: String,
+    hasMoreMessages: Boolean
   }
 
   connect() {
-    this.setupScrollListener()
-    this.createLoadMoreTrigger()
-  }
-
-  disconnect() {
-    if (this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener)
-    }
-  }
-
-  setupScrollListener() {
-    this.scrollListener = this.handleScroll.bind(this)
-    window.addEventListener('scroll', this.scrollListener, { passive: true })
-  }
-
-  handleScroll() {
-    if (this.loadingValue || !this.hasMoreMessagesValue) {
-      return
-    }
-
-    const messagesContainer = this.element
-    const scrollTop = messagesContainer.scrollTop
-    const threshold = 100 // Load more when 100px from top (more responsive)
-
-    console.log('Infinite scroll check:', {
-      scrollTop,
-      threshold,
-      loading: this.loadingValue,
-      hasMore: this.hasMoreMessagesValue
-    })
-
-    if (scrollTop <= threshold) {
-      console.log('Triggering load more messages')
-      this.loadMoreMessages()
-    }
-  }
-
-  createLoadMoreTrigger() {
-    if (!this.hasMoreMessagesValue) {
-      return
-    }
-
-    // Create a trigger element at the top of messages
-    const trigger = document.createElement('div')
-    trigger.id = 'load-more-trigger'
-    trigger.className = 'text-center py-4 text-gray-500 text-sm'
-    trigger.innerHTML = 'Scroll up to load older messages...'
+    console.log('🔗 Infinite scroll controller connected')
+    this.loading = false
+    this.lastMessageId = null
+    this.hasMoreMessages = this.hasMoreMessagesValue
     
-    // Insert at the beginning of messages container
-    this.element.insertBefore(trigger, this.element.firstChild)
+    // Find the oldest message ID for initial load more trigger
+    this.setupInitialTrigger()
   }
 
-  async loadMoreMessages() {
-    if (this.loadingValue || !this.hasMoreMessagesValue) {
-      console.log('Load more messages blocked:', { loading: this.loadingValue, hasMore: this.hasMoreMessagesValue })
+  setupInitialTrigger() {
+    // Find the first (oldest) message to get its ID
+    const firstMessage = this.element.querySelector('[data-message-id]')
+    if (firstMessage) {
+      this.lastMessageId = firstMessage.dataset.messageId
+      console.log('🔍 Initial last message ID:', this.lastMessageId)
+    } else {
+      console.log('⚠️ No messages found to get initial ID')
+    }
+  }
+
+  loadMore() {
+    console.log('🔄 loadMore called', {
+      loading: this.loading,
+      hasMoreMessages: this.hasMoreMessages,
+      lastMessageId: this.lastMessageId
+    })
+    
+    if (this.loading || !this.hasMoreMessages || !this.lastMessageId) {
+      console.log('⚠️ Skipping load more due to conditions')
       return
     }
 
-    console.log('Starting to load more messages')
-    this.loadingValue = true
-    this.updateLoadingState(true)
+    this.loading = true
+    console.log('🔄 Loading more messages, last ID:', this.lastMessageId)
 
-    try {
-      // Get the first message ID (oldest visible message)
-      const firstMessage = this.element.querySelector('.chat')
-      if (!firstMessage) {
-        console.log('No first message found')
-        return
+    // Show loading indicator
+    this.showLoadingIndicator()
+
+    // Make the request
+    fetch(`/rooms/${this.roomIdValue}/load_more_messages?last_message_id=${this.lastMessageId}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'text/vnd.turbo-stream.html',
+        'X-Requested-With': 'XMLHttpRequest'
       }
-
-      const firstMessageId = firstMessage.id.replace('message_', '')
-      console.log('Loading messages before ID:', firstMessageId)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      return response.text()
+    })
+    .then(html => {
+      console.log('📡 Received response, processing...')
+      // Parse and execute the turbo stream response
+      Turbo.renderStreamMessage(html)
       
-      // Make request to load more messages
-      const response = await fetch(`/rooms/${this.roomIdValue}/load_more_messages?last_message_id=${firstMessageId}`, {
-        method: 'GET',
-        headers: {
-          'Accept': 'text/vnd.turbo-stream.html',
-          'X-Requested-With': 'XMLHttpRequest'
-        }
-      })
+      // Update the last message ID and has more status
+      this.updateStateAfterLoad()
+    })
+    .catch(error => {
+      console.error('❌ Error loading more messages:', error)
+      this.hideLoadingIndicator()
+      this.loading = false
+    })
+  }
 
-      console.log('Response status:', response.status)
-      if (response.ok) {
-        const turboStream = await response.text()
-        console.log('Turbo stream response:', turboStream)
-        Turbo.renderStreamMessage(turboStream)
-        
-        // Update hasMoreMessages value based on response
-        // This would need to be handled by the server response
-        // For now, we'll assume there are more messages until we get a signal otherwise
-      } else {
-        console.error('Response not ok:', response.status, response.statusText)
-      }
-    } catch (error) {
-      console.error('Error loading more messages:', error)
-    } finally {
-      this.loadingValue = false
-      this.updateLoadingState(false)
-      console.log('Finished loading more messages')
+  updateStateAfterLoad() {
+    // Find the new oldest message (first in the container)
+    const firstMessage = this.element.querySelector('[data-message-id]')
+    if (firstMessage) {
+      this.lastMessageId = firstMessage.dataset.messageId
+      console.log('✅ Updated last message ID:', this.lastMessageId)
+    }
+
+    // Check if we still have more messages by looking at the trigger element
+    const trigger = this.element.querySelector('#load_more_trigger')
+    if (trigger) {
+      this.hasMoreMessages = trigger.dataset.hasMoreMessages === 'true'
+      console.log('✅ Has more messages:', this.hasMoreMessages)
+    }
+
+    this.hideLoadingIndicator()
+    this.loading = false
+  }
+
+  showLoadingIndicator() {
+    const trigger = this.element.querySelector('#load_more_trigger')
+    if (trigger) {
+      trigger.innerHTML = `
+        <div class="flex items-center justify-center py-4">
+          <div class="flex items-center gap-2 text-gray-500">
+            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Loading older messages...</span>
+          </div>
+        </div>
+      `
     }
   }
 
-  updateLoadingState(loading) {
-    const trigger = document.getElementById('load-more-trigger')
-    if (trigger) {
-      if (loading) {
-        trigger.innerHTML = '<div class="flex items-center justify-center gap-2"><div class="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>Loading older messages...</div>'
-      } else {
-        trigger.innerHTML = 'Scroll up to load older messages...'
-      }
+  hideLoadingIndicator() {
+    const trigger = this.element.querySelector('#load_more_trigger')
+    if (trigger && this.hasMoreMessages) {
+      trigger.innerHTML = `
+        <div class="flex items-center justify-center py-4">
+          <button 
+            data-action="click->infinite-scroll#loadMore"
+            class="text-primary hover:text-primary-focus text-sm font-medium px-4 py-2 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors"
+          >
+            Load older messages
+          </button>
+        </div>
+      `
+    } else if (trigger) {
+      trigger.innerHTML = `
+        <div class="flex items-center justify-center py-4">
+          <span class="text-gray-400 text-sm">No more messages</span>
+        </div>
+      `
     }
   }
 
-  // Method to be called when there are no more messages
-  noMoreMessages() {
-    this.hasMoreMessagesValue = false
-    const trigger = document.getElementById('load-more-trigger')
-    if (trigger) {
-      trigger.innerHTML = 'No more messages to load'
-      trigger.className = 'text-center py-4 text-gray-400 text-sm'
-    }
+  // Handle turbo stream updates
+  afterLoadMore(event) {
+    console.log('📡 After load more event received')
+    this.updateStateAfterLoad()
   }
 }

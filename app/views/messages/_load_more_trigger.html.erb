@@ -1,0 +1,18 @@
+<div id="load_more_trigger" 
+     data-has-more-messages="<%= has_more_messages %>">
+  
+  <% if has_more_messages %>
+    <div class="flex items-center justify-center py-4">
+      <button 
+        data-action="click->infinite-scroll#loadMore"
+        class="text-primary hover:text-primary-focus text-sm font-medium px-4 py-2 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors"
+      >
+        Load older messages
+      </button>
+    </div>
+  <% else %>
+    <div class="flex items-center justify-center py-4">
+      <span class="text-gray-400 text-sm">No more messages</span>
+    </div>
+  <% end %>
+</div>

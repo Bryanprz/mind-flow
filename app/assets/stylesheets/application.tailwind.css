@@ -44,3 +44,35 @@ calendar-month::part(today) {
 calendar-month::part(selected) {
   color: #fff;
 }
+
+/* Force sharp, crisp chat bubble tails */
+.chat-bubble-primary:before,
+.chat-bubble-secondary:before {
+  border-style: solid !important;
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  will-change: transform !important;
+}
+
+/* Specific sharp rendering for chat-end tails */
+.chat-end .chat-bubble-primary:before {
+  border-width: 8px 0 8px 8px !important;
+  right: -8px !important;
+  top: 12px !important;
+  transform: translateZ(0) scale(1) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+/* Specific sharp rendering for chat-start tails */
+.chat-start .chat-bubble-secondary:before {
+  border-width: 8px 8px 8px 0 !important;
+  left: -8px !important;
+  top: 12px !important;
+  transform: translateZ(0) scale(1) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+

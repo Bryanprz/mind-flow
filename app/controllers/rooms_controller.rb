@@ -18,29 +18,26 @@ class RoomsController < ApplicationController
   def show
     Rails.logger.info "🚀 ROOMS CONTROLLER SHOW ACTION CALLED - #{Time.current}"
     
-    # Load all messages in chronological order to ensure all recent messages are shown
-    @messages = @room.messages.includes(:user).order(created_at: :asc)
+    # Load only the 50 most recent messages for initial page load
+    @messages = @room.messages
+                     .with_author_and_attachments
+                     .recent
+                     .limit(50)
+                     .reverse # Reverse to show in chronological order
+    
+    # Check if there are more messages to load
+    total_message_count = @room.messages.count
+    @has_more_messages = total_message_count > 50
     
     Rails.logger.info "📱 Loading messages for room #{@room.id}:"
-    Rails.logger.info "📱 Total messages in room: #{@room.messages.count}"
+    Rails.logger.info "📱 Total messages in room: #{total_message_count}"
     Rails.logger.info "📱 Messages loaded: #{@messages.count}"
+    Rails.logger.info "📱 Has more messages: #{@has_more_messages}"
     Rails.logger.info "📱 Messages with attachments: #{@messages.count { |m| m.attachments.attached? }}"
     Rails.logger.info "📱 Message IDs: #{@messages.pluck(:id)}"
-    Rails.logger.info "📱 Message details:"
-    @messages.each do |msg|
-      Rails.logger.info "📱   - ID: #{msg.id}, User: #{msg.user.name}, Content: #{msg.content.present? ? 'present' : 'empty'}, Attachments: #{msg.attachments.count}, Created: #{msg.created_at}"
-    end
-    
-    # Check for very recent messages
-    recent_messages = @room.messages.where('created_at > ?', 1.hour.ago)
-    Rails.logger.info "📱 Recent messages (last hour): #{recent_messages.count}"
-    recent_messages.each do |msg|
-      Rails.logger.info "📱   - Recent ID: #{msg.id}, Created: #{msg.created_at}, User: #{msg.user.name}"
-    end
     
     @message = Message.new
     @other_user = @room.other_user(Current.user) if @room.room_type == 'private'
-    @has_more_messages = false
     
     # Temporarily disable HTTP caching to test message loading
     # fresh_when @messages
@@ -58,26 +55,19 @@ class RoomsController < ApplicationController
     @room = Room.find(params[:id])
     last_message_id = params[:last_message_id]
     
-    # Load older messages before the last message (load 30 for better efficiency)
+    # Load older messages before the last message (load 50 for consistency)
     @older_messages = @room.messages
                           .with_author_and_attachments
                           .where('id < ?', last_message_id)
                           .recent
-                          .limit(30)
+                          .limit(50)
     
-    @has_more_messages = @room.messages.where('id < ?', last_message_id).count > 30
+    @has_more_messages = @room.messages.where('id < ?', last_message_id).count > 50
     
     Rails.logger.info "🔄 Found #{@older_messages.count} older messages, has_more: #{@has_more_messages}"
     
     respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.prepend(
-          "messages",
-          partial: "messages/message",
-          collection: @older_messages.reverse,
-          locals: { message: nil }
-        )
-      end
+      format.turbo_stream # Will render load_more_messages.turbo_stream.erb
     end
   end
   

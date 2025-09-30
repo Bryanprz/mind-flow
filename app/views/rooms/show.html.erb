@@ -40,7 +40,13 @@
          data-current-user-name="<%= Current.user.name %>"
          data-infinite-scroll-room-id-value="<%= @room.id %>"
          data-infinite-scroll-has-more-messages-value="<%= @has_more_messages %>"
+         data-infinite-scroll-target="container"
          data-action="turbo:stream-render->scroll-to#scrollToBottom">
+      
+      <!-- Load more trigger at the top -->
+      <%= render "messages/load_more_trigger", has_more_messages: @has_more_messages, room: @room %>
+      
+      <!-- Messages -->
       <%= render partial: "messages/message", collection: @messages %>
     </div>
   </div>
