@@ -27,7 +27,7 @@ Rails.application.configure do
   # Use Vips for faster image processing
   config.active_storage.variant_processor = :vips
   config.active_storage.analyze_on_upload = true
-  config.active_storage.draw_routes = false
+  config.active_storage.draw_routes = true
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   config.assume_ssl = true
