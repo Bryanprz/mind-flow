@@ -115,11 +115,13 @@ class Message < ApplicationRecord
     Rails.logger.info "📡 Message details: user=#{message_with_author.user.name}, content=#{message_with_author.content.present? ? 'present' : 'empty'}, attachments=#{message_with_author.attachments.count}"
     
     # Broadcast the message synchronously for instant display
-    broadcast_append_to(
+    # Use Turbo Streams format that the client expects
+    ActionCable.server.broadcast(
       "room_#{room.id}",
-      target: "messages",
-      partial: "messages/message",
-      locals: { message: message_with_author, message_user: message_with_author.user }
+      ApplicationController.render(
+        partial: "messages/turbo_stream_append",
+        locals: { message: message_with_author, message_user: message_with_author.user }
+      )
     )
     
     Rails.logger.info "📡 Broadcast completed for message #{id}"
