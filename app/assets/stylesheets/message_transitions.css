@@ -22,3 +22,50 @@
   grid-column-start: 1 !important;
   grid-row: span 2 / span 2 !important;
 }
+
+/* Image width constraints for chat bubbles */
+.chat-bubble {
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+.chat-bubble img {
+  max-width: 280px !important;
+  width: auto !important;
+  height: auto !important;
+  max-height: 192px !important;
+  object-fit: cover !important;
+  border-radius: 0.5rem !important;
+}
+
+/* Specific constraints for right-aligned messages (bg-primary) */
+.chat-end .chat-bubble img {
+  max-width: 280px !important;
+  width: auto !important;
+  height: auto !important;
+  max-height: 192px !important;
+  object-fit: cover !important;
+}
+
+/* Specific constraints for left-aligned messages (bg-secondary) */
+.chat-start .chat-bubble img {
+  max-width: 280px !important;
+  width: auto !important;
+  height: auto !important;
+  max-height: 192px !important;
+  object-fit: cover !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .chat-bubble img {
+    max-width: 200px !important;
+    max-height: 150px !important;
+  }
+  
+  .chat-end .chat-bubble img,
+  .chat-start .chat-bubble img {
+    max-width: 200px !important;
+    max-height: 150px !important;
+  }
+}

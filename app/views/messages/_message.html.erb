@@ -1,4 +1,5 @@
-<% cache [message, Current.user&.id] do %>
+<%# Temporarily disable message caching to test %>
+<%# cache [message, Current.user&.id] do %>
 <% 
   # For initial page load, use Current.user comparison
   # For broadcasts, we'll use JavaScript to handle positioning
@@ -89,4 +90,4 @@
     Delivered
   </div>
 </div>
-<% end %>
+<%# end %>

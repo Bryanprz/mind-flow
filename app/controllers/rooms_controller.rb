@@ -16,8 +16,10 @@ class RoomsController < ApplicationController
   end
   
   def show
-    # Load recent messages with proper includes for attachments
-    @messages = @room.messages.with_author_and_attachments.recent.limit(50)
+    Rails.logger.info "🚀 ROOMS CONTROLLER SHOW ACTION CALLED - #{Time.current}"
+    
+    # Load all messages in chronological order to ensure all recent messages are shown
+    @messages = @room.messages.includes(:user).order(created_at: :asc)
     
     Rails.logger.info "📱 Loading messages for room #{@room.id}:"
     Rails.logger.info "📱 Total messages in room: #{@room.messages.count}"
@@ -29,12 +31,25 @@ class RoomsController < ApplicationController
       Rails.logger.info "📱   - ID: #{msg.id}, User: #{msg.user.name}, Content: #{msg.content.present? ? 'present' : 'empty'}, Attachments: #{msg.attachments.count}, Created: #{msg.created_at}"
     end
     
+    # Check for very recent messages
+    recent_messages = @room.messages.where('created_at > ?', 1.hour.ago)
+    Rails.logger.info "📱 Recent messages (last hour): #{recent_messages.count}"
+    recent_messages.each do |msg|
+      Rails.logger.info "📱   - Recent ID: #{msg.id}, Created: #{msg.created_at}, User: #{msg.user.name}"
+    end
+    
     @message = Message.new
     @other_user = @room.other_user(Current.user) if @room.room_type == 'private'
-    @has_more_messages = @room.messages.count > 50
+    @has_more_messages = false
     
-    # Add HTTP caching - if messages haven't changed, return 304 Not Modified
-    fresh_when @messages
+    # Temporarily disable HTTP caching to test message loading
+    # fresh_when @messages
+    
+    # Force no caching to ensure fresh content
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    response.headers['Last-Modified'] = Time.now.httpdate
   end
   
   def load_more_messages

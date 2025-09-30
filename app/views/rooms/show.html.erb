@@ -41,7 +41,7 @@
          data-infinite-scroll-room-id-value="<%= @room.id %>"
          data-infinite-scroll-has-more-messages-value="<%= @has_more_messages %>"
          data-action="turbo:stream-render->scroll-to#scrollToBottom">
-      <%= render partial: "messages/message", collection: @messages, cached: true %>
+      <%= render partial: "messages/message", collection: @messages %>
     </div>
   </div>
   
