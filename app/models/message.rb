@@ -107,33 +107,18 @@ class Message < ApplicationRecord
   def broadcast_message
     Rails.logger.info "📡 Broadcasting message #{id} to room #{room.id}"
     
-    # Use broadcast_append_to for instant message display
-    # Pass the message user so each client can determine their own positioning
-    # Use a simpler query for immediate broadcasting
-    message_with_author = Message.includes(:user).find(id)
-    
-    Rails.logger.info "📡 Message details: user=#{message_with_author.user.name}, content=#{message_with_author.content.present? ? 'present' : 'empty'}, attachments=#{message_with_author.attachments.count}"
-    
-    # Broadcast the message synchronously for instant display
-    # Use a simple HTML broadcast without Turbo Streams to avoid ID conflicts
-    message_html = ApplicationController.render(
-      partial: "messages/message",
-      locals: { message: message_with_author, message_user: message_with_author.user }
-    )
-    
-    ActionCable.server.broadcast(
+    # Use proper Turbo Streams broadcast_append_to method
+    # This handles all internal tracking correctly and avoids unique index errors
+    broadcast_append_to(
       "room_#{room.id}",
-      {
-        type: "message",
-        html: message_html,
-        message_id: id
-      }
+      target: "messages",
+      partial: "messages/message",
+      locals: { message: self, message_user: user }
     )
     
     Rails.logger.info "📡 Broadcast completed for message #{id}"
     
     # If message has attachments, process them in background and re-broadcast
-    # Check attachments without expensive includes
     if attachments.any?
       Rails.logger.info "📡 Message #{id} has attachments, scheduling background processing"
       ProcessMessageAttachmentsJob.perform_later(id)

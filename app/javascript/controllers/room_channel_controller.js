@@ -26,19 +26,9 @@ export default class extends Controller {
           received: (data) => {
             console.log('📨 Received data from room channel:', data)
             
-            // Handle new message format
-            if (data && data.type === 'message' && data.html) {
-              // Append the message HTML to the messages container
-              const messagesContainer = document.getElementById('messages')
-              if (messagesContainer) {
-                messagesContainer.insertAdjacentHTML('beforeend', data.html)
-                // Scroll to bottom
-                messagesContainer.scrollTop = messagesContainer.scrollHeight
-              }
-            }
-            // Process the Turbo Stream (fallback)
-            else if (data && typeof data === 'string') {
-              // Let Turbo handle the stream
+            // Handle Turbo Streams format (the proper way)
+            if (data && typeof data === 'string') {
+              // Let Turbo handle the stream - this preserves all styling and functionality
               Turbo.renderStreamMessage(data)
             }
           },
