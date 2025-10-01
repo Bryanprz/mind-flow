@@ -16,25 +16,11 @@ export default class extends Controller {
     // Position at bottom after DOM is ready
     this.ensureBottomPosition()
     
-    // Listen for turbo:frame-render to auto-scroll when new messages arrive
-    this.element.addEventListener('turbo:frame-render', () => {
+    // Listen for turbo:stream-render to auto-scroll when new messages arrive via Turbo Streams
+    this.element.addEventListener('turbo:stream-render', (event) => {
       if (this.autoScrollEnabled && this.isNearBottom()) {
         // Immediately position at bottom without delay
         this.scrollToBottom()
-      }
-    })
-    
-    // Listen for turbo:stream-render to auto-scroll when new messages arrive via Turbo Streams
-    this.element.addEventListener('turbo:stream-render', (event) => {
-      if (this.autoScrollEnabled) {
-        // Remove optimistic messages immediately when turbo stream renders
-        this.removeOptimisticMessages()
-        
-        // Only auto-scroll if user is near the bottom (not scrolled up)
-        if (this.isNearBottom()) {
-          // Immediately position at bottom without delay
-          this.scrollToBottom()
-        }
       }
     })
     
@@ -42,14 +28,11 @@ export default class extends Controller {
     this.observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-          // Check if the added nodes are actual messages, not image previews
+          // Check if the added nodes are actual messages
           const isMessageAddition = Array.from(mutation.addedNodes).some(node => {
             return node.nodeType === Node.ELEMENT_NODE && 
-                   (node.classList?.contains('message') || 
-                    node.querySelector?.('.message') ||
-                    node.getAttribute?.('data-controller')?.includes('message') ||
-                    node.id?.startsWith('message_') ||
-                    node.classList?.contains('chat'))
+                   (node.classList?.contains('chat') ||
+                    node.id?.startsWith('message_'))
           })
           
           // Check if image previews are being added (which should maintain bottom scroll)
@@ -61,21 +44,12 @@ export default class extends Controller {
           })
           
           // Auto-scroll for message additions
-          if (isMessageAddition && this.autoScrollEnabled) {
-            // Remove optimistic messages immediately when real messages arrive
-            // to prevent duplicates from appearing
-            this.removeOptimisticMessages()
-            
-            // Only auto-scroll if user is near the bottom (not scrolled up)
-            if (this.isNearBottom()) {
-              // Immediately position at bottom without delay
-              this.scrollToBottom()
-            }
+          if (isMessageAddition && this.autoScrollEnabled && this.isNearBottom()) {
+            this.scrollToBottom()
           }
           
           // Maintain bottom scroll for image preview additions
           if (isImagePreviewAddition && this.autoScrollEnabled && this.isNearBottom()) {
-            // Immediately position at bottom without delay
             this.scrollToBottom()
           }
         }
@@ -228,32 +202,4 @@ export default class extends Controller {
     }
   }
   
-  // Method to remove optimistic messages when real messages arrive
-  removeOptimisticMessages() {
-    const optimisticMessages = this.element.querySelectorAll('[id^="optimistic_message_"]')
-    optimisticMessages.forEach(msg => {
-      // Remove immediately to prevent duplicates
-      this.removeOptimisticMessageImmediately(msg)
-    })
-  }
-  
-  removeOptimisticMessageImmediately(element) {
-    // Remove immediately without animation to prevent duplicates
-    if (element.parentNode) {
-      element.remove()
-    }
-  }
-  
-  fadeOutOptimisticMessage(element) {
-    // Add a smooth fade out effect for timeout-based removal
-    element.style.transition = 'all 0.3s ease-out'
-    element.style.opacity = '0'
-    element.style.transform = 'translateY(-10px) scale(0.98)'
-    
-    setTimeout(() => {
-      if (element.parentNode) {
-        element.remove()
-      }
-    }, 300)
-  }
 }
