@@ -144,6 +144,49 @@ class Message < ApplicationRecord
     
     Rails.logger.info "🔍 DEBUG - Broadcast data: #{broadcast_data.inspect}"
     
+    # DEBUG: ActionCable Configuration
+    Rails.logger.info "🔍 DEBUG - ActionCable server class: #{ActionCable.server.class}"
+    Rails.logger.info "🔍 DEBUG - ActionCable pubsub adapter: #{ActionCable.server.pubsub.adapter.class}"
+    Rails.logger.info "🔍 DEBUG - ActionCable pubsub adapter name: #{ActionCable.server.pubsub.adapter.class.name}"
+    
+    # DEBUG: Database Connections
+    Rails.logger.info "🔍 DEBUG - Primary database connection: #{ActiveRecord::Base.connection.class}"
+    Rails.logger.info "🔍 DEBUG - Primary database config: #{ActiveRecord::Base.connection_db_config.inspect}"
+    
+    # DEBUG: Cable Database Connection
+    begin
+      cable_connection = ActiveRecord::Base.connected_to(database: :cable) do
+        ActiveRecord::Base.connection
+      end
+      Rails.logger.info "🔍 DEBUG - Cable database connection: #{cable_connection.class}"
+      Rails.logger.info "🔍 DEBUG - Cable database config: #{cable_connection.db_config.inspect}"
+    rescue => e
+      Rails.logger.error "❌ DEBUG - Failed to get cable database connection: #{e.message}"
+    end
+    
+    # DEBUG: SolidCable Model
+    begin
+      solid_cable_model = SolidCable::Message
+      Rails.logger.info "🔍 DEBUG - SolidCable::Message class: #{solid_cable_model.class}"
+      Rails.logger.info "🔍 DEBUG - SolidCable::Message table name: #{solid_cable_model.table_name}"
+      Rails.logger.info "🔍 DEBUG - SolidCable::Message connection: #{solid_cable_model.connection.class}"
+    rescue => e
+      Rails.logger.error "❌ DEBUG - Failed to access SolidCable::Message: #{e.message}"
+    end
+    
+    # DEBUG: Index Information
+    begin
+      ActiveRecord::Base.connected_to(database: :cable) do
+        indexes = ActiveRecord::Base.connection.indexes('solid_cable_broadcasts')
+        Rails.logger.info "🔍 DEBUG - solid_cable_broadcasts indexes: #{indexes.map(&:name)}"
+        indexes.each do |index|
+          Rails.logger.info "🔍 DEBUG - Index '#{index.name}': columns=#{index.columns}, unique=#{index.unique}"
+        end
+      end
+    rescue => e
+      Rails.logger.error "❌ DEBUG - Failed to get index information: #{e.message}"
+    end
+    
     # Broadcast the message
     begin
       Rails.logger.info "🔍 DEBUG - Attempting full broadcast..."
