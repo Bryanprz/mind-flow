@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_01_044158) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_01_052118) do
   create_table "solid_cable_messages", force: :cascade do |t|
     t.string "channel_class", null: false
     t.text "channel_parameters"
@@ -20,6 +20,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_01_044158) do
     t.string "stream_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "channel_hash", null: false
+    t.string "channel", null: false
+    t.text "metadata", default: "{}"
+    t.index ["channel_hash"], name: "index_solid_cable_messages_on_channel_hash"
     t.index ["channel_identifier", "stream_name"], name: "solid_cable_message_compound_primary_key", unique: true
     t.index ["stream_name"], name: "index_solid_cable_messages_on_stream_name"
   end
