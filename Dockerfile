@@ -6,7 +6,7 @@ FROM ruby:$RUBY_VERSION-slim
 
 # Install dependencies including Node.js and libvips for image processing
 RUN apt-get update -qq && \
-    apt-get install -y build-essential libsqlite3-dev curl && \
+    apt-get install -y build-essential libsqlite3-dev sqlite3 curl && \
     # Install libvips with all required runtime libraries
     apt-get install -y libvips42 libvips-dev libvips-tools && \
     # Install Node.js
