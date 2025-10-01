@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="image-preview"
 export default class extends Controller {
-  static targets = ["fileInput", "preview", "form", "inputField", "previewContainer", "previewGrid", "card", "submitButton", "sendIcon", "sendSpinner"]
+  static targets = ["fileInput", "preview", "form", "inputField", "previewContainer", "previewGrid", "card", "submitButton", "sendIcon", "sendSpinner", "mediaButton"]
   static values = { formId: String }
 
   connect() {
@@ -291,7 +291,7 @@ export default class extends Controller {
     const reader = new FileReader()
     reader.onload = (e) => {
       const previewItem = document.createElement('div')
-      previewItem.className = 'relative'
+      previewItem.className = 'relative preview-item'
       
       const img = document.createElement('img')
       img.src = e.target.result
@@ -1018,6 +1018,7 @@ export default class extends Controller {
   }
 
   handleFormSubmission(event) {
+    console.log('handleFormSubmission called, hasAttachments:', this.hasAttachments())
     // Only show loading states if there are images attached
     if (this.hasAttachments()) {
       this.showLoadingStates()
@@ -1030,7 +1031,7 @@ export default class extends Controller {
   }
 
   showLoadingStates() {
-    // Only disable send button and show spinner
+    // Disable send button and show spinner
     if (this.hasSubmitButtonTarget) {
       this.submitButtonTarget.disabled = true
       this.submitButtonTarget.style.pointerEvents = 'none'
@@ -1041,6 +1042,12 @@ export default class extends Controller {
     }
     if (this.hasSendSpinnerTarget) {
       this.sendSpinnerTarget.classList.remove('hidden')
+    }
+
+    // Disable media button
+    if (this.hasMediaButtonTarget) {
+      this.mediaButtonTarget.style.pointerEvents = 'none'
+      this.mediaButtonTarget.style.opacity = '0.5'
     }
 
     // Add loading overlay to image previews
@@ -1061,6 +1068,12 @@ export default class extends Controller {
       this.sendSpinnerTarget.classList.add('hidden')
     }
 
+    // Re-enable media button
+    if (this.hasMediaButtonTarget) {
+      this.mediaButtonTarget.style.pointerEvents = ''
+      this.mediaButtonTarget.style.opacity = ''
+    }
+
     // Remove loading overlays from image previews
     this.removeLoadingOverlaysFromPreviews()
   }
@@ -1072,12 +1085,22 @@ export default class extends Controller {
         // Add loading overlay if not already present
         if (!item.querySelector('.loading-overlay')) {
           const overlay = document.createElement('div')
-          overlay.className = 'loading-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg'
+          overlay.className = 'loading-overlay absolute inset-0 bg-gray-500 bg-opacity-70 flex items-center justify-center rounded-lg'
           overlay.innerHTML = `
-            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white" style="animation-direction: reverse;"></div>
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary opacity-75" style="animation-direction: reverse;"></div>
           `
           item.style.position = 'relative'
           item.appendChild(overlay)
+          
+          // Disable and gray out the remove button
+          const removeBtn = item.querySelector('button')
+          if (removeBtn) {
+            removeBtn.disabled = true
+            removeBtn.style.opacity = '0.5'
+            removeBtn.style.pointerEvents = 'none'
+            removeBtn.classList.remove('bg-red-500', 'hover:bg-red-600')
+            removeBtn.classList.add('bg-gray-400', 'text-gray-600')
+          }
         }
       })
     }
@@ -1087,6 +1110,19 @@ export default class extends Controller {
     if (this.hasPreviewGridTarget) {
       const overlays = this.previewGridTarget.querySelectorAll('.loading-overlay')
       overlays.forEach(overlay => overlay.remove())
+      
+      // Re-enable remove buttons
+      const previewItems = this.previewGridTarget.querySelectorAll('.preview-item')
+      previewItems.forEach(item => {
+        const removeBtn = item.querySelector('button')
+        if (removeBtn) {
+          removeBtn.disabled = false
+          removeBtn.style.opacity = ''
+          removeBtn.style.pointerEvents = ''
+          removeBtn.classList.remove('bg-gray-400', 'text-gray-600')
+          removeBtn.classList.add('bg-red-500', 'hover:bg-red-600')
+        }
+      })
     }
   }
 

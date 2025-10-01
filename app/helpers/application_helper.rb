@@ -49,11 +49,17 @@ module ApplicationHelper
           blob = attachment.blob
           
           if blob.present? && blob.analyzed?
-            { status: :image, message: 'Image ready' }
+            # Double-check that the blob has the necessary metadata
+            if blob.metadata.present? && blob.metadata['width'].present?
+              { status: :image, message: 'Image ready' }
+            else
+              { status: :processing, message: 'Processing image...' }
+            end
           else
             { status: :processing, message: 'Processing image...' }
           end
         rescue => e
+          Rails.logger.error "Blob access error: #{e.message}"
           { status: :processing, message: 'Processing image...' }
         end
       else

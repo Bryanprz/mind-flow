@@ -3,7 +3,12 @@ class Message < ApplicationRecord
   belongs_to :user
   
   has_rich_text :content
-  has_many_attached :attachments, service: :google_message_attachments
+  
+  def self.message_attachments_service
+    Rails.env.development? ? :local : :google_message_attachments
+  end
+  
+  has_many_attached :attachments, service: message_attachments_service
   
   validates :content, presence: true, unless: -> { attachments.attached? }
   
