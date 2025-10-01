@@ -150,7 +150,7 @@ class Message < ApplicationRecord
       ActionCable.server.broadcast("room_#{room.id}", { test: "simple test message" })
       Rails.logger.info "✅ Simple broadcast successful"
     rescue => e
-      Rails.logger.error "❌ Simple broadcast failed: #{e.message}"
+      Rails.logger.error "❌❌ BP - Simple broadcast failed: #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
       return
     end
