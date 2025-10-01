@@ -146,8 +146,8 @@ class Message < ApplicationRecord
     
     # DEBUG: ActionCable Configuration
     Rails.logger.info "🔍 DEBUG - ActionCable server class: #{ActionCable.server.class}"
-    Rails.logger.info "🔍 DEBUG - ActionCable pubsub adapter: #{ActionCable.server.pubsub.adapter.class}"
-    Rails.logger.info "🔍 DEBUG - ActionCable pubsub adapter name: #{ActionCable.server.pubsub.adapter.class.name}"
+    Rails.logger.info "🔍 DEBUG - ActionCable pubsub adapter: #{ActionCable.server.pubsub.class}"
+    Rails.logger.info "🔍 DEBUG - ActionCable pubsub adapter name: #{ActionCable.server.pubsub.class.name}"
     
     # DEBUG: Database Connections
     Rails.logger.info "🔍 DEBUG - Primary database connection: #{ActiveRecord::Base.connection.class}"
