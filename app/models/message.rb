@@ -105,8 +105,11 @@ class Message < ApplicationRecord
   private
    
   def broadcast_message
-    # Use Turbo Stream to append the message to the messages container
-    broadcast_append_to "room_#{room.id}", target: "messages", partial: "messages/message", locals: { message: self }
+    # Use Rails 8 broadcast_append_to with proper context
+    broadcast_append_to "room_#{room.id}", 
+                       target: "messages", 
+                       partial: "messages/message", 
+                       locals: { message: self }
     
     # If message has attachments, process them in background
     if attachments.any?

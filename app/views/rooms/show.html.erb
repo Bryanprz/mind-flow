@@ -35,14 +35,8 @@
   <div class="flex-1 relative overflow-hidden">
     <div id="messages" 
          class="h-full overflow-y-auto p-4"
-         data-controller="scroll-to infinite-scroll image-modal"
-         data-infinite-scroll-room-id-value="<%= @room.id %>"
-         data-infinite-scroll-has-more-messages-value="<%= @has_more_messages %>"
-         data-infinite-scroll-target="container"
+         data-controller="scroll-to message-positioning"
          data-action="turbo:stream-render->scroll-to#scrollToBottom">
-      
-      <!-- Load more trigger at the top -->
-      <%= render "messages/load_more_trigger", has_more_messages: @has_more_messages, room: @room %>
       
       <!-- Messages -->
       <%= render partial: "messages/message", collection: @messages %>
