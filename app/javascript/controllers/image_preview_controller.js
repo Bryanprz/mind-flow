@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="image-preview"
 export default class extends Controller {
-  static targets = ["fileInput", "preview", "form", "inputField", "previewContainer", "previewGrid", "card"]
+  static targets = ["fileInput", "preview", "form", "inputField", "previewContainer", "previewGrid", "card", "submitButton", "sendIcon", "sendSpinner"]
   static values = { formId: String }
 
   connect() {
@@ -13,9 +13,10 @@ export default class extends Controller {
     this.boundHandleFormSubmit = this.handleFormSubmit.bind(this)
     this.isFileInputClicking = false // Flag to prevent recursive clicks
     this.processingFiles = false // Flag to prevent double processing
+    this.isSubmitting = false // Flag to prevent double submission
     this.setupFileInput()
     this.setupDragAndDrop()
-    
+    this.setupFormSubmission()
   }
 
   handleFileClick(event) {
@@ -984,6 +985,111 @@ export default class extends Controller {
     }
   }
 
+  setupFormSubmission() {
+    // Listen for form submission to show loading states
+    if (this.hasFormTarget) {
+      this.formTarget.addEventListener('submit', (event) => {
+        this.handleFormSubmission(event)
+      })
+    } else {
+      // Try to find form by looking for the form element
+      const form = this.element.querySelector('form')
+      if (form) {
+        form.addEventListener('submit', (event) => {
+          this.handleFormSubmission(event)
+        })
+      }
+    }
+    
+    // Also listen for turbo:submit-start event as a backup
+    this.element.addEventListener('turbo:submit-start', (event) => {
+      this.handleFormSubmission(event)
+    })
+    
+    // Also listen for submit button clicks as a backup
+    if (this.hasSubmitButtonTarget) {
+      this.submitButtonTarget.addEventListener('click', (event) => {
+        // Small delay to allow form submission to start
+        setTimeout(() => {
+          this.handleFormSubmission(event)
+        }, 10)
+      })
+    }
+  }
+
+  handleFormSubmission(event) {
+    // Only show loading states if there are images attached
+    if (this.hasAttachments()) {
+      this.showLoadingStates()
+      this.isSubmitting = true
+    }
+  }
+
+  hasAttachments() {
+    return this.hasPreviewGridTarget && this.previewGridTarget.children.length > 0
+  }
+
+  showLoadingStates() {
+    // Only disable send button and show spinner
+    if (this.hasSubmitButtonTarget) {
+      this.submitButtonTarget.disabled = true
+      this.submitButtonTarget.style.pointerEvents = 'none'
+      this.submitButtonTarget.style.opacity = '0.5'
+    }
+    if (this.hasSendIconTarget) {
+      this.sendIconTarget.classList.add('hidden')
+    }
+    if (this.hasSendSpinnerTarget) {
+      this.sendSpinnerTarget.classList.remove('hidden')
+    }
+
+    // Add loading overlay to image previews
+    this.addLoadingOverlaysToPreviews()
+  }
+
+  hideLoadingStates() {
+    // Re-enable send button and hide spinner
+    if (this.hasSubmitButtonTarget) {
+      this.submitButtonTarget.disabled = false
+      this.submitButtonTarget.style.pointerEvents = ''
+      this.submitButtonTarget.style.opacity = ''
+    }
+    if (this.hasSendIconTarget) {
+      this.sendIconTarget.classList.remove('hidden')
+    }
+    if (this.hasSendSpinnerTarget) {
+      this.sendSpinnerTarget.classList.add('hidden')
+    }
+
+    // Remove loading overlays from image previews
+    this.removeLoadingOverlaysFromPreviews()
+  }
+
+  addLoadingOverlaysToPreviews() {
+    if (this.hasPreviewGridTarget) {
+      const previewItems = this.previewGridTarget.querySelectorAll('.preview-item')
+      previewItems.forEach(item => {
+        // Add loading overlay if not already present
+        if (!item.querySelector('.loading-overlay')) {
+          const overlay = document.createElement('div')
+          overlay.className = 'loading-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg'
+          overlay.innerHTML = `
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white" style="animation-direction: reverse;"></div>
+          `
+          item.style.position = 'relative'
+          item.appendChild(overlay)
+        }
+      })
+    }
+  }
+
+  removeLoadingOverlaysFromPreviews() {
+    if (this.hasPreviewGridTarget) {
+      const overlays = this.previewGridTarget.querySelectorAll('.loading-overlay')
+      overlays.forEach(overlay => overlay.remove())
+    }
+  }
+
   handleFormSubmit(event) {
     console.log('handleFormSubmit called', event)
     
@@ -1012,9 +1118,16 @@ export default class extends Controller {
         
         this.processingFiles = false
         this.scrollLockActive = false
+        this.isSubmitting = false
+        
+        // Hide loading states after successful submission
+        this.hideLoadingStates()
       }
     } catch (error) {
       console.error('Error in handleFormSubmit:', error)
+      // Hide loading states on error
+      this.hideLoadingStates()
+      this.isSubmitting = false
     }
   }
 
