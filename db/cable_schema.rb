@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_01_000000) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_01_025649) do
   create_table "solid_cable_broadcasts", force: :cascade do |t|
     t.string "channel", null: false
     t.text "payload", null: false
     t.datetime "created_at", null: false
     t.index ["channel", "created_at"], name: "index_solid_cable_broadcasts_on_channel_and_created_at"
+    t.index ["id"], name: "index_solid_cable_broadcasts_on_id_unique", unique: true
   end
 end
