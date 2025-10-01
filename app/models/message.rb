@@ -144,18 +144,7 @@ class Message < ApplicationRecord
     
     Rails.logger.info "🔍 DEBUG - Broadcast data: #{broadcast_data.inspect}"
     
-    # Test simple broadcast first
-    begin
-      Rails.logger.info "🔍 DEBUG - Testing simple broadcast first..."
-      ActionCable.server.broadcast("room_#{room.id}", { test: "simple test message" })
-      Rails.logger.info "✅ Simple broadcast successful"
-    rescue => e
-      Rails.logger.error "❌❌ BP - Simple broadcast failed: #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      return
-    end
-    
-    # Now try the full broadcast
+    # Broadcast the message
     begin
       Rails.logger.info "🔍 DEBUG - Attempting full broadcast..."
       ActionCable.server.broadcast("room_#{room.id}", broadcast_data)
