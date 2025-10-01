@@ -22,15 +22,12 @@ export default class extends Controller {
               
               // Only process actual message elements
               if (node.classList.contains('chat') || node.querySelector('.chat')) {
-                console.log('New message node added:', node)
                 // Check if the added node contains chat images
                 const images = node.querySelectorAll ? node.querySelectorAll('.chat-bubble img') : []
-                console.log('Found', images.length, 'images in new message')
                 images.forEach(img => {
                   img.style.cursor = 'pointer'
                   img.addEventListener('click', (e) => {
                     e.preventDefault()
-                    console.log('New image clicked:', img.src)
                     this.openModal(img.src, img.alt)
                   })
                 })
@@ -64,12 +61,10 @@ export default class extends Controller {
   addImageClickHandlers() {
     // Find all images in chat bubbles and add click handlers
     const chatImages = document.querySelectorAll('.chat-bubble img')
-    console.log('Adding click handlers to', chatImages.length, 'images')
     chatImages.forEach(img => {
       img.style.cursor = 'pointer'
       img.addEventListener('click', (e) => {
         e.preventDefault()
-        console.log('Image clicked:', img.src)
         this.openModal(img.src, img.alt)
       })
     })
