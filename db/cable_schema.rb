@@ -10,12 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_01_025649) do
-  create_table "solid_cable_broadcasts", force: :cascade do |t|
-    t.string "channel", null: false
-    t.text "payload", null: false
+ActiveRecord::Schema[8.0].define(version: 2025_10_01_044158) do
+  create_table "solid_cable_messages", force: :cascade do |t|
+    t.string "channel_class", null: false
+    t.text "channel_parameters"
+    t.text "channel_identifier", null: false
+    t.text "data", null: false
+    t.bigint "stream_id", null: false
+    t.string "stream_name", null: false
     t.datetime "created_at", null: false
-    t.index ["channel", "created_at"], name: "index_solid_cable_broadcasts_on_channel_and_created_at"
-    t.index ["id"], name: "index_solid_cable_broadcasts_on_id_unique", unique: true
+    t.datetime "updated_at", null: false
+    t.index ["channel_identifier", "stream_name"], name: "solid_cable_message_compound_primary_key", unique: true
+    t.index ["stream_name"], name: "index_solid_cable_messages_on_stream_name"
+  end
+
+  create_table "solid_cable_processes", force: :cascade do |t|
+    t.string "process_id", null: false
+    t.datetime "last_heartbeat_at", null: false
+    t.datetime "created_at", null: false
+    t.index ["process_id"], name: "index_solid_cable_processes_on_process_id", unique: true
   end
 end
