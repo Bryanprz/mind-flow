@@ -96,7 +96,7 @@ export default class extends Controller {
   closeModal() {
     const modal = document.getElementById('image-modal')
     if (modal) {
-      modal.classList.add('hidden')
+      modal.remove() // Remove the modal completely instead of just hiding
       document.body.style.overflow = '' // Restore scrolling
     }
   }
@@ -126,7 +126,6 @@ export default class extends Controller {
           <!-- Close button -->
           <button id="close-image-modal"
                   class="absolute top-4 left-4 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-2 transition-all duration-200"
-                  data-action="click->image-modal#closeModal"
                   aria-label="Close image">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -147,9 +146,10 @@ export default class extends Controller {
     document.body.insertAdjacentHTML('beforeend', modalHTML)
     document.body.style.overflow = 'hidden' // Prevent background scrolling
     
-    // Focus the close button for accessibility
+    // Manually add click event listener to the close button
     const closeButton = document.getElementById('close-image-modal')
     if (closeButton) {
+      closeButton.addEventListener('click', () => this.closeModal())
       closeButton.focus()
     }
   }
