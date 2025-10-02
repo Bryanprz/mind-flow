@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root "dashboard#index"
     
-    resources :users do
+    resources :users, param: :slug do
       resources :healing_plans
     end
 

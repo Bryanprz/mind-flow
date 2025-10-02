@@ -51,7 +51,14 @@ class Admin::HealingPlansController < ApplicationController
   private
 
   def set_user
-    @user = User.find(params[:user_id])
+    # Try to find by ID first (for numeric IDs), then search by slug
+    if params[:user_slug].match?(/\A\d+\z/)
+      @user = User.find_by(id: params[:user_slug])
+    else
+      @user = User.all.find { |user| user.slug == params[:user_slug] }
+    end
+    
+    raise ActiveRecord::RecordNotFound unless @user
   end
 
   def set_healing_plan

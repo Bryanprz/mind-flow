@@ -60,7 +60,14 @@ class Admin::UsersController < ApplicationController
 
   private
   def set_user
-    @user = User.find(params[:id])
+    # Try to find by ID first (for numeric IDs), then search by slug
+    if params[:slug].match?(/\A\d+\z/)
+      @user = User.find_by(id: params[:slug])
+    else
+      @user = User.all.find { |user| user.slug == params[:slug] }
+    end
+    
+    raise ActiveRecord::RecordNotFound unless @user
   end
 
   def require_admin
