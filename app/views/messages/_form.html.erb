@@ -1,5 +1,5 @@
 <%= form_with model: [room, message], 
-    data: { turbo_stream: true, controller: "image-preview auto-resize message-form", message_form_target: "form" }, 
+    data: { turbo_stream: true, controller: "image-preview auto-resize message-form", message_form_target: "form", action: "submit->message-form#handleFormSubmit" }, 
     multipart: true do |f| %>
   <div class="bg-neutral" data-image-preview-target="card">
     <div class="card-body px-4 py-4">

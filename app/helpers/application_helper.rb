@@ -41,25 +41,25 @@ module ApplicationHelper
     return { status: :error, message: 'Attachment not found' } unless attachment.present?
     
     begin
-      # Rails 8 approach: Check if attachment exists and is processable
       if attachment.respond_to?(:image?) && attachment.image?
-        # Check if the image is ready to display
-        begin
-          # Try to access the blob to see if it's ready
-          blob = attachment.blob
-          
-          if blob.present? && blob.analyzed?
-            # Double-check that the blob has the necessary metadata
-            if blob.metadata.present? && blob.metadata['width'].present?
+        blob = attachment.blob
+        
+        if blob.present?
+          # Try to determine if the image is actually ready to display
+          begin
+            # Check if we can generate a URL for the image
+            url = rails_blob_url(attachment, disposition: "inline")
+            if url.present?
+              # Image has a valid URL, show it immediately
               { status: :image, message: 'Image ready' }
             else
               { status: :processing, message: 'Processing image...' }
             end
-          else
+          rescue => url_error
+            # If URL generation fails, show processing state
             { status: :processing, message: 'Processing image...' }
           end
-        rescue => e
-          Rails.logger.error "Blob access error: #{e.message}"
+        else
           { status: :processing, message: 'Processing image...' }
         end
       else

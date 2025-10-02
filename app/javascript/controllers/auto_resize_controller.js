@@ -30,6 +30,14 @@ export default class extends Controller {
       // For social feed inputs, use a completely different approach
       const trixEditor = socialFeedInput.querySelector('trix-editor')
       if (trixEditor) {
+        // Store initial width if not already stored
+        if (!this.initialInputWidth) {
+          const inputContainer = socialFeedInput.closest('.flex-1')
+          if (inputContainer) {
+            this.initialInputWidth = inputContainer.offsetWidth
+          }
+        }
+        
         // Remove all height constraints and let it grow naturally
         trixEditor.style.height = 'auto'
         trixEditor.style.minHeight = '40px'
@@ -42,6 +50,9 @@ export default class extends Controller {
         socialFeedInput.style.minHeight = '40px'
         socialFeedInput.style.maxHeight = 'none'
         socialFeedInput.style.overflow = 'visible'
+        
+        // Maintain input width to prevent shrinking
+        this.maintainInputWidth(socialFeedInput)
         
         // Force a reflow to get the natural height
         trixEditor.offsetHeight
@@ -77,6 +88,16 @@ export default class extends Controller {
       } else {
         this.element.style.overflowY = 'hidden'
       }
+    }
+  }
+  
+  maintainInputWidth(inputElement) {
+    const inputContainer = inputElement.closest('.flex-1')
+    if (inputContainer && this.initialInputWidth) {
+      // Ensure the input container maintains its width
+      inputContainer.style.minWidth = `${this.initialInputWidth}px`
+      inputContainer.style.flex = '1 1 auto'
+      inputContainer.style.width = 'auto'
     }
   }
   
