@@ -1,6 +1,10 @@
 class User < ApplicationRecord
-  has_one_attached :avatar, service: :google_avatars
-  has_one_attached :cover_image, service: :google_avatars
+  def self.avatar_service
+    Rails.env.development? ? :local : :google_avatars
+  end
+  
+  has_one_attached :avatar, service: avatar_service
+  has_one_attached :cover_image, service: avatar_service
   has_secure_password
   has_many :healing_plans, dependent: :destroy # Ayurvedic protocol
   has_many :prakruti_plans, class_name: 'PrakrutiPlan'
