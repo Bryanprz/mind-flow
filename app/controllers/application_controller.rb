@@ -12,6 +12,11 @@ class ApplicationController < ActionController::Base
     @current_user ||= Current.session&.user
   end
 
+  # Test method for exception notifications - only available in production
+  def test_exception
+    raise StandardError, "Test exception for email notification - #{Time.current}"
+  end
+
   private
 
   def set_time_zone(&block)
