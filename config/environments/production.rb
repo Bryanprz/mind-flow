@@ -69,7 +69,7 @@ Rails.application.configure do
   config.middleware.use ExceptionNotification::Rack,
     email: {
       email_prefix: "[AncientHerb ERROR]",
-      sender_address: %{"notifier" <notifier@ancientherb.health>},
+      sender_address: %{"notifier" <noreply@sandbox3db823a24ba14c9894a5f24d4de62482.mailgun.org>},
       exception_recipients: %w{bryan.perez.dev@gmail.com}
     }
 
@@ -78,7 +78,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     user_name: Rails.application.credentials.dig(:smtp, :user_name),
     password: Rails.application.credentials.dig(:smtp, :password),
-    address: "smtp.gmail.com",
+    address: "smtp.mailgun.org",
     port: 587,
     authentication: :plain,
     enable_starttls_auto: true,

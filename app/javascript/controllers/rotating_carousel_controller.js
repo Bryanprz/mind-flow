@@ -20,16 +20,16 @@ export default class extends Controller {
     // Format: [text, hexColor, imagePath]
     // Cache bust: v3
     this.carouselItems = [
-      ["chronic illness", "#4e4eba", this.chronicIllnessValue],
-      ["anxiety", "#4b6ca3", this.anxietyValue],
-      ["asthma", "#abe5e2", this.asthmaValue],
-      ["depression", "#2b648b", this.depressionValue],
-      ["diabetes", "#db6f68", this.diabetesValue],
-      ["heart disease", "#ef7f81", this.heartDiseaseValue],
-      ["high cholesterol", "#ec2129", this.highCholesterolValue],
-      ["hypertension", "#fed4e2", this.hypertensionValue],
-      ["obesity", "#ef605d", this.obesityValue],
-      ["stress", "#cb4e55", this.stressValue]
+      ["drained, weak, and constantly worn down, day after day.", "#4e4eba", this.chronicIllnessValue],
+      ["tense, restless, and on edge, all the time.", "#4b6ca3", this.anxietyValue],
+      ["short of breath, restricted, and struggling to keep up, every day.", "#abe5e2", this.asthmaValue],
+      ["heavy, joyless, and trapped in low energy, day after day.", "#2b648b", this.depressionValue],
+      ["shaky, fatigued, and running on empty, all the time.", "#db6f68", this.diabetesValue],
+      ["weak, breathless, and easily exhausted, day after day.", "#ef7f81", this.heartDiseaseValue],
+      ["sluggish, blocked, and low on vitality, every day.", "#ec2129", this.highCholesterolValue],
+      ["tense, pressured, and constantly on edge, all the time.", "#fed4e2", this.hypertensionValue],
+      ["weighed down, tired, and low on energy, day after day.", "#ef605d", this.obesityValue],
+      ["overwhelmed, frazzled, and pulled in every direction, all the time.", "#cb4e55", this.stressValue]
     ]
     
     // Extract arrays for backward compatibility
@@ -79,7 +79,7 @@ export default class extends Controller {
     })
     
     // Update text immediately to sync with image transition
-    this.textTarget.textContent = this.textOptions[this.currentIndex]
+    this.textTarget.innerHTML = this.textOptions[this.currentIndex]
     this.updateTextColor()
   }
   
