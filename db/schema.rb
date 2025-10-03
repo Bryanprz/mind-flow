@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_30_084404) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_03_231456) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -70,13 +70,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_30_084404) do
   create_table "assessment_entries", force: :cascade do |t|
     t.integer "user_id"
     t.integer "health_assessment_id", null: false
-    t.datetime "completed_at"
-    t.text "results", default: "{}"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type"
     t.text "notes"
     t.text "reason_for_visit"
+    t.datetime "completed_at"
+    t.text "results", default: "{}"
     t.index ["health_assessment_id"], name: "index_assessment_entries_on_health_assessment_id"
     t.index ["user_id"], name: "index_assessment_entries_on_user_id"
   end
@@ -463,14 +463,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_30_084404) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email_address", null: false
     t.string "name"
     t.string "password_digest", null: false
-    t.date "date_of_birth"
-    t.time "time_of_birth"
     t.bigint "prakruti_id"
     t.bigint "vikruti_id"
-    t.string "authentication_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "time_zone"
@@ -478,6 +474,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_30_084404) do
     t.text "bio"
     t.string "location"
     t.string "handle"
+    t.string "authentication_token", limit: 510
+    t.time "time_of_birth"
+    t.date "date_of_birth"
+    t.string "email_address", limit: 510
     t.index ["authentication_token"], name: "index_users_on_authentication_token"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["prakruti_id"], name: "index_users_on_prakruti_id"

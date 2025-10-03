@@ -1,4 +1,10 @@
 class User < ApplicationRecord
+  # Encrypt sensitive PII fields
+  encrypts :email_address, deterministic: true
+  encrypts :date_of_birth
+  encrypts :time_of_birth
+  encrypts :authentication_token, deterministic: true
+  
   def self.avatar_service
     Rails.env.development? ? :local : :google_avatars
   end

@@ -1,4 +1,8 @@
 class AssessmentEntry < ApplicationRecord
+  # Encrypt sensitive health data
+  encrypts :results
+  encrypts :completed_at, deterministic: true
+  
   belongs_to :user, optional: true
   belongs_to :health_assessment
 
