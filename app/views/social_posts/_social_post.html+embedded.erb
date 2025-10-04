@@ -29,8 +29,25 @@
             <span class="text-[10px] text-gray-400"><%= time_ago_in_words(ts) %> ago</span>
           <% end %>
         </div>
-        <div class="text-sm leading-tight">
-          <%= social_post.content %>
+        <div class="text-sm leading-tight" data-social-post-target="postContent" data-embedded="true">
+          <div data-social-post-target="contentContainer">
+            <div data-social-post-target="truncatedContent" class="hidden">
+              <%= truncate(strip_tags(social_post.content), length: 150, omission: '...') %>
+              <button class="text-blue-500 hover:text-blue-700 text-xs font-medium ml-1" 
+                      data-action="click->social-post#expandContent"
+                      data-social-post-target="expandButton">
+                See more
+              </button>
+            </div>
+            <div data-social-post-target="fullContent">
+              <%= social_post.content %>
+              <button class="text-blue-500 hover:text-blue-700 text-xs font-medium ml-1" 
+                      data-action="click->social-post#collapseContent"
+                      data-social-post-target="collapseButton">
+                See less
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <% if social_post.media.attached? %>

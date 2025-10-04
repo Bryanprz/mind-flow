@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["likeButton", "likesCount", "replyButton", "replyForm", "repliesList", "repliesCount", "saveButton", "savesCount"]
+  static targets = ["likeButton", "likesCount", "replyButton", "replyForm", "repliesList", "repliesCount", "saveButton", "savesCount", "contentContainer", "truncatedContent", "fullContent", "expandButton", "collapseButton", "postContent"]
   static values = { postId: Number, url: String, originalPostId: Number }
 
   toggleLike(event) {
@@ -347,6 +347,61 @@ export default class extends Controller {
     // Let the flash controller handle the auto-removal
     // The flash controller will automatically add opacity-0 and -translate-y-4 after 5 seconds
     // and remove the element when the transition ends
+  }
+
+  expandContent(event) {
+    event.preventDefault()
+    event.stopPropagation()
+    
+    if (this.hasTruncatedContentTarget && this.hasFullContentTarget) {
+      this.truncatedContentTarget.classList.add('hidden')
+      this.fullContentTarget.classList.remove('hidden')
+    }
+  }
+
+  collapseContent(event) {
+    event.preventDefault()
+    event.stopPropagation()
+    
+    if (this.hasTruncatedContentTarget && this.hasFullContentTarget) {
+      this.fullContentTarget.classList.add('hidden')
+      this.truncatedContentTarget.classList.remove('hidden')
+    }
+  }
+
+  // Initialize content display based on length
+  connect() {
+    this.initializeContentDisplay()
+  }
+
+  initializeContentDisplay() {
+    if (!this.hasPostContentTarget || !this.hasTruncatedContentTarget || !this.hasFullContentTarget) {
+      return
+    }
+
+    // Get the full content text (stripped of HTML tags for length calculation)
+    const fullContentElement = this.fullContentTarget
+    const fullText = fullContentElement.textContent || fullContentElement.innerText || ''
+    const cleanText = fullText.replace(/\s+/g, ' ').trim()
+    
+    // Check if this is an embedded post (smaller truncation threshold)
+    const isEmbedded = this.hasPostContentTarget && this.postContentTarget.hasAttribute('data-embedded')
+    const truncationThreshold = isEmbedded ? 150 : 200
+    
+    // If content is shorter than threshold, hide the truncation and show full content
+    if (cleanText.length <= truncationThreshold) {
+      this.truncatedContentTarget.classList.add('hidden')
+      this.fullContentTarget.classList.remove('hidden')
+      // Hide the "See less" button for short content
+      const collapseButton = this.fullContentTarget.querySelector('[data-social-post-target="collapseButton"]')
+      if (collapseButton) {
+        collapseButton.classList.add('hidden')
+      }
+    } else {
+      // Show truncated content by default for long content
+      this.fullContentTarget.classList.add('hidden')
+      this.truncatedContentTarget.classList.remove('hidden')
+    }
   }
 
   clearImagePreviews(form) {
