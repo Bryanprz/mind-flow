@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_03_231456) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_04_033920) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -120,6 +120,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_03_231456) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "root_cause"
+    t.string "color"
   end
 
   create_table "cures", force: :cascade do |t|
@@ -208,11 +209,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_03_231456) do
 
   create_table "healing_plan_templates", force: :cascade do |t|
     t.string "name"
-    t.integer "dosha_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "duration_type"
-    t.index ["dosha_id"], name: "index_healing_plan_templates_on_dosha_id"
+    t.string "healing_focus_type"
+    t.integer "healing_focus_id"
+    t.index ["healing_focus_type", "healing_focus_id"], name: "index_healing_plan_templates_on_healing_focus"
   end
 
   create_table "healing_plans", force: :cascade do |t|
@@ -509,7 +511,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_03_231456) do
   add_foreign_key "dosha_healing_foods", "doshas"
   add_foreign_key "dosha_healing_herbs", "doshas"
   add_foreign_key "healing_plan_logs", "healing_plans"
-  add_foreign_key "healing_plan_templates", "doshas"
   add_foreign_key "healing_plans", "healing_plan_templates"
   add_foreign_key "healing_plans", "users"
   add_foreign_key "likes", "users"

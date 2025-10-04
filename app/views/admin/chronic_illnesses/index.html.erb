@@ -1,0 +1,39 @@
+<% content_for :main_container_class, 'bg-base-200' %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Chronic Illnesses</h1>
+    <%= link_to "Add New Chronic Illness", new_admin_chronic_illness_path, class: "btn btn-primary text-white" %>
+  </div>
+
+  <% if @chronic_illnesses.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <% @chronic_illnesses.each do |chronic_illness| %>
+        <div class="card bg-base-100 border border-gray-300 shadow-lg">
+          <div class="card-body">
+            <div class="flex items-center gap-3 mb-3">
+              <h2 class="card-title text-lg"><%= chronic_illness.name %></h2>
+            </div>
+            
+            <% if chronic_illness.description.present? %>
+              <p class="text-gray-600 mb-4 line-clamp-3"><%= truncate(chronic_illness.description, length: 100) %></p>
+            <% end %>
+            
+            <div class="card-actions justify-end">
+              <%= link_to "View", admin_chronic_illness_path(chronic_illness), class: "btn btn-ghost btn-sm" %>
+              <%= link_to "Edit", edit_admin_chronic_illness_path(chronic_illness), class: "btn btn-ghost btn-sm" %>
+              <%= link_to "Delete", admin_chronic_illness_path(chronic_illness), method: :delete, 
+                          class: "btn btn-error btn-sm text-white", 
+                          data: { confirm: "Are you sure you want to delete #{chronic_illness.name}?" } %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-12">
+      <p class="text-gray-500 text-lg mb-4">No chronic illnesses found.</p>
+      <%= link_to "Add First Chronic Illness", new_admin_chronic_illness_path, class: "btn btn-primary text-white" %>
+    </div>
+  <% end %>
+</div>

@@ -11,6 +11,8 @@ class Dosha < ApplicationRecord
   has_many :aggravating_foods, class_name: "DoshaAggravatingFood"
 
   has_many :healing_herbs, class_name: "DoshaHealingHerb"
+  
+  has_many :healing_plan_templates, as: :healing_focus, dependent: :destroy
 
   before_save :normalize_name
 

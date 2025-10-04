@@ -24,7 +24,7 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA.each do |dosha_name, plans_data_array| # plans
     healing_plan_template = HealingPlanTemplate.find_or_initialize_by(
       name: name,
       duration_type: data[:duration_type],
-      dosha: dosha
+      healing_focus: dosha
     )
     healing_plan_template.assign_attributes(
       description: data[:description]

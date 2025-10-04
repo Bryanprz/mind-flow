@@ -50,15 +50,17 @@ class CreateHealingPlan
   end
 
   def determine_templates_for_user
-    dosha = case health_assessment.assessment_type.to_sym
-            when :prakruti
-              @user.prakruti
-            when :vikruti
-              @user.vikruti
-            end
+    healing_focus = case health_assessment.assessment_type.to_sym
+                    when :prakruti, :vikruti
+                      # Find the dosha record
+                      Dosha.find_by(name: @user.prakruti || @user.vikruti)
+                    when :chronic_illness
+                      # Find the chronic illness record
+                      @user.chronic_illness
+                    end
 
-    if dosha
-      HealingPlanTemplate.where(dosha: dosha)
+    if healing_focus
+      HealingPlanTemplate.where(healing_focus: healing_focus)
     else
       HealingPlanTemplate.none
     end

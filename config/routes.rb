@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :chronic_illnesses
   resources :healing_plan_logs
   namespace :admin do
+    resources :chronic_illnesses
     root "dashboard#index"
     
     resources :users, param: :slug do
