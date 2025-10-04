@@ -111,6 +111,7 @@ Rails.application.routes.draw do
 
   # Static pages
   get "terms-of-service", to: "pages#terms_of_service", as: :terms_of_service
+  get "privacy-policy", to: "pages#privacy_policy", as: :privacy_policy
 
   # Defines the root path route ("/")
   root "home#index"
