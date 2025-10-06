@@ -66,6 +66,6 @@ class ChronicIllnessesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def chronic_illness_params
-      params.expect(chronic_illness: [ :name, :description, :icon ])
+      params.expect(chronic_illness: [ :name, :sanskrit_name, :allo_description, :ayu_description, :disease_evolution, :effects, :causes, :manifestation, :icon ])
     end
 end

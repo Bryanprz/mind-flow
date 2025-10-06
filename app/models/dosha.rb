@@ -8,7 +8,9 @@ class Dosha < ApplicationRecord
   validates :color, presence: true
 
   has_many :healing_foods, class_name: "DoshaHealingFood"
+  has_many :foods_that_heal, through: :healing_foods, source: :food
   has_many :aggravating_foods, class_name: "DoshaAggravatingFood"
+  has_many :foods_that_aggravate, through: :aggravating_foods, source: :food
 
   has_many :healing_herbs, class_name: "DoshaHealingHerb"
   

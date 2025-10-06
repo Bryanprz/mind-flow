@@ -1,13 +1,15 @@
 # Create a first admin user
-if User.find_by(email_address: 'b@b').nil?
-  User.create!(
-    name: 'Bryan Perez',
-    email_address: 'b@b',
-    password: 'asdfasdf',
-    password_confirmation: 'asdfasdf',
-    admin: true
-  )
+admin_user = User.find_or_create_by!(email_address: 'b@b') do |user|
+  user.name = 'Bryan Perez'
+  user.password = 'asdfasdf'
+  user.password_confirmation = 'asdfasdf'
+  user.admin = true
+end
+
+if admin_user.previously_new_record?
   puts "Created admin user b@b."
+else
+  puts "Admin user b@b already exists."
 end
 
 # Create a second test user

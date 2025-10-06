@@ -17,7 +17,15 @@ Rails.application.routes.draw do
   resources :chronic_illnesses
   resources :healing_plan_logs
   namespace :admin do
-    resources :chronic_illnesses
+    resources :chronic_illnesses do
+      resources :healing_plan_templates, except: [:index, :show]
+      member do
+        post :add_healing_food
+        delete :remove_healing_food
+        post :add_aggravating_food
+        delete :remove_aggravating_food
+      end
+    end
     root "dashboard#index"
     
     resources :users, param: :slug do
@@ -113,6 +121,7 @@ Rails.application.routes.draw do
   # Static pages
   get "terms-of-service", to: "pages#terms_of_service", as: :terms_of_service
   get "privacy-policy", to: "pages#privacy_policy", as: :privacy_policy
+  get "contact-us", to: "pages#contact_us", as: :contact_us
 
   # Defines the root path route ("/")
   root "home#index"

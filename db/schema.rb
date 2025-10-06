@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_04_033920) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_06_034800) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -113,14 +113,64 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_04_033920) do
     t.index ["slug"], name: "index_books_on_slug", unique: true
   end
 
-  create_table "chronic_illnesses", force: :cascade do |t|
+  create_table "channel_systems", force: :cascade do |t|
     t.string "name"
     t.text "description"
+    t.string "revived_by_type", null: false
+    t.integer "revived_by_id", null: false
+    t.string "damaged_by_type", null: false
+    t.integer "damaged_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["damaged_by_type", "damaged_by_id"], name: "index_channel_systems_on_damaged_by"
+    t.index ["revived_by_type", "revived_by_id"], name: "index_channel_systems_on_revived_by"
+  end
+
+  create_table "chronic_illness_affected_dhatus", force: :cascade do |t|
+    t.integer "chronic_illness_id", null: false
+    t.integer "dhatu_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chronic_illness_id"], name: "index_chronic_illness_affected_dhatus_on_chronic_illness_id"
+    t.index ["dhatu_id"], name: "index_chronic_illness_affected_dhatus_on_dhatu_id"
+  end
+
+  create_table "chronic_illness_aggravating_foods", force: :cascade do |t|
+    t.integer "chronic_illness_id", null: false
+    t.integer "food_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chronic_illness_id"], name: "index_chronic_illness_aggravating_foods_on_chronic_illness_id"
+    t.index ["food_id"], name: "index_chronic_illness_aggravating_foods_on_food_id"
+  end
+
+  create_table "chronic_illness_channel_systems", force: :cascade do |t|
+    t.integer "chronic_illness_id", null: false
+    t.integer "channel_system_id", null: false
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_system_id"], name: "index_chronic_illness_channel_systems_on_channel_system_id"
+    t.index ["chronic_illness_id"], name: "index_chronic_illness_channel_systems_on_chronic_illness_id"
+  end
+
+  create_table "chronic_illness_healing_foods", force: :cascade do |t|
+    t.integer "chronic_illness_id", null: false
+    t.integer "food_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chronic_illness_id"], name: "index_chronic_illness_healing_foods_on_chronic_illness_id"
+    t.index ["food_id"], name: "index_chronic_illness_healing_foods_on_food_id"
+  end
+
+  create_table "chronic_illnesses", force: :cascade do |t|
+    t.string "name"
     t.string "icon"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "root_cause"
     t.string "color"
+    t.string "sanskrit_name"
   end
 
   create_table "cures", force: :cascade do |t|
@@ -144,6 +194,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_04_033920) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "dhatus", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "disease_stages", force: :cascade do |t|
     t.integer "formation_stage"
     t.string "name"
@@ -159,7 +216,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_04_033920) do
     t.text "recommendations"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "food_id"
     t.index ["dosha_id"], name: "index_dosha_aggravating_foods_on_dosha_id"
+    t.index ["food_id"], name: "index_dosha_aggravating_foods_on_food_id"
   end
 
   create_table "dosha_healing_foods", force: :cascade do |t|
@@ -169,7 +228,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_04_033920) do
     t.text "recommendations"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "food_id"
     t.index ["dosha_id"], name: "index_dosha_healing_foods_on_dosha_id"
+    t.index ["food_id"], name: "index_dosha_healing_foods_on_food_id"
   end
 
   create_table "dosha_healing_herbs", force: :cascade do |t|
@@ -195,6 +256,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_04_033920) do
     t.datetime "updated_at", null: false
     t.text "general_recommendations"
     t.index ["name"], name: "index_doshas_on_name", unique: true
+  end
+
+  create_table "foods", force: :cascade do |t|
+    t.string "name"
+    t.string "recommendation"
+    t.string "contraindication"
+    t.text "details"
+    t.json "elements", default: []
+    t.json "recipes", default: []
+    t.integer "rasa_taste"
+    t.text "virya_potency"
+    t.text "vipaka_post_digestive_effect"
+    t.string "prabhava_special_action"
+    t.integer "guna_quality"
+    t.text "samskara_preparation"
+    t.text "habitat_and_source"
+    t.integer "form_of_intake"
+    t.text "samyoga_combination"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_foods_on_name", unique: true
   end
 
   create_table "healing_plan_logs", force: :cascade do |t|
@@ -507,8 +589,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_04_033920) do
   add_foreign_key "assessment_chronic_illnesses", "chronic_illnesses"
   add_foreign_key "assessment_options", "assessment_questions"
   add_foreign_key "assessment_questions", "health_assessments"
+  add_foreign_key "chronic_illness_affected_dhatus", "chronic_illnesses"
+  add_foreign_key "chronic_illness_affected_dhatus", "dhatus"
+  add_foreign_key "chronic_illness_aggravating_foods", "chronic_illnesses"
+  add_foreign_key "chronic_illness_aggravating_foods", "foods"
+  add_foreign_key "chronic_illness_channel_systems", "channel_systems"
+  add_foreign_key "chronic_illness_channel_systems", "chronic_illnesses"
+  add_foreign_key "chronic_illness_healing_foods", "chronic_illnesses"
+  add_foreign_key "chronic_illness_healing_foods", "foods"
   add_foreign_key "dosha_aggravating_foods", "doshas"
+  add_foreign_key "dosha_aggravating_foods", "foods"
   add_foreign_key "dosha_healing_foods", "doshas"
+  add_foreign_key "dosha_healing_foods", "foods"
   add_foreign_key "dosha_healing_herbs", "doshas"
   add_foreign_key "healing_plan_logs", "healing_plans"
   add_foreign_key "healing_plans", "healing_plan_templates"

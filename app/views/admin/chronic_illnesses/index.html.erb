@@ -9,15 +9,45 @@
   <% if @chronic_illnesses.any? %>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <% @chronic_illnesses.each do |chronic_illness| %>
-        <div class="card bg-base-100 border border-gray-300 shadow-lg">
+        <div class="card bg-base-100 border border-gray-300 shadow-lg hover:shadow-xl transition-shadow duration-200">
           <div class="card-body">
             <div class="flex items-center gap-3 mb-3">
+              <div class="w-4 h-4 rounded-full" style="background-color: <%= chronic_illness.color %>"></div>
               <h2 class="card-title text-lg"><%= chronic_illness.name %></h2>
             </div>
             
-            <% if chronic_illness.description.present? %>
-              <p class="text-gray-600 mb-4 line-clamp-3"><%= truncate(chronic_illness.description, length: 100) %></p>
+            <!-- Sanskrit Name -->
+            <% if chronic_illness.sanskrit_name.present? %>
+              <p class="text-sm italic text-gray-500 mb-2"><%= chronic_illness.sanskrit_name %></p>
             <% end %>
+            
+            <!-- Description Preview -->
+            <% if chronic_illness.allo_description.present? %>
+              <div class="text-gray-600 mb-4 line-clamp-3">
+                <%= truncate(chronic_illness.allo_description.to_plain_text, length: 120) %>
+              </div>
+            <% elsif chronic_illness.ayu_description.present? %>
+              <div class="text-gray-600 mb-4 line-clamp-3">
+                <%= truncate(chronic_illness.ayu_description.to_plain_text, length: 120) %>
+              </div>
+            <% else %>
+              <p class="text-gray-400 italic mb-4">No description available</p>
+            <% end %>
+            
+            <!-- Additional Info -->
+            <div class="flex items-center justify-between text-xs text-gray-500 mb-4">
+              <span>
+                <%= pluralize(chronic_illness.healing_plan_templates.count, 'template') %>
+              </span>
+              <span>
+                <% if chronic_illness.sanskrit_name.present? %>
+                  <span class="badge badge-sm badge-outline">Sanskrit</span>
+                <% end %>
+                <% if chronic_illness.ayu_description.present? %>
+                  <span class="badge badge-sm badge-outline">Ayurvedic</span>
+                <% end %>
+              </span>
+            </div>
             
             <div class="card-actions justify-end">
               <%= link_to "View", admin_chronic_illness_path(chronic_illness), class: "btn btn-ghost btn-sm" %>

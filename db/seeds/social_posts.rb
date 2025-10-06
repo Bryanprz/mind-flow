@@ -24,23 +24,31 @@ theo = User.find_or_create_by!(email_address: "theo@example.com") do |user|
   user.name = "Theo Kim"
 end
 
-# Create Social Posts
-post1 = SocialPost.find_or_create_by!(user: ava) do |post|
-  post.content = "Day 10 on the new herbal routine. Energy is up and sleep is deeper. Anyone else notice fewer afternoon slumps?"
-end
+# Create Social Posts (only if they don't exist)
+post_contents = [
+  "Day 10 on the new herbal routine. Energy is up and sleep is deeper. Anyone else notice fewer afternoon slumps?",
+  "Tried the ginger-turmeric tea before workouts. Warm-up feels smoother and joints are happier.",
+  "Swapped afternoon coffee for lemon balm + mint. Calmer focus, fewer jitters. Highly recommend!",
+  "Weekend farmer's market haul. Any recipe ideas for fresh chamomile and nettle?",
+  "Micro-dosing adaptogens has helped me handle meetings better. Small changes, big impact."
+]
 
-post2 = SocialPost.find_or_create_by!(user: jamal) do |post|
-  post.content = "Tried the ginger-turmeric tea before workouts. Warm-up feels smoother and joints are happier."
-end
+users = [ava, jamal, rina, marta, theo]
 
-post3 = SocialPost.find_or_create_by!(user: rina) do |post|
-  post.content = "Swapped afternoon coffee for lemon balm + mint. Calmer focus, fewer jitters. Highly recommend!"
-end
-
-post4 = SocialPost.find_or_create_by!(user: marta) do |post|
-  post.content = "Weekend farmer's market haul. Any recipe ideas for fresh chamomile and nettle?"
-end
-
-post5 = SocialPost.find_or_create_by!(user: theo) do |post|
-  post.content = "Micro-dosing adaptogens has helped me handle meetings better. Small changes, big impact."
+users.each_with_index do |user, index|
+  content = post_contents[index]
+  
+  # Check if user already has a post with this content
+  existing_post = SocialPost.joins(:rich_text_content)
+                           .where(user: user)
+                           .where('action_text_rich_texts.body LIKE ?', "%#{content[0..50]}%")
+                           .first
+  
+  unless existing_post
+    post = SocialPost.create!(
+      user: user,
+      content: content,
+      published_at: Time.current
+    )
+  end
 end
