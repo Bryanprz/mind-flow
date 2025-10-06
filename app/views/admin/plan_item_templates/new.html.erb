@@ -1,0 +1,52 @@
+<% content_for :main_container_class, 'bg-base-200' %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-3xl font-bold">Add New Item</h1>
+        <p class="text-lg text-gray-600">to <%= @plan_section_template.name %></p>
+      </div>
+      <%= link_to "← Back", admin_healing_plan_template_path(@healing_plan_template), class: "btn btn-ghost" %>
+    </div>
+
+    <!-- Form -->
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <%= form_with(model: [:admin, @healing_plan_template, @plan_section_template, @plan_item_template], local: true) do |form| %>
+          <% if @plan_item_template.errors.any? %>
+            <div class="alert alert-error shadow-lg mb-4">
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span><%= pluralize(@plan_item_template.errors.count, "error") %> prohibited this item from being saved:</span>
+              </div>
+              <ul class="mt-2">
+                <% @plan_item_template.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="form-control mb-4">
+            <%= form.label :content, class: "label" %>
+            <%= form.rich_text_area :content, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Enter the plan item content..." %>
+          </div>
+
+          <div class="form-control mb-4">
+            <%= form.label :position, class: "label" %>
+            <%= form.number_field :position, class: "input input-bordered w-full", placeholder: "Position in the section" %>
+          </div>
+
+          <div class="flex gap-2 justify-end">
+            <%= form.submit "Create Item", class: "btn btn-primary text-white" %>
+            <%= link_to "Cancel", admin_healing_plan_template_path(@healing_plan_template), class: "btn btn-ghost" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

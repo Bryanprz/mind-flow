@@ -1,4 +1,6 @@
-<%= form_with(model: [:admin, @chronic_illness, healing_plan_template], local: true, data: { turbo: false }) do |form| %>
+<%= form_with(model: healing_plan_template.persisted? ? [:admin, healing_plan_template] : false, 
+              url: healing_plan_template.persisted? ? nil : admin_healing_plan_templates_path(chronic_illness_id: chronic_illness&.id),
+              local: true, data: { turbo: false }) do |form| %>
   <% if healing_plan_template.errors.any? %>
     <div class="alert alert-error shadow-lg mb-4">
       <div>
@@ -39,6 +41,10 @@
 
   <div class="flex gap-2 justify-end">
     <%= form.submit class: "btn btn-primary text-white" %>
-    <button type="button" class="btn btn-ghost" onclick="hideTemplateForm()">Cancel</button>
+    <% if healing_plan_template.persisted? %>
+      <%= link_to "Cancel", admin_healing_plan_template_path(healing_plan_template), class: "btn btn-ghost" %>
+    <% else %>
+      <button type="button" class="btn btn-ghost" onclick="hideTemplateForm()">Cancel</button>
+    <% end %>
   </div>
 <% end %>

@@ -1,0 +1,161 @@
+<% content_for :main_container_class, 'bg-base-200' %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold"><%= @healing_plan_template.name %></h1>
+      <div class="flex gap-2">
+        <%= link_to "Edit", edit_admin_healing_plan_template_path(@healing_plan_template), class: "btn btn-primary btn-sm text-white" %>
+        <%= link_to "Delete", admin_healing_plan_template_path(@healing_plan_template), method: :delete,
+                    class: "btn btn-error btn-sm text-white",
+                    data: { confirm: "Are you sure you want to delete #{@healing_plan_template.name}?" } %>
+      </div>
+    </div>
+
+    <!-- Template Details -->
+    <div class="card bg-base-100 border border-gray-300 mb-6">
+      <div class="card-body">
+        <h2 class="card-title text-xl mb-2">Template Details</h2>
+        <p class="text-lg text-gray-600">
+          <%= @healing_plan_template.duration_type.humanize %> •
+          <%= pluralize(@healing_plan_template.plan_section_templates.count, 'section') %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <% if @healing_plan_template.description.present? %>
+      <div class="card bg-base-100 border border-gray-300 mb-6">
+        <div class="card-body">
+          <h3 class="card-title text-lg">Description</h3>
+          <div class="prose max-w-none text-sm">
+            <%= @healing_plan_template.description %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Plan Sections -->
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="card-title text-lg">Plan Sections</h3>
+          <%= link_to "Add Section", new_admin_healing_plan_template_plan_section_template_path(@healing_plan_template), class: "btn btn-primary btn-sm text-white" %>
+        </div>
+
+        <% if @healing_plan_template.plan_section_templates.any? %>
+          <div class="space-y-4">
+            <% @healing_plan_template.plan_section_templates.order(:position).each do |section| %>
+              <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex justify-between items-center mb-3">
+                  <h4 class="font-semibold text-md"><%= section.name %></h4>
+                  <div class="flex gap-2">
+                    <%= link_to "Edit", edit_admin_healing_plan_template_plan_section_template_path(@healing_plan_template, section), class: "btn btn-ghost btn-xs" %>
+                    <%= link_to "Delete", admin_healing_plan_template_plan_section_template_path(@healing_plan_template, section), method: :delete,
+                                class: "btn btn-ghost btn-xs text-red-600",
+                                data: { confirm: "Are you sure you want to delete #{section.name}?" } %>
+                  </div>
+                </div>
+                <p class="text-sm text-gray-600 mb-3">
+                  Position <%= section.position %> •
+                  <%= pluralize(section.plan_item_templates.count, 'item') %>
+                </p>
+
+                <!-- Plan Items -->
+                <div class="space-y-2">
+                  <% if section.plan_item_templates.any? %>
+                    <% items = section.plan_item_templates.order(:position) %>
+                    <% items.each_with_index do |item, index| %>
+                      <div class="item-row flex items-start gap-3 p-2 bg-gray-50 rounded <%= 'hidden' if index >= 2 %>" 
+                           data-section-id="<%= section.id %>" 
+                           data-item-index="<%= index %>">
+                        <span class="text-sm text-gray-500 mt-1"><%= item.position %>.</span>
+                        <div class="flex-1">
+                          <div class="prose prose-sm max-w-none">
+                            <%= item.content %>
+                          </div>
+                        </div>
+                        <div class="flex gap-1">
+                          <%= link_to "Edit", edit_admin_healing_plan_template_plan_section_template_plan_item_template_path(@healing_plan_template, section, item), class: "btn btn-ghost btn-xs" %>
+                          <%= link_to "Delete", admin_healing_plan_template_plan_section_template_plan_item_template_path(@healing_plan_template, section, item), method: :delete,
+                                      class: "btn btn-ghost btn-xs text-red-600",
+                                      data: { confirm: "Are you sure you want to delete this item?" } %>
+                        </div>
+                      </div>
+                    <% end %>
+                    
+                    <!-- See More/Less Button -->
+                    <% if items.count > 2 %>
+                      <div class="pt-2" data-section-id="<%= section.id %>">
+                        <button type="button" 
+                                class="see-more-btn btn btn-ghost btn-xs text-blue-600 hover:text-blue-800" 
+                                data-section-id="<%= section.id %>"
+                                data-action="click->section-toggle#toggleItems">
+                          <span class="see-more-text">See more (<%= items.count - 2 %> more)</span>
+                          <span class="see-less-text hidden">See less</span>
+                        </button>
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <p class="text-gray-500 italic text-sm">No items in this section yet.</p>
+                  <% end %>
+                  
+                  <!-- Add Item Button -->
+                  <div class="pt-2">
+                    <%= link_to "Add Item", new_admin_healing_plan_template_plan_section_template_plan_item_template_path(@healing_plan_template, section), 
+                        class: "btn btn-ghost btn-xs" %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-8 text-gray-500">
+            <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+            </svg>
+            <p>No plan sections created yet.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-6">
+      <%= link_to "← Back to #{@healing_plan_template.healing_focus.name}", admin_chronic_illness_path(@healing_plan_template.healing_focus), class: "btn btn-ghost" %>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Section toggle functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.see-more-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const sectionId = this.dataset.sectionId;
+        const seeMoreText = this.querySelector('.see-more-text');
+        const seeLessText = this.querySelector('.see-less-text');
+        const hiddenItems = document.querySelectorAll(`[data-section-id="${sectionId}"].item-row.hidden`);
+        const visibleItems = document.querySelectorAll(`[data-section-id="${sectionId}"].item-row:not(.hidden)`);
+        
+        if (hiddenItems.length > 0) {
+          // Show more items
+          hiddenItems.forEach(item => item.classList.remove('hidden'));
+          seeMoreText.classList.add('hidden');
+          seeLessText.classList.remove('hidden');
+        } else {
+          // Hide items beyond the first 2
+          const allItems = document.querySelectorAll(`[data-section-id="${sectionId}"].item-row`);
+          allItems.forEach((item, index) => {
+            if (index >= 2) {
+              item.classList.add('hidden');
+            }
+          });
+          seeMoreText.classList.remove('hidden');
+          seeLessText.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>

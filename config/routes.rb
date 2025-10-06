@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   resources :healing_plan_logs
   namespace :admin do
     resources :chronic_illnesses do
-      resources :healing_plan_templates, except: [:index, :show]
       member do
         post :add_healing_food
         delete :remove_healing_food
@@ -26,10 +25,23 @@ Rails.application.routes.draw do
         delete :remove_aggravating_food
       end
     end
+    
+    resources :healing_plan_templates do
+      resources :plan_section_templates, except: [:index, :show] do
+        resources :plan_item_templates, except: [:index, :show]
+      end
+    end
     root "dashboard#index"
     
     resources :users, param: :slug do
-      resources :healing_plans
+      member do
+        get :healing_plans
+        get :healing_plan_templates
+        get :social_posts
+      end
+      resources :healing_plans, except: [:index] do
+        resources :logs, except: [:index]
+      end
     end
 
     resources :social_posts, only: [:index, :show, :edit, :update, :destroy]
@@ -115,13 +127,40 @@ Rails.application.routes.draw do
   get "fail" => "application#test_exception"
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Static pages
   get "terms-of-service", to: "pages#terms_of_service", as: :terms_of_service
   get "privacy-policy", to: "pages#privacy_policy", as: :privacy_policy
   get "contact-us", to: "pages#contact_us", as: :contact_us
+
+  # Health assessments
+  resources :health_assessments, only: [:new, :create, :show]
+  
+  # Social posts
+  resources :social_posts, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  
+  # Doshas
+  resources :doshas, only: [:index, :show]
+  
+  # Foods
+  resources :foods, only: [:index, :show]
+  
+  # Channel systems
+  resources :channel_systems, only: [:index, :show]
+  
+  # Dhatus
+  resources :dhatus, only: [:index, :show]
+  
+  # API routes for AJAX requests
+  namespace :api do
+    resources :health_assessments, only: [:show] do
+      member do
+        get :results
+      end
+    end
+  end
 
   # Defines the root path route ("/")
   root "home#index"

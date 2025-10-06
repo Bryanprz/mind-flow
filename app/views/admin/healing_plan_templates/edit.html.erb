@@ -1,0 +1,21 @@
+<% content_for :main_container_class, 'bg-base-200' %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-3xl font-bold">Edit Healing Plan Template</h1>
+        <p class="text-lg text-gray-600"><%= @healing_plan_template.name %></p>
+      </div>
+      <%= link_to "← Back", admin_healing_plan_template_path(@healing_plan_template), class: "btn btn-ghost" %>
+    </div>
+
+    <!-- Form -->
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <%= render partial: 'admin/healing_plan_templates/form', locals: { healing_plan_template: @healing_plan_template } %>
+      </div>
+    </div>
+  </div>
+</div>

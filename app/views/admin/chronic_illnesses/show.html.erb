@@ -7,7 +7,7 @@
       <div class="flex items-center gap-4">
         <div class="w-8 h-8 rounded-full" style="background-color: <%= @chronic_illness.color %>"></div>
         <div>
-          <h1 class="text-3xl font-bold"><%= @chronic_illness.name %></h1>
+          <h1 class="text-3xl font-bold text-gray-900"><%= @chronic_illness.name %></h1>
           <% if @chronic_illness.sanskrit_name.present? %>
             <p class="text-lg text-gray-600 italic"><%= @chronic_illness.sanskrit_name %></p>
           <% end %>
@@ -21,7 +21,7 @@
           Edit Details
         </button>
         <%= link_to "Delete", admin_chronic_illness_path(@chronic_illness), method: :delete, 
-                    class: "btn btn-error text-white", 
+                    class: "btn btn-error btn-sm text-white", 
                     data: { confirm: "Are you sure you want to delete #{@chronic_illness.name}?" } %>
       </div>
     </div>
@@ -34,7 +34,7 @@
             <div class="space-y-6">
               <!-- Sanskrit Name -->
               <div class="form-control">
-                <label class="label-text font-medium mb-2">Sanskrit Name</label>
+                <label class="label-text font-medium mb-2 text-gray-700">Sanskrit Name</label>
                 <div class="flex items-center gap-2">
                   <%= form.text_field :sanskrit_name, 
                       class: "input input-bordered flex-1", 
@@ -44,15 +44,15 @@
                         inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
                         inline_edit_field_name_value: "sanskrit_name"
                       } %>
-                  <button type="button" onclick="addImage('sanskrit_name')" class="btn btn-ghost btn-xs" title="Add Image">
+                  <button type="button" onclick="addImage('sanskrit_name')" class="btn btn-ghost btn-sm" title="Add Image">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
                   </button>
-                  <%= button_tag type: "button", 
-                      class: "btn btn-primary btn-xs text-white", 
+                  <%= button_tag type: "button",
+                      class: "btn btn-primary btn-sm text-white",
                       title: "Update Field",
-                      data: { 
+                      data: {
                         action: "click->inline-edit#updateField",
                         inline_edit_target: "field",
                         inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
@@ -67,29 +67,34 @@
 
               <!-- Allopathic Description -->
               <div class="form-control">
-                <label class="label-text font-medium mb-2">Allopathic Description</label>
+                <label class="label-text font-medium mb-2 text-gray-700">Allopathic Description</label>
                 <div class="flex items-start gap-2">
                   <div class="flex-1">
-                    <%= form.rich_text_area :allo_description, class: "w-full", placeholder: "Western medical description..." %>
+                    <%= form.rich_text_area :allo_description, class: "w-full", placeholder: "Medical description...",
+                        data: {
+                          inline_edit_target: "field",
+                          inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
+                          inline_edit_field_name_value: "allo_description"
+                        } %>
                   </div>
                   <div class="flex flex-col gap-2 mt-1">
-                    <button type="button" onclick="addImage('allo_description')" class="btn btn-ghost btn-xs" title="Add Image">
+                    <button type="button" onclick="addImage('allo_description')" class="btn btn-ghost btn-sm" title="Add Image">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                       </svg>
                     </button>
-                    <%= button_tag type: "button", 
-                        class: "btn btn-primary btn-xs text-white", 
+                    <%= button_tag type: "button",
+                        class: "btn btn-primary btn-sm text-white",
                         title: "Update Field",
-                        data: { 
+                        data: {
                           action: "click->inline-edit#updateField",
                           inline_edit_target: "field",
                           inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
                           inline_edit_field_name_value: "allo_description"
                         } do %>
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                    </svg>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                      </svg>
                     <% end %>
                   </div>
                 </div>
@@ -97,29 +102,34 @@
 
               <!-- Ayurvedic Description -->
               <div class="form-control">
-                <label class="label-text font-medium mb-2">Ayurvedic Description</label>
+                <label class="label-text font-medium mb-2 text-gray-700">Ayurvedic Description</label>
                 <div class="flex items-start gap-2">
                   <div class="flex-1">
-                    <%= form.rich_text_area :ayu_description, class: "w-full", placeholder: "Ayurvedic perspective and understanding..." %>
+                    <%= form.rich_text_area :ayu_description, class: "w-full", placeholder: "Ayurvedic perspective...",
+                        data: {
+                          inline_edit_target: "field",
+                          inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
+                          inline_edit_field_name_value: "ayu_description"
+                        } %>
                   </div>
                   <div class="flex flex-col gap-2 mt-1">
-                    <button type="button" onclick="addImage('ayu_description')" class="btn btn-ghost btn-xs" title="Add Image">
+                    <button type="button" onclick="addImage('ayu_description')" class="btn btn-ghost btn-sm" title="Add Image">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                       </svg>
                     </button>
-                    <%= button_tag type: "button", 
-                        class: "btn btn-primary btn-xs text-white", 
+                    <%= button_tag type: "button",
+                        class: "btn btn-primary btn-sm text-white",
                         title: "Update Field",
-                        data: { 
+                        data: {
                           action: "click->inline-edit#updateField",
                           inline_edit_target: "field",
                           inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
                           inline_edit_field_name_value: "ayu_description"
                         } do %>
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                    </svg>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                      </svg>
                     <% end %>
                   </div>
                 </div>
@@ -127,29 +137,34 @@
 
               <!-- Disease Evolution -->
               <div class="form-control">
-                <label class="label-text font-medium mb-2">Disease Evolution</label>
+                <label class="label-text font-medium mb-2 text-gray-700">Disease Evolution</label>
                 <div class="flex items-start gap-2">
                   <div class="flex-1">
-                    <%= form.rich_text_area :disease_evolution, class: "w-full", placeholder: "How the disease progresses and develops..." %>
+                    <%= form.rich_text_area :disease_evolution, class: "w-full", placeholder: "How the disease progresses...",
+                        data: {
+                          inline_edit_target: "field",
+                          inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
+                          inline_edit_field_name_value: "disease_evolution"
+                        } %>
                   </div>
                   <div class="flex flex-col gap-2 mt-1">
-                    <button type="button" onclick="addImage('disease_evolution')" class="btn btn-ghost btn-xs" title="Add Image">
+                    <button type="button" onclick="addImage('disease_evolution')" class="btn btn-ghost btn-sm" title="Add Image">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                       </svg>
                     </button>
-                    <%= button_tag type: "button", 
-                        class: "btn btn-primary btn-xs text-white", 
+                    <%= button_tag type: "button",
+                        class: "btn btn-primary btn-sm text-white",
                         title: "Update Field",
-                        data: { 
+                        data: {
                           action: "click->inline-edit#updateField",
                           inline_edit_target: "field",
                           inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
                           inline_edit_field_name_value: "disease_evolution"
                         } do %>
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                    </svg>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                      </svg>
                     <% end %>
                   </div>
                 </div>
@@ -157,29 +172,34 @@
 
               <!-- Effects -->
               <div class="form-control">
-                <label class="label-text font-medium mb-2">Effects</label>
+                <label class="label-text font-medium mb-2 text-gray-700">Effects</label>
                 <div class="flex items-start gap-2">
                   <div class="flex-1">
-                    <%= form.rich_text_area :effects, class: "w-full", placeholder: "Impact on Vata, Pitta, and Kapha..." %>
+                    <%= form.rich_text_area :effects, class: "w-full", placeholder: "Impact on Vata, Pitta, and Kapha...",
+                        data: {
+                          inline_edit_target: "field",
+                          inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
+                          inline_edit_field_name_value: "effects"
+                        } %>
                   </div>
                   <div class="flex flex-col gap-2 mt-1">
-                    <button type="button" onclick="addImage('effects')" class="btn btn-ghost btn-xs" title="Add Image">
+                    <button type="button" onclick="addImage('effects')" class="btn btn-ghost btn-sm" title="Add Image">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                       </svg>
                     </button>
-                    <%= button_tag type: "button", 
-                        class: "btn btn-primary btn-xs text-white", 
+                    <%= button_tag type: "button",
+                        class: "btn btn-primary btn-sm text-white",
                         title: "Update Field",
-                        data: { 
+                        data: {
                           action: "click->inline-edit#updateField",
                           inline_edit_target: "field",
                           inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
                           inline_edit_field_name_value: "effects"
                         } do %>
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                    </svg>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                      </svg>
                     <% end %>
                   </div>
                 </div>
@@ -187,29 +207,34 @@
 
               <!-- Causes -->
               <div class="form-control">
-                <label class="label-text font-medium mb-2">Causes</label>
+                <label class="label-text font-medium mb-2 text-gray-700">Causes</label>
                 <div class="flex items-start gap-2">
                   <div class="flex-1">
-                    <%= form.rich_text_area :causes, class: "w-full", placeholder: "Root causes and contributing factors..." %>
+                    <%= form.rich_text_area :causes, class: "w-full", placeholder: "Root causes and contributing factors...",
+                        data: {
+                          inline_edit_target: "field",
+                          inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
+                          inline_edit_field_name_value: "causes"
+                        } %>
                   </div>
                   <div class="flex flex-col gap-2 mt-1">
-                    <button type="button" onclick="addImage('causes')" class="btn btn-ghost btn-xs" title="Add Image">
+                    <button type="button" onclick="addImage('causes')" class="btn btn-ghost btn-sm" title="Add Image">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                       </svg>
                     </button>
-                    <%= button_tag type: "button", 
-                        class: "btn btn-primary btn-xs text-white", 
+                    <%= button_tag type: "button",
+                        class: "btn btn-primary btn-sm text-white",
                         title: "Update Field",
-                        data: { 
+                        data: {
                           action: "click->inline-edit#updateField",
                           inline_edit_target: "field",
                           inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
                           inline_edit_field_name_value: "causes"
                         } do %>
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                    </svg>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                      </svg>
                     <% end %>
                   </div>
                 </div>
@@ -217,68 +242,66 @@
 
               <!-- Manifestation -->
               <div class="form-control">
-                <label class="label-text font-medium mb-2">Manifestation</label>
+                <label class="label-text font-medium mb-2 text-gray-700">Manifestation</label>
                 <div class="flex items-start gap-2">
                   <div class="flex-1">
-                    <%= form.rich_text_area :manifestation, class: "w-full", placeholder: "How the disease manifests in the body..." %>
+                    <%= form.rich_text_area :manifestation, class: "w-full", placeholder: "How the condition manifests...",
+                        data: {
+                          inline_edit_target: "field",
+                          inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
+                          inline_edit_field_name_value: "manifestation"
+                        } %>
                   </div>
                   <div class="flex flex-col gap-2 mt-1">
-                    <button type="button" onclick="addImage('manifestation')" class="btn btn-ghost btn-xs" title="Add Image">
+                    <button type="button" onclick="addImage('manifestation')" class="btn btn-ghost btn-sm" title="Add Image">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                       </svg>
                     </button>
-                    <%= button_tag type: "button", 
-                        class: "btn btn-primary btn-xs text-white", 
+                    <%= button_tag type: "button",
+                        class: "btn btn-primary btn-sm text-white",
                         title: "Update Field",
-                        data: { 
+                        data: {
                           action: "click->inline-edit#updateField",
                           inline_edit_target: "field",
                           inline_edit_url_value: admin_chronic_illness_path(@chronic_illness),
                           inline_edit_field_name_value: "manifestation"
                         } do %>
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                    </svg>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                      </svg>
                     <% end %>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="flex gap-2 justify-end mt-6">
-              <%= form.submit "Save All Changes", class: "btn btn-primary text-white" %>
-              <button type="button" onclick="toggleEditMode()" class="btn btn-ghost">Cancel</button>
             </div>
           </div>
         </div>
       <% end %>
     </div>
 
-    <!-- Information Display -->
-    <div class="space-y-6 mb-6">
+    <!-- Display Sections -->
+    <div class="space-y-6">
       <!-- Sanskrit Name -->
-      <div class="card bg-base-100 border border-gray-300">
-        <div class="card-body">
-          <h3 class="card-title text-lg">Sanskrit Name</h3>
-          <% if @chronic_illness.sanskrit_name.present? %>
-            <p class="text-xl italic text-gray-700"><%= @chronic_illness.sanskrit_name %></p>
-          <% else %>
-            <p class="text-gray-400 italic">No Sanskrit name provided</p>
-          <% end %>
+      <% if @chronic_illness.sanskrit_name.present? %>
+        <div class="card bg-base-100 border border-gray-300">
+          <div class="card-body">
+            <h3 class="card-title text-lg text-gray-900">Sanskrit Name</h3>
+            <p class="text-lg text-gray-700 italic"><%= @chronic_illness.sanskrit_name %></p>
+          </div>
         </div>
-      </div>
+      <% end %>
 
       <!-- Allopathic Description -->
       <div class="card bg-base-100 border border-gray-300">
         <div class="card-body">
-          <h3 class="card-title text-lg">Allopathic Description</h3>
+          <h3 class="card-title text-lg text-gray-900">Allopathic Description</h3>
           <% if @chronic_illness.allo_description.present? %>
-            <div class="prose max-w-none text-sm">
+            <div class="prose max-w-none text-gray-700">
               <%= @chronic_illness.allo_description %>
             </div>
           <% else %>
-            <p class="text-gray-400 italic">No allopathic description provided</p>
+            <p class="text-gray-500 italic">No allopathic description provided</p>
           <% end %>
         </div>
       </div>
@@ -286,13 +309,13 @@
       <!-- Ayurvedic Description -->
       <div class="card bg-base-100 border border-gray-300">
         <div class="card-body">
-          <h3 class="card-title text-lg">Ayurvedic Description</h3>
+          <h3 class="card-title text-lg text-gray-900">Ayurvedic Description</h3>
           <% if @chronic_illness.ayu_description.present? %>
-            <div class="prose max-w-none text-sm">
+            <div class="prose max-w-none text-gray-700">
               <%= @chronic_illness.ayu_description %>
             </div>
           <% else %>
-            <p class="text-gray-400 italic">No Ayurvedic description provided</p>
+            <p class="text-gray-500 italic">No ayurvedic description provided</p>
           <% end %>
         </div>
       </div>
@@ -300,41 +323,41 @@
       <!-- Disease Evolution -->
       <div class="card bg-base-100 border border-gray-300">
         <div class="card-body">
-          <h3 class="card-title text-lg">Disease Evolution</h3>
+          <h3 class="card-title text-lg text-gray-900">Disease Evolution</h3>
           <% if @chronic_illness.disease_evolution.present? %>
-            <div class="prose max-w-none text-sm">
+            <div class="prose max-w-none text-gray-700">
               <%= @chronic_illness.disease_evolution %>
             </div>
           <% else %>
-            <p class="text-gray-400 italic">No disease evolution information provided</p>
+            <p class="text-gray-500 italic">No disease evolution information provided</p>
           <% end %>
         </div>
       </div>
 
-        <!-- Effects -->
-        <div class="card bg-base-100 border border-gray-300">
-          <div class="card-body">
-            <h3 class="card-title text-lg">Effects</h3>
-            <% if @chronic_illness.effects.present? %>
-              <div class="prose max-w-none text-sm">
-                <%= @chronic_illness.effects %>
-              </div>
-            <% else %>
-              <p class="text-gray-400 italic">No effects information provided</p>
-            <% end %>
-          </div>
+      <!-- Effects -->
+      <div class="card bg-base-100 border border-gray-300">
+        <div class="card-body">
+          <h3 class="card-title text-lg text-gray-900">Effects</h3>
+          <% if @chronic_illness.effects.present? %>
+            <div class="prose max-w-none text-gray-700">
+              <%= @chronic_illness.effects %>
+            </div>
+          <% else %>
+            <p class="text-gray-500 italic">No effects information provided</p>
+          <% end %>
         </div>
+      </div>
 
       <!-- Causes -->
       <div class="card bg-base-100 border border-gray-300">
         <div class="card-body">
-          <h3 class="card-title text-lg">Causes</h3>
+          <h3 class="card-title text-lg text-gray-900">Causes</h3>
           <% if @chronic_illness.causes.present? %>
-            <div class="prose max-w-none text-sm">
+            <div class="prose max-w-none text-gray-700">
               <%= @chronic_illness.causes %>
             </div>
           <% else %>
-            <p class="text-gray-400 italic">No causes information provided</p>
+            <p class="text-gray-500 italic">No causes information provided</p>
           <% end %>
         </div>
       </div>
@@ -342,322 +365,252 @@
       <!-- Manifestation -->
       <div class="card bg-base-100 border border-gray-300">
         <div class="card-body">
-          <h3 class="card-title text-lg">Manifestation</h3>
+          <h3 class="card-title text-lg text-gray-900">Manifestation</h3>
           <% if @chronic_illness.manifestation.present? %>
-            <div class="prose max-w-none text-sm">
+            <div class="prose max-w-none text-gray-700">
               <%= @chronic_illness.manifestation %>
             </div>
           <% else %>
-            <p class="text-gray-400 italic">No manifestation information provided</p>
+            <p class="text-gray-500 italic">No manifestation information provided</p>
           <% end %>
         </div>
       </div>
-    </div>
 
-    <!-- Food Management -->
-    <div class="card bg-base-100 border border-gray-300 mb-6">
-      <div class="card-body">
-        <h2 class="card-title mb-4">Food Management</h2>
-        
-        <!-- Healing Foods Section -->
-        <div class="mb-6">
-          <div class="flex justify-between items-center mb-3">
-            <h3 class="text-lg font-semibold text-green-700">Healing Foods</h3>
-            <button onclick="showAddFoodForm('healing')" class="btn btn-success btn-sm text-white">
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-              </svg>
-              Add Healing Food
-            </button>
-          </div>
+      <!-- Food Management -->
+      <div class="card bg-base-100 border border-gray-300">
+        <div class="card-body">
+          <h2 class="card-title text-lg text-gray-900 mb-6">Food Management</h2>
           
-          <!-- Add Healing Food Form (Initially Hidden) -->
-          <div id="add-healing-food-form" class="hidden mb-4 p-4 bg-green-50 rounded-lg border border-green-200">
-            <%= form_with url: add_healing_food_admin_chronic_illness_path(@chronic_illness), method: :post, local: true, class: "flex items-center gap-2" do |form| %>
-              <div class="flex-1">
-                <%= form.text_field :food_name, 
-                    placeholder: "Search or add a healing food...", 
-                    class: "input input-bordered w-full",
-                    list: "healing-foods-list",
-                    autocomplete: "off" %>
-                <datalist id="healing-foods-list">
-                  <% Food.all.each do |food| %>
-                    <option value="<%= food.name %>">
-                  <% end %>
-                </datalist>
-              </div>
-              <%= form.submit "Add", class: "btn btn-success btn-sm text-white" %>
-              <button type="button" onclick="hideAddFoodForm('healing')" class="btn btn-ghost btn-sm">Cancel</button>
-            <% end %>
-          </div>
-          
-          <!-- Healing Foods List -->
-          <div class="space-y-2">
-            <% if @chronic_illness.healing_foods.any? %>
-              <% @chronic_illness.healing_foods.each do |food| %>
-                <div class="flex items-center justify-between p-2 bg-green-50 rounded-lg border border-green-200">
-                  <div>
-                    <span class="font-medium text-green-800"><%= food.name %></span>
-                    <% if food.details.present? %>
-                      <p class="text-sm text-green-600 mt-1"><%= truncate(food.details, length: 100) %></p>
+          <!-- Healing Foods Section -->
+          <div class="mb-8">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-semibold text-green-700">Healing Foods</h3>
+              <button onclick="showAddFoodForm('healing')" class="btn btn-success btn-sm text-white">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Add Healing Food
+              </button>
+            </div>
+            
+            <!-- Add Healing Food Form (Initially Hidden) -->
+            <div id="add-healing-food-form" class="hidden mb-4 p-4 bg-green-50 rounded-lg border border-green-200">
+              <%= form_with url: add_healing_food_admin_chronic_illness_path(@chronic_illness), method: :post, local: true, class: "flex items-center gap-3" do |form| %>
+                <div class="flex-1">
+                  <%= form.text_field :food_name, 
+                      placeholder: "Search or add a healing food...", 
+                      class: "input input-bordered w-full",
+                      list: "healing-foods-list",
+                      autocomplete: "off" %>
+                  <datalist id="healing-foods-list">
+                    <% Food.all.each do |food| %>
+                      <option value="<%= food.name %>">
                     <% end %>
-                  </div>
-                  <%= link_to "Remove", remove_healing_food_admin_chronic_illness_path(@chronic_illness, food_id: food.id), 
-                      method: :delete, 
-                      class: "btn btn-ghost btn-xs text-red-600 hover:text-red-800",
-                      data: { confirm: "Remove #{food.name} from healing foods?" } %>
+                  </datalist>
                 </div>
+                <%= form.submit "Add", class: "btn btn-success btn-sm text-white" %>
+                <button type="button" onclick="hideAddFoodForm('healing')" class="btn btn-ghost btn-sm">Cancel</button>
               <% end %>
-            <% else %>
-              <p class="text-gray-500 italic">No healing foods added yet.</p>
-            <% end %>
-          </div>
-        </div>
-        
-        <!-- Aggravating Foods Section -->
-        <div>
-          <div class="flex justify-between items-center mb-3">
-            <h3 class="text-lg font-semibold text-red-700">Aggravating Foods</h3>
-            <button onclick="showAddFoodForm('aggravating')" class="btn btn-error btn-sm text-white">
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-              </svg>
-              Add Aggravating Food
-            </button>
-          </div>
-          
-          <!-- Add Aggravating Food Form (Initially Hidden) -->
-          <div id="add-aggravating-food-form" class="hidden mb-4 p-4 bg-red-50 rounded-lg border border-red-200">
-            <%= form_with url: add_aggravating_food_admin_chronic_illness_path(@chronic_illness), method: :post, local: true, class: "flex items-center gap-2" do |form| %>
-              <div class="flex-1">
-                <%= form.text_field :food_name, 
-                    placeholder: "Search or add an aggravating food...", 
-                    class: "input input-bordered w-full",
-                    list: "aggravating-foods-list",
-                    autocomplete: "off" %>
-                <datalist id="aggravating-foods-list">
-                  <% Food.all.each do |food| %>
-                    <option value="<%= food.name %>">
-                  <% end %>
-                </datalist>
-              </div>
-              <%= form.submit "Add", class: "btn btn-error btn-sm text-white" %>
-              <button type="button" onclick="hideAddFoodForm('aggravating')" class="btn btn-ghost btn-sm">Cancel</button>
-            <% end %>
+            </div>
+            
+            <!-- Healing Foods List -->
+            <div class="space-y-3">
+              <% if @chronic_illness.healing_foods.any? %>
+                <% @chronic_illness.healing_foods.each do |food| %>
+                  <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                    <div class="flex-1">
+                      <span class="font-semibold text-green-800 text-base"><%= food.name %></span>
+                      <% if food.details.present? %>
+                        <p class="text-sm text-green-600 mt-1"><%= truncate(food.details, length: 100) %></p>
+                      <% end %>
+                    </div>
+                    <%= link_to "Remove", remove_healing_food_admin_chronic_illness_path(@chronic_illness, food_id: food.id), 
+                        method: :delete, 
+                        class: "btn btn-ghost btn-sm text-red-600 hover:text-red-800 hover:bg-red-50",
+                        data: { confirm: "Remove #{food.name} from healing foods?" } %>
+                  </div>
+                <% end %>
+              <% else %>
+                <p class="text-gray-500 italic text-sm">No healing foods added yet.</p>
+              <% end %>
+            </div>
           </div>
           
-          <!-- Aggravating Foods List -->
-          <div class="space-y-2">
-            <% if @chronic_illness.aggravating_foods.any? %>
-              <% @chronic_illness.aggravating_foods.each do |food| %>
-                <div class="flex items-center justify-between p-2 bg-red-50 rounded-lg border border-red-200">
-                  <div>
-                    <span class="font-medium text-red-800"><%= food.name %></span>
-                    <% if food.details.present? %>
-                      <p class="text-sm text-red-600 mt-1"><%= truncate(food.details, length: 100) %></p>
+          <!-- Aggravating Foods Section -->
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-semibold text-red-700">Aggravating Foods</h3>
+              <button onclick="showAddFoodForm('aggravating')" class="btn btn-error btn-sm text-white">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Add Aggravating Food
+              </button>
+            </div>
+            
+            <!-- Add Aggravating Food Form (Initially Hidden) -->
+            <div id="add-aggravating-food-form" class="hidden mb-4 p-4 bg-red-50 rounded-lg border border-red-200">
+              <%= form_with url: add_aggravating_food_admin_chronic_illness_path(@chronic_illness), method: :post, local: true, class: "flex items-center gap-3" do |form| %>
+                <div class="flex-1">
+                  <%= form.text_field :food_name, 
+                      placeholder: "Search or add an aggravating food...", 
+                      class: "input input-bordered w-full",
+                      list: "aggravating-foods-list",
+                      autocomplete: "off" %>
+                  <datalist id="aggravating-foods-list">
+                    <% Food.all.each do |food| %>
+                      <option value="<%= food.name %>">
                     <% end %>
-                  </div>
-                  <%= link_to "Remove", remove_aggravating_food_admin_chronic_illness_path(@chronic_illness, food_id: food.id), 
-                      method: :delete, 
-                      class: "btn btn-ghost btn-xs text-red-600 hover:text-red-800",
-                      data: { confirm: "Remove #{food.name} from aggravating foods?" } %>
+                  </datalist>
                 </div>
+                <%= form.submit "Add", class: "btn btn-error btn-sm text-white" %>
+                <button type="button" onclick="hideAddFoodForm('aggravating')" class="btn btn-ghost btn-sm">Cancel</button>
               <% end %>
-            <% else %>
-              <p class="text-gray-500 italic">No aggravating foods added yet.</p>
-            <% end %>
+            </div>
+            
+            <!-- Aggravating Foods List -->
+            <div class="space-y-3">
+              <% if @chronic_illness.aggravating_foods.any? %>
+                <% @chronic_illness.aggravating_foods.each do |food| %>
+                  <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-200">
+                    <div class="flex-1">
+                      <span class="font-semibold text-red-800 text-base"><%= food.name %></span>
+                      <% if food.details.present? %>
+                        <p class="text-sm text-red-600 mt-1"><%= truncate(food.details, length: 100) %></p>
+                      <% end %>
+                    </div>
+                    <%= link_to "Remove", remove_aggravating_food_admin_chronic_illness_path(@chronic_illness, food_id: food.id), 
+                        method: :delete, 
+                        class: "btn btn-ghost btn-sm text-red-600 hover:text-red-800 hover:bg-red-50",
+                        data: { confirm: "Remove #{food.name} from aggravating foods?" } %>
+                  </div>
+                <% end %>
+              <% else %>
+                <p class="text-gray-500 italic text-sm">No aggravating foods added yet.</p>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Healing Plan Templates -->
-    <div class="card bg-base-100 border border-gray-300">
-      <div class="card-body">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="card-title">Healing Plan Templates</h2>
-          <button onclick="showTemplateForm()" class="btn btn-primary btn-sm text-white">Create Template</button>
-        </div>
-        
-        <!-- Template Creation Form (Initially Hidden) -->
-        <div id="template-form" class="hidden mb-6 p-4 bg-base-200 rounded-lg border">
-          <h3 class="text-lg font-semibold mb-4">Create New Healing Plan Template</h3>
-          <%= render partial: 'admin/healing_plan_templates/form', locals: { healing_plan_template: @chronic_illness.healing_plan_templates.build } %>
-        </div>
-        
-        <% if @chronic_illness.healing_plan_templates.any? %>
-          <div class="space-y-3">
-            <% @chronic_illness.healing_plan_templates.order(:duration_type).each do |template| %>
-              <div class="flex items-center justify-between p-3 bg-base-200 rounded-lg">
-                <div>
-                  <h3 class="font-medium"><%= template.name %></h3>
-                  <p class="text-sm text-gray-600">
-                    <%= template.duration_type.humanize %> • 
-                    <%= pluralize(template.plan_section_templates.count, 'section') %>
-                  </p>
-                </div>
-                <div class="flex gap-2">
-                  <%= link_to "View", "#", class: "btn btn-ghost btn-sm" %>
-                  <%= link_to "Edit", edit_admin_chronic_illness_healing_plan_template_path(@chronic_illness, template), class: "btn btn-ghost btn-sm" %>
-                </div>
-              </div>
-            <% end %>
+      <!-- Healing Plan Templates -->
+      <div class="card bg-base-100 border border-gray-300">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="card-title text-lg text-gray-900">Healing Plan Templates</h2>
+            <button onclick="showTemplateForm()" class="btn btn-primary btn-sm text-white">Create Template</button>
           </div>
-        <% else %>
-          <p class="text-gray-500">No healing plan templates created yet.</p>
-        <% end %>
+          
+          <!-- Template Creation Form (Initially Hidden) -->
+          <div id="template-form" class="hidden mb-6 p-4 bg-base-200 rounded-lg border">
+            <h3 class="text-lg font-semibold mb-4 text-gray-900">Create New Healing Plan Template</h3>
+            <%= render partial: 'admin/healing_plan_templates/form', locals: { healing_plan_template: @chronic_illness.healing_plan_templates.build, chronic_illness: @chronic_illness } %>
+          </div>
+          
+          <% if @chronic_illness.healing_plan_templates.any? %>
+            <div class="space-y-4">
+              <% @chronic_illness.healing_plan_templates.order(:duration_type).each do |template| %>
+                <div class="flex items-center justify-between p-4 bg-base-200 rounded-lg border">
+                  <div>
+                    <h3 class="font-semibold text-base text-gray-900"><%= template.name %></h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                      <%= template.duration_type.humanize %> • 
+                      <%= pluralize(template.plan_section_templates.count, 'section') %>
+                    </p>
+                  </div>
+                  <div class="flex gap-2">
+                    <%= link_to "View", admin_healing_plan_template_path(template), class: "btn btn-ghost btn-sm" %>
+                    <%= link_to "Edit", edit_admin_healing_plan_template_path(template), class: "btn btn-ghost btn-sm" %>
+                    <%= link_to "Delete", admin_healing_plan_template_path(template), method: :delete,
+                                class: "btn btn-ghost btn-sm text-red-600 hover:text-red-800",
+                                data: { confirm: "Are you sure you want to delete #{template.name}?" } %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-8 text-gray-500">
+              <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+              </svg>
+              <p class="text-sm">No healing plan templates created yet.</p>
+            </div>
+          <% end %>
+        </div>
       </div>
-    </div>
-
-    <!-- Back Button -->
-    <div class="mt-6">
-      <%= link_to "← Back to Chronic Illnesses", admin_chronic_illnesses_path, class: "btn btn-ghost" %>
     </div>
   </div>
 </div>
 
 <script>
-function toggleEditMode() {
-  const editForm = document.getElementById('edit-form');
-  const editBtn = document.getElementById('edit-btn');
-  
-  if (editForm.classList.contains('hidden')) {
-    editForm.classList.remove('hidden');
-    editBtn.innerHTML = `
-      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
-      Cancel Edit
-    `;
-    editBtn.classList.remove('btn-primary');
-    editBtn.classList.add('btn-ghost');
-  } else {
-    editForm.classList.add('hidden');
-    editBtn.innerHTML = `
-      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-      </svg>
-      Edit Details
-    `;
-    editBtn.classList.remove('btn-ghost');
-    editBtn.classList.add('btn-primary');
-  }
-}
-
-
-function addImage(fieldName) {
-  // This would integrate with ActionText's image upload functionality
-  // For now, we'll just show a message
-  alert('Image upload functionality will be integrated with ActionText rich text editor for field: ' + fieldName);
-}
-
-function showTemplateForm() {
-  const form = document.getElementById('template-form');
-  if (form) {
-    form.classList.remove('hidden');
-    form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-}
-
-function hideTemplateForm() {
-  const form = document.getElementById('template-form');
-  if (form) {
-    form.classList.add('hidden');
-    const formElement = form.querySelector('form');
-    if (formElement) {
-      formElement.reset();
-    }
-  }
-}
-
-function showAddFoodForm(type) {
-  const form = document.getElementById(`add-${type}-food-form`);
-  if (form) {
-    form.classList.remove('hidden');
-    // Focus on the input field
-    const input = form.querySelector('input[type="text"]');
-    if (input) {
-      input.focus();
-    }
-  }
-}
-
-function hideAddFoodForm(type) {
-  const form = document.getElementById(`add-${type}-food-form`);
-  if (form) {
-    form.classList.add('hidden');
-    // Reset form
-    const formElement = form.querySelector('form');
-    if (formElement) {
-      formElement.reset();
-    }
-  }
-}
-
-// Make images in rich text fields clickable for modal
-document.addEventListener('DOMContentLoaded', function() {
-  // Find all images in prose (rich text) areas and make them clickable
-  const proseImages = document.querySelectorAll('.prose img');
-  proseImages.forEach(img => {
-    img.style.cursor = 'pointer';
-    img.addEventListener('click', function(e) {
-      e.preventDefault();
-      // Create a simple modal for the image
-      const imageSrc = img.src;
-      const imageAlt = img.alt || '';
-      
-      // Remove existing modal if it exists
-      const existingModal = document.getElementById('image-modal');
-      if (existingModal) {
-        existingModal.remove();
-      }
-      
-      // Create modal HTML
-      const modalHTML = `
-        <div id="image-modal" 
-             class="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4"
-             onclick="this.remove(); document.body.style.overflow = '';">
-          <div class="relative w-full h-full flex items-center justify-center">
-            <!-- Close button -->
-            <button onclick="document.getElementById('image-modal').remove(); document.body.style.overflow = '';"
-                    class="absolute top-4 left-4 z-10 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-2 transition-all duration-200"
-                    aria-label="Close image">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-            
-            <!-- Image -->
-            <img class="max-w-full max-h-full w-auto h-auto object-contain rounded-lg"
-                 style="max-width: 100vw; max-height: 100vh; width: auto; height: auto;"
-                 src="${imageSrc}"
-                 alt="${imageAlt}">
-          </div>
-        </div>
+  function toggleEditMode() {
+    const editForm = document.getElementById('edit-form');
+    const editBtn = document.getElementById('edit-btn');
+    
+    if (editForm.classList.contains('hidden')) {
+      editForm.classList.remove('hidden');
+      editBtn.innerHTML = `
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+        Cancel Edit
       `;
-      
-      // Insert modal and prevent background scrolling
-      document.body.insertAdjacentHTML('beforeend', modalHTML);
-      document.body.style.overflow = 'hidden';
-      
-      // Add ESC key listener
-      const handleEscape = function(event) {
-        if (event.key === 'Escape') {
-          const modal = document.getElementById('image-modal');
-          if (modal) {
-            modal.remove();
-            document.body.style.overflow = '';
-            document.removeEventListener('keydown', handleEscape);
-          }
-        }
-      };
-      document.addEventListener('keydown', handleEscape);
-    });
-  });
-});
+      editBtn.classList.remove('btn-primary');
+      editBtn.classList.add('btn-ghost');
+    } else {
+      editForm.classList.add('hidden');
+      editBtn.innerHTML = `
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+        </svg>
+        Edit Details
+      `;
+      editBtn.classList.remove('btn-ghost');
+      editBtn.classList.add('btn-primary');
+    }
+  }
+
+  function showTemplateForm() {
+    const form = document.getElementById('template-form');
+    form.classList.remove('hidden');
+    form.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function hideTemplateForm() {
+    const form = document.getElementById('template-form');
+    form.classList.add('hidden');
+  }
+
+  function showAddFoodForm(type) {
+    const form = document.getElementById(`add-${type}-food-form`);
+    if (form) {
+      form.classList.remove('hidden');
+      // Focus on the input field
+      const input = form.querySelector('input[type="text"]');
+      if (input) {
+        input.focus();
+      }
+    }
+  }
+
+  function hideAddFoodForm(type) {
+    const form = document.getElementById(`add-${type}-food-form`);
+    if (form) {
+      form.classList.add('hidden');
+      // Reset form
+      const formElement = form.querySelector('form');
+      if (formElement) {
+        formElement.reset();
+      }
+    }
+  }
+
+  function addImage(fieldName) {
+    // This function would handle adding images to rich text fields
+    console.log('Adding image to field:', fieldName);
+  }
 </script>
 
-<!-- Styles for rich text images -->
 <style>
   .prose img {
     border-radius: 0.5rem;

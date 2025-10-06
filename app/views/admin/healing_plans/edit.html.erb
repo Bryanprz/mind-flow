@@ -1,536 +1,246 @@
-<% content_for :head do %>
-  <style>
-    .card-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-out;
-      padding: 0 1rem;
-    }
-    
-    .card-content.active {
-      max-height: 5000px;
-      padding: 1rem;
-    }
-    
-    .arrow-icon {
-      transition: transform 0.3s ease;
-    }
-    
-    .arrow-icon.rotated {
-      transform: rotate(180deg);
-    }
-  </style>
-  <script>
-    // Track deleted focus areas
-    const deletedFocusAreas = new Set();
-    
-    // Function to clean up empty plan items
-    function cleanEmptyPlanItems(form) {
-      // Implementation of cleanEmptyPlanItems if needed
-    }
-
-    // Function to prepare form submission
-    function prepareForm(form) {
-      // Clean up empty plan items
-      cleanEmptyPlanItems(form);
-      
-      // Clean up empty plan sections
-      cleanEmptyPlanSections(form);
-      
-      // Add hidden inputs for deleted focus areas
-      deletedFocusAreas.forEach(index => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = `healing_plan[focus_areas_attributes][${index}][_destroy]`;
-        input.value = '1';
-        form.appendChild(input);
-      });
-      
-      return true;
-    }
-
-    // Function to clean up empty plan sections
-    function cleanEmptyPlanSections(form) {
-      const sectionInputs = form.querySelectorAll('input[name$="[plan_sections_attributes]"][name*="[name]"]');
-      sectionInputs.forEach(input => {
-        const sectionDiv = input.closest('.card');
-        const destroyInput = sectionDiv?.querySelector('input[name$="[_destroy]"]');
-        
-        if (input.value.trim() === '') {
-          if (destroyInput) {
-            destroyInput.value = '1';
-          } else if (sectionDiv) {
-            sectionDiv.remove();
-          }
-        }
-      });
-      return true;
-    }
-    
-    // Function to add a new focus area
-    function addFocusArea() {
-      const container = document.querySelector('.card-content .space-y-6');
-      if (!container) return;
-      
-      // Get the next available index that's not in deletedFocusAreas
-      let index = 0;
-      while (deletedFocusAreas.has(index)) {
-        index++;
-      }
-      
-      const newItem = document.createElement('div');
-      newItem.className = 'focus-area-item group/focus-item';
-      newItem.innerHTML = `
-        <div class="flex items-center gap-4">
-          <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-            </svg>
-          </div>
-          <h4 class="text-lg font-medium text-gray-700">Focus Area ${index + 1}</h4>
-          <div class="ml-auto flex items-center gap-2">
-            <button type="button" class="btn btn-ghost btn-sm text-error opacity-0 group-hover/focus-item:opacity-100 transition-opacity" 
-                    onclick="const item = this.closest('.focus-area-item'); 
-                           const index = Array.from(document.querySelectorAll('.focus-area-item')).indexOf(item);
-                           if (index >= 0) deletedFocusAreas.add(index);
-                           item.remove()">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4 pl-14">
-          <div class="form-control">
-            <label class="label !p-0 mb-1">Focus Area</label>
-            <input type="text" name="focus_area_${index}" class="input input-bordered w-full" />
-          </div>
-          <div class="form-control">
-            <label class="label !p-0 mb-1">Goal</label>
-            <input type="text" name="goal_${index}" class="input input-bordered w-full" />
-          </div>
-        </div>
-        <div class="divider my-4"></div>
-      `;
-      
-      // Insert before the "Add Focus Area" button
-      const addButton = document.querySelector('.card-content button[onclick="addFocusArea()"]');
-      if (addButton) {
-        container.insertBefore(newItem, addButton.closest('.px-6'));
-      } else {
-        container.appendChild(newItem);
-      }
-    }
-
-    // Handle form submission
-    function prepareForm(form) {
-      // First clean up empty plan items
-      cleanEmptyPlanItems(form);
-      
-      // Add hidden inputs for deleted focus areas
-      deletedFocusAreas.forEach(index => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = `healing_plan[focus_areas_attributes][${index}][_destroy]`;
-        input.value = '1';
-        form.appendChild(input);
-      });
-      
-      return true;
-    }
-
-    // Function to clean up empty plan items before form submission
-    function cleanEmptyPlanItems(form) {
-      const textareas = form.querySelectorAll('textarea[name$="[content]"]');
-      textareas.forEach(textarea => {
-        const itemDiv = textarea.closest('.flex');
-        const destroyInput = itemDiv?.querySelector('input[type="hidden"][name$="[_destroy]"]');
-        
-        if (textarea.value.trim() === '') {
-          if (destroyInput) {
-            destroyInput.value = '1';
-          } else if (itemDiv) {
-            itemDiv.remove();
-          }
-        }
-      });
-      return true;
-    }
-
-    // Add new plan section function
-    function addNewPlanSection() {
-      const container = document.querySelector('.space-y-4[data-controller="sortable"]');
-      if (!container) return;
-      
-      const timestamp = new Date().getTime();
-      const newSectionIndex = container.children.length;
-      
-      const newSection = document.createElement('div');
-      newSection.className = 'card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 overflow-hidden transition-all duration-200';
-      newSection.setAttribute('data-controller', 'collapsible');
-      newSection.setAttribute('data-collapsible-expanded-class', 'expanded');
-      newSection.setAttribute('data-sortable-id-value', timestamp);
-      
-      newSection.innerHTML = `
-        <div class="card-body p-0">
-          <div class="card-header flex justify-between items-center p-4 hover:bg-neutral/10 cursor-pointer transition-colors duration-200" 
-               data-action="click->collapsible#toggle">
-            <div class="flex items-center gap-2 flex-1">
-              <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 drag-handle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-                </svg>
-              </div>
-              <div class="form-control flex-1">
-                <label class="label !p-0">Section Name</label>
-                <div class="relative">
-                  <input type="text" name="healing_plan[plan_sections_attributes][${timestamp}][name]" class="input input-bordered !py-1 h-10 pr-10 w-full" placeholder="Enter section name" />
-                  <input type="hidden" name="healing_plan[plan_sections_attributes][${timestamp}][_destroy]" value="0" class="section-destroy" />
-                  <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-error hover:text-error/80 transition-colors" 
-                          onclick="this.closest('.card').remove();">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="text-gray-500 ml-4" data-collapsible-target="arrow">
-              <svg class="h-5 w-5 transform transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
-
-          <div data-collapsible-target="content" class="hidden">
-            <div class="divider my-2">
-              <span class="text-sm font-medium">Plan Items</span>
-            </div>
-
-            <div class="plan-items-container mb-4 space-y-2" data-controller="sortable" data-sortable-url-value="/admin/plan_items/0/move" data-sortable-parent-id-value="${timestamp}">
-              <!-- Plan items will be added here -->
-            </div>
-
-            <div class="flex justify-end mt-4 mb-2">
-              <button type="button" class="btn btn-sm btn-ghost" onclick="event.stopPropagation(); addPlanItem(this, '${timestamp}')">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Add Item
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-      
-      container.appendChild(newSection);
-      
-      // Initialize the collapsible functionality for the new section
-      const header = newSection.querySelector('.card-header');
-      const content = newSection.querySelector('[data-collapsible-target="content"]');
-      const arrow = newSection.querySelector('[data-collapsible-target="arrow"]');
-      
-      if (header && content && arrow) {
-        header.addEventListener('click', function() {
-          content.classList.toggle('hidden');
-          arrow.classList.toggle('rotate-180');
-        });
-      }
-      
-      // Focus the new section name input
-      const nameInput = newSection.querySelector('input[name$="[name]"]');
-      if (nameInput) {
-        nameInput.focus();
-      }
-    }
-
-    // Add plan item function
-    function addPlanItem(button, sectionIndex, paramKey) {
-      const container = button.closest('.card-body').querySelector('.plan-items-container');
-      const timestamp = new Date().getTime();
-      const newItem = document.createElement('div');
-      newItem.className = 'flex items-start gap-2 p-2 rounded-lg hover:bg-base-200 transition-colors duration-200 group/item';
-      
-      // Create a unique ID for the new item
-      const newItemId = timestamp;
-      
-      // Create the new item content
-      const contentDiv = document.createElement('div');
-      contentDiv.className = 'flex-1';
-      contentDiv.innerHTML = `
-        <div class="flex items-start gap-2">
-          <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 opacity-0 group-hover/item:opacity-100 transition-opacity duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-            </svg>
-          </div>
-          <div class="form-control flex-1">
-            <textarea name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${newItemId}][content]" class="textarea textarea-bordered w-full min-h-[100px]" placeholder="Enter plan item content"></textarea>
-          </div>
-        </div>
-      `;
-      
-      const actionsDiv = document.createElement('div');
-      actionsDiv.className = 'flex-shrink-0 ml-2';
-      actionsDiv.innerHTML = `
-        <button type="button" class="btn btn-ghost btn-sm text-error" onclick="this.closest('.flex').remove()">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      `;
-      
-      // Add the new item to the container
-      newItem.appendChild(contentDiv);
-      newItem.appendChild(actionsDiv);
-      container.appendChild(newItem);
-      
-      // Focus the new textarea
-      const newTextarea = newItem.querySelector('textarea');
-      if (newTextarea) {
-        const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-        newTextarea.focus({ preventScroll: true });
-        window.scrollTo(0, scrollPosition);
-      }
-    }
-    
-    // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-      // Initialize collapsible sections
-      document.querySelectorAll('.card-header').forEach(header => {
-        header.addEventListener('click', function() {
-          const card = this.closest('.card');
-          const content = card.querySelector('.card-content');
-          const arrow = this.querySelector('.arrow-icon');
-          
-          if (content && arrow) {
-            content.classList.toggle('active');
-            arrow.classList.toggle('rotated');
-          }
-        });
-      });
-      
-      // Add form submission handler
-      const form = document.querySelector('form');
-      if (form) {
-        form.addEventListener('submit', function(e) {
-          cleanEmptyPlanItems(this);
-        });
-      }
-    });
-  </script>
-<% end %>
-
 <% content_for :main_container_class, 'bg-base-200' %>
 
 <div class="container mx-auto px-4 py-8">
-  <%= form_with(model: [:admin, @user, @healing_plan], scope: :healing_plan, url: admin_user_healing_plan_path(@user, @healing_plan), html: { onsubmit: "return prepareForm(this)" }) do |form| %>
-    <% if @healing_plan.errors.any? %>
-      <div class="alert alert-error">
-        <ul>
-          <% @healing_plan.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-3xl font-bold">Edit Healing Plan</h1>
+        <p class="text-lg text-gray-600">for <%= @user.name %></p>
       </div>
-    <% end %>
-
-    <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-6">
-      <div class="card-body">
-        <h2 class="card-title text-2xl mb-4">Edit Healing Plan for <%= @user.name %></h2>
-
-        <div class="form-control">
-          <%= form.label :name, class: "label" %>
-          <%= form.text_field :name, class: "input input-bordered" %>
-        </div>
-
-        <div class="form-control">
-          <%= form.label :description, class: "label" %>
-          <%= form.hidden_field :description, id: "healing_plan_description" %>
-          <trix-editor 
-            input="healing_plan_description" 
-            class="trix-content min-h-[300px] bg-base-100 rounded-lg p-4 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
-            data-direct-upload-url="<%= rails_direct_uploads_path %>"
-            data-blob-url-template="<%= rails_service_blob_path(":signed_id", ":filename") %>"
-          ><%= @healing_plan.description&.body&.to_s&.html_safe %></trix-editor>
-        </div>
-      </div>
+      <%= link_to "← Back", admin_user_healing_plan_path(@user, @healing_plan), class: "btn btn-ghost" %>
     </div>
 
-    <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 mb-10" data-controller="collapsible" data-collapsible-expanded-class="expanded">
-      <div class="card-body p-0">
-        <div class="card-header flex justify-between items-center p-4 hover:bg-neutral/10 cursor-pointer transition-colors duration-200" 
-             data-action="click->collapsible#toggle">
-          <div class="flex items-center gap-2 flex-1">
-            <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold">Focus Areas & Goals</h3>
-          </div>
-          <div class="text-gray-500" data-collapsible-target="arrow">
-            <svg class="h-5 w-5 transform transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    <!-- Form -->
+    <%= form_with(model: [:admin, @user, @healing_plan], local: true, data: { turbo: false }) do |form| %>
+      <% if @healing_plan.errors.any? %>
+        <div class="alert alert-error shadow-lg mb-6">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
+            <span><%= pluralize(@healing_plan.errors.count, "error") %> prohibited this healing plan from being saved:</span>
+          </div>
+          <ul class="mt-2">
+            <% @healing_plan.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Basic Information -->
+      <div class="card bg-base-100 border border-gray-300 mb-6">
+        <div class="card-body">
+          <h2 class="card-title text-xl mb-4">Basic Information</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="form-control">
+              <%= form.label :name, class: "label" %>
+              <%= form.text_field :name, class: "input input-bordered w-full", placeholder: "e.g., Hector's Daily Wellness Plan" %>
+            </div>
+            
+            <div class="form-control">
+              <%= form.label :duration_type, class: "label" %>
+              <%= form.select :duration_type, 
+                  options_for_select([
+                    ['Daily', 'daily'],
+                    ['Three Month', 'three_month'],
+                    ['Six Month', 'six_month']
+                  ], @healing_plan.duration_type),
+                  { prompt: "Select duration type" },
+                  { class: "select select-bordered w-full" } %>
+            </div>
+          </div>
+
+          <div class="form-control mt-4">
+            <%= form.label :description, class: "label" %>
+            <%= form.rich_text_area :description, class: "textarea textarea-bordered w-full", rows: 4, placeholder: "Describe the purpose and goals of this healing plan..." %>
           </div>
         </div>
+      </div>
 
-        <div data-collapsible-target="content" class="hidden">
-          <div class="p-6 space-y-6">
+      <!-- Focus Areas & Goals -->
+      <div class="card bg-base-100 border border-gray-300 mb-6">
+        <div class="card-body">
+          <h2 class="card-title text-xl mb-4">Focus Areas & Goals</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <% (0..3).each do |index| %>
-              <div class="focus-area-item group/focus-item">
-                <div class="flex items-center gap-4">
-                  <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-                    </svg>
-                  </div>
-                  <h4 class="text-lg font-medium text-gray-700">Focus Area <%= index + 1 %></h4>
-                  <div class="ml-auto flex items-center gap-2">
-                    <button type="button" class="btn btn-ghost btn-sm text-error opacity-0 group-hover/focus-item:opacity-100 transition-opacity" 
-                            onclick="const item = this.closest('.focus-area-item'); 
-                                   const index = Array.from(document.querySelectorAll('.focus-area-item')).indexOf(item);
-                                   if (index >= 0) deletedFocusAreas.add(index);
-                                   item.remove()">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
+              <div class="space-y-2">
+                <div class="form-control">
+                  <%= form.label "focus_area_#{index}".to_sym, "Focus Area #{index + 1}", class: "label" %>
+                  <%= form.text_field "focus_area_#{index}".to_sym, 
+                      value: @healing_plan.overview&.dig("focus_area_#{index}"),
+                      class: "input input-bordered w-full", 
+                      placeholder: "e.g., Digestive Health" %>
                 </div>
-                <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4 pl-14">
-                  <div class="form-control">
-                    <%= form.label "focus_area_#{index}", "Focus Area", class: "label !p-0 mb-1" %>
-                    <%= form.text_field "focus_area_#{index}", class: "input input-bordered w-full" %>
-                  </div>
-                  <div class="form-control">
-                    <%= form.label "goal_#{index}", "Goal", class: "label !p-0 mb-1" %>
-                    <%= form.text_field "goal_#{index}", class: "input input-bordered w-full" %>
-                  </div>
+                <div class="form-control">
+                  <%= form.label "goal_#{index}".to_sym, "Goal #{index + 1}", class: "label" %>
+                  <%= form.text_field "goal_#{index}".to_sym, 
+                      value: @healing_plan.overview&.dig("goal_#{index}"),
+                      class: "input input-bordered w-full", 
+                      placeholder: "e.g., Improve gut health" %>
                 </div>
-                <% if index < 3 %>
-                  <div class="divider my-4"></div>
-                <% end %>
               </div>
             <% end %>
           </div>
-
-          <div class="px-6 pb-6">
-            <button type="button" class="btn btn-outline btn-sm w-full" onclick="addFocusArea()">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-              Add Focus Area
-            </button>
-          </div>
         </div>
       </div>
-    </div>
 
-    <h3 class="text-2xl font-bold mb-4 max-w-2xl mx-auto">Plan Sections</h3>
+      <!-- Plan Sections -->
+      <div class="card bg-base-100 border border-gray-300 mb-6">
+        <div class="card-body">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="card-title text-xl">Plan Sections</h2>
+            <button type="button" class="btn btn-primary btn-sm text-white" onclick="addNewSection()">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              </svg>
+              Add Section
+            </button>
+          </div>
 
-    <div class="space-y-4" data-controller="sortable" data-sortable-url-value="<%= move_admin_plan_section_path(0) %>">
-      <%= form.fields_for :plan_sections do |section_form| %>
-
-        <% section_key = section_form.object.persisted? ? section_form.object.id : section_form.index %>
-        <div class="card w-full max-w-2xl mx-auto bg-base-100 border border-gray-300 overflow-hidden transition-all duration-200" 
-             data-controller="collapsible" 
-             data-collapsible-expanded-class="expanded"
-             data-sortable-id-value="<%= section_form.object.id %>">
-          <div class="card-body p-0">
-            <div class="card-header flex justify-between items-center p-4 hover:bg-neutral/10 cursor-pointer transition-colors duration-200" 
-                 data-action="click->collapsible#toggle">
-              <div class="flex items-center gap-2 flex-1">
-                <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 drag-handle">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-                  </svg>
-                </div>
-                <div class="form-control flex-1">
-                  <%= section_form.label :name, "Section Name", class: "label !p-0" %>
-                  <div class="relative">
-                    <%= section_form.text_field :name, class: "input input-bordered !py-1 h-10 pr-10 w-full" %>
-                    <%= section_form.hidden_field :_destroy, class: "section-destroy" %>
-                    <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-error hover:text-error/80 transition-colors" 
-                            onclick="this.closest('.group\/item').style.display = 'none'; this.previousElementSibling.value = '1';">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <div id="plan-sections" class="space-y-4">
+            <%= form.fields_for :plan_sections do |section_form| %>
+              <div class="border border-gray-200 rounded-lg p-4 section-item" data-section-index="<%= section_form.index %>">
+                <div class="flex justify-between items-center mb-3">
+                  <div class="flex items-center gap-3">
+                    <div class="form-control">
+                      <%= section_form.label :name, "Section Name", class: "label text-sm" %>
+                      <%= section_form.text_field :name, class: "input input-bordered input-sm w-48", placeholder: "e.g., Morning Routine" %>
+                    </div>
+                    <div class="form-control">
+                      <%= section_form.label :position, "Position", class: "label text-sm" %>
+                      <%= section_form.number_field :position, class: "input input-bordered input-sm w-20" %>
+                    </div>
+                  </div>
+                  <div class="flex gap-2">
+                    <button type="button" class="btn btn-ghost btn-xs" onclick="addItem(this, <%= section_form.index %>)">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                       </svg>
+                      Add Item
                     </button>
+                    <%= section_form.check_box :_destroy, class: "checkbox checkbox-sm", onchange: "toggleSection(this)" %>
+                    <label class="text-xs">Delete</label>
                   </div>
                 </div>
-              </div>
-              <div class="text-gray-500 ml-4" data-collapsible-target="arrow">
-                <svg class="h-5 w-5 transform transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
 
-            <div data-collapsible-target="content" class="hidden">
-              <div class="divider my-2">
-                <span class="text-sm font-medium">Plan Items</span>
-              </div>
-
-              <div class="plan-items-container mb-4 space-y-2" data-controller="sortable" data-sortable-url-value="<%= move_admin_plan_item_path(0, parent_id: 0) %>" data-sortable-parent-id-value="<%= section_form.object.id %>">
-                <% section_form.object.plan_items.order(:position).each do |item| %>
-                  <%= section_form.fields_for :plan_items, item do |item_form| %>
-                    <% item_key = item.persisted? ? item.id : item_form.index %>
-                    <div class="flex items-start gap-2 p-2 rounded-lg hover:bg-base-200 transition-colors duration-200 group/item" data-sortable-id-value="<%= item.id %>">
-                      <div class="flex-shrink-0 h-10 flex items-center justify-center text-gray-400 opacity-0 group-hover/item:opacity-100 transition-opacity duration-200 drag-handle">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-                        </svg>
-                      </div>
+                <div class="items-container space-y-2" data-section="<%= section_form.index %>">
+                  <%= section_form.fields_for :plan_items do |item_form| %>
+                    <div class="flex items-start gap-2 p-2 bg-gray-50 rounded item-row" data-item-index="<%= item_form.index %>">
                       <div class="flex-1">
-                        <div class="form-control">
-                          <%= item_form.label :content, "Item Content", class: "label" %>
-                          <%= item_form.text_area :content, rows: 2, class: "textarea textarea-bordered w-full" %>
-                        </div>
+                        <%= item_form.rich_text_area :content, class: "textarea textarea-bordered textarea-sm w-full", rows: 2, placeholder: "Enter plan item..." %>
                       </div>
-                      <div class="flex-shrink-0 ml-2">
-                        <%= item_form.hidden_field :_destroy, value: item_form.object.marked_for_destruction? ? 1 : 0, id: "item_destroy_#{item_form.object.id}" %>
-                        <button type="button" class="btn btn-ghost btn-sm text-error" onclick="document.getElementById('item_destroy_<%= item_form.object.id %>').value = 1; this.closest('.group\\/item').style.display = 'none';">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
+                      <div class="flex items-center gap-2">
+                        <%= item_form.number_field :position, class: "input input-bordered input-sm w-16", placeholder: "#" %>
+                        <%= item_form.check_box :_destroy, class: "checkbox checkbox-sm" %>
+                        <label class="text-xs">Del</label>
                       </div>
                     </div>
                   <% end %>
-                <% end %>
+                </div>
               </div>
-
-              <div class="flex justify-end mt-4 mb-2">
-                <button type="button" class="btn btn-sm btn-ghost" onclick="event.stopPropagation(); addPlanItem(this, '<%= section_form.index %>')">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                  </svg>
-                  Add Item
-                </button>
-              </div>
-            </div>
+            <% end %>
           </div>
         </div>
-      <% end %>
-    </div>
+      </div>
 
-    <!-- Add New Section Button -->
-    <div class="w-full max-w-2xl mx-auto mt-6 mb-6">
-      <button type="button" class="btn btn-outline w-full" onclick="addNewPlanSection()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-        Add New Plan Section
-      </button>
-    </div>
-
-    <div class="flex justify-end gap-2 w-full max-w-2xl mx-auto mt-6 mb-6">
-      <%= link_to "Cancel", admin_user_healing_plan_path(@user, @healing_plan), class: "btn btn-ghost" %>
-      <%= form.submit "Update Healing Plan", class: "btn btn-primary text-white" %>
-    </div>
-  <% end %>
+      <!-- Form Actions -->
+      <div class="flex gap-2 justify-end">
+        <%= link_to "Cancel", admin_user_healing_plan_path(@user, @healing_plan), class: "btn btn-ghost" %>
+        <%= form.submit "Update Healing Plan", class: "btn btn-primary text-white" %>
+      </div>
+    <% end %>
+  </div>
 </div>
+
+<script>
+  let sectionCounter = <%= @healing_plan.plan_sections.count %>;
+  let itemCounters = {};
+
+  function addNewSection() {
+    const container = document.getElementById('plan-sections');
+    const newSection = document.createElement('div');
+    newSection.className = 'border border-gray-200 rounded-lg p-4 section-item';
+    newSection.setAttribute('data-section-index', sectionCounter);
+    
+    newSection.innerHTML = `
+      <div class="flex justify-between items-center mb-3">
+        <div class="flex items-center gap-3">
+          <div class="form-control">
+            <label class="label text-sm">Section Name</label>
+            <input type="text" name="healing_plan[plan_sections_attributes][${sectionCounter}][name]" 
+                   class="input input-bordered input-sm w-48" placeholder="e.g., Morning Routine">
+          </div>
+          <div class="form-control">
+            <label class="label text-sm">Position</label>
+            <input type="number" name="healing_plan[plan_sections_attributes][${sectionCounter}][position]" 
+                   class="input input-bordered input-sm w-20" value="${sectionCounter + 1}">
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" class="btn btn-ghost btn-xs" onclick="addItem(this, ${sectionCounter})">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Add Item
+          </button>
+          <input type="checkbox" class="checkbox checkbox-sm" onchange="toggleSection(this)">
+          <label class="text-xs">Delete</label>
+        </div>
+      </div>
+      <div class="items-container space-y-2" data-section="${sectionCounter}"></div>
+    `;
+    
+    container.appendChild(newSection);
+    itemCounters[sectionCounter] = 0;
+    sectionCounter++;
+  }
+
+  function addItem(button, sectionIndex) {
+    if (!itemCounters[sectionIndex]) {
+      itemCounters[sectionIndex] = 0;
+    }
+    
+    const container = button.closest('.section-item').querySelector('.items-container');
+    const itemIndex = itemCounters[sectionIndex];
+    
+    const newItem = document.createElement('div');
+    newItem.className = 'flex items-start gap-2 p-2 bg-gray-50 rounded item-row';
+    newItem.innerHTML = `
+      <div class="flex-1">
+        <textarea name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${itemIndex}][content]" 
+                  class="textarea textarea-bordered textarea-sm w-full" rows="2" placeholder="Enter plan item..."></textarea>
+      </div>
+      <div class="flex items-center gap-2">
+        <input type="number" name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${itemIndex}][position]" 
+               class="input input-bordered input-sm w-16" value="${itemIndex + 1}" placeholder="#">
+        <input type="checkbox" class="checkbox checkbox-sm" name="healing_plan[plan_sections_attributes][${sectionIndex}][plan_items_attributes][${itemIndex}][_destroy]">
+        <label class="text-xs">Del</label>
+      </div>
+    `;
+    
+    container.appendChild(newItem);
+    itemCounters[sectionIndex]++;
+  }
+
+  function toggleSection(checkbox) {
+    const section = checkbox.closest('.section-item');
+    if (checkbox.checked) {
+      section.style.opacity = '0.5';
+      section.style.pointerEvents = 'none';
+    } else {
+      section.style.opacity = '1';
+      section.style.pointerEvents = 'auto';
+    }
+  }
+
+  // Initialize item counters for existing sections
+  document.querySelectorAll('.section-item').forEach(section => {
+    const sectionIndex = section.getAttribute('data-section-index');
+    const items = section.querySelectorAll('.item-row');
+    itemCounters[sectionIndex] = items.length;
+  });
 </script>
-</div>
