@@ -93,7 +93,9 @@ class HealthAssessmentsController < ApplicationController
 
       # Determine and apply the appropriate healing protocol based on the assessment type
       if Current.user
-        CreateHealingPlan.new(Current.user, @health_assessment).call
+        # Pass chronic illness IDs from the assessment entry
+        chronic_illness_ids = @assessment_entry.chronic_illness_ids
+        CreateHealingPlan.new(Current.user, @health_assessment, chronic_illness_ids: chronic_illness_ids).call
       else
         # Store the entry ID in the session for the results page to find.
         session[:assessment_entry_id] = @assessment_entry.id

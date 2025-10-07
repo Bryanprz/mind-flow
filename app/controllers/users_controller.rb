@@ -73,7 +73,10 @@ class UsersController < ApplicationController
       if @user.save
         start_new_session_for(@user) # Log in the user using the Authentication concern
         @assessment_entry&.update(user: @user) # Associate assessment with user
-        CreateHealingPlan.new(@user, @assessment_entry.health_assessment).call if @assessment_entry # Create healing plan
+        if @assessment_entry # Create healing plan
+          chronic_illness_ids = @assessment_entry.chronic_illness_ids
+          CreateHealingPlan.new(@user, @assessment_entry.health_assessment, chronic_illness_ids: chronic_illness_ids).call
+        end
         session.delete(:assessment_entry_id) # Clear session
 
         if params[:receive_health_report] == "1"

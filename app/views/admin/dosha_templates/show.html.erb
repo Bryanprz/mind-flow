@@ -1,0 +1,57 @@
+<% content_for :main_container_class, 'bg-base-200' %>
+<% content_for :title, "#{@dosha.name.titleize} Healing Plan Templates" %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">
+      <%= @dosha.name.titleize %> Healing Plan Templates
+    </h1>
+    <p class="text-gray-600">
+      Manage healing plan templates for <%= @dosha.name.titleize %> dosha across different duration types.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <% @duration_types.each do |duration_type| %>
+      <% template = @healing_plan_templates.find_by(duration_type: duration_type) %>
+      <div class="card bg-base-100 border border-gray-300">
+        <div class="card-body">
+          <h3 class="card-title text-lg capitalize">
+            <%= duration_type.humanize %> Plan
+          </h3>
+          
+          <% if template %>
+            <div class="space-y-2 mb-4">
+              <p class="text-sm text-gray-600">
+                <strong>Sections:</strong> <%= template.plan_section_templates.count %>
+              </p>
+              <p class="text-sm text-gray-600">
+                <strong>Total Items:</strong> <%= template.plan_section_templates.sum { |s| s.plan_item_templates.count } %>
+              </p>
+            </div>
+            
+            <div class="card-actions justify-end">
+              <%= link_to "Edit Template", 
+                          admin_edit_dosha_template_path(@dosha.name, duration_type: duration_type),
+                          class: "btn btn-primary btn-sm" %>
+            </div>
+          <% else %>
+            <div class="alert alert-warning">
+              <span>No template created yet</span>
+            </div>
+            
+            <div class="card-actions justify-end">
+              <%= link_to "Create Template", 
+                          new_admin_healing_plan_template_path(healing_focus_type: 'Dosha', healing_focus_id: @dosha.id, duration_type: duration_type),
+                          class: "btn btn-secondary btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-8">
+    <%= link_to "Back to Admin", admin_root_path, class: "btn btn-ghost" %>
+  </div>
+</div>

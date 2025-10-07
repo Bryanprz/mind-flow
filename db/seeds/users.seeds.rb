@@ -28,14 +28,14 @@ else
   puts "Could not find Kapha dosha. Skipping setting Hector's prakruti."
 end
 
-# Create a PrakrutiPlan for Hector if he doesn't have one
-if hector.prakruti_plans.empty?
+# Create a HealingPlan for Hector if he doesn't have one
+if hector.healing_plans.empty?
   template = HealingPlanTemplate.find_by(name: "Vata Balancing Plan")
 
   if template.nil?
-    puts "Could not find the 'Vata Balancing Plan' template. Skipping PrakrutiPlan creation for Hector."
+    puts "Could not find the 'Vata Balancing Plan' template. Skipping HealingPlan creation for Hector."
   else
-    prakruti_plan = hector.prakruti_plans.create!(
+    healing_plan = hector.healing_plans.create!(
       description: "Initial constitutional healing plan for Hector.",
       version: 1,
       is_active: true,
@@ -48,7 +48,7 @@ if hector.prakruti_plans.empty?
       }
     )
 
-    # Create 7 healing plan logs for the PrakrutiPlan
+    # Create 7 healing plan logs for the HealingPlan
     journal_entries = [
       "Feeling energetic and focused today. The plan is working well.",
       "A bit tired today, but sticking to the plan. Cravings for sweets were strong.",
@@ -59,15 +59,15 @@ if hector.prakruti_plans.empty?
       "Feeling grateful for this journey. Noticing positive changes in my body and mind."
     ]
     7.times do |i|
-      prakruti_plan.logs.create!(
+      healing_plan.logs.create!(
         date: Date.today - i.days,
         journal_entry: journal_entries[i]
       )
     end
-    puts "Created PrakrutiPlan and 7 HealingPlanLogs for Hector."
+    puts "Created HealingPlan and 7 HealingPlanLogs for Hector."
   end
 else
-  puts "Hector already has a PrakrutiPlan."
+  puts "Hector already has a HealingPlan."
 end
 
 # Create a PrakrutiEntry for Hector if he doesn't have one

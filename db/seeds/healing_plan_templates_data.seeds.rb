@@ -52,23 +52,6 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA = {
           ]
         },
         {
-          name: "Foods to Favor",
-          items: [
-            "Warm soups",
-            "root veggies",
-            "ghee",
-            "dates"
-          ]
-        },
-        {
-          name: "Foods to Avoid",
-          items: [
-            "Cold salads",
-            "raw nuts",
-            "excess coffee"
-          ]
-        },
-        {
           name: "Herbal Remedies",
           items: [
             "Ashwagandha: 500mg, nourishes majja dhatu",
@@ -168,23 +151,6 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA = {
             "Eat at regular times and avoid skipping meals.",
             "Include plenty of fresh fruits and vegetables.",
             "Spices: coriander, fennel, cardamom, saffron."
-          ]
-        },
-        {
-          name: "Foods to Favor",
-          items: [
-            "Warm soups",
-            "root veggies",
-            "ghee",
-            "dates"
-          ]
-        },
-        {
-          name: "Foods to Avoid",
-          items: [
-            "Cold salads",
-            "raw nuts",
-            "excess coffee"
           ]
         },
         {
@@ -288,23 +254,6 @@ DOSHA_HEALING_PLANS_TEMPLATE_DATA = {
             "Eat smaller meals and avoid snacking.",
             "Include plenty of fresh vegetables and legumes.",
             "Spices: ginger, black pepper, cayenne, turmeric."
-          ]
-        },
-        {
-          name: "Foods to Favor",
-          items: [
-            "Warm soups",
-            "root veggies",
-            "ghee",
-            "dates"
-          ]
-        },
-        {
-          name: "Foods to Avoid",
-          items: [
-            "Cold salads",
-            "raw nuts",
-            "excess coffee"
           ]
         },
         {

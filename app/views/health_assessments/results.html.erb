@@ -70,7 +70,13 @@ forced to the full height of the padded area.
           <div class="mb-3 mt-2">
             <h4 class="text-md font-semibold mb-6"><%= illness.name %></h4>
             <span class="font-semibold text-gray-600 text-sm">Description</span><br>
-            <p class="text-md text-base mb-4 mt-2"><%= illness.description %></p>
+            <% if illness.allo_description.present? %>
+              <p class="text-md text-base mb-4 mt-2"><%= illness.allo_description %></p>
+            <% elsif illness.ayu_description.present? %>
+              <p class="text-md text-base mb-4 mt-2"><%= illness.ayu_description %></p>
+            <% else %>
+              <p class="text-md text-base mb-4 mt-2 text-gray-500">No description available</p>
+            <% end %>
 
             <span class="font-semibold text-gray-600 text-sm">Ayurvedic Root Cause</span><br>
             <p class="text-base mt-2"><%= illness.root_cause %></p>

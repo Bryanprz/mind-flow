@@ -493,51 +493,6 @@
         </div>
       </div>
 
-      <!-- Healing Plan Templates -->
-      <div class="card bg-base-100 border border-gray-300">
-        <div class="card-body">
-          <div class="flex justify-between items-center mb-6">
-            <h2 class="card-title text-lg text-gray-900">Healing Plan Templates</h2>
-            <button onclick="showTemplateForm()" class="btn btn-primary btn-sm text-white">Create Template</button>
-          </div>
-          
-          <!-- Template Creation Form (Initially Hidden) -->
-          <div id="template-form" class="hidden mb-6 p-4 bg-base-200 rounded-lg border">
-            <h3 class="text-lg font-semibold mb-4 text-gray-900">Create New Healing Plan Template</h3>
-            <%= render partial: 'admin/healing_plan_templates/form', locals: { healing_plan_template: @chronic_illness.healing_plan_templates.build, chronic_illness: @chronic_illness } %>
-          </div>
-          
-          <% if @chronic_illness.healing_plan_templates.any? %>
-            <div class="space-y-4">
-              <% @chronic_illness.healing_plan_templates.order(:duration_type).each do |template| %>
-                <div class="flex items-center justify-between p-4 bg-base-200 rounded-lg border">
-                  <div>
-                    <h3 class="font-semibold text-base text-gray-900"><%= template.name %></h3>
-                    <p class="text-sm text-gray-600 mt-1">
-                      <%= template.duration_type.humanize %> • 
-                      <%= pluralize(template.plan_section_templates.count, 'section') %>
-                    </p>
-                  </div>
-                  <div class="flex gap-2">
-                    <%= link_to "View", admin_healing_plan_template_path(template), class: "btn btn-ghost btn-sm" %>
-                    <%= link_to "Edit", edit_admin_healing_plan_template_path(template), class: "btn btn-ghost btn-sm" %>
-                    <%= link_to "Delete", admin_healing_plan_template_path(template), method: :delete,
-                                class: "btn btn-ghost btn-sm text-red-600 hover:text-red-800",
-                                data: { confirm: "Are you sure you want to delete #{template.name}?" } %>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          <% else %>
-            <div class="text-center py-8 text-gray-500">
-              <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
-              </svg>
-              <p class="text-sm">No healing plan templates created yet.</p>
-            </div>
-          <% end %>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -570,16 +525,7 @@
     }
   }
 
-  function showTemplateForm() {
-    const form = document.getElementById('template-form');
-    form.classList.remove('hidden');
-    form.scrollIntoView({ behavior: 'smooth' });
-  }
 
-  function hideTemplateForm() {
-    const form = document.getElementById('template-form');
-    form.classList.add('hidden');
-  }
 
   function showAddFoodForm(type) {
     const form = document.getElementById(`add-${type}-food-form`);

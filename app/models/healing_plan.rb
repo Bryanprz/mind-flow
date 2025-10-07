@@ -1,4 +1,10 @@
 class HealingPlan < ApplicationRecord
+  # Disable single-table inheritance since we removed PrakrutiPlan and VikrutiPlan
+  self.inheritance_column = nil
+  
+  # Add attribute to skip build_from_template callback for consolidated plans
+  attr_accessor :skip_build_from_template
+  
   DAILY = 'daily'.freeze
   THREE_MONTH = 'three_month'.freeze
   SIX_MONTH = 'six_month'.freeze
@@ -128,6 +134,7 @@ class HealingPlan < ApplicationRecord
 
   before_create :set_details_from_template
   after_create :build_from_template
+  after_create :deactivate_other_plans
 
   # for Cally calendar API
   # return data as "2024-01-10 2024-01-20"
@@ -145,6 +152,13 @@ class HealingPlan < ApplicationRecord
 
   private
 
+  def deactivate_other_plans
+    # Deactivate all other healing plans for this user, but keep this one active
+    user.healing_plans.where.not(id: self.id).update_all(is_active: false)
+    # Ensure this plan is active (in case the before_create callback didn't work properly)
+    self.update_column(:is_active, true)
+  end
+
   def set_details_from_template
     self.name ||= healing_plan_template.name
     self.description ||= healing_plan_template.description
@@ -154,6 +168,7 @@ class HealingPlan < ApplicationRecord
 
   def build_from_template
     return if healing_plan_template.nil?
+    return if respond_to?(:skip_build_from_template) && skip_build_from_template
     sections_to_insert = []
     healing_plan_template.plan_section_templates.each do |section_template|
       sections_to_insert << {

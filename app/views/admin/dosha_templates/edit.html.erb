@@ -1,0 +1,401 @@
+<% content_for :main_container_class, 'bg-base-200' %>
+<% content_for :title, "Edit #{@dosha.name.titleize} #{@duration_type.humanize} Template" %>
+
+<style>
+  .sortable-ghost {
+    opacity: 0.4;
+    background: #f3f4f6;
+  }
+  
+  .sortable-chosen {
+    background: #e5e7eb;
+  }
+  
+  .drag-handle:hover {
+    color: #374151 !important;
+  }
+  
+  .section-item {
+    transition: all 0.2s ease;
+  }
+  
+  .item-row {
+    transition: all 0.2s ease;
+  }
+</style>
+
+<div class="container max-w-2xl mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">
+      Edit <%= @dosha.name.titleize %> <%= @duration_type.humanize %> Template
+    </h1>
+    <p class="text-gray-600">
+      Update the healing plan template for <%= @dosha.name.titleize %> dosha - <%= @duration_type.humanize %> duration.
+    </p>
+  </div>
+
+  <%= form_with model: [:admin, @healing_plan_template], 
+                url: admin_update_dosha_template_path(@dosha.name, duration_type: @duration_type),
+                method: :patch,
+                local: true,
+                class: "space-y-6" do |form| %>
+    
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <h2 class="card-title text-xl mb-4">Template Details</h2>
+        
+        <div class="form-control w-full">
+          <%= form.label :name, class: "label" %>
+          <span class="label-text">Template Name</span>
+          <%= form.text_field :name, class: "input input-bordered w-full" %>
+        </div>
+
+        <div class="form-control w-full">
+          <%= form.label :description, class: "label" %>
+          <span class="label-text">Description</span>
+          <%= form.rich_text_area :description, class: "textarea textarea-bordered w-full h-32" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Food Management Card -->
+    <div class="card bg-base-100 border border-gray-300">
+      <div class="card-body">
+        <h2 class="card-title text-xl mb-4">Food Management</h2>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Healing Foods Section -->
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold text-green-700">Healing Foods</h3>
+              <button onclick="showAddFoodForm('healing')" class="btn btn-success btn-sm text-white">Add Food</button>
+            </div>
+            
+            <!-- Add Healing Food Form (Initially Hidden) -->
+            <div id="add-healing-food-form" class="hidden mb-4 p-3 bg-green-50 rounded-lg border border-green-200">
+              <h4 class="text-sm font-semibold mb-3 text-green-800">Add Healing Food</h4>
+              <%= form_with url: add_healing_food_admin_dosha_path(@dosha.id), method: :post, local: true do |form| %>
+                <%= form.hidden_field :duration_type, value: @duration_type %>
+                <div class="form-control">
+                  <%= form.text_field :food_name, class: "input input-bordered input-sm", placeholder: "Enter food name...", required: true %>
+                </div>
+                <div class="flex gap-2 mt-2">
+                  <%= form.submit "Add", class: "btn btn-success btn-sm text-white" %>
+                  <button type="button" onclick="hideAddFoodForm('healing')" class="btn btn-ghost btn-sm">Cancel</button>
+                </div>
+              <% end %>
+            </div>
+            
+            <!-- Healing Foods List -->
+            <div class="space-y-2 max-h-48 overflow-y-auto">
+              <% if @dosha.foods_that_heal.any? %>
+                <% @dosha.foods_that_heal.each do |food| %>
+                  <div class="flex items-center justify-between p-2 bg-green-50 rounded border border-green-200">
+                    <span class="text-sm font-medium text-green-800"><%= food.name %></span>
+                    <%= link_to "Remove", remove_healing_food_admin_dosha_path(@dosha.id, food_id: food.id, duration_type: @duration_type), 
+                        method: :delete, 
+                        class: "btn btn-ghost btn-xs text-red-600 hover:text-red-800",
+                        data: { confirm: "Remove #{food.name} from healing foods?" } %>
+                  </div>
+                <% end %>
+              <% else %>
+                <p class="text-gray-500 italic text-xs">No healing foods added yet.</p>
+              <% end %>
+            </div>
+          </div>
+          
+          <!-- Aggravating Foods Section -->
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold text-red-700">Aggravating Foods</h3>
+              <button onclick="showAddFoodForm('aggravating')" class="btn btn-error btn-sm text-white">Add Food</button>
+            </div>
+            
+            <!-- Add Aggravating Food Form (Initially Hidden) -->
+            <div id="add-aggravating-food-form" class="hidden mb-4 p-3 bg-red-50 rounded-lg border border-red-200">
+              <h4 class="text-sm font-semibold mb-3 text-red-800">Add Aggravating Food</h4>
+              <%= form_with url: add_aggravating_food_admin_dosha_path(@dosha.id), method: :post, local: true do |form| %>
+                <%= form.hidden_field :duration_type, value: @duration_type %>
+                <div class="form-control">
+                  <%= form.text_field :food_name, class: "input input-bordered input-sm", placeholder: "Enter food name...", required: true %>
+                </div>
+                <div class="flex gap-2 mt-2">
+                  <%= form.submit "Add", class: "btn btn-error btn-sm text-white" %>
+                  <button type="button" onclick="hideAddFoodForm('aggravating')" class="btn btn-ghost btn-sm">Cancel</button>
+                </div>
+              <% end %>
+            </div>
+            
+            <!-- Aggravating Foods List -->
+            <div class="space-y-2 max-h-48 overflow-y-auto">
+              <% if @dosha.foods_that_aggravate.any? %>
+                <% @dosha.foods_that_aggravate.each do |food| %>
+                  <div class="flex items-center justify-between p-2 bg-red-50 rounded border border-red-200">
+                    <span class="text-sm font-medium text-red-800"><%= food.name %></span>
+                    <%= link_to "Remove", remove_aggravating_food_admin_dosha_path(@dosha.id, food_id: food.id, duration_type: @duration_type), 
+                        method: :delete, 
+                        class: "btn btn-ghost btn-xs text-red-600 hover:text-red-800",
+                        data: { confirm: "Remove #{food.name} from aggravating foods?" } %>
+                  </div>
+                <% end %>
+              <% else %>
+                <p class="text-gray-500 italic text-xs">No aggravating foods added yet.</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card bg-base-100 border border-gray-300 mt-6">
+      <div class="card-body">
+        <h2 class="card-title text-xl mb-4">Plan Sections</h2>
+        
+        <div id="plan-sections" class="space-y-4" data-controller="sortable" data-sortable-url-value="<%= admin_update_dosha_template_path(@dosha.name, duration_type: @duration_type) %>">
+          <%= form.fields_for :plan_section_templates do |section_form| %>
+            <% section_index = section_form.index || 0 %>
+            <div class="border border-gray-200 rounded-lg p-4 section-item" 
+                 data-section-index="<%= section_index %>" 
+                 data-sortable-id-value="<%= section_form.object.id %>">
+              <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-3">
+                  <div class="drag-handle cursor-move text-gray-400 hover:text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                    </svg>
+                  </div>
+                  <h3 class="font-semibold text-lg">Section <%= section_index + 1 %></h3>
+                </div>
+                <button type="button" class="btn btn-sm btn-error" onclick="removeSection(this)" title="Remove Section">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+              
+              <%= form_with model: [:admin, section_form.object], 
+                  method: :patch,
+                  local: false,
+                  data: { turbo: true },
+                  class: "flex gap-2 mb-4" do |field_form| %>
+                <%= field_form.select :name, 
+                    options_for_select(
+                      [['Select a section title...', '']] + 
+                      StandardizedSections::STANDARDIZED_SECTION_TITLES.map { |title| [title, title] },
+                      section_form.object.name
+                    ),
+                    {},
+                    { 
+                      class: "select select-bordered flex-1",
+                      data: { 
+                        field: "name",
+                        section_id: section_form.object.id,
+                        original_value: section_form.object.name
+                      }
+                    } %>
+                <%= field_form.hidden_field :field, value: "name" %>
+                <%= render "admin/plan_section_templates/save_button", 
+                    section: section_form.object, 
+                    field: "name" %>
+              <% end %>
+              <%= section_form.hidden_field :position, value: section_form.object.position %>
+              
+              <div class="mt-4">
+                <div id="items-<%= section_index %>" class="space-y-2" data-controller="sortable" data-sortable-url-value="<%= admin_update_dosha_template_path(@dosha.name, duration_type: @duration_type) %>">
+                  <%= section_form.fields_for :plan_item_templates do |item_form| %>
+                    <% item_index = item_form.index || 0 %>
+                    <% item_content = item_form.object.content.present? ? item_form.object.content.to_plain_text : '' %>
+                    <div class="flex gap-2 item-row" 
+                         data-item-index="<%= item_index %>" 
+                         data-sortable-id-value="<%= item_form.object.id %>">
+                      <div class="drag-handle cursor-move text-gray-400 hover:text-gray-600 flex items-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                        </svg>
+                      </div>
+                      <div class="flex-1">
+                        <%= form_with model: [:admin, item_form.object], 
+                            method: :patch,
+                            local: false,
+                            data: { turbo: true } do |field_form| %>
+                          <%= field_form.text_area :content, 
+                              value: item_content,
+                              class: "textarea textarea-bordered w-full", 
+                              placeholder: "Enter plan item content...",
+                              rows: 2 %>
+                          <%= field_form.hidden_field :field, value: "content" %>
+                        <% end %>
+                      </div>
+                      <div class="flex flex-col gap-1">
+                        <%= render "admin/plan_item_templates/save_button", 
+                            item: item_form.object, 
+                            field: "content" %>
+                        <%= item_form.hidden_field :position, value: item_form.object.position %>
+                        <button type="button" class="btn btn-sm btn-error" onclick="removeItem(this)" title="Remove Item">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+                <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addItem(<%= section_index %>)">
+                  Add Item
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        
+        <button type="button" class="btn btn-secondary mt-4" onclick="addSection()">
+          Add Section
+        </button>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-4 mt-4">
+      <%= link_to "Cancel", admin_dosha_template_path(@dosha.name), class: "btn btn-ghost" %>
+      <%= form.submit "Update Template", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+let sectionIndex = <%= @healing_plan_template.plan_section_templates.count %>;
+let itemIndices = {};
+
+// Initialize item indices for existing sections
+<% @healing_plan_template.plan_section_templates.each_with_index do |section, section_idx| %>
+  itemIndices[<%= section_idx %>] = <%= section.plan_item_templates.count %>;
+<% end %>
+
+function addSection() {
+  const sectionsContainer = document.getElementById('plan-sections');
+  const sectionHtml = `
+    <div class="border border-gray-200 rounded-lg p-4 section-item" data-section-index="${sectionIndex}">
+      <div class="flex justify-between items-center mb-4">
+        <div class="flex items-center gap-3">
+          <div class="drag-handle cursor-move text-gray-400 hover:text-gray-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-lg">Section ${sectionIndex + 1}</h3>
+        </div>
+        <button type="button" class="btn btn-sm btn-error" onclick="removeSection(this)" title="Remove Section">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="flex gap-2 mb-4">
+        <select name="healing_plan_template[plan_section_templates_attributes][${sectionIndex}][name]" 
+                class="select select-bordered flex-1">
+          <option value="">Select a section title...</option>
+          <option value="Quick Wins">Quick Wins</option>
+          <option value="Morning Routine">Morning Routine</option>
+          <option value="Midday Routine">Midday Routine</option>
+          <option value="Evening Routine">Evening Routine</option>
+          <option value="Dietary Guidelines">Dietary Guidelines</option>
+          <option value="Lifestyle Practices">Lifestyle Practices</option>
+          <option value="Herbal Remedies">Herbal Remedies</option>
+          <option value="Mind-Body Connection">Mind-Body Connection</option>
+          <option value="Long-term Goals">Long-term Goals</option>
+          <option value="Advanced Practices">Advanced Practices</option>
+          <option value="Seasonal Adjustments">Seasonal Adjustments</option>
+          <option value="Sustained Well-being">Sustained Well-being</option>
+          <option value="Daily Practices">Daily Practices</option>
+          <option value="Weekly Practices">Weekly Practices</option>
+          <option value="Monthly Goals">Monthly Goals</option>
+        </select>
+        <button type="button" class="btn btn-sm btn-success" title="Save Section Name" disabled>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </button>
+        <input type="hidden" name="healing_plan_template[plan_section_templates_attributes][${sectionIndex}][position]" 
+               value="${sectionIndex + 1}">
+      </div>
+      
+      <div class="mt-4">
+        <div id="items-${sectionIndex}" class="space-y-2">
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addItem(${sectionIndex})">
+          Add Item
+        </button>
+      </div>
+    </div>
+  `;
+  
+  sectionsContainer.insertAdjacentHTML('beforeend', sectionHtml);
+  itemIndices[sectionIndex] = 0;
+  sectionIndex++;
+}
+
+function addItem(sectionIndex) {
+  const itemsContainer = document.getElementById(`items-${sectionIndex}`);
+  const itemIndex = itemIndices[sectionIndex] || 0;
+  
+  const itemHtml = `
+    <div class="flex gap-2 item-row" data-item-index="${itemIndex}">
+      <div class="drag-handle cursor-move text-gray-400 hover:text-gray-600 flex items-center">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+        </svg>
+      </div>
+      <textarea name="healing_plan_template[plan_section_templates_attributes][${sectionIndex}][plan_item_templates_attributes][${itemIndex}][content]" 
+                class="textarea textarea-bordered flex-1" 
+                placeholder="Enter plan item content..."></textarea>
+      <div class="flex flex-col gap-1">
+        <button type="button" class="btn btn-sm btn-success" title="Save Item Content" disabled>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </button>
+        <input type="hidden" name="healing_plan_template[plan_section_templates_attributes][${sectionIndex}][plan_item_templates_attributes][${itemIndex}][position]" 
+               value="${itemIndex + 1}">
+        <button type="button" class="btn btn-sm btn-error" onclick="removeItem(this)" title="Remove Item">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  `;
+  
+  itemsContainer.insertAdjacentHTML('beforeend', itemHtml);
+  itemIndices[sectionIndex]++;
+}
+
+function removeSection(button) {
+  button.closest('[data-section-index]').remove();
+}
+
+function removeItem(button) {
+  button.closest('[data-item-index]').remove();
+}
+
+function showAddFoodForm(type) {
+  const form = document.getElementById(`add-${type}-food-form`);
+  if (form) {
+    form.classList.remove('hidden');
+    form.scrollIntoView({ behavior: 'smooth' });
+    // Focus on the input field
+    const input = form.querySelector('input[type="text"]');
+    if (input) input.focus();
+  }
+}
+
+function hideAddFoodForm(type) {
+  const form = document.getElementById(`add-${type}-food-form`);
+  if (form) {
+    form.classList.add('hidden');
+    // Clear the form
+    const input = form.querySelector('input[type="text"]');
+    if (input) input.value = '';
+  }
+}
+
+</script>

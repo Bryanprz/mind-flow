@@ -39,7 +39,7 @@ class HealingPlanLogsController < ApplicationController
   private
 
   def require_prakruti_assessment
-    unless Current.user&.prakruti_entry && Current.user&.prakruti_plans.any?
+    unless Current.user&.prakruti_entry && Current.user&.healing_plans.any?
       redirect_to start_prakruti_assessment_path, alert: "Please complete your assessment first to access your healing plan logs. This will help us create a personalized healing plan for you."
       return
     end

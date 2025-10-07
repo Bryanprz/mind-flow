@@ -13,8 +13,6 @@ class User < ApplicationRecord
   has_one_attached :cover_image, service: avatar_service
   has_secure_password
   has_many :healing_plans, dependent: :destroy # Ayurvedic protocol
-  has_many :prakruti_plans, class_name: 'PrakrutiPlan'
-  has_many :vikruti_plans, class_name: 'VikrutiPlan'
 
   has_many :sessions, dependent: :destroy
   has_many :assessment_entries, dependent: :destroy

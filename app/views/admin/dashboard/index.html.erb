@@ -8,5 +8,8 @@
     <li><%= link_to "Social Posts", admin_social_posts_path, class: "text-blue-600 hover:underline", data: { turbo_frame: "_top" } %></li>
     <li><%= link_to "Newsletter Subscribers", admin_newsletters_path, class: "text-blue-600 hover:underline", data: { turbo_frame: "_top" } %></li>
     <li><%= link_to "Chronic Illnesses", admin_chronic_illnesses_path, class: "text-blue-600 hover:underline", data: { turbo_frame: "_top" } %></li>
+    <li><%= link_to "Vata Templates", admin_dosha_template_path('vata'), class: "text-blue-600 hover:underline", data: { turbo_frame: "_top" } %></li>
+    <li><%= link_to "Pitta Templates", admin_dosha_template_path('pitta'), class: "text-blue-600 hover:underline", data: { turbo_frame: "_top" } %></li>
+    <li><%= link_to "Kapha Templates", admin_dosha_template_path('kapha'), class: "text-blue-600 hover:underline", data: { turbo_frame: "_top" } %></li>
   </ul>
 </div>

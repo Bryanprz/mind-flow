@@ -26,11 +26,26 @@ Rails.application.routes.draw do
       end
     end
     
-    resources :healing_plan_templates do
-      resources :plan_section_templates, except: [:index, :show] do
-        resources :plan_item_templates, except: [:index, :show]
+    
+    # Dosha template management routes
+    get 'doshas/:dosha_name/edit', to: 'dosha_templates#edit', as: :edit_dosha_template
+    patch 'doshas/:dosha_name', to: 'dosha_templates#update', as: :update_dosha_template
+    get 'doshas/:dosha_name', to: 'dosha_templates#show', as: :dosha_template
+    
+    # Dosha food management routes
+    resources :doshas, only: [] do
+      member do
+        post :add_healing_food
+        delete :remove_healing_food
+        post :add_aggravating_food
+        delete :remove_aggravating_food
       end
     end
+    
+    # Individual field update routes
+    resources :plan_section_templates, only: [:update]
+    resources :plan_item_templates, only: [:update]
+    
     root "dashboard#index"
     
     resources :users, param: :slug do

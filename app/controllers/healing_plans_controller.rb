@@ -8,19 +8,14 @@ class HealingPlansController < ApplicationController
   end
 
   def show
-    unless Current.user.prakruti_plans.any?
-      redirect_to start_prakruti_assessment_path, alert: "You must take this assessment first before we can build your healing plan."
-      return
-    end
-
     # Check if user has any healing plans at all
     unless Current.user.healing_plans.any?
       redirect_to start_prakruti_assessment_path, alert: "No healing plans found. Please complete your assessment to generate healing plans."
       return
     end
 
-    # Prioritize showing Vikruti plans, fall back to Prakruti plans
-    plan_set = Current.user.vikruti_plans.presence || Current.user.prakruti_plans
+    # Use all healing plans
+    plan_set = Current.user.healing_plans
     @duration_type = params[:duration_type] || 'daily'
 
     # Debug logging
