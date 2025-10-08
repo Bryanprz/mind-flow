@@ -1,0 +1,186 @@
+<% content_for :main_container_class, 'w-full bg-base-200 min-h-full' %>
+
+<div class="container mx-auto px-4 py-8 max-w-6xl">
+  <%= render 'shared/flash' if flash.any? %>
+
+  <% if @habit_plan.nil? %>
+    <!-- No Plan Found for Selected Duration -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body text-center">
+        <h2 class="card-title text-2xl justify-center mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </h2>
+        <h3 class="text-xl font-semibold mb-2">No <%= @duration_type.titleize %> Plan Found</h3>
+        <p class="text-gray-600 mb-4">You don't have a <%= @duration_type.titleize %> habit plan yet.</p>
+        <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% else %>
+    <!-- Habit Plan Header -->
+    <div class="mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900"><%= @habit_plan.name %></h1>
+          <p class="text-gray-600 mt-1"><%= @habit_plan.description %></p>
+        </div>
+        <div class="flex gap-2">
+          <%= link_to dashboard_path, class: "btn btn-ghost btn-sm" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+            </svg>
+            Dashboard
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Duration Type Tabs -->
+      <div class="tabs tabs-boxed bg-base-100 w-fit">
+        <%= link_to my_habit_plan_path(duration_type: 'daily'), 
+            class: "tab #{@duration_type == 'daily' ? 'tab-active' : ''}" do %>
+          Daily Plan
+        <% end %>
+        <%= link_to my_habit_plan_path(duration_type: 'three_month'), 
+            class: "tab #{@duration_type == 'three_month' ? 'tab-active' : ''}" do %>
+          3-Month Plan
+        <% end %>
+        <%= link_to my_habit_plan_path(duration_type: 'six_month'), 
+            class: "tab #{@duration_type == 'six_month' ? 'tab-active' : ''}" do %>
+          6-Month Plan
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Date Navigation (for Daily Plans) -->
+    <% if @habit_plan.duration_type == 'daily' %>
+      <div class="card bg-base-100 shadow-sm mb-6">
+        <div class="card-body p-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <%= link_to my_habit_plan_path(duration_type: @duration_type, date: @date - 1.day), 
+                  class: "btn btn-circle btn-sm btn-ghost" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              <% end %>
+              
+              <div class="text-center">
+                <div class="text-lg font-semibold"><%= @date.strftime("%A, %B %d, %Y") %></div>
+                <div class="text-sm text-gray-500">
+                  <%= @date == Date.current ? "Today" : time_ago_in_words(@date) + (@date < Date.current ? " ago" : " from now") %>
+                </div>
+              </div>
+              
+              <%= link_to my_habit_plan_path(duration_type: @duration_type, date: @date + 1.day), 
+                  class: "btn btn-circle btn-sm btn-ghost" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              <% end %>
+            </div>
+            
+            <%= link_to my_habit_plan_path(duration_type: @duration_type, date: Date.current), 
+                class: "btn btn-sm btn-primary" do %>
+              Today
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Plan Sections and Items -->
+    <div class="space-y-6" data-controller="habit-tracker">
+      <% @habit_plan.plan_sections.each do |section| %>
+        <div class="card bg-base-100 shadow-lg">
+          <div class="card-body">
+            <h2 class="card-title text-xl mb-4 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <%= section.name %>
+            </h2>
+            
+            <div class="space-y-3">
+              <% section.plan_items.each do |item| %>
+                <% 
+                  item_log = @habit_log&.plan_item_logs&.find { |log| log.plan_item_id == item.id }
+                  is_completed = item_log&.completed_at.present?
+                %>
+                <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors">
+                  <input 
+                    type="checkbox" 
+                    <%= 'checked' if is_completed %>
+                    class="checkbox checkbox-primary mt-1"
+                    data-action="change->habit-tracker#toggleItem"
+                    data-habit-tracker-plan-item-id-param="<%= item.id %>"
+                    data-habit-tracker-habit-log-id-param="<%= @habit_log&.id %>"
+                  />
+                  <div class="flex-1">
+                    <div class="<%= 'line-through text-gray-500' if is_completed %>">
+                      <%= item.content %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Journal Entry (for Daily Plans) -->
+    <% if @habit_plan.duration_type == 'daily' && @habit_log %>
+      <div class="card bg-base-100 shadow-lg mt-6" data-controller="journal">
+        <div class="card-body">
+          <h2 class="card-title text-xl mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            Daily Journal
+          </h2>
+          
+          <form data-action="submit->journal#save" data-journal-target="form">
+            <input type="hidden" name="habit_log_id" value="<%= @habit_log.id %>">
+            <textarea 
+              name="journal_entry" 
+              class="textarea textarea-bordered w-full h-32" 
+              placeholder="How was your day? Any insights, challenges, or wins to record?"
+              data-journal-target="textarea"
+            ><%= @habit_log.journal_entry %></textarea>
+            <div class="flex justify-between items-center mt-4">
+              <div class="text-sm text-gray-500" data-journal-target="status">
+                <% if @habit_log.journal_entry.present? %>
+                  Last saved <%= time_ago_in_words(@habit_log.updated_at) %> ago
+                <% end %>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm" data-journal-target="saveButton">
+                Save Journal Entry
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Complete Day Button (for Daily Plans) -->
+    <% if @habit_plan.duration_type == 'daily' && @habit_log %>
+      <div class="text-center mt-8">
+        <% if @habit_log.completed_at.present? %>
+          <div class="alert alert-success shadow-lg inline-flex">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Day completed! Keep up the great work! 🎉</span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<script>
+  // Stimulus controllers for habit tracking and journal
+  // These would be in separate files in a real app
+</script>
+

@@ -1,2 +1,0 @@
-class PrakrutiEntry < AssessmentEntry
-end

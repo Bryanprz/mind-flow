@@ -1,0 +1,92 @@
+<% content_for :main_container_class, 'w-full bg-base-200 min-h-full' %>
+
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <%= render 'shared/flash' if flash.any? %>
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Your Habit Plans</h1>
+    <p class="text-gray-600">View and manage all your habit plans</p>
+  </div>
+
+  <% if @habit_plans.any? %>
+    <div class="space-y-4">
+      <% @habit_plans.each do |habit_plan| %>
+        <div class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow">
+          <div class="card-body">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <h2 class="card-title text-xl mb-2">
+                  <%= habit_plan.name %>
+                  <% if habit_plan.is_active %>
+                    <span class="badge badge-primary badge-sm">Active</span>
+                  <% end %>
+                </h2>
+                <p class="text-gray-600 text-sm mb-3"><%= habit_plan.description %></p>
+                
+                <div class="flex items-center gap-4 text-sm text-gray-500">
+                  <div class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <span><%= habit_plan.duration_type.titleize %></span>
+                  </div>
+                  
+                  <% if habit_plan.duration_type == 'daily' %>
+                    <div class="flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                      </svg>
+                      <span><%= habit_plan.current_streak %> day streak</span>
+                    </div>
+                  <% end %>
+                  
+                  <div class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span><%= habit_plan.plan_sections.count %> sections</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex flex-col gap-2">
+                <%= link_to my_habit_plan_path(duration_type: habit_plan.duration_type), class: "btn btn-primary btn-sm" do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  View
+                <% end %>
+                
+                <%= link_to edit_habit_plan_path(habit_plan), class: "btn btn-ghost btn-sm" do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Edit
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body text-center py-12">
+        <div class="mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">No Habit Plans Yet</h3>
+        <p class="text-gray-600 mb-6">Get started by creating your first habit plan to track your wellness journey.</p>
+        <%= link_to "Create Habit Plan", root_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="mt-8 text-center">
+    <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-ghost" %>
+  </div>
+</div>
+

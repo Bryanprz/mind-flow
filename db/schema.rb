@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_08_044510) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -58,15 +58,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
     t.index ["assessment_option_id"], name: "index_assessment_answers_on_assessment_option_id"
   end
 
-  create_table "assessment_chronic_illnesses", force: :cascade do |t|
-    t.integer "assessment_entry_id", null: false
-    t.integer "chronic_illness_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["assessment_entry_id"], name: "index_assessment_chronic_illnesses_on_assessment_entry_id"
-    t.index ["chronic_illness_id"], name: "index_assessment_chronic_illnesses_on_chronic_illness_id"
-  end
-
   create_table "assessment_entries", force: :cascade do |t|
     t.integer "user_id"
     t.integer "health_assessment_id", null: false
@@ -84,7 +75,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
   create_table "assessment_options", force: :cascade do |t|
     t.integer "assessment_question_id", null: false
     t.string "text"
-    t.integer "dosha"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["assessment_question_id"], name: "index_assessment_options_on_assessment_question_id"
@@ -102,194 +92,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
     t.index ["health_assessment_id"], name: "index_assessment_questions_on_health_assessment_id"
   end
 
-  create_table "books", force: :cascade do |t|
-    t.string "title"
-    t.integer "category"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "slug"
-    t.text "description"
-    t.index ["category"], name: "index_books_on_category"
-    t.index ["slug"], name: "index_books_on_slug", unique: true
-  end
-
-  create_table "channel_systems", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.string "revived_by_type", null: false
-    t.integer "revived_by_id", null: false
-    t.string "damaged_by_type", null: false
-    t.integer "damaged_by_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["damaged_by_type", "damaged_by_id"], name: "index_channel_systems_on_damaged_by"
-    t.index ["revived_by_type", "revived_by_id"], name: "index_channel_systems_on_revived_by"
-  end
-
-  create_table "chronic_illness_affected_dhatus", force: :cascade do |t|
-    t.integer "chronic_illness_id", null: false
-    t.integer "dhatu_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["chronic_illness_id"], name: "index_chronic_illness_affected_dhatus_on_chronic_illness_id"
-    t.index ["dhatu_id"], name: "index_chronic_illness_affected_dhatus_on_dhatu_id"
-  end
-
-  create_table "chronic_illness_aggravating_foods", force: :cascade do |t|
-    t.integer "chronic_illness_id", null: false
-    t.integer "food_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["chronic_illness_id"], name: "index_chronic_illness_aggravating_foods_on_chronic_illness_id"
-    t.index ["food_id"], name: "index_chronic_illness_aggravating_foods_on_food_id"
-  end
-
-  create_table "chronic_illness_channel_systems", force: :cascade do |t|
-    t.integer "chronic_illness_id", null: false
-    t.integer "channel_system_id", null: false
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["channel_system_id"], name: "index_chronic_illness_channel_systems_on_channel_system_id"
-    t.index ["chronic_illness_id"], name: "index_chronic_illness_channel_systems_on_chronic_illness_id"
-  end
-
-  create_table "chronic_illness_healing_foods", force: :cascade do |t|
-    t.integer "chronic_illness_id", null: false
-    t.integer "food_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["chronic_illness_id"], name: "index_chronic_illness_healing_foods_on_chronic_illness_id"
-    t.index ["food_id"], name: "index_chronic_illness_healing_foods_on_food_id"
-  end
-
-  create_table "chronic_illnesses", force: :cascade do |t|
-    t.string "name"
-    t.string "icon"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "root_cause"
-    t.string "color"
-    t.string "sanskrit_name"
-  end
-
-  create_table "cures", force: :cascade do |t|
-    t.string "name"
-    t.string "severity"
-    t.text "recommendation"
-    t.text "contraindication"
-    t.text "details"
-    t.integer "rasa_taste"
-    t.text "virya_potency"
-    t.text "vipaka_post_digestive_effect"
-    t.string "prabhava_special_action"
-    t.integer "guna_quality"
-    t.text "samskara_preparation"
-    t.text "habitat_and_source"
-    t.integer "form_of_intake"
-    t.text "samyoga_combination"
-    t.json "elements", default: []
-    t.json "recipes", default: []
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "dhatus", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "disease_stages", force: :cascade do |t|
-    t.integer "formation_stage"
-    t.string "name"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "dosha_aggravating_foods", force: :cascade do |t|
-    t.integer "dosha_id", null: false
-    t.string "name"
-    t.text "description"
-    t.text "recommendations"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "food_id"
-    t.index ["dosha_id"], name: "index_dosha_aggravating_foods_on_dosha_id"
-    t.index ["food_id"], name: "index_dosha_aggravating_foods_on_food_id"
-  end
-
-  create_table "dosha_healing_foods", force: :cascade do |t|
-    t.integer "dosha_id", null: false
-    t.string "name"
-    t.text "description"
-    t.text "recommendations"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "food_id"
-    t.index ["dosha_id"], name: "index_dosha_healing_foods_on_dosha_id"
-    t.index ["food_id"], name: "index_dosha_healing_foods_on_food_id"
-  end
-
-  create_table "dosha_healing_herbs", force: :cascade do |t|
-    t.integer "dosha_id", null: false
-    t.string "name"
-    t.text "description"
-    t.text "recommendations"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["dosha_id"], name: "index_dosha_healing_herbs_on_dosha_id"
-  end
-
-  create_table "doshas", force: :cascade do |t|
-    t.string "name"
-    t.text "core_qualities"
-    t.text "strengths"
-    t.text "growth_areas"
-    t.text "affirmations"
-    t.text "archetype_info"
-    t.text "people_manifestation"
-    t.string "color"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "general_recommendations"
-    t.index ["name"], name: "index_doshas_on_name", unique: true
-  end
-
-  create_table "foods", force: :cascade do |t|
-    t.string "name"
-    t.string "recommendation"
-    t.string "contraindication"
-    t.text "details"
-    t.json "elements", default: []
-    t.json "recipes", default: []
-    t.integer "rasa_taste"
-    t.text "virya_potency"
-    t.text "vipaka_post_digestive_effect"
-    t.string "prabhava_special_action"
-    t.integer "guna_quality"
-    t.text "samskara_preparation"
-    t.text "habitat_and_source"
-    t.integer "form_of_intake"
-    t.text "samyoga_combination"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_foods_on_name", unique: true
-  end
-
-  create_table "healing_plan_logs", force: :cascade do |t|
-    t.integer "healing_plan_id", null: false
+  create_table "habit_logs", force: :cascade do |t|
+    t.integer "habit_plan_id", null: false
     t.string "completed_at"
     t.text "journal_entry"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "date"
-    t.index ["healing_plan_id"], name: "index_healing_plan_logs_on_healing_plan_id"
+    t.index ["habit_plan_id"], name: "index_habit_logs_on_habit_plan_id"
   end
 
-  create_table "healing_plan_templates", force: :cascade do |t|
+  create_table "habit_plan_templates", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -299,7 +112,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
     t.index ["healing_focus_type", "healing_focus_id"], name: "index_healing_plan_templates_on_healing_focus"
   end
 
-  create_table "healing_plans", force: :cascade do |t|
+  create_table "habit_plans", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name"
     t.datetime "created_at", null: false
@@ -307,13 +120,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
     t.integer "version"
     t.string "lineage_id"
     t.boolean "is_active"
-    t.integer "healing_plan_template_id"
+    t.integer "habit_plan_template_id"
     t.string "type"
     t.integer "duration_type"
     t.json "overview"
-    t.index ["healing_plan_template_id"], name: "index_healing_plans_on_healing_plan_template_id"
-    t.index ["type"], name: "index_healing_plans_on_type"
-    t.index ["user_id"], name: "index_healing_plans_on_user_id"
+    t.index ["habit_plan_template_id"], name: "index_habit_plans_on_habit_plan_template_id"
+    t.index ["type"], name: "index_habit_plans_on_type"
+    t.index ["user_id"], name: "index_habit_plans_on_user_id"
   end
 
   create_table "health_assessments", force: :cascade do |t|
@@ -332,39 +145,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "likes", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "likeable_type", null: false
-    t.integer "likeable_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
-    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
-    t.index ["user_id", "likeable_type", "likeable_id"], name: "index_likes_on_user_id_and_likeable_type_and_likeable_id", unique: true
-    t.index ["user_id"], name: "index_likes_on_user_id"
-  end
-
-  create_table "memberships", force: :cascade do |t|
-    t.integer "room_id", null: false
-    t.integer "user_id", null: false
-    t.datetime "last_read_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["room_id", "user_id"], name: "index_memberships_on_room_id_and_user_id", unique: true
-    t.index ["room_id"], name: "index_memberships_on_room_id"
-    t.index ["user_id"], name: "index_memberships_on_user_id"
-  end
-
-  create_table "messages", force: :cascade do |t|
-    t.integer "room_id", null: false
-    t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["id"], name: "index_messages_on_id", unique: true
-    t.index ["room_id"], name: "index_messages_on_room_id"
-    t.index ["user_id"], name: "index_messages_on_user_id"
-  end
-
   create_table "newsletters", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "status", default: "subscribed"
@@ -377,12 +157,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
 
   create_table "plan_item_logs", force: :cascade do |t|
     t.integer "plan_item_id", null: false
-    t.integer "healing_plan_log_id", null: false
+    t.integer "habit_log_id", null: false
     t.text "note"
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["healing_plan_log_id"], name: "index_plan_item_logs_on_healing_plan_log_id"
+    t.index ["habit_log_id"], name: "index_plan_item_logs_on_habit_log_id"
     t.index ["plan_item_id"], name: "index_plan_item_logs_on_plan_item_id"
   end
 
@@ -408,32 +188,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
   end
 
   create_table "plan_section_templates", force: :cascade do |t|
-    t.integer "healing_plan_template_id", null: false
+    t.integer "habit_plan_template_id", null: false
     t.string "name"
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["healing_plan_template_id", "position"], name: "idx_plan_section_templates_on_plan_and_position"
-    t.index ["healing_plan_template_id"], name: "index_plan_section_templates_on_healing_plan_template_id"
+    t.index ["habit_plan_template_id", "position"], name: "idx_plan_section_templates_on_plan_and_position"
+    t.index ["habit_plan_template_id"], name: "index_plan_section_templates_on_habit_plan_template_id"
   end
 
   create_table "plan_sections", force: :cascade do |t|
     t.string "name"
     t.integer "position"
-    t.integer "healing_plan_id", null: false
+    t.integer "habit_plan_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["healing_plan_id", "position"], name: "index_plan_sections_on_healing_plan_id_and_position"
-    t.index ["healing_plan_id"], name: "index_plan_sections_on_healing_plan_id"
-  end
-
-  create_table "rooms", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "room_type", default: "public", null: false
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["room_type"], name: "index_rooms_on_room_type"
+    t.index ["habit_plan_id", "position"], name: "index_plan_sections_on_habit_plan_id_and_position"
+    t.index ["habit_plan_id"], name: "index_plan_sections_on_habit_plan_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -443,31 +214,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
-  end
-
-  create_table "social_post_bookmarks", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "bookmarkable_type", null: false
-    t.integer "bookmarkable_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["bookmarkable_type", "bookmarkable_id"], name: "idx_on_bookmarkable_type_bookmarkable_id_6a787f38d6"
-    t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_social_post_bookmarks_on_bookmarkable"
-    t.index ["user_id", "bookmarkable_type", "bookmarkable_id"], name: "idx_on_user_id_bookmarkable_type_bookmarkable_id_2a3fa77bb1", unique: true
-    t.index ["user_id"], name: "index_social_post_bookmarks_on_user_id"
-  end
-
-  create_table "social_posts", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.datetime "published_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "likes_count", default: 0
-    t.integer "replies_count", default: 0
-    t.integer "saves_count", default: 0
-    t.integer "parent_post_id"
-    t.index ["parent_post_id"], name: "index_social_posts_on_parent_post_id"
-    t.index ["user_id"], name: "index_social_posts_on_user_id"
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
@@ -549,8 +295,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "password_digest", null: false
-    t.bigint "prakruti_id"
-    t.bigint "vikruti_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "time_zone"
@@ -559,66 +303,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_043735) do
     t.string "location"
     t.string "handle"
     t.string "authentication_token", limit: 510
-    t.time "time_of_birth"
-    t.date "date_of_birth"
     t.string "email_address", limit: 510
     t.index ["authentication_token"], name: "index_users_on_authentication_token"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
-    t.index ["prakruti_id"], name: "index_users_on_prakruti_id"
-    t.index ["vikruti_id"], name: "index_users_on_vikruti_id"
-  end
-
-  create_table "verses", force: :cascade do |t|
-    t.integer "book_id", null: false
-    t.integer "verse_number"
-    t.string "text_header"
-    t.text "text"
-    t.string "chapter_title"
-    t.integer "chapter"
-    t.integer "page_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["book_id"], name: "index_verses_on_book_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "assessment_answers", "assessment_entries"
   add_foreign_key "assessment_answers", "assessment_options"
-  add_foreign_key "assessment_chronic_illnesses", "assessment_entries"
-  add_foreign_key "assessment_chronic_illnesses", "chronic_illnesses"
   add_foreign_key "assessment_options", "assessment_questions"
   add_foreign_key "assessment_questions", "health_assessments"
-  add_foreign_key "chronic_illness_affected_dhatus", "chronic_illnesses"
-  add_foreign_key "chronic_illness_affected_dhatus", "dhatus"
-  add_foreign_key "chronic_illness_aggravating_foods", "chronic_illnesses"
-  add_foreign_key "chronic_illness_aggravating_foods", "foods"
-  add_foreign_key "chronic_illness_channel_systems", "channel_systems"
-  add_foreign_key "chronic_illness_channel_systems", "chronic_illnesses"
-  add_foreign_key "chronic_illness_healing_foods", "chronic_illnesses"
-  add_foreign_key "chronic_illness_healing_foods", "foods"
-  add_foreign_key "dosha_aggravating_foods", "doshas"
-  add_foreign_key "dosha_aggravating_foods", "foods"
-  add_foreign_key "dosha_healing_foods", "doshas"
-  add_foreign_key "dosha_healing_foods", "foods"
-  add_foreign_key "dosha_healing_herbs", "doshas"
-  add_foreign_key "healing_plan_logs", "healing_plans"
-  add_foreign_key "healing_plans", "healing_plan_templates"
-  add_foreign_key "healing_plans", "users"
-  add_foreign_key "likes", "users"
-  add_foreign_key "memberships", "rooms"
-  add_foreign_key "memberships", "users"
-  add_foreign_key "messages", "rooms"
-  add_foreign_key "messages", "users"
-  add_foreign_key "plan_item_logs", "healing_plan_logs"
+  add_foreign_key "habit_logs", "habit_plans"
+  add_foreign_key "habit_logs", "habit_plans"
+  add_foreign_key "habit_plans", "habit_plan_templates"
+  add_foreign_key "habit_plans", "habit_plan_templates"
+  add_foreign_key "habit_plans", "users"
+  add_foreign_key "plan_item_logs", "habit_logs"
   add_foreign_key "plan_item_logs", "plan_items"
   add_foreign_key "plan_item_templates", "plan_section_templates"
   add_foreign_key "plan_items", "plan_sections"
-  add_foreign_key "plan_section_templates", "healing_plan_templates"
-  add_foreign_key "plan_sections", "healing_plans"
+  add_foreign_key "plan_section_templates", "habit_plan_templates"
+  add_foreign_key "plan_section_templates", "habit_plan_templates"
+  add_foreign_key "plan_sections", "habit_plans"
+  add_foreign_key "plan_sections", "habit_plans"
   add_foreign_key "sessions", "users"
-  add_foreign_key "social_post_bookmarks", "users"
-  add_foreign_key "social_posts", "social_posts", column: "parent_post_id"
-  add_foreign_key "social_posts", "users"
-  add_foreign_key "verses", "books"
 end

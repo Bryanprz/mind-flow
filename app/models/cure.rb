@@ -1,2 +1,0 @@
-class Cure < ApplicationRecord
-end

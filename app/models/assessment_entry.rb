@@ -16,51 +16,27 @@ class AssessmentEntry < ApplicationRecord
   has_many :assessment_options, through: :assessment_answers
   has_many :assessment_questions, through: :assessment_options
 
-  has_many :assessment_chronic_illnesses, dependent: :destroy
-  has_many :chronic_illnesses, through: :assessment_chronic_illnesses
+  # Chronic illness associations removed after Ayurveda models were dropped
+  # has_many :assessment_chronic_illnesses, dependent: :destroy
+  # has_many :chronic_illnesses, through: :assessment_chronic_illnesses
 
   def results
-    result_data = Hash.new(0)
-    options.each {|option| result_data[option.dosha] += 1 }
-    result_data
+    # Dosha-related functionality has been removed after Ayurveda models were dropped
+    # This method is kept for backwards compatibility but returns empty hash
+    {}
   end
 
   alias_method :dosha_scores, :results
 
   def primary_dosha
-    dosha_highest_value = results.max_by { |_, value| value }&.first
-    dosha_name_for_lookup = case dosha_highest_value&.to_sym
-                            when :vata then Dosha::VATA
-                            when :pitta then Dosha::PITTA
-                            when :kapha then Dosha::KAPHA
-                            else nil
-                            end
-    Dosha.find_by(name: dosha_name_for_lookup)
+    # Dosha model was removed, returning nil
+    nil
   end
 
   def get_elements
-    case primary_dosha.name
-    when 'vata'
-      return 'Space & Air'
-    when 'pitta'
-      return 'Fire & Water'
-    when 'kapha'
-      return 'Earth & Water'
-    end
+    # Dosha-related functionality has been removed
+    nil
   end
 
-  after_save :update_user_dosha_results, if: :saved_change_to_completed_at?
-
-  private
-
-  def update_user_dosha_results
-    # Ensure we have a user and the assessment has been marked as completed.
-    return unless user.present? && completed_at.present?
-
-    if type == 'PrakrutiEntry'
-      user.update(prakruti: primary_dosha)
-    elsif type == 'VikrutiEntry'
-      user.update(vikruti: primary_dosha)
-    end
-  end
+  # Removed after_save callback for dosha results since prakruti/vikruti no longer exist
 end

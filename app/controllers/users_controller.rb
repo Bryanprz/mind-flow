@@ -15,22 +15,11 @@ class UsersController < ApplicationController
     # already been registered to them, and the session assessment_entry_id should
     # be ignored
 
+    # DiseaseStage model was removed after Ayurveda models were dropped
     @symptoms = []
 
-    DiseaseStage.all.each do |disease_stage|
-      @symptoms << { 
-        stage: disease_stage.formation_stage,
-        name: disease_stage.name,
-        description: disease_stage.description,
-        symptoms: ['']
-      }
-    end
-
-    # Set primary and secondary dosha from user's prakruti/vikruti if available
-    if @user
-      @primary_dosha = @user.prakruti
-      
-    end
+    # Primary dosha is no longer tracked after Ayurveda models were removed
+    @primary_dosha = nil
 
     # Retrieve assessment entry for detailed results and percentages
     if @user && @user.assessment_entries.any?
@@ -66,17 +55,17 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
-    @user.prakruti = @assessment_entry.primary_dosha if @assessment_entry
-    @primary_dosha = @user.prakruti
+    @primary_dosha = nil  # Primary dosha is no longer tracked after Ayurveda models were removed
 
     respond_to do |format|
       if @user.save
         start_new_session_for(@user) # Log in the user using the Authentication concern
         @assessment_entry&.update(user: @user) # Associate assessment with user
-        if @assessment_entry # Create healing plan
-          chronic_illness_ids = @assessment_entry.chronic_illness_ids
-          CreateHealingPlan.new(@user, @assessment_entry.health_assessment, chronic_illness_ids: chronic_illness_ids).call
-        end
+        # HealingPlan functionality has been removed after Ayurveda models were dropped
+        # if @assessment_entry # Create healing plan
+        #   chronic_illness_ids = @assessment_entry.chronic_illness_ids
+        #   CreateHealingPlan.new(@user, @assessment_entry.health_assessment, chronic_illness_ids: chronic_illness_ids).call
+        # end
         session.delete(:assessment_entry_id) # Clear session
 
         if params[:receive_health_report] == "1"
@@ -104,7 +93,7 @@ class UsersController < ApplicationController
             turbo_stream.replace(
               "user-profile-header",
               partial: "users/profile_header",
-              locals: { user: @user, primary_dosha: @user.prakruti }
+              locals: { user: @user, primary_dosha: nil }
             ),
             turbo_stream.replace(
               "user-bio",

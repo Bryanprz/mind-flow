@@ -10,7 +10,7 @@
         <p class="text-xs text-gray-500">Share your wins, struggles, questions — anything on your mind</p>
       </div>
       <div class="flex-shrink-0">
-        <%= link_to "View full feed", community_path, class: "link link-primary text-xs" %>
+        <%= link_to "View full feed", demo_community_path, class: "link link-primary text-xs" %>
       </div>
     </div>
     
@@ -19,51 +19,38 @@
       <div class="relative flex-1 min-h-0 max-h-full">
         <div class="absolute inset-0 max-h-full">
           <div class="h-full max-h-full overflow-y-auto" id="social-feed-scroll">
-            <turbo-frame id="social_feed" src="<%= community_path %>" data-action="turbo:frame-render->scroll-to#scrollTop" class="p-4 max-h-full">
-              <div class="flex items-center justify-center h-full">
-                <span class="loading loading-spinner loading-lg"></span>
-              </div>
-            </turbo-frame>
+            <%= render 'dashboards/demo_social_posts' %>
           </div>
         </div>
       </div>
     </div>
     
-    <!-- New Post Form -->
+    <!-- New Post Form (Demo Mode) -->
     <div class="px-3 pt-3 border-t border-gray-200">
-      <%= turbo_frame_tag "new_post_form" do %>
-        <%= form_with(model: SocialPost.new, url: social_posts_path, data: { controller: "reset-form image-preview", action: "turbo:submit-end->image-preview#clearForm" }, class: "w-full", multipart: true) do |form| %>
-          <div class="flex items-start gap-3">
-            <div class="flex-1 relative min-w-0 flex items-center gap-2 mb-2" data-image-preview-target="inputField">
-              <%= form.rich_text_area :content, 
-                               class: "textarea flex-1 social-feed-input", 
-                               placeholder: "Write something...", 
-                               required: true,
-                               data: { action: "keydown.enter->reset-form#submitOnEnter" } %>
-              <div class="flex items-center gap-2">
-                <%= form.label :media, class: "cursor-pointer text-gray-400 hover:text-primary", data: { action: "click->image-preview#handleFileClick" } do %>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
-                  </svg>
-                  <%= form.file_field :media, multiple: true, class: "hidden", data: { image_preview_target: "fileInput" } %>
-                <% end %>
-                <%= button_tag type: 'submit', class: "text-gray-400 hover:text-primary border-0 bg-transparent p-0" do %>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                  </svg>
-                <% end %>
-              </div>
+      <div class="w-full">
+        <div class="flex items-start gap-3">
+          <div class="flex-1 relative min-w-0 flex items-center gap-2 mb-2">
+            <textarea 
+              class="textarea flex-1 social-feed-input" 
+              placeholder="Write something..."
+              rows="1"
+              onclick="alert('Demo Mode: Posting is disabled. Visit the full community page to see more!')"
+            ></textarea>
+            <div class="flex items-center gap-2">
+              <label class="cursor-pointer text-gray-400 hover:text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
+                </svg>
+              </label>
+              <button type="button" class="text-gray-400 hover:text-primary border-0 bg-transparent p-0" onclick="alert('Demo Mode: Posting is disabled')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+              </button>
             </div>
           </div>
-
-          <!-- Image Preview Area -->
-          <div class="mt-3 hidden" data-image-preview-target="previewContainer">
-            <div class="flex flex-wrap gap-2" data-image-preview-target="previewGrid">
-              <!-- Preview images will be inserted here -->
-            </div>
-          </div>
-        <% end %>
-      <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

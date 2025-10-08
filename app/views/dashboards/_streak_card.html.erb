@@ -23,18 +23,18 @@
     <div class="flex flex-col items-center justify-center py-2">
       <!-- Current Streak -->
       <div class="text-4xl font-bold text-center mb-2">
-        <%= @healing_plan.current_streak %>
+        <%= @habit_plan.current_streak %>
       </div>
       <div class="text-sm text-gray-500 mb-3">
-        day<%= 's' if @healing_plan.current_streak != 1 %> in a row
+        day<%= 's' if @habit_plan.current_streak != 1 %> in a row
       </div>
       
       <!-- Progress Bar -->
-      <% if (progress = @healing_plan.milestone_progress) > 0 %>
+      <% if (progress = @habit_plan.milestone_progress) > 0 %>
         <div class="w-full max-w-xs mb-2">
           <div class="text-xs text-gray-500 mb-1 text-center">
-            <% if (next_milestone = @healing_plan.next_milestone) %>
-              <%= (@healing_plan.milestone_progress * 100).round %>% to next milestone
+            <% if (next_milestone = @habit_plan.next_milestone) %>
+              <%= (@habit_plan.milestone_progress * 100).round %>% to next milestone
             <% end %>
           </div>
           <progress 
@@ -51,7 +51,7 @@
       <% end %>
       
       <!-- Milestone Message -->
-      <% if (milestone_msg = @healing_plan.milestone_message).present? %>
+      <% if (milestone_msg = @habit_plan.milestone_message).present? %>
         <div class="alert alert-success shadow-lg mt-4">
           <div>
             <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
@@ -83,7 +83,7 @@
           </div>
         </div>
       <% else %>
-        <%= link_to "✨ Check-in for Today", my_healing_plan_path, class: "btn btn-md btn-primary w-1/2 text-white" %>
+        <%= link_to "✨ Check-in for Today", my_habit_plan_path, class: "btn btn-md btn-primary w-1/2 text-white" %>
       <% end %>
     </div>
   </div>

@@ -25,6 +25,8 @@ module ApplicationHelper
   end
 
   def dosha_color_class(dosha)
+    return 'text-gray-500' if dosha.nil?
+    
     case dosha.name.to_s.downcase
     when 'vata'
       'text-blue-500'

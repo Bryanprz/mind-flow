@@ -2,22 +2,13 @@
 <% if authenticated? %>
   <!-- Main Navigation Links -->
   <li><%= link_to "Dashboard", dashboard_path, class: nav_link_class(dashboard_path) %></li>
-  <li><%= link_to "Healing Plan", my_healing_plan_path, class: nav_link_class(my_healing_plan_path) %></li>
-  <li><%= link_to "Messages", private_messages_path, class: nav_link_class(private_messages_path) %></li>
-  <li><%= link_to "Community", community_path, class: nav_link_class(community_path) %></li>
-  <% if Rails.env.development? %>
-    <li><%= link_to "Classroom", "#", class: nav_link_class(lifestyle_plans_path) %></li>
-  <% end %>
+  <li><%= link_to "Habit Plan", my_habit_plan_path, class: nav_link_class(my_habit_plan_path) %></li>
+  <li><%= link_to "Messages", demo_messages_path, class: nav_link_class(demo_messages_path) %></li>
+  <li><%= link_to "Community", demo_community_path, class: nav_link_class(demo_community_path) %></li>
   
-  <li><%= link_to "Assessments", assessment_results_path, class: nav_link_class(assessment_results_path) %></li>
-  <li><%= link_to "Check Ins", healing_plan_logs_path, class: nav_link_class(healing_plan_logs_path) %></li>
+  <li><%= link_to "Check Ins", habit_logs_path, class: nav_link_class(habit_logs_path) %></li>
   <li><%= link_to "Profile", profile_path, class: nav_link_class(profile_path) %></li>
   
   <!-- Logout (at very bottom) -->
   <li style="margin-left:-0.3rem;"><%= button_to "Logout", session_path, method: :delete, class: "link-button text-gray-400" %></li>
-
-  <!-- Admin Link (only for admins, at bottom) -->
-  <% if Current.user&.admin? %>
-    <li class="text-info"><%= link_to "Admin", admin_root_path %></li>
-  <% end %>
 <% end %>

@@ -1,5 +1,5 @@
 <div class="text-md space-y-8 md:space-y-4 lg:space-y-5 flex flex-col lg:h-full h-auto dashboard-content" data-controller="modal">
-  <% if Current.user&.prakruti %>
+  <% if @habit_plan %>
     <!-- First Row - 2 equal columns -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-4 flex-shrink-0">
       <%= render 'dashboards/streak_card' %>

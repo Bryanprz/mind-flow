@@ -1,18 +1,4 @@
-# First, load the Dosha model to make its constants available
-require_relative '../app/models/dosha'
+# Load demo seeds for MindMetrics (sanitized wellness tracking app)
+require_relative 'seeds/demo_seeds.rb'
 
-# Then load the dosha seeds
-require_relative 'seeds/doshas.seeds.rb'
-
-# Then load other seeds that depend on the Dosha model and its constants
-require_relative 'seeds/healing_plan_templates_data.seeds.rb'
-require_relative 'seeds/healing_plan_templates.seeds.rb'
-require_relative 'seeds/health_assessments.seeds.rb'
-require_relative 'seeds/chronic_illnesses.rb'
-require_relative 'seeds/dhatus.rb'
-require_relative 'seeds/dosha_foods.seeds.rb'
-require_relative 'seeds/dosha_healing_herbs.seeds.rb'
-require_relative 'seeds/users.seeds.rb'
-require_relative 'seeds/social_posts.rb'
-
-puts "Seeds file has been run."
+puts "🌱 MindMetrics demo seeds completed successfully!"

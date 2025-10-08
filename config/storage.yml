@@ -1,3 +1,6 @@
+# Demo Mode: All storage uses local disk only
+# Google Cloud Storage configuration removed for sanitized demo
+
 test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
@@ -6,20 +9,21 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-google_social_posts:
-  service: GCS
-  project: <%= Rails.application.credentials.gcs[:project_id] %>
-  bucket: <%= Rails.application.credentials.gcs[:bucket] %>
-  credentials: <%= Rails.application.credentials.gcs[:credentials].to_json %>
+# In production, these would use cloud storage services
+# google_social_posts:
+#   service: GCS
+#   project: your-project-id
+#   bucket: your-bucket-name
+#   credentials: <path-to-credentials>
 
-google_avatars:
-  service: GCS
-  project: <%= Rails.application.credentials.gcs[:project_id] %>
-  bucket: ancientherb-avatars
-  credentials: <%= Rails.application.credentials.gcs[:credentials].to_json %>
+# google_avatars:
+#   service: GCS
+#   project: your-project-id
+#   bucket: your-avatars-bucket
+#   credentials: <path-to-credentials>
 
-google_message_attachments:
-  service: GCS
-  project: <%= Rails.application.credentials.gcs[:project_id] %>
-  bucket: ancientherb-message-attachments
-  credentials: <%= Rails.application.credentials.gcs[:credentials].to_json %>
+# google_message_attachments:
+#   service: GCS
+#   project: your-project-id
+#   bucket: your-attachments-bucket
+#   credentials: <path-to-credentials>

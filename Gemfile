@@ -74,10 +74,14 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
-gem 'ruby_llm'
-gem 'google-cloud-storage'
-gem 'google-apis-storage_v1', '~> 0.40.0'
-gem 'googleauth', '~> 1.7'
+# Removed for demo version - use local storage only
+# gem 'ruby_llm'
+# gem 'google-cloud-storage'
+# gem 'google-apis-storage_v1', '~> 0.40.0'
+# gem 'googleauth', '~> 1.7'
 gem "tailwindcss-rails", "~> 2.7"
 gem "acts_as_list"
 gem "exception_notification"
+gem "jsbundling-rails", "~> 1.3"
+
+gem "vite_rails", "~> 3.0"

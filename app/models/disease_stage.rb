@@ -1,3 +1,0 @@
-class DiseaseStage < ApplicationRecord
-end
-

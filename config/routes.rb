@@ -1,90 +1,29 @@
 Rails.application.routes.draw do
-  mount ActionCable.server => '/cable'
-  
   # Active Storage direct uploads
   direct :rails_direct_uploads do
     "/rails/active_storage/direct_uploads"
   end
   
-  resources :social_posts, only: [:show, :create, :destroy] do
-    resources :social_posts, only: [:create], as: :replies
-  end
+  # Demo routes for UI demonstration (no backend functionality)
+  get "/community", to: "pages#demo_community", as: :demo_community
+  get "/messages", to: "pages#demo_messages", as: :demo_messages
+  get "/saved_posts", to: "pages#demo_saved_posts", as: :demo_saved_posts
   
-  resources :likes, only: [:create, :destroy]
-  resources :social_post_bookmarks, only: [:create, :destroy]
-  get "/community", to: "social_posts#index"
-  get "/saved_posts", to: "saved_posts#index"
-  resources :chronic_illnesses
-  resources :healing_plan_logs
-  namespace :admin do
-    resources :chronic_illnesses do
-      member do
-        post :add_healing_food
-        delete :remove_healing_food
-        post :add_aggravating_food
-        delete :remove_aggravating_food
-      end
-    end
-    
-    
-    # Dosha template management routes
-    get 'doshas/:dosha_name/edit', to: 'dosha_templates#edit', as: :edit_dosha_template
-    patch 'doshas/:dosha_name', to: 'dosha_templates#update', as: :update_dosha_template
-    get 'doshas/:dosha_name', to: 'dosha_templates#show', as: :dosha_template
-    
-    # Dosha food management routes
-    resources :doshas, only: [] do
-      member do
-        post :add_healing_food
-        delete :remove_healing_food
-        post :add_aggravating_food
-        delete :remove_aggravating_food
-      end
-    end
-    
-    # Individual field update routes
-    resources :plan_section_templates, only: [:update]
-    resources :plan_item_templates, only: [:update]
-    
-    root "dashboard#index"
-    
-    resources :users, param: :slug do
-      member do
-        get :healing_plans
-        get :healing_plan_templates
-        get :social_posts
-      end
-      resources :healing_plans, except: [:index] do
-        resources :logs, except: [:index]
-      end
-    end
-
-    resources :social_posts, only: [:index, :show, :edit, :update, :destroy]
-    
-    resources :newsletters, only: [:index, :show, :update, :destroy] do
-      collection do
-        post :send_blast
-      end
-    end
-
-    resources :plan_sections, only: [] do
-      member do
-        patch :move
-      end
-    end
-
-    resources :plan_items, only: [] do
-      member do
-        patch :move
-      end
+  # Habit tracking routes
+  resources :habit_logs
+  resources :habit_plans, except: [:new, :show] do
+    collection do
+      post 'log_item_progress'
+      post 'save_journal_log'
+      post 'create_daily_log'
     end
   end
+  resource :habit_plan, only: [:show], as: :my_habit_plan
 
-  resources :verses
+  # Core app routes
   resource :dashboard, only: [:show]
   resource :session
   resources :passwords, param: :token
-  resources :lifestyle_plans
   resources :users, param: :slug do
     member do
       patch :attach_avatar
@@ -92,47 +31,12 @@ Rails.application.routes.draw do
     end
   end
   
+  # Newsletter routes
   resources :newsletters, only: [:create]
   get 'newsletters/unsubscribe', to: 'newsletters#unsubscribe', as: :unsubscribe_newsletter
-  resources :healing_plans, except: [:new, :show] do
-    collection do
-      post 'log_item_progress'
-      post 'save_journal_log'
-      post 'create_daily_log'
-    end
-  end
-  resource :healing_plan, only: [:show], as: :my_healing_plan
 
-  # Assessment routes
-  get 'vikruti_assessment_intro', to: 'health_assessments#intro_vikruti_assessment', as: :vikruti_assessment_intro
-
-  get '/start_prakruti_assessment', to: 'health_assessments#start_prakruti_assessment', as: :start_prakruti_assessment
-  get '/start_vikruti_assessment', to: 'health_assessments#start_vikruti_assessment', as: :start_vikruti_assessment
-
-  post 'assessment/answer', to: 'health_assessments#answer_question', as: :answer_assessment_question
-  post 'assessment/back', to: 'health_assessments#go_back_question', as: :go_back_assessment_question
-  post 'health_assessments/:health_assessment_id/submit_answers', to: 'health_assessments#submit_answers', as: :health_assessment_submit_answers
-  get 'assessment/results', to: 'health_assessments#show_results', as: 'assessment_results'
-  get 'assessment/current_imbalance_results', to: 'health_assessments#current_imbalance_results', as: 'current_imbalance_results'
-
-  get 'profile', to: 'users#show', as: :profile
+  # AI chat (demo mode with canned responses)
   post 'ai/ask', to: 'ai#ask'
-
-  # Chat routes
-  resources :rooms do
-    member do
-      get :load_more_messages
-    end
-    resources :messages, only: [:create] do
-      member do
-        get :refresh
-      end
-    end
-  end
-  
-  # Private messaging routes
-  get "/messages", to: "rooms#private_index", as: :private_messages
-  post "/rooms/private", to: "rooms#create_private", as: :create_private_room
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
@@ -149,33 +53,7 @@ Rails.application.routes.draw do
   get "terms-of-service", to: "pages#terms_of_service", as: :terms_of_service
   get "privacy-policy", to: "pages#privacy_policy", as: :privacy_policy
   get "contact-us", to: "pages#contact_us", as: :contact_us
-
-  # Health assessments
-  resources :health_assessments, only: [:new, :create, :show]
-  
-  # Social posts
-  resources :social_posts, only: [:index, :show, :new, :create, :edit, :update, :destroy]
-  
-  # Doshas
-  resources :doshas, only: [:index, :show]
-  
-  # Foods
-  resources :foods, only: [:index, :show]
-  
-  # Channel systems
-  resources :channel_systems, only: [:index, :show]
-  
-  # Dhatus
-  resources :dhatus, only: [:index, :show]
-  
-  # API routes for AJAX requests
-  namespace :api do
-    resources :health_assessments, only: [:show] do
-      member do
-        get :results
-      end
-    end
-  end
+  get 'profile', to: 'users#show', as: :profile
 
   # Defines the root path route ("/")
   root "home#index"

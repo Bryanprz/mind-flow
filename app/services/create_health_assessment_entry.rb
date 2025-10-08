@@ -5,21 +5,19 @@ class CreateHealthAssessmentEntry
 
   def initialize(health_assessment:, answers:, chronic_illness_ids: [], reason_for_visit:)
     @answers = answers
-    chronic_illnesses = ChronicIllness.where(id: chronic_illness_ids)
-    assessment_entry_class = case health_assessment.assessment_type.to_sym
-                             when :prakruti
-                               PrakrutiEntry
-                             when :vikruti
-                               VikrutiEntry
-                             else
-                               AssessmentEntry # Fallback or raise an error if unexpected
-                             end
+    # ChronicIllness, PrakrutiEntry, and VikrutiEntry were removed after Ayurveda models were dropped
+    # chronic_illnesses = ChronicIllness.where(id: chronic_illness_ids)
+    
+    # Always use base AssessmentEntry class since STI types were removed
+    assessment_entry_class = AssessmentEntry
+    
     @assessment_entry = assessment_entry_class.find_or_initialize_by(
       user: Current.user,  # Will be nil for guests
       health_assessment: health_assessment
     )
     @assessment_entry.reason_for_visit = reason_for_visit
-    @assessment_entry.chronic_illnesses.concat(chronic_illnesses)
+    # Chronic illness association was removed
+    # @assessment_entry.chronic_illnesses.concat(chronic_illnesses)
     @assessment_entry.save
   end
 

@@ -1,0 +1,49 @@
+<% content_for :main_container_class, 'w-full bg-base-200 min-h-full' %>
+
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+  <%= render 'shared/flash' if flash.any? %>
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Edit Habit Plan</h1>
+    <p class="text-gray-600">Update your habit plan details</p>
+  </div>
+
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <%= form_with(model: @habit_plan, local: true) do |form| %>
+        <% if @habit_plan.errors.any? %>
+          <div class="alert alert-error mb-4">
+            <div>
+              <h3 class="font-bold"><%= pluralize(@habit_plan.errors.count, "error") %> prohibited this habit plan from being saved:</h3>
+              <ul class="list-disc list-inside mt-2">
+                <% @habit_plan.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="form-control mb-4">
+          <%= form.label :name, class: "label" do %>
+            <span class="label-text font-semibold">Plan Name</span>
+          <% end %>
+          <%= form.text_field :name, class: "input input-bordered w-full", placeholder: "Enter plan name" %>
+        </div>
+
+        <div class="form-control mb-6">
+          <%= form.label :description, class: "label" do %>
+            <span class="label-text font-semibold">Description</span>
+          <% end %>
+          <%= form.text_area :description, rows: 4, class: "textarea textarea-bordered w-full", placeholder: "Enter plan description" %>
+        </div>
+
+        <div class="flex gap-3 justify-end">
+          <%= link_to "Cancel", my_habit_plan_path(duration_type: @habit_plan.duration_type), class: "btn btn-ghost" %>
+          <%= form.submit "Update Habit Plan", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
