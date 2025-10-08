@@ -524,7 +524,7 @@ export default class extends Controller {
 
       if (response.ok) {
         const data = await response.json()
-        this.healingPlanLogIdValue = data.healing_plan_log_id // Set the Stimulus value
+        this.healingPlanLogIdValue = data.habit_log_id // Set the Stimulus value
       } else {
         console.error("Failed to create HealingPlanLog:", response.statusText)
         alert("Error: Could not create daily log. Please try again.")
@@ -550,7 +550,7 @@ export default class extends Controller {
       body: JSON.stringify({
         plan_item_id: planItemId,
         completed: isCompleted,
-        healing_plan_log_id: healingPlanLogId // Pass healingPlanLogId
+        habit_log_id: healingPlanLogId // Pass healingPlanLogId
       })
     })
     .then(response => {
@@ -586,7 +586,7 @@ export default class extends Controller {
         },
         credentials: 'same-origin',
         body: JSON.stringify({
-          healing_plan_log_id: healingPlanLogId,
+          habit_log_id: healingPlanLogId,
           journal_entry: journalEntry || ''
         })
       });

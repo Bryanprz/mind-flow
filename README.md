@@ -23,7 +23,7 @@ MindMetrics is a full-stack Rails 8 wellness application that helps users track 
 ## Tech Stack
 
 - **Backend**: Ruby on Rails 8.0
-- **Frontend**: Hotwire (Turbo, Stimulus), Tailwind CSS
+- **Frontend**: React, Vite, Hotwire (Turbo, Stimulus), Tailwind CSS
 - **Database**: SQLite (with multi-database support)
 - **Job Processing**: Solid Queue
 - **Real-time**: Action Cable (demo mode)
@@ -43,20 +43,23 @@ MindMetrics is a full-stack Rails 8 wellness application that helps users track 
 
 - Ruby 3.2+
 - Rails 8.0+
-- Node.js 18+ (for asset compilation)
+- Node.js 18+ (for Vite and React)
 - SQLite 3.x
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/mind-metrics.git
-   cd mind-metrics
+   git clone https://github.com/your-username/mind-flow.git
+   cd mind-flow
    ```
 
 2. **Install dependencies**
    ```bash
+   # Install Ruby gems
    bundle install
+   
+   # Install Node packages (React, Vite, etc.)
    npm install
    ```
 
@@ -69,8 +72,14 @@ MindMetrics is a full-stack Rails 8 wellness application that helps users track 
 
 4. **Start the development server**
    ```bash
+   # This starts Rails server, Vite dev server, and Tailwind CSS watch
    bin/dev
    ```
+   
+   The `bin/dev` command uses Foreman to run multiple processes concurrently:
+   - Rails server on port 3000
+   - Vite dev server for hot module reloading of React components
+   - Tailwind CSS watcher for style compilation
 
 5. **Access the application**
    - Open your browser to `http://localhost:3000`

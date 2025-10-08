@@ -8,7 +8,7 @@ end
 
 def completed_today?
   return false unless todays_plan_log
-  plan_items.any? { |item| item.plan_item_logs.where(healing_plan_log: todays_plan_log).exists? }
+  plan_items.any? { |item| item.plan_item_logs.where(habit_log: todays_plan_log).exists? }
 end
 
 def first_item_preview
