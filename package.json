@@ -2,13 +2,29 @@
   "name": "ancientherb",
   "private": true,
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
     "@rails/actiontext": "^8.0.201",
     "daisyui": "^4.12.0",
-    "postcss": "^8.5.6",
+    "framer-motion": "^12.23.22",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.545.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-gauge-chart": "^0.5.1",
+    "react-hook-form": "^7.64.0",
+    "react-is": "^18.2.0",
+    "recharts": "^3.2.1",
     "sortablejs": "^1.15.6",
-    "trix": "^2.1.15"
+    "swr": "^2.3.6",
+    "tailwindcss": "^3.4.18",
+    "trix": "^2.1.15",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@vitejs/plugin-react-swc": "^4.1.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
     "vite": "^5.4.20",
     "vite-plugin-ruby": "^5.1.1"
   }

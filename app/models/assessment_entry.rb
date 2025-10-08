@@ -1,4 +1,7 @@
 class AssessmentEntry < ApplicationRecord
+  # Disable Single Table Inheritance since we removed PrakrutiEntry/VikrutiEntry
+  self.inheritance_column = nil
+  
   # Encrypt sensitive health data
   encrypts :results
   encrypts :completed_at, deterministic: true

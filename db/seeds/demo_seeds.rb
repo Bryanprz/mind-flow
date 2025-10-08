@@ -180,3 +180,4 @@ puts "🎉 Demo data creation complete!"
 puts "Created #{created_users.count} users, #{created_templates.count} habit templates, and sample habit logs"
 puts "Demo users can log in with email: demo@example.com and password: demo123"
 
+

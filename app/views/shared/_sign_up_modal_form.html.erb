@@ -59,7 +59,7 @@
             Already have an account? 
             <%= link_to "Sign in", "#", 
                 class: "text-primary hover:underline font-medium",
-                data: { action: "click->tabs#showTab", "tabs-tab-param": "signin" } %>
+                onclick: "switchModalTab(event, 'signin')" %>
           </p>
         </div>
       </div>

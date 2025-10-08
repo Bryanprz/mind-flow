@@ -1,8 +1,9 @@
+@import url("actiontext.css");
+@import url("message_transitions.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("actiontext.css");
-@import url("message_transitions.css");
 
 /* Your custom styles here */
 

@@ -19,9 +19,11 @@
 
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <% unless content_for?(:vite_page) %>
+      <%= javascript_importmap_tags %>
+    <% end %>
     <%= vite_client_tag %>
-    <%= vite_javascript_tag 'application' %>
+    <%# <vite_javascript_tag 'application'> %>
     <!--
       If using a TypeScript entrypoint file:
         vite_typescript_tag 'application'
@@ -50,5 +52,31 @@
       <%= render "layouts/footer" %>
     <% end %>
     <%= render "shared/sign_up_modal" %>
+    
+    <script>
+      function switchModalTab(event, tabId) {
+        event.preventDefault();
+        console.log('Switching to tab:', tabId);
+        
+        // Update tab styling
+        const tabs = document.querySelectorAll('#sign_up_modal .tab');
+        tabs.forEach(tab => {
+          tab.classList.remove('tab-active');
+          if (tab.getAttribute('data-tab') === tabId) {
+            tab.classList.add('tab-active');
+          }
+        });
+        
+        // Show/hide panes
+        const panes = document.querySelectorAll('#sign_up_modal .tab-pane');
+        panes.forEach(pane => {
+          if (pane.id === tabId) {
+            pane.classList.remove('hidden');
+          } else {
+            pane.classList.add('hidden');
+          }
+        });
+      }
+    </script>
   </body>
 </html>

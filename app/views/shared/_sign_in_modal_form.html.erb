@@ -44,6 +44,12 @@
             <%= link_to "Forgot password?", new_password_path, 
                 class: "text-primary hover:underline font-medium" %>
           </p>
+          <p class="text-gray-300 mt-2">
+            Don't have an account? 
+            <%= link_to "Sign up", "#", 
+                class: "text-primary hover:underline font-medium",
+                onclick: "switchModalTab(event, 'signup')" %>
+          </p>
         </div>
       </div>
     </div>
