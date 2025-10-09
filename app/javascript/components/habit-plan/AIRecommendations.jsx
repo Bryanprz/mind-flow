@@ -79,7 +79,7 @@ export default function AIRecommendations({
 
   return (
     <motion.div
-      className={`card bg-gradient-to-br from-blue-50 to-emerald-50 border border-blue-200/30 shadow-lg ${className}`}
+      className={`card bg-base-100 shadow-sm rounded-lg p-6 border border-base-300/50 ${className}`}
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.5 }}

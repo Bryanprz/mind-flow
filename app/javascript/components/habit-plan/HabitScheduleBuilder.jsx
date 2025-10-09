@@ -2,6 +2,22 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calendar, Plus, Clock, Target, CheckCircle } from 'lucide-react'
 
+// Helper function to clean ActionText content
+const cleanActionTextContent = (content) => {
+  if (!content) return ''
+  
+  // Remove ActionText HTML comments and wrapper divs
+  return content
+    .replace(/<!-- BEGIN app\/views\/layouts\/action_text\/contents\/_content\.html\.erb -->/g, '')
+    .replace(/<!-- END app\/views\/layouts\/action_text\/contents\/_content\.html\.erb -->/g, '')
+    .replace(/<!-- BEGIN \/Users\/[^>]+_content\.html\.erb -->/g, '')
+    .replace(/<!-- END \/Users\/[^>]+_content\.html\.erb -->/g, '')
+    .replace(/<div class="trix-content">/g, '')
+    .replace(/<\/div>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 export default function HabitScheduleBuilder({ 
   habits = [],
   onToggleHabit,
@@ -105,7 +121,7 @@ export default function HabitScheduleBuilder({
                 <div className="flex items-center gap-3">
                   <div className="text-xl">{habit.icon}</div>
                   <div>
-                    <div className="font-medium text-base-content">{habit.name}</div>
+                    <div className="font-medium text-base-content">{cleanActionTextContent(habit.name)}</div>
                     <div className="text-xs text-base-content/60">{habit.category}</div>
                   </div>
                 </div>

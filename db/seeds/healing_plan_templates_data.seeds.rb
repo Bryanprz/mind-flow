@@ -1,311 +1,267 @@
-DOSHA_HEALING_PLANS_TEMPLATE_DATA = {
-  Dosha::VATA => [
+BIOHACKING_PLANS_TEMPLATE_DATA = {
+  "Performance" => [
     {
-      description: "To balance Vata, focus on establishing a consistent daily routine with regular meals and sleep times. Favor warm, nourishing, and slightly oily foods while incorporating calming activities like meditation and gentle yoga to ground your energy.",
+      description: "Optimize cognitive performance and physical energy through evidence-based biohacking protocols. Focus on sleep optimization, nutrition timing, and cognitive enhancement techniques.",
       "duration_type": "daily",
       sections: [
         {
           name: "Quick Wins",
           items: [
-            "Eat warm, moist, and grounding foods like soups or stews instead of cold salads.",
-            "Keep a regular daily routine with set times for waking, meals, and sleep.",
-            "Apply warm sesame oil to your body before a shower for calming and nourishment.",
-            "Practice slow, deep breathing or gentle yoga to settle restlessness."
+            "Cold shower for 2-3 minutes to boost norepinephrine.",
+            "Take 10,000 IU Vitamin D3 with K2 for immune support.",
+            "Practice Wim Hof breathing (4 rounds of 30 breaths).",
+            "Use blue light blocking glasses 2 hours before bed."
           ]
         },
         {
           name: "Morning Routine",
           items: [
-            "Wake up before 6 AM.",
-            "Drink warm water with lemon.",
-            "Perform oil pulling for 5-10 minutes.",
-            "Gentle stretching or yoga for 15-20 minutes.",
-            "Tongue scraping, oil pulling",
-            "5 min Pranayama",
-            "Warm, grounding breakfast"
+            "Wake up at consistent time (within 15-minute window).",
+            "Drink 16-32oz of water with sea salt and lemon.",
+            "Get 10-15 minutes of direct sunlight exposure.",
+            "Take nootropics stack: Alpha-GPC, L-Theanine, Rhodiola.",
+            "Cold plunge or contrast shower (30 seconds cold, 30 seconds hot, repeat 3x).",
+            "5-minute meditation or breathwork session.",
+            "High-protein breakfast within 1 hour of waking."
           ]
         },
         {
           name: "Midday Routine",
           items: [
-            "Largest meal (12–1pm)",
-            "Brahmi tea",
-            "5-min walk + breathwork"
+            "Largest meal between 12-2pm (circadian eating).",
+            "Take probiotics and digestive enzymes.",
+            "10-minute walk after meals for blood sugar optimization.",
+            "Green tea or matcha for sustained energy."
           ]
         },
         {
           name: "Evening Routine",
           items: [
-            "Abhyanga massage",
-            "Gentle yoga / meditation",
-            "Sleep prep (10pm)"
+            "Stop eating 3 hours before bed (intermittent fasting).",
+            "Dim lights and avoid screens 2 hours before sleep.",
+            "Take magnesium glycinate and melatonin.",
+            "Red light therapy for 10-15 minutes.",
+            "Journaling or gratitude practice.",
+            "Sleep in cold room (65-68°F) with blackout curtains."
           ]
         },
         {
-          name: "Dietary Guidelines",
+          name: "Nutrition Protocol",
           items: [
-            "Favor warm, cooked, moist, and grounding foods.",
-            "Avoid cold, dry, raw, and light foods.",
-            "Eat regular meals at consistent times.",
-            "Include healthy fats like ghee and olive oil.",
-            "Spices: ginger, cumin, coriander, fennel."
+            "Follow time-restricted eating (16:8 or 14:10).",
+            "Prioritize whole foods: grass-fed meat, wild fish, organic vegetables.",
+            "Include healthy fats: MCT oil, avocado, nuts, olive oil.",
+            "Avoid processed foods, refined sugars, and vegetable oils.",
+            "Stay hydrated with mineral-rich water (2.5-3L daily)."
           ]
         },
         {
-          name: "Herbal Remedies",
+          name: "Supplements",
           items: [
-            "Ashwagandha: 500mg, nourishes majja dhatu",
-            "Brahmi: calming, supports concentration",
-            "Triphala: gentle detox, supports digestion"
+            "Omega-3 EPA/DHA (2-3g daily) for brain health.",
+            "Magnesium (400-600mg) for sleep and recovery.",
+            "Zinc (15-30mg) for immune function and testosterone.",
+            "Creatine monohydrate (3-5g) for cognitive and physical performance.",
+            "NAC (600-1200mg) for glutathione support and detoxification."
           ]
         },
         {
-          name: "Lifestyle Practices",
+          name: "Movement & Recovery",
           items: [
-            "Maintain a consistent daily routine (dinacharya).",
-            "Get adequate rest (7-8 hours of sleep).",
-            "Practice self-oil massage (abhyanga) daily.",
-            "Spend time in nature, especially in calming environments.",
-            "Yoga: Cat-cow, forward bends, gentle twists",
-            "Breathwork: Alternate nostril, Bhramari",
-            "Meditation: Grounding mantra meditation"
+            "High-intensity interval training 3x per week.",
+            "Strength training 2-3x per week with compound movements.",
+            "Daily mobility work and stretching (10-15 minutes).",
+            "Sauna sessions 3x per week (15-20 minutes at 170-190°F).",
+            "Ice baths or cold therapy 2-3x per week."
           ]
         },
         {
-          name: "Mind-Body Connection",
+          name: "Cognitive Enhancement",
           items: [
-            "Practice meditation or mindfulness for 10-15 minutes daily.",
-            "Engage in calming activities like reading or gentle music.",
-            "Avoid overstimulation and excessive travel."
+            "Practice dual n-back training for working memory.",
+            "Learn a new skill or language for neuroplasticity.",
+            "Use binaural beats for focus and relaxation.",
+            "Practice gratitude and mindfulness meditation daily.",
+            "Engage in social activities and meaningful conversations."
           ]
         }
       ]
     },
     {
-      description: "Vata 3-Month Plan: Focus on long-term grounding and stability through consistent practices and deeper self-care.",
+      description: "3-Month Performance Protocol: Advanced biohacking techniques for sustained peak performance and longevity.",
       "duration_type": "three_month",
       sections: [
-        { name: "Long-term Goals", items: ["Establish consistent sleep schedule (7-8 hours nightly)", "Practice daily meditation for 30 minutes", "Incorporate Abhyanga (self-oil massage) 3-4 times/week"] },
-        { name: "Dietary Shifts", items: ["Consistently incorporate warm, cooked, grounding foods", "Reduce cold, raw, and dry foods by 50%", "Introduce warming spices like ginger and cinnamon daily"] },
-        { name: "Lifestyle Adjustments", items: ["Limit screen time after 8 PM", "Spend 15 minutes daily in nature", "Engage in gentle, grounding exercise (e.g., walking, slow yoga)"] },
-        { name: "Mind-Body Practices", items: ["Journal daily for emotional release", "Practice alternate nostril breathing (Nadi Shodhana) for 10 minutes daily", "Listen to calming music before bed"] }
+        { name: "Foundation Building", items: ["Establish consistent circadian rhythm", "Optimize sleep quality (7-9 hours)", "Implement stress management techniques", "Track biomarkers and adjust protocols"] },
+        { name: "Advanced Nutrition", items: ["Cyclical ketogenic diet for metabolic flexibility", "Intermittent fasting with autophagy benefits", "Micronutrient optimization through testing", "Gut health protocol with prebiotics and probiotics"] },
+        { name: "Performance Enhancement", items: ["HRV-based training intensity", "Breathing techniques for CO2 tolerance", "Cold and heat therapy protocols", "Nootropic cycling for tolerance prevention"] },
+        { name: "Recovery Optimization", items: ["Sleep tracking and optimization", "Red light therapy for cellular repair", "PEMF therapy for inflammation reduction", "Regular biomarker testing and adjustments"] }
       ]
     },
     {
-      description: "Vata 6-Month Plan: Deep dive into Vata balancing and sustained well-being, integrating advanced practices and seasonal adjustments.",
+      description: "6-Month Biohacking Mastery: Comprehensive longevity and performance optimization protocol.",
       "duration_type": "six_month",
       sections: [
-        { name: "Advanced Practices", items: ["Attend a silent meditation retreat (3-5 days)", "Learn advanced pranayama techniques (e.g., Bhramari, Ujjayi)", "Explore Ayurvedic cooking classes for Vata-specific recipes"] },
-        { name: "Seasonal Adjustments", items: ["Adapt diet and routine to seasonal changes (Ritucharya)", "Consider a gentle Ayurvedic cleanse (Panchakarma) under guidance", "Cultivate a strong support system for emotional well-being"] },
-        { name: "Sustained Well-being", items: ["Maintain consistent daily routine regardless of external factors", "Develop resilience to stress through mindfulness and self-compassion", "Integrate Ayurvedic principles into all aspects of life (work, relationships)"] }
+        { name: "Longevity Focus", items: ["NAD+ optimization through precursors", "Senolytic compounds for cellular health", "Autophagy enhancement protocols", "Longevity biomarker tracking"] },
+        { name: "Advanced Recovery", items: ["Hyperbaric oxygen therapy sessions", "Cryotherapy for inflammation reduction", "IV nutrient therapy for optimization", "Regenerative medicine protocols"] },
+        { name: "Cognitive Optimization", items: ["Neurofeedback training for brain optimization", "Advanced nootropic protocols", "Memory palace techniques", "Flow state training"] },
+        { name: "Hormonal Optimization", items: ["Comprehensive hormone panel testing", "Testosterone optimization (if needed)", "Thyroid function optimization", "Stress hormone management"] }
       ]
     }
   ],
-  Dosha::PITTA => [
+  "Recovery" => [
     {
-      description: "For Pitta, emphasize cooling and moderation in all aspects of life. Consume fresh, cooling foods while avoiding spicy, fried, and sour items, and practice calming, non-competitive activities like swimming or walking in nature.",
+      description: "Optimize recovery and stress resilience through targeted biohacking interventions. Focus on sleep, inflammation reduction, and nervous system regulation.",
       "duration_type": "daily",
       sections: [
         {
           name: "Quick Wins",
           items: [
-            "Favor cooling foods like cucumbers, mint, and coconut water.",
-            "Step away from screens and go outside in nature to cool the mind.",
-            "Avoid heated debates — pause and take 3 deep breaths before responding.",
-            "Schedule breaks during work to release intensity and prevent burnout."
+            "Practice box breathing (4-4-4-4) for 5 minutes.",
+            "Take 200-400mg of magnesium before bed.",
+            "Use earthing/grounding techniques for 20 minutes.",
+            "Apply lavender essential oil for relaxation."
           ]
         },
         {
-          name: "Morning Routine",
+          name: "Morning Recovery",
           items: [
-            "Wake up before 6 AM.",
-            "Drink cool water.",
-            "Perform gentle cleansing practices.",
-            "Practice cooling pranayama (breathing exercises).",
-            "Tongue scraping, oil pulling",
-            "5 min Pranayama",
-            "Warm, grounding breakfast"
+            "Gentle wake-up without alarm when possible.",
+            "Drink warm water with sea salt and lemon.",
+            "Sunlight exposure for circadian regulation.",
+            "Light stretching or yoga flow (15-20 minutes).",
+            "Meditation or breathwork (10-15 minutes).",
+            "Anti-inflammatory breakfast with turmeric and ginger."
           ]
         },
         {
-          name: "Midday Routine",
+          name: "Stress Management",
           items: [
-            "Largest meal (12–1pm)",
-            "Brahmi tea",
-            "5-min walk + breathwork"
+            "Practice mindfulness during transitions.",
+            "Take regular breaks every 90 minutes.",
+            "Use breathing techniques during stressful moments.",
+            "Engage in nature exposure daily.",
+            "Limit caffeine to morning hours only.",
+            "Practice gratitude journaling."
           ]
         },
         {
-          name: "Evening Routine",
+          name: "Evening Wind-Down",
           items: [
-            "Abhyanga massage",
-            "Gentle yoga / meditation",
-            "Sleep prep (10pm)"
+            "Stop work 2 hours before bed.",
+            "Take ashwagandha or adaptogenic herbs.",
+            "Use blue light blocking glasses.",
+            "Practice progressive muscle relaxation.",
+            "Read or listen to calming music.",
+            "Keep bedroom cool and dark for optimal sleep."
           ]
         },
         {
-          name: "Dietary Guidelines",
+          name: "Recovery Nutrition",
           items: [
-            "Favor cool, sweet, bitter, and astringent foods.",
-            "Avoid hot, spicy, sour, and salty foods.",
-            "Eat at regular times and avoid skipping meals.",
-            "Include plenty of fresh fruits and vegetables.",
-            "Spices: coriander, fennel, cardamom, saffron."
+            "Focus on anti-inflammatory foods.",
+            "Include omega-3 rich foods daily.",
+            "Consume adequate protein for tissue repair.",
+            "Stay hydrated with mineral water.",
+            "Limit processed foods and sugar.",
+            "Consider collagen peptides for joint health."
           ]
         },
         {
-          name: "Herbal Remedies",
+          name: "Sleep Optimization",
           items: [
-            "Ashwagandha: 500mg, nourishes majja dhatu",
-            "Brahmi: calming, supports concentration",
-            "Triphala: gentle detox, supports digestion"
+            "Maintain consistent sleep schedule (±30 minutes).",
+            "Sleep in 65-68°F room temperature.",
+            "Use blackout curtains or eye mask.",
+            "Consider weighted blanket for anxiety.",
+            "Avoid screens 1-2 hours before bed.",
+            "Track sleep with wearable device."
           ]
         },
         {
-          name: "Lifestyle Practices",
+          name: "Recovery Techniques",
           items: [
-            "Avoid excessive heat and sun exposure.",
-            "Engage in moderate, non-competitive exercise.",
-            "Prioritize relaxation and leisure activities.",
-            "Spend time near water or in cool environments.",
-            "Yoga: Cat-cow, forward bends, gentle twists",
-            "Breathwork: Alternate nostril, Bhramari",
-            "Meditation: Grounding mantra meditation"
-          ]
-        },
-        {
-          name: "Mind-Body Connection",
-          items: [
-            "Practice meditation or mindfulness to calm the mind.",
-            "Cultivate patience and forgiveness.",
-            "Avoid arguments and intense debates.",
-            "Engage in creative outlets that are not overly stimulating."
+            "Foam rolling and self-massage daily.",
+            "Contrast therapy (hot/cold showers).",
+            "Red light therapy for cellular repair.",
+            "Sauna sessions for heat shock proteins.",
+            "Meditation or yoga nidra practice.",
+            "Social connection and meaningful activities."
           ]
         }
-      ]
-    },
-    {
-      description: "Pitta 3-Month Plan: Focus on long-term cooling and moderation through consistent practices and mindful living.",
-      "duration_type": "three_month",
-      sections: [
-        { name: "Long-term Goals", items: ["Establish consistent meal times (avoid skipping)", "Practice daily cooling meditation (15-20 minutes)", "Incorporate cooling herbs like Bhringaraj or Shatavari"] },
-        { name: "Dietary Shifts", items: ["Consistently favor sweet, bitter, and astringent foods", "Reduce spicy, sour, and salty foods by 50%", "Introduce cooling spices like fennel and coriander daily"] },
-        { name: "Lifestyle Adjustments", items: ["Limit exposure to direct sun and excessive heat", "Engage in moderate, non-competitive exercise (e.g., swimming, walking)", "Prioritize relaxation and leisure activities (e.g., reading, nature walks)"] },
-        { name: "Mind-Body Practices", items: ["Journal daily for emotional release (anger, frustration)", "Practice Sheetali or Sheetkari pranayama for cooling", "Cultivate patience and forgiveness in daily interactions"] }
-      ]
-    },
-    {
-      description: "Pitta 6-Month Plan: Deep dive into Pitta balancing and sustained well-being, integrating advanced practices and seasonal adjustments.",
-      "duration_type": "six_month",
-      sections: [
-        { name: "Advanced Practices", items: ["Explore Ayurvedic detoxification (Panchakarma) under guidance", "Learn advanced cooling meditation techniques", "Integrate Ayurvedic principles into professional life (managing intensity)"] },
-        { name: "Seasonal Adjustments", items: ["Adapt diet and routine to seasonal changes (Ritucharya)", "Consider regular cooling oil massages (Abhyanga) with Pitta-balancing oils", "Cultivate non-judgment and acceptance in relationships"] },
-        { name: "Sustained Well-being", items: ["Maintain consistent cooling practices regardless of external factors", "Develop emotional resilience to anger and irritability", "Integrate Ayurvedic principles into all aspects of life (work, relationships)"] }
       ]
     }
   ],
-  Dosha::KAPHA => [
+  "Focus" => [
     {
-      description: "A Kapha-balancing plan prioritizes stimulation and regular movement to counteract sluggishness. Eat light, warm, and spicy foods, engage in vigorous daily exercise, and actively seek out new and exciting experiences.",
+      description: "Enhance cognitive focus and mental clarity through targeted nootropics, brain training, and environmental optimization.",
       "duration_type": "daily",
       sections: [
         {
           name: "Quick Wins",
           items: [
-            "Start your day with vigorous movement — brisk walking, dancing, or yoga.",
-            "Choose light, spicy foods over heavy, oily meals to awaken digestion.",
-            "Avoid oversleeping — wake up by sunrise to boost energy.",
-            "Declutter your space to refresh the mind and lighten emotional weight."
+            "Take 100-200mg L-Theanine with morning coffee.",
+            "Practice 4-7-8 breathing for focus.",
+            "Use focus music or binaural beats.",
+            "Eliminate distractions with phone in another room."
           ]
         },
         {
-          name: "Morning Routine",
+          name: "Morning Focus Protocol",
           items: [
-            "Wake up early (before 6 AM).",
-            "Drink warm water with honey and ginger.",
-            "Perform dry brushing (garshana).",
-            "Vigorous exercise for 30-45 minutes.",
-            "Tongue scraping, oil pulling",
-            "5 min Pranayama",
-            "Warm, grounding breakfast"
+            "Wake up at consistent time for circadian rhythm.",
+            "Cold shower or splash face with cold water.",
+            "Take Alpha-GPC (300-600mg) for acetylcholine.",
+            "Practice 10-minute meditation or breathwork.",
+            "Get 10-15 minutes of natural light exposure.",
+            "High-protein breakfast to stabilize blood sugar.",
+            "Plan day with priority-based task list."
           ]
         },
         {
-          name: "Midday Routine",
+          name: "Focus Environment",
           items: [
-            "Largest meal (12–1pm)",
-            "Brahmi tea",
-            "5-min walk + breathwork"
+            "Clean, organized workspace with minimal clutter.",
+            "Optimal lighting (natural light preferred).",
+            "Comfortable temperature (68-72°F).",
+            "Noise-canceling headphones or quiet space.",
+            "Remove notifications and distractions.",
+            "Use focus apps like Forest or Freedom."
           ]
         },
         {
-          name: "Evening Routine",
+          name: "Cognitive Enhancement",
           items: [
-            "Abhyanga massage",
-            "Gentle yoga / meditation",
-            "Sleep prep (10pm)"
+            "Take Lion's Mane mushroom for neurogenesis.",
+            "Practice dual n-back training (10-15 minutes).",
+            "Use pomodoro technique (25 min work, 5 min break).",
+            "Engage in deep work sessions without interruption.",
+            "Practice active recall and spaced repetition.",
+            "Take regular movement breaks every hour."
           ]
         },
         {
-          name: "Dietary Guidelines",
+          name: "Focus Nutrition",
           items: [
-            "Favor warm, light, dry, and pungent foods.",
-            "Avoid cold, heavy, oily, and sweet foods.",
-            "Eat smaller meals and avoid snacking.",
-            "Include plenty of fresh vegetables and legumes.",
-            "Spices: ginger, black pepper, cayenne, turmeric."
+            "Stay hydrated with mineral-rich water.",
+            "Consume healthy fats for brain health.",
+            "Avoid sugar crashes with complex carbs.",
+            "Include choline-rich foods (eggs, liver).",
+            "Consider MCT oil for ketone production.",
+            "Limit caffeine to avoid tolerance buildup."
           ]
         },
         {
-          name: "Herbal Remedies",
+          name: "Evening Optimization",
           items: [
-            "Ashwagandha: 500mg, nourishes majja dhatu",
-            "Brahmi: calming, supports concentration",
-            "Triphala: gentle detox, supports digestion"
-          ]
-        },
-        {
-          name: "Lifestyle Practices",
-          items: [
-            "Maintain a consistent daily routine (dinacharya).",
-            "Get adequate rest (7-8 hours of sleep).",
-            "Practice self-oil massage (abhyanga) daily.",
-            "Spend time in nature, especially in calming environments.",
-            "Yoga: Cat-cow, forward bends, gentle twists",
-            "Breathwork: Alternate nostril, Bhramari",
-            "Meditation: Grounding mantra meditation"
-          ]
-        },
-        {
-          name: "Mind-Body Connection",
-          items: [
-            "Practice invigorating yoga or exercise.",
-            "Engage in stimulating intellectual activities.",
-            "Avoid emotional eating and attachment.",
-            "Cultivate enthusiasm and motivation."
+            "Review day and plan tomorrow's priorities.",
+            "Practice gratitude to reduce stress.",
+            "Avoid screens 1-2 hours before bed.",
+            "Take magnesium for relaxation.",
+            "Create wind-down routine for better sleep.",
+            "Ensure 7-9 hours of quality sleep."
           ]
         }
-      ]
-    },
-    {
-      description: "Kapha 3-Month Plan: Focus on long-term stimulation and lightness through consistent practices and active engagement.",
-      "duration_type": "three_month",
-      sections: [
-        { name: "Long-term Goals", items: ["Establish consistent vigorous exercise routine (30-45 minutes daily)", "Practice daily stimulating pranayama (e.g., Bhastrika)", "Incorporate dry brushing (Garshana) 3-4 times/week"] },
-        { name: "Dietary Shifts", items: ["Consistently favor light, warm, and spicy foods", "Reduce cold, heavy, and sweet foods by 50%", "Introduce pungent spices like ginger and black pepper daily"] },
-        { name: "Lifestyle Adjustments", items: ["Avoid excessive napping during the day", "Seek out new experiences and challenges regularly", "Engage in stimulating social interactions and intellectual pursuits"] },
-        { name: "Mind-Body Practices", items: ["Practice invigorating yoga or exercise (e.g., Sun Salutations)", "Engage in stimulating intellectual activities (e.g., learning new skills)", "Cultivate enthusiasm and motivation in daily tasks"] }
-      ]
-    },
-    {
-      description: "Kapha 6-Month Plan: Deep dive into Kapha balancing and sustained well-being, integrating advanced practices and seasonal adjustments.",
-      "duration_type": "six_month",
-      sections: [
-        { name: "Advanced Practices", items: ["Explore Ayurvedic detoxification (Panchakarma) under guidance", "Learn advanced invigorating pranayama techniques", "Integrate Ayurvedic principles into professional life (managing inertia)"] },
-        { name: "Seasonal Adjustments", items: ["Adapt diet and routine to seasonal changes (Ritucharya)", "Consider regular stimulating oil massages (Abhyanga) with Kapha-balancing oils", "Cultivate detachment and non-possessiveness in relationships"] },
-        { name: "Sustained Well-being", items: ["Maintain consistent stimulating practices regardless of external factors", "Develop emotional resilience to lethargy and attachment", "Integrate Ayurvedic principles into all aspects of life (work, relationships)"] }
       ]
     }
   ]
 }
-

@@ -2,6 +2,22 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Clock, Target, Timer, Zap, Star, MessageSquare } from 'lucide-react'
 
+// Helper function to clean ActionText content
+const cleanActionTextContent = (content) => {
+  if (!content) return ''
+  
+  // Remove ActionText HTML comments and wrapper divs
+  return content
+    .replace(/<!-- BEGIN app\/views\/layouts\/action_text\/contents\/_content\.html\.erb -->/g, '')
+    .replace(/<!-- END app\/views\/layouts\/action_text\/contents\/_content\.html\.erb -->/g, '')
+    .replace(/<!-- BEGIN \/Users\/[^>]+_content\.html\.erb -->/g, '')
+    .replace(/<!-- END \/Users\/[^>]+_content\.html\.erb -->/g, '')
+    .replace(/<div class="trix-content">/g, '')
+    .replace(/<\/div>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 export default function HabitItem({ 
   item, 
   isCompleted, 
@@ -11,6 +27,9 @@ export default function HabitItem({
 }) {
   const [showNotes, setShowNotes] = useState(false)
   const [notes, setNotes] = useState('')
+  
+  // Clean the content for display
+  const cleanContent = cleanActionTextContent(item.content)
 
   const handleToggle = () => {
     if (!disabled) {
@@ -20,14 +39,14 @@ export default function HabitItem({
 
   // Generate impact score and time estimate based on content
   const getImpactScore = () => {
-    const content = item.content.toLowerCase()
+    const content = cleanContent.toLowerCase()
     if (content.includes('meditation') || content.includes('focus') || content.includes('deep work')) return 3
     if (content.includes('exercise') || content.includes('journal') || content.includes('reading')) return 2
     return 1
   }
 
   const getTimeEstimate = () => {
-    const content = item.content.toLowerCase()
+    const content = cleanContent.toLowerCase()
     if (content.includes('minute') || content.includes('min')) {
       const match = content.match(/(\d+)\s*min/)
       return match ? `${match[1]}m` : '5m'
@@ -37,7 +56,7 @@ export default function HabitItem({
   }
 
   const getBestTime = () => {
-    const content = item.content.toLowerCase()
+    const content = cleanContent.toLowerCase()
     if (content.includes('morning') || content.includes('meditation')) return 'Best: 6-8 AM'
     if (content.includes('evening') || content.includes('journal')) return 'Best: 8-10 PM'
     if (content.includes('work') || content.includes('focus')) return 'Best: 9-11 AM'
@@ -124,19 +143,19 @@ export default function HabitItem({
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <motion.div
-                className={`
-                  font-medium transition-all duration-300
-                  ${isCompleted 
-                    ? 'line-through text-base-content/60' 
-                    : 'text-base-content'
-                  }
-                `}
-                animate={{ 
-                  opacity: isCompleted ? 0.7 : 1 
-                }}
-              >
-                {item.content}
-              </motion.div>
+                      className={`
+                        font-medium transition-all duration-300
+                        ${isCompleted 
+                          ? 'line-through text-base-content/60' 
+                          : 'text-base-content'
+                        }
+                      `}
+                      animate={{ 
+                        opacity: isCompleted ? 0.7 : 1 
+                      }}
+                    >
+                      {cleanContent}
+                    </motion.div>
               
               {/* Smart Info Row */}
               <div className="flex items-center gap-3 mt-2">
