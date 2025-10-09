@@ -180,82 +180,64 @@ export default function HabitPlanView({
       animate="visible"
       className="min-h-screen bg-base-200"
     >
-      {/* Progress Overview */}
+      {/* Combined Date Navigation & Progress Overview */}
       <motion.div
         variants={itemVariants}
         className="mb-8"
       >
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Overall Progress */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="card bg-gradient-to-br from-blue-500/20 to-purple-600/20 backdrop-blur-xl border border-blue-400/30 shadow-lg relative overflow-hidden"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          >
-            <div className="card-body items-center text-center">
-              <ProgressRing
-                percentage={getCompletionPercentage()}
-                size={80}
-                color="#3B82F6"
-                showPercentage={true}
-              />
-              <h3 className="text-lg font-semibold mt-4 text-base-content">Today's Progress</h3>
-              <p className="text-sm text-base-content/70">
-                {getCompletionCount()}/{getTotalCount()} completed
-              </p>
+        <div className="card bg-base-100/90 backdrop-blur-xl border border-base-300/30 shadow-lg">
+          <div className="card-body p-6">
+            {/* Top Row: Date Navigation */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                <button className="btn btn-circle btn-sm btn-ghost">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                
+                <div className="text-center">
+                  <div className="text-lg font-semibold">Wednesday, October 8, 2025</div>
+                  <div className="flex items-center gap-2 justify-center mt-1">
+                    <div className="text-sm text-base-content/60">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                      </svg>
+                      Today
+                    </div>
+                  </div>
+                </div>
+                
+                <button className="btn btn-circle btn-sm btn-ghost">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+              
+              <button className="btn btn-sm btn-primary">Today</button>
             </div>
-          </motion.div>
 
-          {/* Current Streak */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="card bg-gradient-to-br from-emerald-500/20 to-green-600/20 backdrop-blur-xl border border-emerald-400/30 shadow-lg relative overflow-hidden"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M30 30l-10-10v20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          >
-            <div className="card-body items-center text-center">
-              <StreakDisplay
-                streak={habitPlan.current_streak || 0}
-                label="Day Streak"
-                showFire={true}
-              />
+            {/* Bottom Row: 4 Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary" id="focus-minutes">0</div>
+                <div className="text-sm text-base-content/70">Focus Minutes</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-green-500" id="weekly-percentage">83%</div>
+                <div className="text-sm text-base-content/70">This Week</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-blue-500" id="total-habits">36</div>
+                <div className="text-sm text-base-content/70">Total Habits</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-purple-500" id="completion-rate">0%</div>
+                <div className="text-sm text-base-content/70">Completion Rate</div>
+              </div>
             </div>
-          </motion.div>
-
-          {/* Completion Rate */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="card bg-gradient-to-br from-purple-500/20 to-pink-600/20 backdrop-blur-xl border border-purple-400/30 shadow-lg relative overflow-hidden"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Crect x='25' y='25' width='10' height='10' rx='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          >
-            <div className="card-body items-center text-center">
-              <div className="text-4xl mb-2">📊</div>
-              <h3 className="text-lg font-semibold text-base-content">Weekly Avg</h3>
-              <p className="text-2xl font-bold text-primary">85%</p>
-              <p className="text-sm text-base-content/70">Last 7 days</p>
-            </div>
-          </motion.div>
-
-          {/* Time Focused */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="card bg-gradient-to-br from-amber-500/20 to-orange-600/20 backdrop-blur-xl border border-amber-400/30 shadow-lg relative overflow-hidden"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3Cpath d='M30 20v10l8 8' stroke='white' stroke-width='1' fill='none'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          >
-            <div className="card-body items-center text-center">
-              <div className="text-4xl mb-2">⏱️</div>
-              <h3 className="text-lg font-semibold text-base-content">Focus Time</h3>
-              <p className="text-2xl font-bold text-secondary">42m</p>
-              <p className="text-sm text-base-content/70">Today</p>
-            </div>
-          </motion.div>
+          </div>
         </div>
       </motion.div>
 
@@ -288,18 +270,6 @@ export default function HabitPlanView({
 
         {/* Right Column: Planner + Insights */}
         <div className="space-y-6">
-          {/* Date Navigator for Daily Plans */}
-          {habitPlan.duration_type === 'daily' && (
-            <motion.div
-              variants={itemVariants}
-            >
-              <DateNavigator
-                currentDate={currentDate}
-                onDateChange={handleDateChange}
-                completedDates={[]} // Would be populated from habit plan data
-              />
-            </motion.div>
-          )}
 
           {/* Habit Sections */}
           <motion.div
