@@ -9,6 +9,9 @@ import DateNavigator from './habit-plan/DateNavigator'
 import JournalEditor from './habit-plan/JournalEditor'
 import CompletionCelebration from './habit-plan/CompletionCelebration'
 import WeeklyHeatmap from './habit-plan/WeeklyHeatmap'
+import AIRecommendations from './habit-plan/AIRecommendations'
+import DailyInsights from './habit-plan/DailyInsights'
+import HabitScheduleBuilder from './habit-plan/HabitScheduleBuilder'
 
 export default function HabitPlanView({ 
   habitPlan, 
@@ -233,60 +236,101 @@ export default function HabitPlanView({
         </div>
       </motion.div>
 
-      {/* Weekly Heatmap */}
-      <motion.div
-        variants={itemVariants}
-        className="mb-8"
-      >
-        <WeeklyHeatmap
-          weeklyData={[]} // Would be populated from real data
-        />
-      </motion.div>
-
-      {/* Date Navigator for Daily Plans */}
-      {habitPlan.duration_type === 'daily' && (
-        <motion.div
-          variants={itemVariants}
-          className="mb-8"
-        >
-          <DateNavigator
-            currentDate={currentDate}
-            onDateChange={handleDateChange}
-            completedDates={[]} // Would be populated from habit plan data
+      {/* Biohacking Layout - 2 Column */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Column: Overview + Analytics */}
+        <div className="space-y-6">
+          {/* AI Recommendations */}
+          <AIRecommendations
+            onAddRecommendation={(rec) => console.log('Adding recommendation:', rec)}
           />
-        </motion.div>
-      )}
 
-      {/* Habit Sections */}
-      <motion.div
-        variants={containerVariants}
-        className="space-y-8"
-      >
-        {habitPlan.plan_sections.map((section, index) => (
-          <HabitSection
-            key={section.id}
-            section={section}
-            completions={completions}
-            onToggleItem={toggleCompletion}
-            index={index}
-            disabled={isUpdating}
+          {/* Habit Schedule Builder */}
+          <HabitScheduleBuilder
+            habits={habitPlan.plan_sections.flatMap(section => 
+              section.plan_items.map(item => ({
+                id: item.id,
+                name: item.content,
+                category: section.name,
+                icon: section.name.includes('Mind') ? '🧘‍♂️' : 
+                      section.name.includes('Body') ? '💪' : '🎯',
+                completed: new Array(7).fill(false) // Mock data
+              }))
+            )}
           />
-        ))}
-      </motion.div>
 
-      {/* Journal Editor for Daily Plans */}
-      {habitPlan.duration_type === 'daily' && habitLog && (
-        <motion.div
-          variants={itemVariants}
-          className="mt-8"
-        >
-          <JournalEditor
-            habitLogId={habitLog.id}
-            initialEntry={habitLog.journal_entry || ''}
-            initialMood={habitLog.mood}
-          />
-        </motion.div>
-      )}
+          {/* Daily Insights */}
+          <DailyInsights />
+        </div>
+
+        {/* Right Column: Planner + Insights */}
+        <div className="space-y-6">
+          {/* Date Navigator for Daily Plans */}
+          {habitPlan.duration_type === 'daily' && (
+            <motion.div
+              variants={itemVariants}
+            >
+              <DateNavigator
+                currentDate={currentDate}
+                onDateChange={handleDateChange}
+                completedDates={[]} // Would be populated from habit plan data
+              />
+            </motion.div>
+          )}
+
+          {/* Habit Sections */}
+          <motion.div
+            variants={containerVariants}
+            className="space-y-6"
+          >
+            {habitPlan.plan_sections.map((section, index) => (
+              <HabitSection
+                key={section.id}
+                section={section}
+                completions={completions}
+                onToggleItem={toggleCompletion}
+                index={index}
+                disabled={isUpdating}
+              />
+            ))}
+          </motion.div>
+
+          {/* Biohacking Journal */}
+          {habitPlan.duration_type === 'daily' && habitLog && (
+            <motion.div
+              variants={itemVariants}
+            >
+              <div className="card bg-base-100/80 backdrop-blur-xl border border-base-300/50 shadow-lg">
+                <div className="card-body p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                      <span className="text-white font-bold">🧠</span>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-base-content">Biohacking Journal</h3>
+                      <p className="text-sm text-base-content/70">Track your optimization journey</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <p className="text-sm font-medium text-base-content mb-2">
+                      How did today's habits affect your clarity or energy?
+                    </p>
+                    <textarea
+                      className="textarea textarea-bordered w-full h-24 resize-none"
+                      placeholder="Share your biohacking insights..."
+                    />
+                    <div className="flex justify-between items-center mt-2">
+                      <span className="text-xs text-base-content/60">0 words</span>
+                      <button className="btn btn-primary btn-sm">Save Reflection</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </div>
 
       {/* Completion Celebration */}
       <CompletionCelebration

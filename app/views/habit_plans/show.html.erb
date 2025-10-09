@@ -23,61 +23,161 @@
   <% else %>
     <!-- Enhanced Habit Plan Header -->
     <div class="mb-8">
-      <!-- Header with gradient background -->
-      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 p-8 mb-6">
-        <div class="absolute inset-0 bg-black/20"></div>
-        <div class="relative">
-          <div class="flex items-center justify-between mb-6">
-            <div class="flex-1">
-              <h1 class="text-4xl font-black text-white mb-2">
-                <%= case Time.current.hour
-                    when 5..11 then "🌅 Morning Activation"
-                    when 12..17 then "⚡ Afternoon Focus"
-                    when 18..21 then "🌙 Evening Routine"
-                    else "🎯 Daily Protocol"
-                    end %>
-              </h1>
-              <p class="text-white/90 text-lg"><%= @habit_plan.description %></p>
+      <!-- MindFlow Header -->
+      <div class="relative mb-8">
+        <!-- Clean Navigation Bar -->
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center">
+                <span class="text-white font-bold text-lg">MF</span>
+              </div>
+              <h1 class="text-2xl font-bold text-base-content">MindFlow</h1>
             </div>
-            <div class="flex gap-3">
-              <%= link_to dashboard_path, class: "btn btn-ghost btn-lg text-white hover:bg-white/20" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+            <div class="hidden md:flex items-center gap-1 text-sm text-base-content/60">
+              <span>Biohacking Dashboard</span>
+              <div class="w-1 h-1 rounded-full bg-emerald-500"></div>
+              <span>Live</span>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-4">
+            <div class="text-right">
+              <div class="text-sm font-medium text-base-content">
+                <%= case Time.current.hour
+                    when 5..11 then "Morning Optimization"
+                    when 12..17 then "Peak Performance"
+                    when 18..21 then "Evening Recovery"
+                    else "Biohacking Protocol"
+                    end %>
+              </div>
+              <div class="text-xs text-base-content/60"><%= Time.current.strftime("%A, %B %d") %></div>
+            </div>
+            <%= link_to dashboard_path, class: "w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center text-white hover:scale-105 transition-transform" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+              </svg>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Biohacking Stats Overview -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Focus Score Card -->
+          <div class="card bg-base-100/80 backdrop-blur-xl border border-blue-200/20 shadow-lg hover:shadow-blue-500/10 transition-all">
+            <div class="card-body p-6 text-center">
+              <div class="text-sm text-blue-500/80 mb-2">Focus Index</div>
+              <div class="relative w-24 h-24 mx-auto mb-3">
+                <svg class="w-24 h-24 transform -rotate-90" viewBox="0 0 36 36">
+                  <path
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeDasharray="100, 100"
+                    class="text-base-300"
+                  />
+                  <path
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none"
+                    stroke="url(#focusGradient)"
+                    strokeWidth="2"
+                    strokeDasharray="85, 100"
+                    class="drop-shadow-sm"
+                  />
+                  <defs>
+                    <linearGradient id="focusGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#3B82F6" />
+                      <stop offset="100%" stopColor="#10B981" />
+                    </linearGradient>
+                  </defs>
                 </svg>
-                Dashboard
-              <% end %>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <span class="text-2xl font-bold text-base-content">85%</span>
+                </div>
+              </div>
+              <div class="text-xs text-emerald-500 flex items-center justify-center gap-1">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>↑ 8% from yesterday</span>
+              </div>
             </div>
           </div>
 
-          <!-- Stats cards in header -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="text-3xl">🔥</div>
-                <div>
-                  <div class="text-white/70 text-sm">Current Streak</div>
-                  <div class="text-2xl font-bold text-white"><%= @habit_plan.current_streak || 0 %> days</div>
+          <!-- Streak Overview -->
+          <div class="card bg-base-100/80 backdrop-blur-xl border border-emerald-200/20 shadow-lg hover:shadow-emerald-500/10 transition-all">
+            <div class="card-body p-6">
+              <div class="text-sm text-emerald-500/80 mb-4">Habit Streaks</div>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="text-lg">🧘‍♂️</span>
+                    <span class="text-sm font-medium">Meditation</span>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-sm font-bold text-base-content">12d</div>
+                    <div class="w-16 h-1 bg-base-300 rounded-full">
+                      <div class="h-full bg-emerald-500 rounded-full" style="width: 90%"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="text-lg">✍️</span>
+                    <span class="text-sm font-medium">Journaling</span>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-sm font-bold text-base-content">8d</div>
+                    <div class="w-16 h-1 bg-base-300 rounded-full">
+                      <div class="h-full bg-blue-500 rounded-full" style="width: 75%"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="text-lg">💧</span>
+                    <span class="text-sm font-medium">Hydration</span>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-sm font-bold text-base-content">15d</div>
+                    <div class="w-16 h-1 bg-base-300 rounded-full">
+                      <div class="h-full bg-blue-400 rounded-full" style="width: 95%"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            
-            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="text-3xl">📊</div>
-                <div>
-                  <div class="text-white/70 text-sm">Weekly Average</div>
-                  <div class="text-2xl font-bold text-white" id="weekly-average">-</div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="text-3xl">🎯</div>
-                <div>
-                  <div class="text-white/70 text-sm">Next Milestone</div>
-                  <div class="text-2xl font-bold text-white"><%= @habit_plan.next_milestone || 30 %> days</div>
-                </div>
+          </div>
+
+          <!-- Weekly Trend -->
+          <div class="card bg-base-100/80 backdrop-blur-xl border border-purple-200/20 shadow-lg hover:shadow-purple-500/10 transition-all">
+            <div class="card-body p-6">
+              <div class="text-sm text-purple-500/80 mb-4">Weekly Trends</div>
+              <div class="h-20 relative">
+                <svg class="w-full h-full" viewBox="0 0 100 60">
+                  <defs>
+                    <linearGradient id="focusLine" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#3B82F6" />
+                      <stop offset="100%" stopColor="#10B981" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M10,45 Q25,35 40,40 T70,30 T90,25"
+                    fill="none"
+                    stroke="url(#focusLine)"
+                    strokeWidth="2"
+                    class="drop-shadow-sm"
+                  />
+                  <path
+                    d="M10,35 Q25,40 40,35 T70,45 T90,40"
+                    fill="none"
+                    stroke="#8B5CF6"
+                    strokeWidth="2"
+                    strokeDasharray="2,2"
+                  />
+                </svg>
+                <div class="absolute bottom-0 left-0 text-xs text-base-content/60">Focus vs Calm</div>
               </div>
             </div>
           </div>
