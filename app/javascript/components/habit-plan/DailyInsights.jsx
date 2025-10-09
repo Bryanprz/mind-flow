@@ -42,8 +42,8 @@ export default function DailyInsights({
       title: "Performance Peak",
       description: "Your cognitive performance peaks at 2:30 PM. Schedule your most demanding tasks during this window.",
       color: "text-blue-500",
-      bg: "bg-blue-50",
-      border: "border-blue-200"
+      bg: "bg-info",
+      border: "border-info/30"
     },
     {
       icon: "🧠",
@@ -96,7 +96,7 @@ export default function DailyInsights({
     <div className={`space-y-6 ${className}`}>
       {/* Daily Quote */}
       <motion.div
-        className="card bg-base-100/80 backdrop-blur-xl border border-base-300/50 shadow-lg"
+        className="card bg-base-100/90 backdrop-blur-xl border border-base-300/30 shadow-lg"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}

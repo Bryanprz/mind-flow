@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Calendar, Plus, Clock, Target, CheckCircle } from 'lucide-react'
+import { Calendar, Plus, Clock, Target, CheckCircle, TrendingUp } from 'lucide-react'
+import HabitCard from './HabitCard'
 
 // Helper function to clean ActionText content
 const cleanActionTextContent = (content) => {
@@ -34,13 +35,44 @@ export default function HabitScheduleBuilder({
 
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
   
-  // Mock habit data for demonstration
+  // Enhanced mock habit data with realistic completion patterns
   const mockHabits = habits.length > 0 ? habits : [
-    { id: 1, name: 'Meditation', category: 'Mind', icon: '🧘‍♂️', completed: [true, true, false, true, true, false, true] },
-    { id: 2, name: 'Journaling', category: 'Mind', icon: '✍️', completed: [true, true, true, false, true, true, false] },
-    { id: 3, name: 'Hydration', category: 'Body', icon: '💧', completed: [true, true, true, true, true, true, true] },
-    { id: 4, name: 'Exercise', category: 'Body', icon: '💪', completed: [false, true, true, false, true, false, true] },
-    { id: 5, name: 'Screen Detox', category: 'Lifestyle', icon: '📵', completed: [true, false, true, true, false, true, true] }
+    { 
+      id: 1, 
+      name: 'Start your day with vigorous movement — brisk walking, dancing, or yoga', 
+      category: 'Quick Wins', 
+      icon: '🎯', 
+      completed: [true, true, false, true, true, false, true],
+      streak: 3,
+      weeklyGoal: 5
+    },
+    { 
+      id: 2, 
+      name: 'Choose light, spicy foods over heavy, oily meals to awaken digestion', 
+      category: 'Quick Wins', 
+      icon: '🎯', 
+      completed: [true, true, true, false, true, true, false],
+      streak: 2,
+      weeklyGoal: 6
+    },
+    { 
+      id: 3, 
+      name: 'Avoid oversleeping — wake up by sunrise to boost energy', 
+      category: 'Quick Wins', 
+      icon: '🎯', 
+      completed: [true, true, true, true, true, true, true],
+      streak: 7,
+      weeklyGoal: 7
+    },
+    { 
+      id: 4, 
+      name: 'Declutter your space to refresh the mind and lighten emotional weight', 
+      category: 'Quick Wins', 
+      icon: '🎯', 
+      completed: [false, true, true, false, true, false, true],
+      streak: 1,
+      weeklyGoal: 4
+    }
   ]
 
   const handleToggleHabit = (habitId, dayIndex) => {
@@ -94,90 +126,124 @@ export default function HabitScheduleBuilder({
         </motion.button>
       </div>
 
-      {/* Schedule Grid */}
-      <div className="card bg-base-100/80 backdrop-blur-xl border border-base-300/50 shadow-lg">
-        <div className="card-body p-6">
-          {/* Week Header */}
-          <div className="grid grid-cols-8 gap-2 mb-4">
-            <div className="text-sm font-medium text-base-content/70">Habit</div>
-            {weekDays.map((day) => (
-              <div key={day} className="text-center text-sm font-medium text-base-content/70">
-                {day}
-              </div>
-            ))}
-          </div>
+      {/* Modern Card-Based Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-hidden">
+        {mockHabits.map((habit, index) => (
+          <HabitCard
+            key={habit.id}
+            habit={habit}
+            index={index}
+            onToggleHabit={handleToggleHabit}
+            weekDays={weekDays}
+          />
+        ))}
+      </div>
 
-          {/* Habit Rows */}
-          <div className="space-y-3">
-            {mockHabits.map((habit, index) => (
-              <motion.div
-                key={habit.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="grid grid-cols-8 gap-2 items-center p-3 rounded-lg hover:bg-base-200/50 transition-colors"
-              >
-                {/* Habit Info */}
-                <div className="flex items-center gap-3">
-                  <div className="text-xl">{habit.icon}</div>
-                  <div>
-                    <div className="font-medium text-base-content">{cleanActionTextContent(habit.name)}</div>
-                    <div className="text-xs text-base-content/60">{habit.category}</div>
+      {/* Enhanced Weekly Summary */}
+      <div className="card bg-base-100/90 backdrop-blur-xl border border-base-300/30 shadow-lg mt-6">
+        <div className="card-body p-6">
+          <div className="mt-6 pt-4 border-t border-base-300">
+            <div className="grid gap-2 items-center" style={{ gridTemplateColumns: '3fr repeat(7, 0.8fr)' }}>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                    <TrendingUp className="w-3 h-3 text-white" />
+                  </div>
+                  <div className="text-sm font-medium text-base-content">
+                    Weekly Progress
                   </div>
                 </div>
-
-                {/* Day Toggles */}
-                {weekDays.map((day, dayIndex) => (
-                  <motion.button
-                    key={day}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => handleToggleHabit(habit.id, dayIndex)}
-                    className={`
-                      w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200
-                      ${habit.completed[dayIndex]
-                        ? 'bg-gradient-to-br from-green-500 to-emerald-500 text-white shadow-lg'
-                        : 'bg-base-300 hover:bg-base-400 text-base-content/60'
-                      }
-                    `}
-                  >
-                    {habit.completed[dayIndex] && (
-                      <motion.div
-                        initial={{ scale: 0, rotate: -180 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <CheckCircle className="w-4 h-4" />
-                      </motion.div>
-                    )}
-                  </motion.button>
-                ))}
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Weekly Summary */}
-          <div className="mt-6 pt-4 border-t border-base-300">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-base-content/70">
-                Weekly Completion: 
-                <span className="font-bold text-base-content ml-1">
-                  {Math.round((mockHabits.reduce((total, habit) => 
+                <div className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
+                  {mockHabits.length > 0 ? Math.round((mockHabits.reduce((total, habit) => 
                     total + habit.completed.filter(Boolean).length, 0) / 
-                    (mockHabits.length * 7)) * 100)}%
-                </span>
+                    (mockHabits.length * 7)) * 100) : 0}%
+                </div>
+                <div className="text-xs text-base-content/60">
+                  {mockHabits.reduce((total, habit) => 
+                    total + habit.completed.filter(Boolean).length, 0)} of {mockHabits.length * 7} habits completed
+                </div>
               </div>
-              <div className="flex gap-2">
-                {weekDays.map((day, index) => (
-                  <div key={day} className="text-center">
-                    <div className="text-xs text-base-content/60">{day}</div>
-                    <div className="text-sm font-bold text-emerald-500">
-                      {mockHabits.filter(habit => habit.completed[index]).length}
+              {weekDays.map((day, index) => {
+                const completedCount = mockHabits.filter(habit => habit.completed[index]).length
+                const completionRate = (completedCount / mockHabits.length) * 100
+                const isToday = index === new Date().getDay() - 1
+                
+                return (
+                  <motion.div 
+                    key={day} 
+                    className={`text-center p-2 rounded-lg ${isToday ? 'bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-400/30' : 'hover:bg-base-200/30'}`}
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <div className="text-xs text-base-content/60 mb-1">{day}</div>
+                    <div className={`text-lg font-bold ${completionRate === 100 ? 'text-emerald-400' : completionRate >= 75 ? 'text-blue-400' : completionRate >= 50 ? 'text-yellow-400' : 'text-red-400'}`}>
+                      {completedCount}
                     </div>
-                  </div>
-                ))}
-              </div>
+                    <div className="w-full bg-slate-700 rounded-full h-1 mt-1">
+                      <motion.div 
+                        className="h-1 rounded-full bg-gradient-to-r from-emerald-400 to-green-500"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${completionRate}%` }}
+                        transition={{ duration: 0.8, delay: index * 0.1 }}
+                      />
+                    </div>
+                  </motion.div>
+                )
+              })}
             </div>
+          </div>
+          
+          {/* Motivational Stats Section */}
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <motion.div 
+              className="bg-gradient-to-br from-emerald-500/20 to-green-500/20 p-4 rounded-xl border border-emerald-400/30"
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-green-500 rounded-lg flex items-center justify-center">
+                  <Target className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-emerald-400">
+                    {mockHabits.filter(h => h.completed.every(Boolean)).length}
+                  </div>
+                  <div className="text-xs text-base-content/70">Perfect Days</div>
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 p-4 rounded-xl border border-blue-400/30"
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
+                  <Clock className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-blue-400">
+                    {mockHabits.length > 0 ? Math.max(...mockHabits.map(h => h.streak || 0)) : 0} days
+                  </div>
+                  <div className="text-xs text-base-content/70">Longest Streak</div>
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 p-4 rounded-xl border border-yellow-400/30"
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
+                  <CheckCircle className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-yellow-400">
+                    {mockHabits.reduce((acc, h) => acc + h.completed.filter(Boolean).length, 0)}
+                  </div>
+                  <div className="text-xs text-base-content/70">Total Completions</div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { createRoot } from 'react-dom/client'
 import { Calendar, Target, TrendingUp, Clock, CheckCircle2 } from 'lucide-react'
 import { useHabitCompletion } from '../hooks/useHabitCompletion'
 import HabitSection from './habit-plan/HabitSection'
@@ -12,6 +13,7 @@ import WeeklyHeatmap from './habit-plan/WeeklyHeatmap'
 import AIRecommendations from './habit-plan/AIRecommendations'
 import DailyInsights from './habit-plan/DailyInsights'
 import HabitScheduleBuilder from './habit-plan/HabitScheduleBuilder'
+import WeeklyTrendsChart from './habit-plan/WeeklyTrendsChart'
 
 export default function HabitPlanView({ 
   habitPlan, 
@@ -112,6 +114,15 @@ export default function HabitPlanView({
     if (dailyProgressEl) dailyProgressEl.textContent = `${completionRate}% done`
   }, [getCompletionCount, getCompletionPercentage])
 
+  // Render Weekly Trends Chart
+  useEffect(() => {
+    const chartContainer = document.getElementById('weekly-trends-chart')
+    if (chartContainer) {
+      const root = createRoot(chartContainer)
+      root.render(<WeeklyTrendsChart />)
+    }
+  }, [])
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -178,7 +189,10 @@ export default function HabitPlanView({
           {/* Overall Progress */}
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="card bg-base-100/80 backdrop-blur-xl border border-base-300/50 shadow-lg"
+            className="card bg-gradient-to-br from-blue-500/20 to-purple-600/20 backdrop-blur-xl border border-blue-400/30 shadow-lg relative overflow-hidden"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
           >
             <div className="card-body items-center text-center">
               <ProgressRing
@@ -197,7 +211,10 @@ export default function HabitPlanView({
           {/* Current Streak */}
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="card bg-base-100/80 backdrop-blur-xl border border-base-300/50 shadow-lg"
+            className="card bg-gradient-to-br from-emerald-500/20 to-green-600/20 backdrop-blur-xl border border-emerald-400/30 shadow-lg relative overflow-hidden"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M30 30l-10-10v20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
           >
             <div className="card-body items-center text-center">
               <StreakDisplay
@@ -211,7 +228,10 @@ export default function HabitPlanView({
           {/* Completion Rate */}
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="card bg-base-100/80 backdrop-blur-xl border border-base-300/50 shadow-lg"
+            className="card bg-gradient-to-br from-purple-500/20 to-pink-600/20 backdrop-blur-xl border border-purple-400/30 shadow-lg relative overflow-hidden"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Crect x='25' y='25' width='10' height='10' rx='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
           >
             <div className="card-body items-center text-center">
               <div className="text-4xl mb-2">📊</div>
@@ -224,7 +244,10 @@ export default function HabitPlanView({
           {/* Time Focused */}
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="card bg-base-100/80 backdrop-blur-xl border border-base-300/50 shadow-lg"
+            className="card bg-gradient-to-br from-amber-500/20 to-orange-600/20 backdrop-blur-xl border border-amber-400/30 shadow-lg relative overflow-hidden"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3Cpath d='M30 20v10l8 8' stroke='white' stroke-width='1' fill='none'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
           >
             <div className="card-body items-center text-center">
               <div className="text-4xl mb-2">⏱️</div>
@@ -240,6 +263,9 @@ export default function HabitPlanView({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left Column: Overview + Analytics */}
         <div className="space-y-6">
+          {/* Daily Insights - Moved to top */}
+          <DailyInsights />
+
           {/* AI Recommendations */}
           <AIRecommendations
             onAddRecommendation={(rec) => console.log('Adding recommendation:', rec)}
@@ -258,9 +284,6 @@ export default function HabitPlanView({
               }))
             )}
           />
-
-          {/* Daily Insights */}
-          <DailyInsights />
         </div>
 
         {/* Right Column: Planner + Insights */}
