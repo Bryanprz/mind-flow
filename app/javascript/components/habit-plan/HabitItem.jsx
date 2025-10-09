@@ -1,6 +1,6 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Check, Clock, Target } from 'lucide-react'
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Check, Clock, Target, Timer, Zap, Star, MessageSquare } from 'lucide-react'
 
 export default function HabitItem({ 
   item, 
@@ -9,11 +9,44 @@ export default function HabitItem({
   index = 0,
   disabled = false 
 }) {
+  const [showNotes, setShowNotes] = useState(false)
+  const [notes, setNotes] = useState('')
+
   const handleToggle = () => {
     if (!disabled) {
       onToggle(item.id, !isCompleted)
     }
   }
+
+  // Generate impact score and time estimate based on content
+  const getImpactScore = () => {
+    const content = item.content.toLowerCase()
+    if (content.includes('meditation') || content.includes('focus') || content.includes('deep work')) return 3
+    if (content.includes('exercise') || content.includes('journal') || content.includes('reading')) return 2
+    return 1
+  }
+
+  const getTimeEstimate = () => {
+    const content = item.content.toLowerCase()
+    if (content.includes('minute') || content.includes('min')) {
+      const match = content.match(/(\d+)\s*min/)
+      return match ? `${match[1]}m` : '5m'
+    }
+    if (content.includes('hour')) return '1h'
+    return '10m' // default
+  }
+
+  const getBestTime = () => {
+    const content = item.content.toLowerCase()
+    if (content.includes('morning') || content.includes('meditation')) return 'Best: 6-8 AM'
+    if (content.includes('evening') || content.includes('journal')) return 'Best: 8-10 PM'
+    if (content.includes('work') || content.includes('focus')) return 'Best: 9-11 AM'
+    return 'Best: Anytime'
+  }
+
+  const impactScore = getImpactScore()
+  const timeEstimate = getTimeEstimate()
+  const bestTime = getBestTime()
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -88,22 +121,96 @@ export default function HabitItem({
 
         {/* Content */}
         <div className="flex-1">
-          <motion.div
-            className={`
-              font-medium transition-all duration-300
-              ${isCompleted 
-                ? 'line-through text-base-content/60' 
-                : 'text-base-content'
-              }
-            `}
-            animate={{ 
-              opacity: isCompleted ? 0.7 : 1 
-            }}
-          >
-            {item.content}
-          </motion.div>
-          
-          {/* Additional info could be added here in the future */}
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <motion.div
+                className={`
+                  font-medium transition-all duration-300
+                  ${isCompleted 
+                    ? 'line-through text-base-content/60' 
+                    : 'text-base-content'
+                  }
+                `}
+                animate={{ 
+                  opacity: isCompleted ? 0.7 : 1 
+                }}
+              >
+                {item.content}
+              </motion.div>
+              
+              {/* Smart Info Row */}
+              <div className="flex items-center gap-3 mt-2">
+                {/* Impact Score */}
+                <div className="flex items-center gap-1">
+                  {[...Array(impactScore)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.1 * i }}
+                    >
+                      <Zap className="w-3 h-3 text-yellow-500" />
+                    </motion.div>
+                  ))}
+                </div>
+                
+                {/* Time Estimate */}
+                <div className="flex items-center gap-1 text-xs text-base-content/60">
+                  <Clock className="w-3 h-3" />
+                  <span>{timeEstimate}</span>
+                </div>
+                
+                {/* Best Time Suggestion */}
+                <div className="text-xs text-blue-500/80 font-medium">
+                  {bestTime}
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-2 ml-4">
+              {/* Timer Button */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="btn btn-ghost btn-sm btn-circle"
+                title="Start Timer"
+              >
+                <Timer className="w-4 h-4" />
+              </motion.button>
+              
+              {/* Notes Button */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setShowNotes(!showNotes)}
+                className="btn btn-ghost btn-sm btn-circle"
+                title="Add Notes"
+              >
+                <MessageSquare className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </div>
+
+          {/* Notes Section */}
+          <AnimatePresence>
+            {showNotes && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-3 pt-3 border-t border-base-300"
+              >
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Add notes about this habit..."
+                  className="textarea textarea-bordered textarea-sm w-full"
+                  rows={2}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Status icon */}

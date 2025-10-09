@@ -29,7 +29,14 @@
         <div class="relative">
           <div class="flex items-center justify-between mb-6">
             <div class="flex-1">
-              <h1 class="text-4xl font-black text-white mb-2"><%= @habit_plan.name %></h1>
+              <h1 class="text-4xl font-black text-white mb-2">
+                <%= case Time.current.hour
+                    when 5..11 then "🌅 Morning Activation"
+                    when 12..17 then "⚡ Afternoon Focus"
+                    when 18..21 then "🌙 Evening Routine"
+                    else "🎯 Daily Protocol"
+                    end %>
+              </h1>
               <p class="text-white/90 text-lg"><%= @habit_plan.description %></p>
             </div>
             <div class="flex gap-3">
@@ -59,7 +66,7 @@
                 <div class="text-3xl">📊</div>
                 <div>
                   <div class="text-white/70 text-sm">Weekly Average</div>
-                  <div class="text-2xl font-bold text-white">85%</div>
+                  <div class="text-2xl font-bold text-white" id="weekly-average">-</div>
                 </div>
               </div>
             </div>
@@ -81,16 +88,40 @@
       <div class="flex gap-2 p-1 bg-base-100 rounded-2xl shadow-lg w-fit">
         <%= link_to my_habit_plan_path(duration_type: 'daily'), 
             class: "px-6 py-3 rounded-xl font-semibold transition-all duration-300 #{@duration_type == 'daily' ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg' : 'text-base-content hover:bg-base-200'}" do %>
-          Daily Plan
+          🚀 Today's Stack
         <% end %>
         <%= link_to my_habit_plan_path(duration_type: 'three_month'), 
             class: "px-6 py-3 rounded-xl font-semibold transition-all duration-300 #{@duration_type == 'three_month' ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg' : 'text-base-content hover:bg-base-200'}" do %>
-          3-Month Plan
+          📈 This Quarter
         <% end %>
         <%= link_to my_habit_plan_path(duration_type: 'six_month'), 
             class: "px-6 py-3 rounded-xl font-semibold transition-all duration-300 #{@duration_type == 'six_month' ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg' : 'text-base-content hover:bg-base-200'}" do %>
-          6-Month Plan
+          🎯 6-Month Protocol
         <% end %>
+      </div>
+    </div>
+
+    <!-- Mini Analytics Bar -->
+    <div class="mb-6">
+      <div class="bg-base-100/80 backdrop-blur-xl rounded-2xl p-6 border border-base-300/50 shadow-lg">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div class="text-center">
+            <div class="text-3xl font-bold text-primary" id="focus-minutes">247</div>
+            <div class="text-sm text-base-content/70">Focus Minutes</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-green-500" id="weekly-percentage">92%</div>
+            <div class="text-sm text-base-content/70">This Week</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-blue-500" id="total-habits">18</div>
+            <div class="text-sm text-base-content/70">Total Habits</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-purple-500" id="completion-rate">85%</div>
+            <div class="text-sm text-base-content/70">Completion Rate</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -109,8 +140,17 @@
               
               <div class="text-center">
                 <div class="text-lg font-semibold"><%= @date.strftime("%A, %B %d, %Y") %></div>
-                <div class="text-sm text-gray-500">
-                  <%= @date == Date.current ? "Today" : time_ago_in_words(@date) + (@date < Date.current ? " ago" : " from now") %>
+                <div class="flex items-center gap-2 justify-center">
+                  <div class="text-sm text-gray-500">
+                    <%= @date == Date.current ? "Today" : time_ago_in_words(@date) + (@date < Date.current ? " ago" : " from now") %>
+                  </div>
+                  <div class="badge badge-sm" id="daily-status">
+                    <% if @habit_log&.completed_at.present? %>
+                      ✅ Complete
+                    <% else %>
+                      <span id="daily-progress">0% done</span>
+                    <% end %>
+                  </div>
                 </div>
               </div>
               

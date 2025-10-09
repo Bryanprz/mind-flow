@@ -8,6 +8,7 @@ import StreakDisplay from './habit-plan/StreakDisplay'
 import DateNavigator from './habit-plan/DateNavigator'
 import JournalEditor from './habit-plan/JournalEditor'
 import CompletionCelebration from './habit-plan/CompletionCelebration'
+import WeeklyHeatmap from './habit-plan/WeeklyHeatmap'
 
 export default function HabitPlanView({ 
   habitPlan, 
@@ -69,6 +70,44 @@ export default function HabitPlanView({
     // In a real app, this would trigger a page reload or data fetch
     window.location.href = `/habit_plans/my?duration_type=${habitPlan.duration_type}&date=${newDate}`
   }
+
+  // Calculate real-time stats
+  const calculateFocusMinutes = () => {
+    // In a real app, this would come from actual time tracking data
+    return Math.round(getCompletionCount() * 15) // 15 minutes per habit average
+  }
+
+  const calculateWeeklyAverage = () => {
+    // Mock data for now - would come from real analytics
+    return Math.round(85 + (Math.random() - 0.5) * 20)
+  }
+
+  const calculateTotalHabits = () => {
+    return habitPlan.plan_sections.reduce((total, section) => total + section.plan_items.length, 0)
+  }
+
+  // Update stats in header when completion changes
+  useEffect(() => {
+    const focusMinutes = calculateFocusMinutes()
+    const weeklyAvg = calculateWeeklyAverage()
+    const totalHabits = calculateTotalHabits()
+    const completionRate = getCompletionPercentage()
+
+    // Update the header stats
+    const weeklyAvgEl = document.getElementById('weekly-average')
+    const focusMinutesEl = document.getElementById('focus-minutes')
+    const weeklyPercentageEl = document.getElementById('weekly-percentage')
+    const totalHabitsEl = document.getElementById('total-habits')
+    const completionRateEl = document.getElementById('completion-rate')
+    const dailyProgressEl = document.getElementById('daily-progress')
+
+    if (weeklyAvgEl) weeklyAvgEl.textContent = `${weeklyAvg}%`
+    if (focusMinutesEl) focusMinutesEl.textContent = focusMinutes
+    if (weeklyPercentageEl) weeklyPercentageEl.textContent = `${weeklyAvg}%`
+    if (totalHabitsEl) totalHabitsEl.textContent = totalHabits
+    if (completionRateEl) completionRateEl.textContent = `${completionRate}%`
+    if (dailyProgressEl) dailyProgressEl.textContent = `${completionRate}% done`
+  }, [getCompletionCount, getCompletionPercentage])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -192,6 +231,16 @@ export default function HabitPlanView({
             </div>
           </motion.div>
         </div>
+      </motion.div>
+
+      {/* Weekly Heatmap */}
+      <motion.div
+        variants={itemVariants}
+        className="mb-8"
+      >
+        <WeeklyHeatmap
+          weeklyData={[]} // Would be populated from real data
+        />
       </motion.div>
 
       {/* Date Navigator for Daily Plans */}

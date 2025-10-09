@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { CheckCircle2, TrendingUp, Sparkles } from 'lucide-react'
+import { CheckCircle2, TrendingUp, Sparkles, Brain, Dumbbell, Target, Zap } from 'lucide-react'
 import HabitItem from './HabitItem'
 import ProgressRing from './ProgressRing'
 
@@ -15,6 +15,23 @@ export default function HabitSection({
   const totalCount = section.plan_items.length
   const completionPercentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
   const isCompleted = completedCount === totalCount && totalCount > 0
+
+  // Smart section categorization and icons
+  const getSectionIcon = () => {
+    const name = section.name.toLowerCase()
+    if (name.includes('mind') || name.includes('meditation') || name.includes('focus')) {
+      return { Icon: Brain, color: 'text-blue-500', bg: 'from-blue-500 to-blue-600' }
+    }
+    if (name.includes('body') || name.includes('exercise') || name.includes('fitness')) {
+      return { Icon: Dumbbell, color: 'text-green-500', bg: 'from-green-500 to-green-600' }
+    }
+    if (name.includes('goal') || name.includes('productivity') || name.includes('work')) {
+      return { Icon: Target, color: 'text-purple-500', bg: 'from-purple-500 to-purple-600' }
+    }
+    return { Icon: Sparkles, color: 'text-primary', bg: 'from-primary to-primary/80' }
+  }
+
+  const { Icon, color, bg } = getSectionIcon()
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -62,7 +79,7 @@ export default function HabitSection({
                 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300
                 ${isCompleted 
                   ? 'bg-gradient-to-br from-green-500 to-emerald-600' 
-                  : 'bg-gradient-to-br from-purple-500 to-blue-600'
+                  : `bg-gradient-to-br ${bg}`
                 }
               `}
               animate={{ 
@@ -80,7 +97,7 @@ export default function HabitSection({
                   <CheckCircle2 className="w-6 h-6 text-white" />
                 </motion.div>
               ) : (
-                <Sparkles className="w-6 h-6 text-white" />
+                <Icon className="w-6 h-6 text-white" />
               )}
             </motion.div>
             
