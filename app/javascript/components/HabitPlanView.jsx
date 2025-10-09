@@ -241,19 +241,39 @@ export default function HabitPlanView({
         </div>
       </motion.div>
 
-      {/* Biohacking Layout - 2 Column */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left Column: Overview + Analytics */}
-        <div className="space-y-6">
-          {/* Daily Insights - Moved to top */}
-          <DailyInsights />
+      {/* Daily Insights - Full Width */}
+      <motion.div variants={itemVariants} className="mb-8">
+        <DailyInsights />
+      </motion.div>
 
-          {/* AI Recommendations */}
-          <AIRecommendations
-            onAddRecommendation={(rec) => console.log('Adding recommendation:', rec)}
-          />
+      {/* Main Content - 2 Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        {/* Left Column: Plan Sections */}
+        <motion.div variants={containerVariants} className="space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center">
+              <Target className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-base-content">Today's Plan</h3>
+              <p className="text-sm text-base-content/70">Complete your daily habits</p>
+            </div>
+          </div>
+          
+          {habitPlan.plan_sections.map((section, index) => (
+            <HabitSection
+              key={section.id}
+              section={section}
+              completions={completions}
+              onToggleItem={toggleCompletion}
+              index={index}
+              disabled={isUpdating}
+            />
+          ))}
+        </motion.div>
 
-          {/* Habit Schedule Builder */}
+        {/* Right Column: Habit Schedule Builder */}
+        <motion.div variants={itemVariants}>
           <HabitScheduleBuilder
             habits={habitPlan.plan_sections.flatMap(section => 
               section.plan_items.map(item => ({
@@ -262,68 +282,52 @@ export default function HabitPlanView({
                 category: section.name,
                 icon: section.name.includes('Mind') ? '🧘‍♂️' : 
                       section.name.includes('Body') ? '💪' : '🎯',
-                completed: new Array(7).fill(false) // Mock data
+                completed: new Array(7).fill(false)
               }))
             )}
           />
-        </div>
+        </motion.div>
+      </div>
 
-        {/* Right Column: Planner + Insights */}
-        <div className="space-y-6">
+      {/* AI Recommendations - Full Width */}
+      <motion.div variants={itemVariants} className="mb-8">
+        <AIRecommendations
+          onAddRecommendation={(rec) => console.log('Adding recommendation:', rec)}
+        />
+      </motion.div>
 
-          {/* Habit Sections */}
-          <motion.div
-            variants={containerVariants}
-            className="space-y-6"
-          >
-            {habitPlan.plan_sections.map((section, index) => (
-              <HabitSection
-                key={section.id}
-                section={section}
-                completions={completions}
-                onToggleItem={toggleCompletion}
-                index={index}
-                disabled={isUpdating}
-              />
-            ))}
-          </motion.div>
-
-          {/* Biohacking Journal */}
-          {habitPlan.duration_type === 'daily' && habitLog && (
-            <motion.div
-              variants={itemVariants}
-            >
-              <div className="card bg-base-100/80 backdrop-blur-xl border border-base-300/50 shadow-lg">
-                <div className="card-body p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
-                      <span className="text-white font-bold">🧠</span>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-base-content">Biohacking Journal</h3>
-                      <p className="text-sm text-base-content/70">Track your optimization journey</p>
-                    </div>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <p className="text-sm font-medium text-base-content mb-2">
-                      How did today's habits affect your clarity or energy?
-                    </p>
-                    <textarea
-                      className="textarea textarea-bordered w-full h-24 resize-none"
-                      placeholder="Share your biohacking insights..."
-                    />
-                    <div className="flex justify-between items-center mt-2">
-                      <span className="text-xs text-base-content/60">0 words</span>
-                      <button className="btn btn-primary btn-sm">Save Reflection</button>
-                    </div>
-                  </div>
+      {/* Biohacking Journal - Full Width */}
+      {habitPlan.duration_type === 'daily' && habitLog && (
+        <motion.div variants={itemVariants}>
+          <div className="card bg-base-100/80 backdrop-blur-xl border border-base-300/50 shadow-lg">
+            <div className="card-body p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                  <span className="text-white font-bold">🧠</span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-base-content">Biohacking Journal</h3>
+                  <p className="text-sm text-base-content/70">Track your optimization journey</p>
                 </div>
               </div>
-            </motion.div>
-          )}
-        </div>
-      </div>
+              
+              <div className="mb-4">
+                <p className="text-sm font-medium text-base-content mb-2">
+                  How did today's habits affect your clarity or energy?
+                </p>
+                <textarea
+                  className="textarea textarea-bordered w-full h-24 resize-none"
+                  placeholder="Share your biohacking insights..."
+                />
+                <div className="flex justify-between items-center mt-2">
+                  <span className="text-xs text-base-content/60">0 words</span>
+                  <button className="btn btn-primary btn-sm">Save Reflection</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Completion Celebration */}
       <CompletionCelebration
