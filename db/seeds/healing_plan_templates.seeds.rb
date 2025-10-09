@@ -1,30 +1,30 @@
-# The Dosha model is already loaded by seeds.rb
+# The BioProfile model is already loaded by seeds.rb
 require_relative 'healing_plan_templates_data.seeds.rb'
 
-# Create doshas if they don't exist
-vata = Dosha.find_or_create_by!(name: Dosha::VATA) { |d| d.color = "blue" }
-pitta = Dosha.find_or_create_by!(name: Dosha::PITTA) { |d| d.color = "red" }
-kapha = Dosha.find_or_create_by!(name: Dosha::KAPHA) { |d| d.color = "green" }
+# Create bio profiles if they don't exist
+nervous_system = BioProfile.find_or_create_by!(name: BioProfile::NERVOUS_SYSTEM) { |d| d.color = "blue" }
+metabolic = BioProfile.find_or_create_by!(name: BioProfile::METABOLIC) { |d| d.color = "red" }
+structural = BioProfile.find_or_create_by!(name: BioProfile::STRUCTURAL) { |d| d.color = "green" }
 
-# Create a map of dosha names to their records
-dosha_map = {
-  Dosha::VATA => vata,
-  Dosha::PITTA => pitta,
-  Dosha::KAPHA => kapha
+# Create a map of bio profile names to their records
+bio_profile_map = {
+  BioProfile::NERVOUS_SYSTEM => nervous_system,
+  BioProfile::METABOLIC => metabolic,
+  BioProfile::STRUCTURAL => structural
 }
 
-DOSHA_HEALING_PLANS_TEMPLATE_DATA.each do |dosha_name, plans_data_array| # plans_data_array is now an array of plan configs
-  dosha = dosha_map[dosha_name]
-  puts "Creating Healing Plan Templates for #{dosha_name}..."
+BIO_PROFILE_PLANS_TEMPLATE_DATA.each do |bio_profile_name, plans_data_array| # plans_data_array is now an array of plan configs
+  bio_profile = bio_profile_map[bio_profile_name]
+  puts "Creating Healing Plan Templates for #{bio_profile_name}..."
 
   plans_data_array.each do |data| # Loop through each plan config (daily, 3month, 6month)
-    name = "#{dosha_name} Balancing Plan"
+    name = "#{bio_profile_name} Optimization Plan"
     
     # Find or create the template with all required attributes - include duration_type to make it unique
     healing_plan_template = HealingPlanTemplate.find_or_initialize_by(
       name: name,
       duration_type: data[:duration_type],
-      healing_focus: dosha
+      healing_focus: bio_profile
     )
     healing_plan_template.assign_attributes(
       description: data[:description]

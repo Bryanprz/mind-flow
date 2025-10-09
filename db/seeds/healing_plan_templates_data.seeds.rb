@@ -1,3 +1,195 @@
+BIO_PROFILE_PLANS_TEMPLATE_DATA = {
+  "Nervous System" => [
+    {
+      description: "Optimize nervous system regulation and stress resilience through evidence-based protocols. Focus on circadian rhythm, stress management, and nervous system support.",
+      "duration_type": "daily",
+      sections: [
+        {
+          name: "Morning Routine",
+          items: [
+            "Wake up at consistent time (within 15-minute window).",
+            "Drink 16-32oz of water with sea salt and lemon.",
+            "Get 10-15 minutes of direct sunlight exposure.",
+            "Take nervous system support stack: Ashwagandha 500mg, L-Theanine 200mg, Magnesium 400mg.",
+            "5-minute meditation or breathwork session.",
+            "High-protein breakfast within 1 hour of waking."
+          ]
+        },
+        {
+          name: "Stress Management",
+          items: [
+            "Practice box breathing (4-4-4-4) for 5 minutes.",
+            "Take regular breaks every 90 minutes.",
+            "Use breathing techniques during stressful moments.",
+            "Engage in nature exposure daily.",
+            "Limit caffeine to morning hours only.",
+            "Practice gratitude journaling."
+          ]
+        },
+        {
+          name: "Evening Wind-Down",
+          items: [
+            "Stop work 2 hours before bed.",
+            "Take Ashwagandha 500mg or other adaptogenic herbs.",
+            "Use blue light blocking glasses.",
+            "Practice progressive muscle relaxation.",
+            "Read or listen to calming music.",
+            "Keep bedroom cool and dark for optimal sleep."
+          ]
+        },
+        {
+          name: "Nervous System Nutrition",
+          items: [
+            "Focus on complex carbohydrates for stable blood sugar.",
+            "Include healthy fats: MCT oil, avocado, nuts, olive oil.",
+            "Consume adequate protein for neurotransmitter support.",
+            "Stay hydrated with mineral-rich water (2.5-3L daily).",
+            "Limit processed foods and refined sugars.",
+            "Consider omega-3 supplements for brain health."
+          ]
+        },
+        {
+          name: "Supplements",
+          items: [
+            "Ashwagandha (500mg daily) for stress response regulation.",
+            "L-Theanine (200-400mg) for relaxation and focus.",
+            "Magnesium (400-600mg) for nervous system support.",
+            "Omega-3 EPA/DHA (2-3g daily) for brain health.",
+            "B-Complex vitamins for nervous system function.",
+            "Adaptogenic herbs for stress resilience."
+          ]
+        }
+      ]
+    }
+  ],
+  "Metabolic" => [
+    {
+      description: "Optimize metabolic function and reduce inflammation through targeted protocols. Focus on cooling, anti-inflammatory nutrition, and metabolic support.",
+      "duration_type": "daily",
+      sections: [
+        {
+          name: "Morning Routine",
+          items: [
+            "Wake up at consistent time for circadian regulation.",
+            "Drink cool water with lemon and mint.",
+            "Get 10-15 minutes of natural light exposure.",
+            "Take metabolic support stack: Turmeric 500mg, Green tea extract, Probiotics.",
+            "Light stretching or yoga flow (15-20 minutes).",
+            "Anti-inflammatory breakfast with cooling foods."
+          ]
+        },
+        {
+          name: "Metabolic Cooling",
+          items: [
+            "Practice cooling breathwork techniques.",
+            "Take regular breaks in cool environments.",
+            "Use cooling techniques during heat stress.",
+            "Engage in moderate, non-competitive exercise.",
+            "Limit exposure to excessive heat.",
+            "Practice mindfulness for stress reduction."
+          ]
+        },
+        {
+          name: "Evening Optimization",
+          items: [
+            "Stop eating 3 hours before bed.",
+            "Take cooling herbs: Mint, Coriander, Fennel.",
+            "Use cooling techniques for temperature regulation.",
+            "Practice meditation or gentle yoga.",
+            "Read or engage in calming activities.",
+            "Keep bedroom cool for optimal sleep."
+          ]
+        },
+        {
+          name: "Anti-Inflammatory Nutrition",
+          items: [
+            "Focus on cooling, anti-inflammatory foods.",
+            "Include omega-3 rich foods daily.",
+            "Consume adequate protein for metabolic support.",
+            "Stay hydrated with cool, mineral water.",
+            "Limit inflammatory foods and processed sugars.",
+            "Consider anti-inflammatory supplements."
+          ]
+        },
+        {
+          name: "Supplements",
+          items: [
+            "Turmeric (500-1000mg daily) for inflammation reduction.",
+            "Omega-3 EPA/DHA (2-3g daily) for anti-inflammatory support.",
+            "Probiotics for digestive and metabolic health.",
+            "Green tea extract for metabolic support.",
+            "Cooling herbs: Mint, Coriander, Fennel.",
+            "Anti-inflammatory compounds for metabolic optimization."
+          ]
+        }
+      ]
+    }
+  ],
+  "Structural" => [
+    {
+      description: "Optimize structural health and energy through stimulation protocols and metabolic enhancement. Focus on movement, metabolism boost, and structural support.",
+      "duration_type": "daily",
+      sections: [
+        {
+          name: "Morning Routine",
+          items: [
+            "Wake up early (before 6 AM) for energy optimization.",
+            "Drink warm water with honey and ginger.",
+            "Perform dry brushing for circulation.",
+            "Vigorous exercise for 30-45 minutes.",
+            "Take metabolism-boosting stack: Ginger, Cinnamon, Green tea.",
+            "High-energy breakfast with metabolism support."
+          ]
+        },
+        {
+          name: "Energy Optimization",
+          items: [
+            "Stay active and avoid prolonged sitting.",
+            "Seek out new experiences and challenges.",
+            "Avoid excessive napping during the day.",
+            "Engage in stimulating activities and social interaction.",
+            "Practice invigorating exercise routines.",
+            "Maintain high energy levels throughout the day."
+          ]
+        },
+        {
+          name: "Evening Stimulation",
+          items: [
+            "Engage in stimulating intellectual activities.",
+            "Practice invigorating yoga or exercise.",
+            "Avoid emotional eating and attachment.",
+            "Cultivate enthusiasm and motivation.",
+            "Plan exciting activities for tomorrow.",
+            "Maintain stimulating evening routine."
+          ]
+        },
+        {
+          name: "Metabolism-Boosting Nutrition",
+          items: [
+            "Focus on light, warming, metabolism-boosting foods.",
+            "Include metabolism-supporting spices: Ginger, Black pepper, Cayenne.",
+            "Consume adequate protein for structural support.",
+            "Stay hydrated with warm, metabolism-supporting beverages.",
+            "Limit heavy, cold, metabolism-slowing foods.",
+            "Consider metabolism-boosting supplements."
+          ]
+        },
+        {
+          name: "Supplements",
+          items: [
+            "Ginger (1-3g daily) for metabolism and circulation support.",
+            "Cinnamon (1-2g daily) for blood sugar and metabolic regulation.",
+            "Green tea extract for metabolism and energy support.",
+            "Metabolism-boosting herbs: Black pepper, Cayenne, Turmeric.",
+            "Structural support compounds for mobility and function.",
+            "Energy-enhancing supplements for structural optimization."
+          ]
+        }
+      ]
+    }
+  ]
+}
+
 BIOHACKING_PLANS_TEMPLATE_DATA = {
   "Performance" => [
     {

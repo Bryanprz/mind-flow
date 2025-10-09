@@ -146,30 +146,30 @@ dosha_foods_data = {
   }
 }
 
-# Create foods and associate them with doshas
-dosha_foods_data.each do |dosha_name, foods_data|
-  dosha = Dosha.find_by(name: dosha_name)
-  next unless dosha
+# Create foods and associate them with bio profiles
+dosha_foods_data.each do |bio_profile_name, foods_data|
+  bio_profile = BioProfile.find_by(name: bio_profile_name)
+  next unless bio_profile
 
-  puts "Adding foods for #{dosha_name}..."
+  puts "Adding foods for #{bio_profile_name}..."
 
   # Add healing foods
   foods_data[:healing_foods].each do |food_name|
     food = Food.find_or_create_by(name: food_name)
-    unless dosha.foods_that_heal.include?(food)
-      dosha.foods_that_heal << food
+    unless bio_profile.foods_that_heal.include?(food)
+      bio_profile.foods_that_heal << food
     end
   end
 
   # Add aggravating foods
   foods_data[:aggravating_foods].each do |food_name|
     food = Food.find_or_create_by(name: food_name)
-    unless dosha.foods_that_aggravate.include?(food)
-      dosha.foods_that_aggravate << food
+    unless bio_profile.foods_that_aggravate.include?(food)
+      bio_profile.foods_that_aggravate << food
     end
   end
 
-  puts "Added #{dosha.foods_that_heal.count} healing foods and #{dosha.foods_that_aggravate.count} aggravating foods for #{dosha_name}"
+  puts "Added #{bio_profile.foods_that_heal.count} healing foods and #{bio_profile.foods_that_aggravate.count} aggravating foods for #{bio_profile_name}"
 end
 
-puts "Dosha foods seeded."
+puts "BioProfile foods seeded."

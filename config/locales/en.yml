@@ -1,129 +1,146 @@
 en:
   hello: "Hello world"
   vikruti_assessment_description: "The Vikruti Assessment helps you understand your current imbalances, revealing the root causes of chronic physical, mental, or emotional issues. Answer truthfully for an accurate guide to your healing journey."
-  doshas:
-    vata:
-      description: "Vata is the energy of movement, like wind, governing the nervous system, circulation, and creativity."
+  bio_profiles:
+    nervous_system:
+      description: "Nervous System Profile represents the energy of movement and creativity, governing nervous system function, circulation, and cognitive performance."
       bullet_points:
-        - "Governs movement, creativity, and the nervous system."
-        - "Prone to dryness, anxiety, and irregular routines."
-        - "Balances with warmth, routine, and grounding foods."
+        - "Governs nervous system function, creativity, and adaptability."
+        - "Prone to stress, anxiety, and irregular routines."
+        - "Optimizes with consistency, routine, and nervous system support."
       key_characteristics:
-        - "Light, thin build"
+        - "Lean, mobile build"
         - "Energy comes in bursts"
-        - "Lively, creative, and enthusiastic"
+        - "Creative, enthusiastic, and adaptable"
         - "Quick to learn and grasp new knowledge"
-        - "Responds to stress with fear, worry, and anxiety"
-      in_balance: 'When Vata is in balance, you feel creative, energetic, and enthusiastic. Your mind is clear, and you are adaptable and inspired.'
-      out_of_balance: 'When Vata is out of balance, you may experience anxiety, fear, and restlessness. You might have dry skin, constipation, and difficulty sleeping.'
-      healing_plan_description: 'To balance Vata, focus on establishing a consistent daily routine with regular meals and sleep times. Favor warm, nourishing, and ground your energy with calming practices like meditation and gentle yoga.'
+        - "Responds to stress with anxiety and restlessness"
+      in_balance: 'When your nervous system is optimized, you feel creative, energetic, and focused. Your mind is clear, and you are adaptable and inspired.'
+      out_of_balance: 'When your nervous system is stressed, you may experience anxiety, restlessness, and irregular energy. You might have sleep issues, digestive problems, and difficulty focusing.'
+      healing_plan_description: 'To optimize nervous system function, focus on establishing consistent routines with regular meal times and sleep schedules. Support nervous system health with stress management practices, meditation, and nervous system-supporting nutrition.'
       healing_plan:
         sections:
           - name: "Morning Routine"
             items:
-              - "Wake up before 6 AM."
-              - "Drink warm water with lemon."
-              - "Perform oil pulling for 5-10 minutes."
-              - "Gentle stretching or yoga for 15-20 minutes."
-          - name: "Dietary Guidelines"
+              - "Wake up at consistent time (within 15-minute window)."
+              - "Drink 16-32oz of water with sea salt and lemon."
+              - "Get 10-15 minutes of direct sunlight exposure."
+              - "Take nervous system support stack: Ashwagandha 500mg, L-Theanine 200mg, Magnesium 400mg."
+              - "5-minute meditation or breathwork session."
+              - "High-protein breakfast within 1 hour of waking."
+          - name: "Nutrition Protocol"
             items:
-              - "Favor warm, cooked, moist, and grounding foods."
-              - "Avoid cold, dry, raw, and light foods."
-              - "Eat regular meals at consistent times."
-              - "Include healthy fats like ghee and olive oil."
-              - "Spices: ginger, cumin, coriander, fennel."
-          - name: "Lifestyle Practices"
+              - "Focus on complex carbohydrates for stable blood sugar."
+              - "Include healthy fats: MCT oil, avocado, nuts, olive oil."
+              - "Consume adequate protein for neurotransmitter support."
+              - "Stay hydrated with mineral-rich water (2.5-3L daily)."
+              - "Limit processed foods and refined sugars."
+              - "Consider omega-3 supplements for brain health."
+          - name: "Stress Management"
             items:
-              - "Maintain a consistent daily routine (dinacharya)."
-              - "Get adequate rest (7-8 hours of sleep)."
-              - "Practice self-oil massage (abhyanga) daily."
-              - "Spend time in nature, especially in calming environments."
-          - name: "Mind-Body Connection"
+              - "Practice box breathing (4-4-4-4) for 5 minutes."
+              - "Take regular breaks every 90 minutes."
+              - "Use breathing techniques during stressful moments."
+              - "Engage in nature exposure daily."
+              - "Limit caffeine to morning hours only."
+              - "Practice gratitude journaling."
+          - name: "Nervous System Support"
             items:
               - "Practice meditation or mindfulness for 10-15 minutes daily."
               - "Engage in calming activities like reading or gentle music."
-              - "Avoid overstimulation and excessive travel."
-    pitta:
-      description: "Pitta is the energy of transformation, like fire, driving digestion, metabolism, and sharp thinking."
+              - "Avoid overstimulation and excessive screen time."
+              - "Support with adaptogenic herbs and nervous system nutrients."
+    metabolic:
+      description: "Metabolic Profile represents the energy of transformation and intensity, driving metabolic function, digestion, and focused thinking."
       bullet_points:
-        - "Controls digestion, metabolism, and intelligence."
-        - "Can be fiery, irritable, and intense under stress."
-        - "Finds harmony with cooling foods and a calm environment."
+        - "Controls metabolic function, digestion, and cognitive performance."
+        - "Can be intense, competitive, and driven under stress."
+        - "Optimizes with cooling protocols and stress management."
       key_characteristics:
-        - "Medium build, muscular"
+        - "Athletic build, muscular"
         - "Sharp, focused, and ambitious"
         - "Intelligent and articulate"
-        - "Strong appetite and digestion"
-        - "Responds to stress with anger, irritability, and impatience"
-      in_balance: 'When Pitta is in balance, you are intelligent, focused, and a strong leader. You have a sharp wit, and a good appetite.'
-      out_of_balance: 'When Pitta is out of balance, you can become irritable, angry, and critical. You may suffer from indigestion, inflammation, and skin rashes.'
-      healing_plan_description: 'For Pitta, emphasize cooling and moderation in all aspects of life. Consume fresh, cooling foods while avoiding spicy, fried, and sour items, and practice calming, non-competitive activities like swimming or walking in nature.'
+        - "Strong appetite and metabolism"
+        - "Responds to stress with intensity, competitiveness, and impatience"
+      in_balance: 'When your metabolism is optimized, you are intelligent, focused, and a strong leader. You have sharp cognitive function and efficient metabolic processes.'
+      out_of_balance: 'When your metabolism is stressed, you can become irritable, intense, and competitive. You may experience inflammation, digestive issues, and metabolic dysfunction.'
+      healing_plan_description: 'For metabolic optimization, emphasize cooling and anti-inflammatory protocols. Consume fresh, cooling foods while avoiding inflammatory, processed items, and practice calming, non-competitive activities like swimming or walking in nature.'
       healing_plan:
         sections:
           - name: "Morning Routine"
             items:
-              - "Wake up before 6 AM."
-              - "Drink cool water."
-              - "Perform gentle cleansing practices."
-              - "Practice cooling pranayama (breathing exercises)."
-          - name: "Dietary Guidelines"
+              - "Wake up at consistent time for circadian regulation."
+              - "Drink cool water with lemon and mint."
+              - "Get 10-15 minutes of natural light exposure."
+              - "Take metabolic support stack: Turmeric 500mg, Green tea extract, Probiotics."
+              - "Light stretching or yoga flow (15-20 minutes)."
+              - "Anti-inflammatory breakfast with cooling foods."
+          - name: "Anti-Inflammatory Nutrition"
             items:
-              - "Favor cool, sweet, bitter, and astringent foods."
-              - "Avoid hot, spicy, sour, and salty foods."
-              - "Eat at regular times and avoid skipping meals."
-              - "Include plenty of fresh fruits and vegetables."
-              - "Spices: coriander, fennel, cardamom, saffron."
-          - name: "Lifestyle Practices"
+              - "Focus on cooling, anti-inflammatory foods."
+              - "Include omega-3 rich foods daily."
+              - "Consume adequate protein for metabolic support."
+              - "Stay hydrated with cool, mineral water."
+              - "Limit inflammatory foods and processed sugars."
+              - "Consider anti-inflammatory supplements."
+          - name: "Metabolic Cooling"
             items:
-              - "Avoid excessive heat and sun exposure."
+              - "Practice cooling breathwork techniques."
+              - "Take regular breaks in cool environments."
+              - "Use cooling techniques during heat stress."
               - "Engage in moderate, non-competitive exercise."
-              - "Prioritize relaxation and leisure activities."
-              - "Spend time near water or in cool environments."
-          - name: "Mind-Body Connection"
+              - "Limit exposure to excessive heat."
+              - "Practice mindfulness for stress reduction."
+          - name: "Metabolic Support"
             items:
-              - "Practice meditation or mindfulness to calm the mind."
-              - "Cultivate patience and forgiveness."
-              - "Avoid arguments and intense debates."
-              - "Engage in creative outlets that are not overly stimulating."
-    kapha:
-      description: "Kapha is the energy of stability, like earth and water, providing strength, immunity, and calmness."
+              - "Practice meditation or mindfulness to support metabolic function."
+              - "Cultivate patience and stress management."
+              - "Avoid overstimulation and intense competition."
+              - "Engage in creative outlets that support metabolic balance."
+    structural:
+      description: "Structural Profile represents the energy of stability and strength, providing structural support, immunity, and grounded energy."
       bullet_points:
-        - "Provides stability, immunity, and structure."
-        - "May experience sluggishness, congestion, and attachment."
-        - "Thrives with stimulation, exercise, and light foods."
+        - "Provides structural stability, immunity, and strength."
+        - "May experience sluggishness, resistance to change, and low energy."
+        - "Optimizes with stimulation, exercise, and metabolism-boosting protocols."
       key_characteristics:
-        - "Solid, heavy build"
-        - "Calm, steady, and easy-going"
-        - "Methodical and thoughtful"
-        - "Good long-term memory"
-        - "Responds to stress with withdrawal, lethargy, and possessiveness"
-      in_balance: 'When Kapha is in balance, you are calm, loving, and compassionate. You feel strong, stable, and have a robust immune system.'
-      out_of_balance: 'When Kapha is out of balance, you may feel lethargic, possessive, and resistant to change. You might experience congestion, weight gain, and excessive sleep.'
-      healing_plan_description: 'A Kapha-balancing plan prioritizes stimulation and regular movement to counteract sluggishness. Eat light, warm, and spicy foods, engage in vigorous daily exercise, and actively seek out new and exciting experiences.'
+        - "Solid, stable build"
+        - "Calm, steady, and methodical"
+        - "Thoughtful and consistent"
+        - "Good long-term memory and focus"
+        - "Responds to stress with withdrawal, lethargy, and resistance to change"
+      in_balance: 'When your structural health is optimized, you are calm, loving, and compassionate. You feel strong, stable, and have robust immune function.'
+      out_of_balance: 'When your structural health is compromised, you may feel lethargic, resistant to change, and low energy. You might experience weight gain, congestion, and excessive sleep.'
+      healing_plan_description: 'A structural optimization plan prioritizes stimulation and regular movement to counteract sluggishness. Focus on light, warming, and metabolism-boosting foods, engage in vigorous daily exercise, and actively seek out new and exciting experiences.'
       healing_plan:
         sections:
           - name: "Morning Routine"
             items:
-              - "Wake up early (before 6 AM)."
+              - "Wake up early (before 6 AM) for energy optimization."
               - "Drink warm water with honey and ginger."
-              - "Perform dry brushing (garshana)."
+              - "Perform dry brushing for circulation."
               - "Vigorous exercise for 30-45 minutes."
-          - name: "Dietary Guidelines"
+              - "Take metabolism-boosting stack: Ginger, Cinnamon, Green tea."
+              - "High-energy breakfast with metabolism support."
+          - name: "Metabolism-Boosting Nutrition"
             items:
-              - "Favor warm, light, dry, and pungent foods."
-              - "Avoid cold, heavy, oily, and sweet foods."
-              - "Eat smaller meals and avoid snacking."
-              - "Include plenty of fresh vegetables and legumes."
-              - "Spices: ginger, black pepper, cayenne, turmeric."
-          - name: "Lifestyle Practices"
+              - "Focus on light, warming, metabolism-boosting foods."
+              - "Include metabolism-supporting spices: Ginger, Black pepper, Cayenne."
+              - "Consume adequate protein for structural support."
+              - "Stay hydrated with warm, metabolism-supporting beverages."
+              - "Limit heavy, cold, metabolism-slowing foods."
+              - "Consider metabolism-boosting supplements."
+          - name: "Energy Optimization"
             items:
               - "Stay active and avoid prolonged sitting."
               - "Seek out new experiences and challenges."
               - "Avoid excessive napping during the day."
               - "Engage in stimulating activities and social interaction."
-          - name: "Mind-Body Connection"
+              - "Practice invigorating exercise routines."
+              - "Maintain high energy levels throughout the day."
+          - name: "Structural Support"
             items:
               - "Practice invigorating yoga or exercise."
               - "Engage in stimulating intellectual activities."
               - "Avoid emotional eating and attachment."
               - "Cultivate enthusiasm and motivation."
+              - "Support with metabolism-boosting herbs and structural nutrients."
