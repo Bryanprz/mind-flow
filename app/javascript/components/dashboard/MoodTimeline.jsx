@@ -42,10 +42,9 @@ export default function MoodTimeline({ currentUser }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200 h-full"
+      className="card bg-base-100 shadow-sm rounded-lg p-6 h-full"
     >
-      <div className="card-body">
-        <h2 className="card-title text-lg flex items-center gap-2 mb-4">
+        <h2 className="text-lg font-semibold flex items-center gap-2 mb-4 text-base-content">
           <Heart className="w-5 h-5 text-purple-600" />
           Mood Timeline
         </h2>
@@ -140,7 +139,6 @@ export default function MoodTimeline({ currentUser }) {
             </div>
           </div>
         </div>
-      </div>
     </motion.div>
   )
 }

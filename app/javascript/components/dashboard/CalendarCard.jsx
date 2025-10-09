@@ -46,10 +46,9 @@ export default function CalendarCard({ habitPlan, sectionPresenters }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card bg-base-100 border border-gray-300 h-full"
+      className="card bg-base-100 shadow-sm rounded-lg p-6 h-full"
     >
-      <div className="card-body">
-        <h2 className="card-title text-lg flex items-center gap-2 mb-4">
+        <h2 className="text-lg font-semibold flex items-center gap-2 mb-4 text-base-content">
           <CheckCircle className="w-5 h-5 text-green-600" />
           Daily Habits
         </h2>
@@ -66,7 +65,7 @@ export default function CalendarCard({ habitPlan, sectionPresenters }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
                 className={`flex items-center justify-between p-4 rounded-lg border ${
-                  habit.completed ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'
+                  habit.completed ? 'bg-base-200 border-base-300' : 'bg-base-200 border-base-300'
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -74,8 +73,8 @@ export default function CalendarCard({ habitPlan, sectionPresenters }) {
                     <Icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="font-semibold text-sm">{habit.name}</div>
-                    <div className="text-xs text-gray-600">
+                    <div className="font-semibold text-sm text-base-content">{habit.name}</div>
+                    <div className="text-xs text-base-content/70">
                       {habit.duration && `${habit.duration} • `}
                       {habit.streak} day streak
                     </div>
@@ -86,7 +85,7 @@ export default function CalendarCard({ habitPlan, sectionPresenters }) {
                   {habit.completed ? (
                     <CheckCircle className="w-6 h-6 text-green-600" />
                   ) : (
-                    <div className="w-6 h-6 rounded-full border-2 border-gray-300"></div>
+                    <div className="w-6 h-6 rounded-full border-2 border-base-300"></div>
                   )}
                 </div>
               </motion.div>
@@ -95,19 +94,18 @@ export default function CalendarCard({ habitPlan, sectionPresenters }) {
         </div>
 
         {/* Progress summary */}
-        <div className="mt-6 pt-4 border-t border-gray-200">
+        <div className="mt-6 pt-4 border-t border-base-300">
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <span className="font-semibold">Today's Progress:</span>
+              <span className="font-semibold text-base-content">Today's Progress:</span>
               <span className="ml-2 text-green-600">2/3 completed</span>
             </div>
             <div className="text-sm">
-              <span className="font-semibold">Best Streak:</span>
+              <span className="font-semibold text-base-content">Best Streak:</span>
               <span className="ml-2 text-blue-600">12 days</span>
             </div>
           </div>
         </div>
-      </div>
     </motion.div>
   )
 }

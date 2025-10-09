@@ -72,10 +72,10 @@ export default function AIChatCard() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card bg-base-100 border border-gray-300 flex flex-col h-full min-h-0"
+      className="card bg-base-100 shadow-sm rounded-lg flex flex-col h-full min-h-0"
     >
       {/* Chat Header */}
-      <div className="py-2 px-4 border-b border-gray-200">
+      <div className="py-4 px-6 border-b border-base-300">
         <div className="flex items-start justify-between gap-3">
           <motion.div 
             animate={{ rotate: [0, 5, -5, 0] }}
@@ -85,11 +85,11 @@ export default function AIChatCard() {
             <Bot className="h-5 w-5" />
           </motion.div>
           <div className="flex-1">
-            <h3 className="font-semibold flex items-center gap-2">
+            <h3 className="font-semibold flex items-center gap-2 text-base-content">
               Your Wellness Coach
               <Sparkles className="w-3 h-3 text-primary" />
             </h3>
-            <p className="text-xs text-gray-500">Personalized recommendations & chat</p>
+            <p className="text-xs text-base-content/70">Personalized recommendations & chat</p>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@ export default function AIChatCard() {
           <div id="chat_messages" className="absolute inset-0 overflow-y-auto p-4">
             {/* Recommendations */}
             <div className="space-y-3 mb-4">
-              <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+              <h4 className="text-sm font-semibold text-base-content flex items-center gap-2">
                 <Heart className="w-4 h-4 text-red-500" />
                 Today's Recommendations
               </h4>
@@ -118,16 +118,16 @@ export default function AIChatCard() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:shadow-sm transition-shadow"
+                    className="flex items-center gap-3 p-3 bg-base-200 rounded-lg border border-base-300 hover:shadow-sm transition-shadow"
                   >
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${colorClasses}`}>
                       <Icon className="w-4 h-4" />
                     </div>
                     <div className="flex-1">
-                      <div className="font-medium text-sm">{rec.title}</div>
-                      <div className="text-xs text-gray-600">{rec.description}</div>
+                      <div className="font-medium text-sm text-base-content">{rec.title}</div>
+                      <div className="text-xs text-base-content/70">{rec.description}</div>
                     </div>
-                    <button className="text-xs px-3 py-1 bg-primary text-white rounded-full hover:bg-primary/80 transition-colors">
+                    <button className="text-xs px-3 py-1 bg-primary text-primary-content rounded-full hover:bg-primary/80 transition-colors">
                       {rec.action}
                     </button>
                   </motion.div>

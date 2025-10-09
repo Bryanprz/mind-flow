@@ -70,9 +70,9 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
   return (
     <>
       {/* Mobile drawer */}
-      <div className="lg:hidden drawer h-full w-full">
+      <div className="lg:hidden drawer w-full">
         <input id="sidebar-toggle" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content overflow-y-auto">
+        <div className="drawer-content">
           <div className="p-8 sm:p-8 md:p-4 pb-16">
             <motion.div 
               variants={containerVariants}
@@ -114,9 +114,9 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
       </div>
 
       {/* Desktop flex layout */}
-      <div className="hidden lg:flex w-full" style={{ height: '100%' }}>
+      <div className="hidden lg:flex w-full min-h-screen">
         {/* Fixed Sidebar */}
-        <div className="w-80 h-full bg-base-200 overflow-y-auto flex-shrink-0">
+        <div className="w-80 bg-base-200 flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
           <ul className="menu p-4 text-base-content">
             <li><a href="/habit_plan" className="flex items-center gap-2"><ClipboardList className="w-4 h-4" />Habit Plan</a></li>
             <li><a href="/messages" className="flex items-center gap-2"><MessageSquare className="w-4 h-4" />Messages</a></li>
@@ -127,7 +127,7 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto" style={{ height: '100%' }}>
+        <div className="flex-1">
           <div className="p-8 sm:p-8 md:p-4 pb-16">
             <motion.div 
               variants={containerVariants}

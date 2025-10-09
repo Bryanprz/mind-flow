@@ -19,10 +19,9 @@ export default function HabitChart({ habitPlan }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card bg-base-100 border border-gray-300 h-full"
+      className="card bg-base-100 shadow-sm rounded-lg p-6 h-full"
     >
-      <div className="card-body">
-        <h2 className="card-title text-lg flex items-center gap-2 mb-4">
+        <h2 className="text-lg font-semibold flex items-center gap-2 mb-4 text-base-content">
           <Brain className="w-5 h-5 text-blue-600" />
           Cognitive Metrics
         </h2>
@@ -90,17 +89,16 @@ export default function HabitChart({ habitPlan }) {
           </LineChart>
         </ResponsiveContainer>
         
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-base-300">
           <div className="text-sm">
-            <span className="font-semibold">Avg Focus:</span>
+            <span className="font-semibold text-base-content">Avg Focus:</span>
             <span className="ml-2 text-blue-600">8.1</span>
           </div>
           <div className="text-sm">
-            <span className="font-semibold">Peak Day:</span>
+            <span className="font-semibold text-base-content">Peak Day:</span>
             <span className="ml-2 text-green-600">Friday</span>
           </div>
         </div>
-      </div>
     </motion.div>
   )
 }

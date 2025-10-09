@@ -1,7 +1,6 @@
 <% content_for :vite_page, true %>
-<% content_for :main_container_class, 'fixed top-16 left-0 right-0 bottom-0 w-full bg-base-200' %>
-<% content_for :hide_footer, true %>
+<% content_for :main_container_class, 'w-full bg-base-200 p-0' %>
 
-<div id="dashboard-root" class="w-full" style="height: calc(100vh - 64px)" data-props="<%= @dashboard_props.to_json.gsub("'", "&#39;") %>"></div>
+<div id="dashboard-root" class="w-full h-full min-h-screen" data-props="<%= @dashboard_props.to_json.gsub("'", "&#39;") %>"></div>
 
 <%= vite_javascript_tag 'dashboard.jsx' %>
