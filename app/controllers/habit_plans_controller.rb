@@ -43,6 +43,21 @@ class HabitPlansController < ApplicationController
     # Find existing log or create one if it doesn't exist (needed for journal editing)
     @habit_log = @habit_plan.logs.find_by(date: @date) || 
                  @habit_plan.logs.create!(date: @date)
+    
+    # Load section presenters for enhanced data
+    @section_presenters = @habit_plan.plan_sections.map do |section|
+      # Use the existing presenter if available, otherwise create a simple hash
+      if section.respond_to?(:presenter_class)
+        section.presenter_class.new(section, @habit_log)
+      else
+        { id: section.id, name: section.name }
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: habit_plan_data }
+    end
   end
 
   def new
@@ -187,5 +202,43 @@ class HabitPlansController < ApplicationController
   def habit_plan_params
     # These params are used for the update action.
     params.require(:habit_plan).permit(:name, :description)
+  end
+
+  def habit_plan_data
+    {
+      habitPlan: {
+        id: @habit_plan.id,
+        name: @habit_plan.name,
+        description: @habit_plan.description,
+        duration_type: @habit_plan.duration_type,
+        current_streak: @habit_plan.current_streak,
+        next_milestone: @habit_plan.next_milestone,
+        plan_sections: @habit_plan.plan_sections.map do |section|
+          {
+            id: section.id,
+            name: section.name,
+            plan_items: section.plan_items.map do |item|
+              {
+                id: item.id,
+                content: item.content
+              }
+            end
+          }
+        end
+      },
+      habitLog: @habit_log ? {
+        id: @habit_log.id,
+        date: @habit_log.date,
+        completed_at: @habit_log.completed_at,
+        plan_item_logs: @habit_log.plan_item_logs.map do |log|
+          {
+            plan_item_id: log.plan_item_id,
+            completed_at: log.completed_at
+          }
+        end
+      } : nil,
+      date: @date,
+      sectionPresenters: @section_presenters || []
+    }
   end
 end

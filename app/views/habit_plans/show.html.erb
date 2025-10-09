@@ -1,52 +1,94 @@
-<% content_for :main_container_class, 'w-full bg-base-200 min-h-full' %>
+<% content_for :vite_page, true %>
+<% content_for :main_container_class, 'w-full bg-base-200 min-h-screen' %>
 
-<div class="container mx-auto px-4 py-8 max-w-6xl">
+<div class="container mx-auto px-4 py-8 max-w-7xl">
   <%= render 'shared/flash' if flash.any? %>
 
   <% if @habit_plan.nil? %>
     <!-- No Plan Found for Selected Duration -->
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body text-center">
-        <h2 class="card-title text-2xl justify-center mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        </h2>
-        <h3 class="text-xl font-semibold mb-2">No <%= @duration_type.titleize %> Plan Found</h3>
-        <p class="text-gray-600 mb-4">You don't have a <%= @duration_type.titleize %> habit plan yet.</p>
-        <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-primary" %>
+    <div class="min-h-screen bg-base-200 flex items-center justify-center">
+      <div class="card bg-base-100 shadow-xl max-w-md">
+        <div class="card-body text-center">
+          <h2 class="card-title text-2xl justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </h2>
+          <h3 class="text-xl font-semibold mb-2">No <%= @duration_type.titleize %> Plan Found</h3>
+          <p class="text-base-content/70 mb-4">You don't have a <%= @duration_type.titleize %> habit plan yet.</p>
+          <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-primary" %>
+        </div>
       </div>
     </div>
   <% else %>
-    <!-- Habit Plan Header -->
-    <div class="mb-6">
-      <div class="flex items-center justify-between mb-4">
-        <div>
-          <h1 class="text-3xl font-bold text-gray-900"><%= @habit_plan.name %></h1>
-          <p class="text-gray-600 mt-1"><%= @habit_plan.description %></p>
-        </div>
-        <div class="flex gap-2">
-          <%= link_to dashboard_path, class: "btn btn-ghost btn-sm" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-            </svg>
-            Dashboard
-          <% end %>
+    <!-- Enhanced Habit Plan Header -->
+    <div class="mb-8">
+      <!-- Header with gradient background -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 p-8 mb-6">
+        <div class="absolute inset-0 bg-black/20"></div>
+        <div class="relative">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex-1">
+              <h1 class="text-4xl font-black text-white mb-2"><%= @habit_plan.name %></h1>
+              <p class="text-white/90 text-lg"><%= @habit_plan.description %></p>
+            </div>
+            <div class="flex gap-3">
+              <%= link_to dashboard_path, class: "btn btn-ghost btn-lg text-white hover:bg-white/20" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                Dashboard
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Stats cards in header -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <div class="flex items-center gap-3">
+                <div class="text-3xl">🔥</div>
+                <div>
+                  <div class="text-white/70 text-sm">Current Streak</div>
+                  <div class="text-2xl font-bold text-white"><%= @habit_plan.current_streak || 0 %> days</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <div class="flex items-center gap-3">
+                <div class="text-3xl">📊</div>
+                <div>
+                  <div class="text-white/70 text-sm">Weekly Average</div>
+                  <div class="text-2xl font-bold text-white">85%</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <div class="flex items-center gap-3">
+                <div class="text-3xl">🎯</div>
+                <div>
+                  <div class="text-white/70 text-sm">Next Milestone</div>
+                  <div class="text-2xl font-bold text-white"><%= @habit_plan.next_milestone || 30 %> days</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Duration Type Tabs -->
-      <div class="tabs tabs-boxed bg-base-100 w-fit">
+      <!-- Enhanced Duration Type Tabs -->
+      <div class="flex gap-2 p-1 bg-base-100 rounded-2xl shadow-lg w-fit">
         <%= link_to my_habit_plan_path(duration_type: 'daily'), 
-            class: "tab #{@duration_type == 'daily' ? 'tab-active' : ''}" do %>
+            class: "px-6 py-3 rounded-xl font-semibold transition-all duration-300 #{@duration_type == 'daily' ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg' : 'text-base-content hover:bg-base-200'}" do %>
           Daily Plan
         <% end %>
         <%= link_to my_habit_plan_path(duration_type: 'three_month'), 
-            class: "tab #{@duration_type == 'three_month' ? 'tab-active' : ''}" do %>
+            class: "px-6 py-3 rounded-xl font-semibold transition-all duration-300 #{@duration_type == 'three_month' ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg' : 'text-base-content hover:bg-base-200'}" do %>
           3-Month Plan
         <% end %>
         <%= link_to my_habit_plan_path(duration_type: 'six_month'), 
-            class: "tab #{@duration_type == 'six_month' ? 'tab-active' : ''}" do %>
+            class: "px-6 py-3 rounded-xl font-semibold transition-all duration-300 #{@duration_type == 'six_month' ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg' : 'text-base-content hover:bg-base-200'}" do %>
           6-Month Plan
         <% end %>
       </div>
@@ -89,93 +131,45 @@
       </div>
     <% end %>
 
-    <!-- Plan Sections and Items -->
-    <div class="space-y-6" data-controller="habit-tracker">
-      <% @habit_plan.plan_sections.each do |section| %>
-        <div class="card bg-base-100 shadow-lg">
-          <div class="card-body">
-            <h2 class="card-title text-xl mb-4 flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <%= section.name %>
-            </h2>
-            
-            <div class="space-y-3">
-              <% section.plan_items.each do |item| %>
-                <% 
-                  item_log = @habit_log&.plan_item_logs&.find { |log| log.plan_item_id == item.id }
-                  is_completed = item_log&.completed_at.present?
-                %>
-                <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors">
-                  <input 
-                    type="checkbox" 
-                    <%= 'checked' if is_completed %>
-                    class="checkbox checkbox-primary mt-1"
-                    data-action="change->habit-tracker#toggleItem"
-                    data-habit-tracker-plan-item-id-param="<%= item.id %>"
-                    data-habit-tracker-habit-log-id-param="<%= @habit_log&.id %>"
-                  />
-                  <div class="flex-1">
-                    <div class="<%= 'line-through text-gray-500' if is_completed %>">
-                      <%= item.content %>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      <% end %>
+    <!-- React Habit Plan Component -->
+    <div id="habit-plan-root" 
+         data-props="<%= {
+           habitPlan: {
+             id: @habit_plan.id,
+             name: @habit_plan.name,
+             description: @habit_plan.description,
+             duration_type: @habit_plan.duration_type,
+             current_streak: @habit_plan.current_streak,
+             next_milestone: @habit_plan.next_milestone,
+             plan_sections: @habit_plan.plan_sections.map { |section|
+               {
+                 id: section.id,
+                 name: section.name,
+                 plan_items: section.plan_items.map { |item|
+                   {
+                     id: item.id,
+                     content: item.content
+                   }
+                 }
+               }
+             }
+           },
+           habitLog: @habit_log ? {
+             id: @habit_log.id,
+             date: @habit_log.date,
+             completed_at: @habit_log.completed_at,
+             plan_item_logs: @habit_log.plan_item_logs.map { |log|
+               {
+                 plan_item_id: log.plan_item_id,
+                 completed_at: log.completed_at
+               }
+             }
+           } : nil,
+           date: @date,
+           sectionPresenters: @section_presenters || []
+         }.to_json.gsub("'", "&#39;") %>">
     </div>
 
-    <!-- Journal Entry (for Daily Plans) -->
-    <% if @habit_plan.duration_type == 'daily' && @habit_log %>
-      <div class="card bg-base-100 shadow-lg mt-6" data-controller="journal">
-        <div class="card-body">
-          <h2 class="card-title text-xl mb-4 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-            Daily Journal
-          </h2>
-          
-          <form data-action="submit->journal#save" data-journal-target="form">
-            <input type="hidden" name="habit_log_id" value="<%= @habit_log.id %>">
-            <textarea 
-              name="journal_entry" 
-              class="textarea textarea-bordered w-full h-32" 
-              placeholder="How was your day? Any insights, challenges, or wins to record?"
-              data-journal-target="textarea"
-            ><%= @habit_log.journal_entry %></textarea>
-            <div class="flex justify-between items-center mt-4">
-              <div class="text-sm text-gray-500" data-journal-target="status">
-                <% if @habit_log.journal_entry.present? %>
-                  Last saved <%= time_ago_in_words(@habit_log.updated_at) %> ago
-                <% end %>
-              </div>
-              <button type="submit" class="btn btn-primary btn-sm" data-journal-target="saveButton">
-                Save Journal Entry
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    <% end %>
-
-    <!-- Complete Day Button (for Daily Plans) -->
-    <% if @habit_plan.duration_type == 'daily' && @habit_log %>
-      <div class="text-center mt-8">
-        <% if @habit_log.completed_at.present? %>
-          <div class="alert alert-success shadow-lg inline-flex">
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Day completed! Keep up the great work! 🎉</span>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
   <% end %>
 </div>
 
