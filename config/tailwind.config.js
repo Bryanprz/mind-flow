@@ -118,6 +118,7 @@ module.exports = {
     'h-40',
     'w-[40rem]',
     'p-7',
+    'mx-5',
     'mb-8',
     'mt-25',
     'pt-20',

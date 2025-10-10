@@ -28,15 +28,9 @@
         <!-- Clean Navigation Bar -->
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center gap-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center">
-                <span class="text-white font-bold text-lg">MF</span>
-              </div>
-              <h1 class="text-2xl font-bold text-base-content">MindFlow</h1>
-            </div>
             <div class="hidden md:flex items-center gap-1 text-sm text-base-content/60">
-              <span>Biohacking Dashboard</span>
-              <div class="w-1 h-1 rounded-full bg-emerald-500"></div>
+              <span>Biohacking Habit Tracker</span>
+              <div class="w-1 h-1 rounded-full bg-emerald-500 mx-5"></div>
               <span>Live</span>
             </div>
           </div>
@@ -48,7 +42,7 @@
                     when 5..11 then "Morning Optimization"
                     when 12..17 then "Peak Performance"
                     when 18..21 then "Evening Recovery"
-                    else "Biohacking Protocol"
+                    else "My MindFlow Protocol"
                     end %>
               </div>
               <div class="text-xs text-base-content/60"><%= Time.current.strftime("%A, %B %d") %></div>
