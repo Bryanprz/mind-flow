@@ -81,10 +81,10 @@ export default function InsightCards({
         title: 'Momentum Builder',
         message: `Completing your first habit increases same-day completion by 34%. Start with your easiest win each day.`,
         action: 'Reorder habits: easy wins first',
-        color: 'from-purple-500 to-pink-500',
-        bgColor: 'bg-purple-50',
-        borderColor: 'border-purple-200',
-        iconColor: 'text-purple-500',
+        color: 'from-green-500 to-emerald-500',
+        bgColor: 'bg-gray-900',
+        borderColor: 'border-green-400',
+        iconColor: 'text-green-400',
         priority: 'high'
       },
       {

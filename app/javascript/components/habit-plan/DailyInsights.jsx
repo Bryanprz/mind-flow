@@ -49,9 +49,9 @@ export default function DailyInsights({
       icon: "🧠",
       title: "Focus Patterns",
       description: "Meditation before work increases your focus by 23%. Keep this routine consistent.",
-      color: "text-purple-500",
-      bg: "bg-purple-50",
-      border: "border-purple-200"
+      color: "text-blue-400",
+      bg: "bg-gray-900",
+      border: "border-blue-400"
     },
     {
       icon: "⚡",
@@ -65,9 +65,9 @@ export default function DailyInsights({
       icon: "🎯",
       title: "Habit Momentum",
       description: "You're 3 days away from a new 30-day streak record. Keep the momentum going!",
-      color: "text-orange-500",
-      bg: "bg-orange-50",
-      border: "border-orange-200"
+      color: "text-green-400",
+      bg: "bg-gray-900",
+      border: "border-green-400"
     }
   ]
 
@@ -118,7 +118,11 @@ export default function DailyInsights({
                   <h3 className={`text-lg font-bold ${currentInsightData.color} mb-2`}>
                     {currentInsightData.title}
                   </h3>
-                  <p className="text-base-content/80 leading-relaxed">
+                  <p className={`leading-relaxed ${
+                    currentInsightData.title === "Habit Momentum" ? "text-green-400" 
+                    : currentInsightData.title === "Focus Patterns" ? "text-blue-400"
+                    : "text-base-content/80"
+                  }`}>
                     {currentInsightData.description}
                   </p>
                 </motion.div>
@@ -131,8 +135,12 @@ export default function DailyInsights({
                   key={index}
                   className={`w-2 h-2 rounded-full transition-all ${
                     index === currentInsight 
-                      ? 'bg-blue-500' 
-                      : 'bg-blue-200'
+                      ? (currentInsightData.title === "Habit Momentum" ? 'bg-green-400' 
+                         : currentInsightData.title === "Focus Patterns" ? 'bg-blue-400'
+                         : 'bg-blue-500')
+                      : (currentInsightData.title === "Habit Momentum" ? 'bg-green-400/30' 
+                         : currentInsightData.title === "Focus Patterns" ? 'bg-blue-400/30'
+                         : 'bg-blue-200')
                   }`}
                 />
               ))}

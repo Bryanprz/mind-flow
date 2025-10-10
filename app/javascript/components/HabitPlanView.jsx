@@ -285,35 +285,37 @@ export default function HabitPlanView({
             
             {/* Small Quote Carousel - Right Aligned */}
             <div className="text-right max-w-xs">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentQuoteIndex}
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="text-sm font-medium text-base-content/80 italic">
-                    "{quotes[currentQuoteIndex].text}"
-                  </div>
-                  <div className="text-xs text-base-content/60">
-                    — {quotes[currentQuoteIndex].author}
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-              
-              {/* Quote indicators */}
-              <div className="flex gap-1 justify-end mt-2">
-                {quotes.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-1.5 h-1.5 rounded-full transition-all ${
-                      index === currentQuoteIndex 
-                        ? 'bg-primary' 
-                        : 'bg-base-300'
-                    }`}
-                  />
-                ))}
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 rounded-lg p-3">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentQuoteIndex}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div className="text-sm font-medium text-blue-900 dark:text-blue-100 italic">
+                      "{quotes[currentQuoteIndex].text}"
+                    </div>
+                    <div className="text-xs text-blue-700 dark:text-blue-300">
+                      — {quotes[currentQuoteIndex].author}
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+                
+                {/* Quote indicators */}
+                <div className="flex gap-1 justify-end mt-2">
+                  {quotes.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`w-1.5 h-1.5 rounded-full transition-all ${
+                        index === currentQuoteIndex 
+                          ? 'bg-primary' 
+                          : 'bg-base-300'
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
