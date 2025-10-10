@@ -1,212 +1,380 @@
 <% content_for :main_container_class, "w-full overflow-x-hidden" %>
 
-<!-- Hero Section -->
-<section class="py-20 lg:py-32 bg-neutral w-full">
-  <div class="max-w-7xl mx-auto px-5">
-    <div class="text-center">
-      <!-- Main Headline -->
-      <h1 class="text-5xl lg:text-7xl font-bold tracking-tight text-neutral-content mb-8">
-        Restore Your True Health
-        <span class="block text-4xl lg:text-6xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mt-4">
-          Naturally & At the Root
-        </span>
-      </h1>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Michroma:wght@400&display=swap');
 
-      <!-- Timeline Promise -->
-      <div class="max-w-4xl mx-auto mb-12">
-        <div class="grid md:grid-cols-2 gap-8 mb-8">
-          <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8 border border-primary/20">
-            <div class="text-6xl font-bold text-primary mb-4">30</div>
-            <div class="text-2xl font-semibold text-primary mb-2">Days</div>
-            <p class="text-lg text-neutral-content">Start new habits to return to natural health</p>
-          </div>
-          <div class="bg-gradient-to-br from-secondary/10 to-accent/10 rounded-2xl p-8 border border-secondary/20">
-            <div class="text-6xl font-bold text-secondary mb-4">90</div>
-            <div class="text-2xl font-semibold text-secondary mb-2">Days</div>
-            <p class="text-lg text-neutral-content">Go deeper at the root for lasting health</p>
-          </div>
+/* Dark futuristic background */
+.hero-mindflow {
+  background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Tech grid pattern overlay */
+.tech-grid {
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Glowing aura effect */
+.glow-aura {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    rgba(59, 130, 246, 0.8) 0%, 
+    rgba(139, 92, 246, 0.4) 30%,
+    transparent 70%);
+  filter: blur(40px);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Glassmorphism cards */
+.glass-card {
+  background: rgba(26, 26, 46, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
+}
+
+/* Neon button */
+.btn-neon {
+  border: 2px solid #3b82f6;
+  color: #60a5fa;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.btn-neon:hover {
+  background: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+  transform: translateY(-2px);
+}
+
+.futuristic-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.nasa-style-title {
+  font-family: 'Michroma', sans-serif;
+  font-weight: 400;
+  font-size: clamp(6rem, 20vw, 12rem);
+  line-height: 0.9;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.hero-subtitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0rem 2rem;
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  max-width: fit-content;
+  white-space: nowrap;
+}
+
+.meditation-figure {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #4a5568 30%, #2d3748 70%);
+  border-radius: 50%;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.meditation-head {
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, #e2e8f0 40%, #cbd5e0 80%);
+  border-radius: 50%;
+  position: relative;
+}
+
+.meditation-head::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 20px;
+  height: 3px;
+  background: #4a5568;
+  border-radius: 2px;
+}
+
+.meditation-head::after {
+  content: '';
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  width: 20px;
+  height: 3px;
+  background: #4a5568;
+  border-radius: 2px;
+}
+
+.meditation-body {
+  position: absolute;
+  bottom: 40px;
+  width: 60px;
+  height: 80px;
+  background: linear-gradient(to bottom, #4a5568 0%, #2d3748 100%);
+  border-radius: 30px 30px 10px 10px;
+}
+</style>
+
+<!-- Hero Section -->
+<section class="hero-mindflow pt-10 tech-grid w-full">
+  <div class="max-w-7xl mx-auto px-5 relative">
+    <div class="text-center relative z-10 min-h-screen flex flex-col">
+      <!-- Main Content Container - All text centered vertically -->
+      <div class="absolute inset-0 flex flex-col justify-top items-center">
+        <!-- Top Subtitle -->
+        <div class="mb-2 z-30">
+          <h2 class="hero-subtitle">
+            MIND CREATES REALITY
+          </h2>
         </div>
-        
-        <div class="max-w-3xl mx-auto">
-          <p class="text-lg lg:text-xl text-neutral-content leading-loose" style="line-height:1.7;">
-          <strong>AncientHerb</strong> is a daily health tracker that helps you master your health.
-            Using the <span data-tip="<%= @ayurveda_tooltip_text %>" class="tooltip font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">5,000-year-old science of Ayurveda</span>, 
-            it focuses on <strong>root causes</strong>—not just symptoms—through personalized <span class="font-semibold text-primary">food</span>, <span class="font-semibold text-secondary">herbs</span>, & <span class="font-semibold text-accent">daily routines</span> for lasting health.
+
+        <!-- Subtitle -->
+        <div class="mb-8 z-30">
+          <p class="text-lg lg:text-xl text-blue-200 leading-loose text-center" style="line-height:1.7;">
+            ENTER YOUR FLOW STATE WITH
           </p>
         </div>
-      </div>
 
-      <!-- CTA Buttons -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <% if Current.user&.habit_plans&.any? %>
-          <%= link_to "Continue Your Journey", dashboard_path, class: "btn btn-ghost btn-lg text-primary border-2 border-primary hover:bg-primary hover:text-white px-8 py-4 text-lg font-semibold" %>
-        <% else %>
-          <%= link_to "✨ Start Tracking Habits", my_habit_plan_path, class: "btn btn-ghost btn-lg text-primary border-2 border-primary hover:bg-primary hover:text-white px-8 py-4 text-lg font-semibold" %>
-        <% end %>
+        <!-- Main Headline -->
+        <div class="mb-8 z-1">
+          <h1 class="nasa-style-title text-center" style="position: relative;">
+            MIND FLOW
+          </h1>
+        </div>
+
+        <div>
+          <p class="text-base text-blue-300 mt-4 text-center text-lg lg:text-xl" style="line-height:1.9;">
+            Advanced mental training for peak mental performance
+          </p>
+        </div>
+
+        <!-- CTA Button -->
+        <div class="z-30 mt-10">
+          <% if Current.user&.habit_plans&.any? %>
+            <%= link_to "CONTINUE SESSION", dashboard_path, class: "btn btn-neon px-8 text-lg font-semibold transition-all duration-300" %>
+          <% else %>
+            <%= link_to "EXPLORE", my_habit_plan_path, class: "btn btn-neon px-8 text-lg font-semibold transition-all duration-300" %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- How it Works Section -->
-<section class="pt-32 pb-20 bg-base-100" 
-         data-controller="rotating-carousel"
-         data-rotating-carousel-chronic-illness-value="<%= asset_path('home/carousel/chronic-illness.webp') %>"
-         data-rotating-carousel-anxiety-value="<%= asset_path('home/carousel/anxiety.webp') %>"
-         data-rotating-carousel-asthma-value="<%= asset_path('home/carousel/asthma.webp') %>"
-         data-rotating-carousel-depression-value="<%= asset_path('home/carousel/depression.webp') %>"
-         data-rotating-carousel-diabetes-value="<%= asset_path('home/carousel/diabetes.webp') %>"
-         data-rotating-carousel-heart-disease-value="<%= asset_path('home/carousel/heart-disease.webp') %>"
-         data-rotating-carousel-high-cholesterol-value="<%= asset_path('home/carousel/high-cholesterol.webp') %>"
-         data-rotating-carousel-hypertension-value="<%= asset_path('home/carousel/hypertension.webp') %>"
-         data-rotating-carousel-obesity-value="<%= asset_path('home/carousel/obesity.webp') %>"
-         data-rotating-carousel-stress-value="<%= asset_path('home/carousel/stress.webp') %>">
-  <div class="max-w-3xl mx-auto px-5">
+<!-- Data Visualization Cards Section -->
+<section class="py-20 bg-gray-900 w-full">
+  <div class="max-w-7xl mx-auto px-5">
     <div class="text-center mb-16">
-      <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6" style="line-height:1.3;">
-        <div class="block">Life shouldn't feel like this —</div>
-        <div class="block mt-3">
-          <span class="text-4xl lg:text-5xl font-bold tracking-wide transition-all duration-1000 ease-in-out" data-rotating-carousel-target="text" id="rotating-text">drained, weak, and<br>constantly worn down, day after day.</span>
-        </div>
+      <h2 class="futuristic-title text-4xl lg:text-5xl font-bold text-white mb-6">
+        PERFORMANCE METRICS
       </h2>
-      
-      <!-- Image Carousel -->
-      <div class="mt-20 max-w-2xl mx-auto">
-        <div class="relative h-64">
-          <div id="image-carousel" data-rotating-carousel-target="carousel" class="relative h-full">
-            <!-- Images will be dynamically inserted here -->
-          </div>
-        </div>
-      </div>
-
-      <p class="text-xl text-gray-700 max-w-2xl mx-auto mt-16">
-        Aren't you tired of missing out on life because of constant poor health?
+      <p class="text-xl text-blue-200 max-w-3xl mx-auto">
+        Real-time focus tracking and flow state monitoring
       </p>
     </div>
 
-  </div>
-</section>
-
-<!-- Life Journey Section -->
-<section class="pt-4 pb-20 bg-base-100">
-  <div class="max-w-7xl mx-auto px-5">
-    <div class="text-center mb-8">
-      <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 max-w-2xl mx-auto" style="line-height:1.3;">
-        Nature gives us the potential for a <span class="text-primary">long, vibrant life</span>, radiant, full of possibility.
-      </h2>
-      <p class="text-xl text-gray-700 max-w-2xl mx-auto mt-16">
-        We are meant to live long, grow wise, and thrive.
-      </p>
-    </div>
-    
-    <div class="max-w-5xl mx-auto">
-      <div class="relative">
-        <%= image_tag "home/life-journey.webp", 
-             alt: "Healing journey illustration", 
-             class: "w-full h-auto", loading: "lazy" %>
-      </div>
-      
-      <div class="text-center mt-12 mb-16">
-        <p class="text-xl text-gray-700 max-w-3xl mx-auto">
-          Yet so many people face daily struggles with their health,<br>
-          keeping many from fully enjoying life’s beauty and experiences.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Value Proposition Section -->
-<section class="py-20 bg-success w-full">
-  <div class="max-w-7xl mx-auto px-5">
-    <div class="text-center mt-8">
-      <div class="flex items-start justify-center gap-6 mb-6">
-        <div class="text-right">
-          <div class="text-4xl font-black text-success-content leading-none">
-            <div>OVER 5,000</div>
-            <div>YEARS</div>
-            <div>AGO,</div>
-          </div>
+    <!-- Data Cards Grid -->
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Focus Sessions Card -->
+      <div class="glass-card rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-bold text-white uppercase tracking-wide">FOCUS SESSIONS</h3>
+          <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
         </div>
-        <div class="text-left">
-          <div class="text-2xl lg:text-3xl font-semibold text-gray-600 leading-relaxed tracking-wide">
-            <div>ancient healers</div>
-            <div class="text-primary">uncovered timeless wisdom</div>
-            <div>for attaining true health</div>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <span class="text-blue-300 text-sm">Today</span>
+            <span class="text-white font-bold">47 MIN</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-blue-300 text-sm">This Week</span>
+            <span class="text-white font-bold">324 MIN</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-blue-300 text-sm">Peak Flow</span>
+            <span class="text-green-400 font-bold">89%</span>
+          </div>
+          <!-- Simple bar chart representation -->
+          <div class="mt-4">
+            <div class="flex items-end space-x-1 h-16">
+              <div class="flex-1 bg-blue-500/30 rounded-t" style="height: 60%"></div>
+              <div class="flex-1 bg-blue-500/50 rounded-t" style="height: 80%"></div>
+              <div class="flex-1 bg-blue-500/70 rounded-t" style="height: 45%"></div>
+              <div class="flex-1 bg-blue-500/90 rounded-t" style="height: 90%"></div>
+              <div class="flex-1 bg-blue-500 rounded-t" style="height: 75%"></div>
+              <div class="flex-1 bg-blue-500/60 rounded-t" style="height: 55%"></div>
+              <div class="flex-1 bg-blue-500/40 rounded-t" style="height: 70%"></div>
+            </div>
           </div>
         </div>
       </div>
-      
+
+      <!-- Mind-Flow State Card -->
+      <div class="glass-card rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-bold text-white uppercase tracking-wide">MIND-FLOW STATE</h3>
+          <div class="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+        </div>
+        <div class="space-y-4">
+          <div class="text-center">
+            <div class="text-4xl font-bold text-white mb-2">92%</div>
+            <div class="text-blue-300 text-sm">OPTIMAL FLOW</div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-blue-300 text-sm">Distraction Risk</span>
+              <span class="text-green-400 text-sm font-bold">LOW</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-blue-300 text-sm">Cognitive Load</span>
+              <span class="text-yellow-400 text-sm font-bold">MEDIUM</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-blue-300 text-sm">Flow Duration</span>
+              <span class="text-blue-400 text-sm font-bold">23 MIN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Adjust Focus Card -->
+      <div class="glass-card rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-bold text-white uppercase tracking-wide">ADJUST FOCUS</h3>
+          <div class="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+        </div>
+        <div class="space-y-4">
+          <div class="space-y-3">
+            <div>
+              <label class="text-blue-300 text-sm block mb-1">SESSION DURATION</label>
+              <div class="flex items-center space-x-2">
+                <button class="w-8 h-8 bg-blue-500/30 text-white rounded flex items-center justify-center hover:bg-blue-500/50 transition-colors">-</button>
+                <span class="text-white font-bold px-3">25 MIN</span>
+                <button class="w-8 h-8 bg-blue-500/30 text-white rounded flex items-center justify-center hover:bg-blue-500/50 transition-colors">+</button>
+              </div>
+            </div>
+            <div>
+              <label class="text-blue-300 text-sm block mb-1">FOCUS INTENSITY</label>
+              <div class="flex items-center space-x-2">
+                <button class="w-8 h-8 bg-purple-500/30 text-white rounded flex items-center justify-center hover:bg-purple-500/50 transition-colors">-</button>
+                <span class="text-white font-bold px-3">HIGH</span>
+                <button class="w-8 h-8 bg-purple-500/30 text-white rounded flex items-center justify-center hover:bg-purple-500/50 transition-colors">+</button>
+              </div>
+            </div>
+          </div>
+          <button class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 px-4 rounded font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300">
+            START SESSION
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Ancient Healers Image - Full Viewport Width -->
-<div class="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-  <%= image_tag "home/ancient-healers.webp", 
-       alt: "Ancient healers in harmony with nature", 
-       class: "w-full h-auto", loading: "lazy" %>
-</div>
-
-<!-- Next Section -->
-<section class="py-24 bg-[#2c4838] w-full">
+<!-- AI Enhancement Protocols Section -->
+<section class="py-24 bg-gray-900 w-full">
   <div class="max-w-7xl mx-auto px-5">
     
     <!-- Hero Introduction -->
     <div class="text-center mb-20 pt-16">
-      <h2 class="text-5xl lg:text-7xl font-bold text-neutral-content mb-8 leading-tight">
-        The Secret to<br>
-        <span class="text-info">True Health</span>
+      <h2 class="futuristic-title text-5xl lg:text-7xl font-bold text-white mb-8 leading-tight">
+        MENTAL<br>
+        <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">MASTERY</span>
       </h2>
+      <p class="text-xl text-blue-200 max-w-3xl mx-auto">
+        advanced meditation and focus protocols for peak mental performance
+      </p>
     </div>
     
-    <!-- Three Pillars List -->
-    <div class="max-w-md mx-auto space-y-6">
+    <!-- Enhancement Protocols List -->
+    <div class="max-w-4xl mx-auto space-y-8">
       
-      <!-- Pillar 1 -->
-      <div class="flex items-start gap-4">
+      <!-- Protocol 1 -->
+      <div class="flex items-start gap-6 glass-card p-6 rounded-xl">
         <div class="flex-shrink-0">
-          <div class="text-xl font-bold text-primary">1</div>
+          <div class="text-2xl font-bold text-blue-400 bg-blue-400/20 w-12 h-12 rounded-full flex items-center justify-center">01</div>
         </div>
         <div class="flex-1">
-          <h3 class="text-lg font-bold text-neutral-content mb-2">HEAL THE ROOT</h3>
-          <p class="text-md text-neutral-content/80 leading-relaxed mb-2">
-            Go beyond just managing symptoms for life. Discover and address the fundamental root causes that contribute to chronic illness. Lasting well‑being starts by understanding the root of the condition.
+          <h3 class="text-xl font-bold text-white mb-3 uppercase tracking-wide">MEDITATION OPTIMIZATION</h3>
+          <p class="text-blue-200 leading-relaxed mb-3">
+            Advanced techniques analyze your meditation patterns and optimize your practice for enhanced focus and mental clarity. Real-time feedback ensures optimal mindfulness states.
           </p>
-          <div class="text-primary text-xs font-semibold uppercase tracking-wide">
-            Foundation First
+          <div class="text-blue-400 text-sm font-semibold uppercase tracking-wide">
+            Foundation Protocol
           </div>
         </div>
       </div>
 
-      <!-- Pillar 2 -->
-      <div class="flex items-start gap-4">
+      <!-- Protocol 2 -->
+      <div class="flex items-start gap-6 glass-card p-6 rounded-xl">
         <div class="flex-shrink-0">
-          <div class="text-xl font-bold text-secondary">2</div>
+          <div class="text-2xl font-bold text-purple-400 bg-purple-400/20 w-12 h-12 rounded-full flex items-center justify-center">02</div>
         </div>
         <div class="flex-1">
-          <h3 class="text-lg font-bold text-neutral-content mb-2">KNOW YOUR NATURE</h3>
-          <p class="text-md text-neutral-content/80 leading-relaxed mb-2">
-            Know your unique bio-energies—a powerful way to understand your energy field and how it shapes your mind, emotions, body, and behavior—for personalized healing.
+          <h3 class="text-xl font-bold text-white mb-3 uppercase tracking-wide">FLOW STATE TRAINING</h3>
+          <p class="text-blue-200 leading-relaxed mb-3">
+            Specialized techniques induce and maintain optimal flow states through personalized meditation practices and focus exercises. Achieve peak performance through consistent practice.
           </p>
-          <div class="text-secondary text-xs font-semibold uppercase tracking-wide">
-            Personalized Path
+          <div class="text-purple-400 text-sm font-semibold uppercase tracking-wide">
+            Performance Enhancement
           </div>
         </div>
       </div>
 
-      <!-- Pillar 3 -->
-      <div class="flex items-start gap-4">
+      <!-- Protocol 3 -->
+      <div class="flex items-start gap-6 glass-card p-6 rounded-xl">
         <div class="flex-shrink-0">
-          <div class="text-xl font-bold text-accent">3</div>
+          <div class="text-2xl font-bold text-cyan-400 bg-cyan-400/20 w-12 h-12 rounded-full flex items-center justify-center">03</div>
         </div>
         <div class="flex-1">
-          <h3 class="text-lg font-bold text-neutral-content mb-2">ALIGN WITH YOUR NATURE</h3>
-          <p class="text-md text-neutral-content/80 leading-relaxed mb-2">
-            Synchronize your daily rhythms with nature's cycles. When your lifestyle matches your constitution, your body's natural mechanisms are supported for ongoing restoration.
+          <h3 class="text-xl font-bold text-white mb-3 uppercase tracking-wide">MINDFUL SYNCHRONIZATION</h3>
+          <p class="text-blue-200 leading-relaxed mb-3">
+            Synchronize your mental rhythms with optimal performance windows. Smart scheduling helps you maintain maximum focus efficiency throughout your day with personalized timing.
           </p>
-          <div class="text-accent text-xs font-semibold uppercase tracking-wide">
-            Natural Harmony
+          <div class="text-cyan-400 text-sm font-semibold uppercase tracking-wide">
+            Temporal Optimization
           </div>
         </div>
       </div>
@@ -217,334 +385,292 @@
 </section>
 
 <!-- Features Section -->
-<section class="py-20 bg-[#2c4838] w-full">
+<section class="py-20 bg-gray-800 w-full">
   <div class="max-w-7xl mx-auto px-5">
     <div class="text-center mb-16">
-      <h2 class="text-4xl lg:text-5xl font-bold text-neutral-content mb-6" style="line-height:1.2;">
-        <div><span class="text-primary">Ancient</span><span class="text-secondary">Herb</span> is your</div>
-        <div>Complete Toolkit<br>for Natural Health</div>
+      <h2 class="futuristic-title text-4xl lg:text-5xl font-bold text-white mb-6" style="line-height:1.2;">
+        <div><span class="text-blue-400">MIND</span><span class="text-purple-400">FLOW</span> is your</div>
+        <div>Complete Toolkit<br>for Mental Mastery</div>
       </h2>
-      <p class="text-xl text-neutral-content max-w-3xl mx-auto" style="line-height:1.6;">
-      Designed to take away the complexity of lifelong health challenges and guide your body toward gradual rejuvenation. Simply start your day, follow the daily plan, and watch your health gradually improve and feel better over time.
+      <p class="text-xl text-blue-200 max-w-3xl mx-auto" style="line-height:1.6;">
+      Advanced meditation and focus training platform designed to enhance concentration, eliminate distractions, and achieve peak mental performance through proven mindfulness techniques.
       </p>
     </div>
 
-    <!-- Bento Grid Layout -->
+    <!-- Tech Feature Grid Layout -->
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
-      <!-- Biggest Card - Daily Habit & Journal Tracking -->
-      <div class="md:col-span-2 lg:col-span-2 md:row-span-2 p-8 bg-transparent rounded-xl  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
+      <!-- Biggest Card - Focus Optimization -->
+      <div class="md:col-span-2 lg:col-span-2 md:row-span-2 p-8 glass-card rounded-xl flex flex-col">
         <div class="mb-6">
           <div class="flex items-center mb-4">
-            <div class="text-6xl mr-4">📊</div>
-            <h3 class="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Daily Habit & Journal Tracking</h3>
+            <div class="text-6xl mr-4">🧠</div>
+            <h3 class="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Advanced Focus Training</h3>
           </div>
-          <div class="overflow-hidden mb-4">
-            <%= image_tag "home/dashboard.webp", alt: "Dashboard showing health tracking interface", class: "w-full h-auto rounded-md", loading: "lazy" %>
+          <div class="bg-gray-800 rounded-lg p-4 mb-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-blue-300 text-sm">MEDITATION ACTIVITY</span>
+              <span class="text-green-400 text-sm font-bold">OPTIMAL</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
+              <div class="bg-gradient-to-r from-blue-400 to-purple-400 h-2 rounded-full" style="width: 89%"></div>
+            </div>
+            <div class="text-xs text-gray-400">89% Focus Efficiency</div>
           </div>
         </div>
-        <p class="text-neutral-content text-md leading-relaxed mb-4">Monitor symptoms, energy levels, and healing progress daily with our intuitive tracking system designed for your unique constitution.</p>
-        <p class="text-neutral-content text-md leading-relaxed">Our app is designed to help you build healthy habits that, over time, encourage gradual improvements in your daily health. Track your daily routines, meals, sleep patterns, and emotional well-being to identify patterns and make lasting improvements to your health.</p>
+        <p class="text-blue-200 text-md leading-relaxed mb-4">Advanced monitoring and tracking that adapts to your meditation patterns and focus habits in real-time.</p>
+        <p class="text-blue-200 text-md leading-relaxed">Track your meditation sessions, attention spans, and mental clarity to develop personalized focus enhancement routines that maximize your mental performance.</p>
       </div>
 
-      <!-- Second-Biggest Card - Personalized Healing Plan -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-transparent rounded-xl  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
+      <!-- Performance Metrics -->
+      <div class="md:col-span-1 lg:col-span-1 p-6 glass-card rounded-xl flex flex-col">
         <div class="flex items-center mb-4">
-          <div class="text-4xl mr-3">🍽️</div>
-          <h3 class="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Personalized Healing Plan</h3>
+          <div class="text-4xl mr-3">⚡</div>
+          <h3 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Performance Metrics</h3>
         </div>
-        <p class="text-neutral-content text-md">Get custom meal plans based on your constitution and healing needs.</p>
-        <p class="text-neutral-content text-md mt-3">Ayurveda uses the right food as medicine—this is what differentiates it from conventional approaches. Every meal becomes a healing opportunity tailored to your unique nature.</p>
+        <p class="text-blue-200 text-md">Real-time meditation and focus performance tracking.</p>
+        <p class="text-blue-200 text-md mt-3">Monitor attention span, focus duration, mindfulness levels, and mental clarity with precision tracking metrics.</p>
       </div>
 
-      <!-- Second-Biggest Card - A Place to Heal Mind Body and Soul -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-transparent rounded-xl  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
+      <!-- Real-Time Flow Monitoring -->
+      <div class="md:col-span-1 lg:col-span-1 p-6 glass-card rounded-xl flex flex-col">
         <div class="mb-4">
-          <div class="rounded-t-lg overflow-hidden -mx-6 -mt-6 mb-4">
-            <%= video_tag "/videos/home/meditating.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-auto" %>
+          <div class="bg-gray-800 rounded-lg p-3 mb-4">
+            <div class="flex items-center justify-center">
+              <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center">
+                <div class="w-8 h-8 bg-white rounded-full animate-pulse"></div>
+              </div>
+            </div>
+            <div class="text-center mt-2">
+              <div class="text-white font-bold">FLOW STATE</div>
+              <div class="text-blue-400 text-sm">ACTIVE</div>
+            </div>
           </div>
           <div class="flex items-center">
-            <div class="text-4xl mr-3">🧘‍♀️</div>
-            <h3 class="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">A Place to Heal Mind Body and Soul</h3>
+            <div class="text-4xl mr-3">🎯</div>
+            <h3 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Real-Time Flow Monitoring</h3>
           </div>
         </div>
-        <p class="text-neutral-content text-md">Holistic environment for complete wellness transformation.</p>
+        <p class="text-blue-200 text-md">Continuous flow state detection and optimization.</p>
       </div>
 
-      <!-- Second-Biggest Card - Community -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-transparent rounded-xl  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
+      <!-- Focus Enhancement Protocols -->
+      <div class="md:col-span-1 lg:col-span-1 p-6 glass-card rounded-xl flex flex-col">
         <div class="flex items-center mb-4">
-          <div class="text-4xl mr-3">🤝</div>
-          <h3 class="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Heal faster with a community</h3>
+          <div class="text-4xl mr-3">🔬</div>
+          <h3 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Focus Enhancement Protocols</h3>
         </div>
-        <p class="text-neutral-content text-md">Connect with others on similar wellness journeys and support your progress.</p>
+        <p class="text-blue-200 text-md">Advanced meditation protocols for mental optimization and focus enhancement.</p>
       </div>
 
-      <!-- Second-Biggest Card - Learn Natural Healing Wisdom -->
-      <div class="md:col-span-1 lg:col-span-1 p-6 bg-transparent rounded-xl  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
-        <div class="flex items-center mb-4">
-          <div class="text-4xl mr-3">🎓</div>
-          <h3 class="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Learn Natural Healing Wisdom</h3>
-        </div>
-        <p class="text-neutral-content text-md">Classroom where you learn natural health practices and ancient wisdom.</p>
-      </div>
-
-      <!-- Third-Biggest Card - Daily Guidance -->
-      <div class="md:col-span-1 lg:col-span-1 p-5 bg-transparent rounded-xl  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
+      <!-- Smart Insights -->
+      <div class="md:col-span-1 lg:col-span-1 p-5 glass-card rounded-xl flex flex-col">
         <div class="flex items-center mb-3">
-          <div class="text-3xl mr-2">📱</div>
-          <h3 class="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Daily Guidance</h3>
+          <div class="text-3xl mr-2">💡</div>
+          <h3 class="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Smart Insights</h3>
         </div>
-        <p class="text-neutral-content text-md">Personalized recommendations daily.</p>
+        <p class="text-blue-200 text-md">Personalized recommendations for optimal meditation and focus performance.</p>
       </div>
 
-      <!-- Third-Biggest Card - Herbal Remedies -->
-      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-transparent rounded-xl  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
+      <!-- Meditation Synchronization -->
+      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 glass-card rounded-xl flex flex-col">
         <div class="mb-4">
-          <div class="rounded-t-lg overflow-hidden -mx-5 -mt-5 mb-4">
-            <%= video_tag "/videos/home/herbal-remedy.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-auto" %>
+          <div class="bg-gray-800 rounded-lg p-3 mb-4">
+            <div class="text-center">
+              <div class="text-2xl font-bold text-white mb-1">92%</div>
+              <div class="text-blue-400 text-sm">FOCUS RATE</div>
+            </div>
+            <div class="mt-3 space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="text-blue-300">Breathing</span>
+                <span class="text-green-400">Optimal</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-blue-300">Mindfulness</span>
+                <span class="text-green-400">Stable</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-blue-300">Flow State</span>
+                <span class="text-yellow-400">Elevated</span>
+              </div>
+            </div>
           </div>
           <div class="flex items-center">
-            <div class="text-3xl mr-2">🌿</div>
-            <h3 class="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Herbal Remedies</h3>
+            <div class="text-3xl mr-2">🌊</div>
+            <h3 class="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Meditation Synchronization</h3>
           </div>
         </div>
-        <p class="text-neutral-content text-md">Access time-tested herbal formulas for your specific imbalances.</p>
+        <p class="text-blue-200 text-md">Advanced mindfulness synchronization for enhanced focus and clarity.</p>
       </div>
 
-      <!-- Third-Biggest Card - Built by Ayurvedic Practitioners -->
-      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-transparent rounded-xl  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
+      <!-- Performance Analytics -->
+      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 glass-card rounded-xl flex flex-col">
         <div class="flex items-center mb-3">
-          <div class="text-3xl mr-2">👨‍⚕️</div>
-          <h3 class="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Built by Ayurvedic Practitioners</h3>
+          <div class="text-3xl mr-2">📊</div>
+          <h3 class="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Performance Analytics</h3>
         </div>
-        <p class="text-neutral-content text-md">Created by certified experts with deep knowledge of ancient healing.</p>
+        <p class="text-blue-200 text-md">Comprehensive cognitive performance tracking and optimization.</p>
       </div>
 
-      <!-- Third-Biggest Card - Talk to Practitioners -->
-      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 bg-transparent rounded-xl  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
+      <!-- Meditation Assistant -->
+      <div class="md:col-span-1 lg:col-span-1 md:row-span-2 p-5 glass-card rounded-xl flex flex-col">
         <div class="mb-4">
-          <div class="rounded-t-lg overflow-hidden -mx-5 -mt-5 mb-4">
-            <%= video_tag "/videos/home/telehealth-ayurveda-two.mp4", autoplay: true, muted: true, loop: true, playsinline: true, class: "w-full h-auto" %>
+          <div class="bg-gray-800 rounded-lg p-3 mb-4">
+            <div class="flex items-center space-x-2 mb-2">
+              <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span class="text-green-400 text-sm font-bold">ACTIVE</span>
+            </div>
+            <div class="text-xs text-blue-300">Meditation Guide Online</div>
           </div>
           <div class="flex items-center">
-            <div class="text-3xl mr-2">👨‍⚕️</div>
-            <h3 class="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Talk to Practitioners</h3>
+            <div class="text-3xl mr-2">🎧</div>
+            <h3 class="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Meditation Assistant</h3>
           </div>
         </div>
-        <p class="text-neutral-content text-md">Get expert guidance.</p>
+        <p class="text-blue-200 text-md">24/7 guided meditation and focus enhancement support.</p>
       </div>
 
-      <!-- Third-Biggest Card - AI Chat -->
-      <div class="md:col-span-1 lg:col-span-1 p-5 bg-transparent rounded-xl  relative border-2 flex flex-col" style="border-color: var(--fallback-p, oklch(var(--p)));">
+      <!-- Neural Enhancement -->
+      <div class="md:col-span-1 lg:col-span-1 p-5 glass-card rounded-xl flex flex-col">
         <div class="flex items-center mb-3">
-          <div class="text-3xl mr-2">🤖</div>
-          <h3 class="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">AI Chat specialized in your health</h3>
+          <div class="text-3xl mr-2">⚡</div>
+          <h3 class="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Neural Enhancement</h3>
         </div>
-        <p class="text-neutral-content text-md">Get instant AI-powered health insights tailored to your unique constitution.</p>
+        <p class="text-blue-200 text-md">Advanced neural pathway optimization for peak mental performance.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Feature Screenshots Section -->
-<section class="py-20 bg-neutral">
+<!-- Advanced Analytics Section -->
+<section class="py-20 bg-gray-900">
   <div class="max-w-7xl mx-auto px-5">
-    <!-- Feature 1: Health Tracking -->
+    <!-- Feature 1: Cognitive Performance Tracking -->
     <div class="grid lg:grid-cols-2 gap-12 items-start mb-20">
       <div class="order-2 lg:order-1">
         <div class="flex items-start mb-6">
-          <div class="text-6xl mr-4">📊</div>
-          <h3 class="text-4xl font-bold text-neutral-content">Track Your Wellness Journey</h3>
+          <div class="text-6xl mr-4">🧠</div>
+          <h3 class="futuristic-title text-4xl font-bold text-white">Track Your Cognitive Performance</h3>
         </div>
-        <p class="text-xl text-neutral-content mb-6">
-          Monitor your daily symptoms, energy levels, and wellness milestones. Our intuitive dashboard helps you discover insights and support your day-to-day health.
+        <p class="text-xl text-blue-200 mb-6">
+          Monitor focus duration, attention span, and mental clarity with advanced neural analytics. Our AI-powered dashboard provides real-time insights into your cognitive optimization journey.
         </p>
-        <ul class="space-y-3 text-lg text-neutral-content">
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> Daily wellness-habit tracking</li>
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> Energy level monitoring</li>
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> Routine & wellness progress charts</li>
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> Personalized insights</li>
+        <ul class="space-y-3 text-lg text-blue-200">
+          <li class="flex items-center"><span class="text-blue-400 mr-3">✓</span> Real-time focus tracking</li>
+          <li class="flex items-center"><span class="text-blue-400 mr-3">✓</span> Neural activity monitoring</li>
+          <li class="flex items-center"><span class="text-blue-400 mr-3">✓</span> Performance analytics dashboard</li>
+          <li class="flex items-center"><span class="text-blue-400 mr-3">✓</span> AI-powered insights</li>
         </ul>
       </div>
       <div class="order-1 lg:order-2">
-        <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8 border-2 border-primary/20">
-          <div class="bg-white rounded-xl p-6 shadow-lg">
-            <div class="rounded-xl overflow-hidden">
-              <%= image_tag "home/weekly-log-ui.png", alt: "Weekly Log UI showing health tracking dashboard", class: "w-full h-auto", loading: "lazy" %>
+        <div class="glass-card rounded-2xl p-8">
+          <div class="bg-gray-800 rounded-xl p-6">
+            <h4 class="font-bold text-white mb-4">Today's Cognitive Metrics</h4>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-blue-300">Focus Duration</span>
+                <span class="text-green-400 font-bold">47 min</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-300">Attention Span</span>
+                <span class="text-blue-400 font-bold">Optimal</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-300">Flow State</span>
+                <span class="text-purple-400 font-bold">89%</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-300">Cognitive Load</span>
+                <span class="text-yellow-400 font-bold">Medium</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Feature 2: Personalized Meals -->
+    <!-- Feature 2: AI-Powered Optimization -->
     <div class="grid lg:grid-cols-2 gap-12 items-start mb-20">
       <div class="order-1">
-        <div class="bg-gradient-to-br from-secondary/10 to-accent/10 rounded-2xl p-8 border-2 border-secondary/20">
-          <div class="bg-white rounded-xl p-6 shadow-lg">
-            <h4 class="font-bold text-gray-900 mb-4">Today's Meal Plan</h4>
+        <div class="glass-card rounded-2xl p-8">
+          <div class="bg-gray-800 rounded-xl p-6">
+            <h4 class="font-bold text-white mb-4">AI Optimization Protocols</h4>
             <div class="space-y-3">
               <div class="flex items-center">
-                <span class="text-2xl mr-3">🌅</span>
+                <span class="text-2xl mr-3">🤖</span>
                 <div>
-                  <div class="font-semibold text-gray-900">Breakfast</div>
-                  <div class="text-sm text-gray-600">Warm oatmeal with ginger</div>
+                  <div class="font-semibold text-white">Neural Enhancement</div>
+                  <div class="text-sm text-blue-300">Active optimization protocols</div>
                 </div>
               </div>
               <div class="flex items-center">
-                <span class="text-2xl mr-3">☀️</span>
+                <span class="text-2xl mr-3">⚡</span>
                 <div>
-                  <div class="font-semibold text-gray-900">Lunch</div>
-                  <div class="text-sm text-gray-600">Quinoa with steamed vegetables</div>
-                </div>
-              </div>
-              <div class="flex items-center">
-                <span class="text-2xl mr-3">🌙</span>
-                <div>
-                  <div class="font-semibold text-gray-900">Dinner</div>
-                  <div class="text-sm text-gray-600">Lentil soup with turmeric</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="order-2">
-        <div class="flex items-start mb-6">
-          <div class="text-6xl mr-4">🍽️</div>
-          <h3 class="text-4xl font-bold text-neutral-content">Personalized Meal Plans</h3>
-        </div>
-        <p class="text-xl text-neutral-content mb-6">
-          Get custom meal recommendations based on your unique nature and needs, current imbalances, and wellness goals. Every meal is designed to support your body’s natural wellness.
-        </p>
-        <ul class="space-y-3 text-lg text-neutral-content">
-          <li class="flex items-center"><span class="text-secondary mr-3">✓</span> Constitution-based recipes</li>
-          <li class="flex items-center"><span class="text-secondary mr-3">✓</span> Seasonal meal planning</li>
-          <li class="flex items-center"><span class="text-secondary mr-3">✓</span> Wellness-focused ingredients</li>
-          <li class="flex items-center"><span class="text-secondary mr-3">✓</span> Easy-to-follow instructions</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Feature 3: Herbal Remedies -->
-    <div class="grid lg:grid-cols-2 gap-12 items-start">
-      <div class="order-2 lg:order-1">
-        <div class="flex items-start mb-6">
-          <div class="text-6xl mr-4">🌿</div>
-          <h3 class="text-4xl font-bold text-neutral-content">Ancient Herbal Wisdom</h3>
-        </div>
-        <p class="text-xl text-neutral-content mb-6">
-          Access time-tested herbal formulas and remedies that have been used for thousands of years to support chronic wellness naturally.
-        </p>
-        <ul class="space-y-3 text-lg text-neutral-content">
-          <li class="flex items-center"><span class="text-accent mr-3">✓</span> Traditional herbal formulas</li>
-          <li class="flex items-center"><span class="text-accent mr-3">✓</span> Dosage recommendations</li>
-          <li class="flex items-center"><span class="text-accent mr-3">✓</span> Quality herb sourcing</li>
-          <li class="flex items-center"><span class="text-accent mr-3">✓</span> Safety guidelines</li>
-        </ul>
-      </div>
-      <div class="order-1 lg:order-2">
-        <div class="bg-gradient-to-br from-accent/10 to-primary/10 rounded-2xl p-8 border-2 border-accent/20">
-          <div class="bg-white rounded-xl p-6 shadow-lg">
-            <h4 class="font-bold text-gray-900 mb-4">Recommended Herbs</h4>
-            <div class="space-y-3">
-              <div class="flex items-center justify-between p-3 bg-green-50 rounded-xl">
-                <span class="font-semibold text-gray-900">Turmeric</span>
-                <span class="text-sm text-gray-600">Anti-inflammatory</span>
-              </div>
-              <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-xl">
-                <span class="font-semibold text-gray-900">Ashwagandha</span>
-                <span class="text-sm text-gray-600">Stress support</span>
-              </div>
-              <div class="flex items-center justify-between p-3 bg-blue-50 rounded-xl">
-                <span class="font-semibold text-gray-900">Triphala</span>
-                <span class="text-sm text-gray-600">Digestive health</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Feature 4: Community for Healing -->
-    <div class="grid lg:grid-cols-2 gap-12 items-start mt-20">
-      <div class="order-2 lg:order-1">
-        <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8 border-2 border-primary/20">
-          <div class="bg-white rounded-xl p-6 shadow-lg">
-            <h4 class="font-bold text-gray-900 mb-4">Community Support</h4>
-            <div class="space-y-3">
-              <div class="flex items-center">
-                <span class="text-2xl mr-3">💬</span>
-                <div>
-                  <div class="font-semibold text-gray-900">Daily Check-ins</div>
-                  <div class="text-sm text-gray-600">Share progress with healing community</div>
-                </div>
-              </div>
-              <div class="flex items-center">
-                <span class="text-2xl mr-3">🤝</span>
-                <div>
-                  <div class="font-semibold text-gray-900">Peer Support</div>
-                  <div class="text-sm text-gray-600">Connect with others on similar journeys</div>
+                  <div class="font-semibold text-white">Flow Induction</div>
+                  <div class="text-sm text-blue-300">Real-time state optimization</div>
                 </div>
               </div>
               <div class="flex items-center">
                 <span class="text-2xl mr-3">🎯</span>
                 <div>
-                  <div class="font-semibold text-gray-900">Expert Guidance</div>
-                  <div class="text-sm text-gray-600">Get answers from Ayurvedic practitioners</div>
+                  <div class="font-semibold text-white">Focus Amplification</div>
+                  <div class="text-sm text-blue-300">Enhanced concentration protocols</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="order-1 lg:order-2">
+      <div class="order-2">
         <div class="flex items-start mb-6">
-          <div class="text-6xl mr-4">🤝</div>
-          <h3 class="text-4xl font-bold text-neutral-content">Holistic Wellness Community</h3>
+          <div class="text-6xl mr-4">🤖</div>
+          <h3 class="futuristic-title text-4xl font-bold text-white">AI-Powered Cognitive Enhancement</h3>
         </div>
-        <p class="text-xl text-neutral-content mb-6">
-          Join a supportive community of people on their wellness journey. Share experiences, get encouragement, and learn from others using ancient wisdom to support lifetime healthy living.
+        <p class="text-xl text-blue-200 mb-6">
+          Advanced artificial intelligence algorithms analyze your cognitive patterns and provide personalized optimization protocols for enhanced mental performance and focus.
         </p>
-        <ul class="space-y-3 text-lg text-neutral-content">
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> Supportive peer network</li>
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> Expert practitioner access</li>
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> Success story sharing</li>
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> 24/7 community support</li>
+        <ul class="space-y-3 text-lg text-blue-200">
+          <li class="flex items-center"><span class="text-purple-400 mr-3">✓</span> Personalized neural protocols</li>
+          <li class="flex items-center"><span class="text-purple-400 mr-3">✓</span> Real-time optimization</li>
+          <li class="flex items-center"><span class="text-purple-400 mr-3">✓</span> Adaptive learning algorithms</li>
+          <li class="flex items-center"><span class="text-purple-400 mr-3">✓</span> Predictive performance insights</li>
         </ul>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- Chat with Practitioner Section -->
-<section class="pt-12 pb-20 bg-neutral w-full">
-  <div class="max-w-7xl mx-auto px-5">
+    <!-- Feature 3: Neural Synchronization -->
     <div class="grid lg:grid-cols-2 gap-12 items-start">
-      <div class="order-1">
-        <div class="flex items-center mb-6">
-          <div class="text-6xl mr-4">💬</div>
-          <h3 class="text-4xl font-bold text-neutral-content">Chat with a Practitioner</h3>
+      <div class="order-2 lg:order-1">
+        <div class="flex items-start mb-6">
+          <div class="text-6xl mr-4">🌊</div>
+          <h3 class="futuristic-title text-4xl font-bold text-white">Neural Synchronization Technology</h3>
         </div>
-        <p class="text-xl text-neutral-content mb-6">
-          Get instant access to certified Ayurvedic practitioners who can answer your questions, provide personalized guidance, and help you navigate your wellness journey with expert knowledge.
+        <p class="text-xl text-blue-200 mb-6">
+          Advanced brainwave synchronization protocols that optimize neural pathways for enhanced focus, clarity, and cognitive performance through precise frequency modulation.
         </p>
-        <ul class="space-y-3 text-lg text-neutral-content">
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> Certified Ayurvedic practitioners</li>
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> Instant chat support</li>
-          <li class="flex items-center"><span class="text-primary mr-3">✓</span> Personalized Ayurvedic guidance</li>
+        <ul class="space-y-3 text-lg text-blue-200">
+          <li class="flex items-center"><span class="text-cyan-400 mr-3">✓</span> Brainwave frequency optimization</li>
+          <li class="flex items-center"><span class="text-cyan-400 mr-3">✓</span> Neural pathway enhancement</li>
+          <li class="flex items-center"><span class="text-cyan-400 mr-3">✓</span> Cognitive load balancing</li>
+          <li class="flex items-center"><span class="text-cyan-400 mr-3">✓</span> Performance state induction</li>
         </ul>
       </div>
-      <div class="order-2">
-        <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8 border-2 border-primary/20">
-          <div class="bg-white rounded-xl p-6 shadow-lg">
-            <div class="rounded-xl overflow-hidden">
-              <%= video_tag "/videos/home/telehealth-ayurveda.mp4", 
-                  autoplay: true, 
-                  muted: true, 
-                  loop: true, 
-                  playsinline: true,
-                  class: "w-full h-auto rounded-xl" %>
+      <div class="order-1 lg:order-2">
+        <div class="glass-card rounded-2xl p-8">
+          <div class="bg-gray-800 rounded-xl p-6">
+            <h4 class="font-bold text-white mb-4">Neural Activity Patterns</h4>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-3 bg-blue-500/20 rounded-xl">
+                <span class="font-semibold text-white">Alpha Waves</span>
+                <span class="text-sm text-green-400">Optimal</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-purple-500/20 rounded-xl">
+                <span class="font-semibold text-white">Beta Waves</span>
+                <span class="text-sm text-blue-400">Stable</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-cyan-500/20 rounded-xl">
+                <span class="font-semibold text-white">Gamma Waves</span>
+                <span class="text-sm text-yellow-400">Enhanced</span>
+              </div>
             </div>
           </div>
         </div>
@@ -554,95 +680,88 @@
 </section>
 
 <!-- Final CTA Section -->
-<section class="py-20 bg-gradient-to-b from-primary/10 to-[#f6f6d6] w-full">
+<section class="py-20 bg-gradient-to-b from-gray-900 to-gray-800 w-full">
   <div class="max-w-4xl mx-auto text-center px-5">
-    <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
-      Ready to Start Your Wellness Journey?
+    <h2 class="futuristic-title text-4xl lg:text-5xl font-bold text-white mb-6">
+      Ready to Optimize Your Mind Flow?
     </h2>
-    <p class="text-xl text-gray-700 mb-8">
-      Join thousands who have transformed their well-being using the ancient wisdom of Ayurveda.
+    <p class="text-xl text-blue-200 mb-8">
+      Join thousands who have achieved peak cognitive performance using advanced AI-powered neural optimization.
     </p>
     
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
       <% if Current.user&.habit_plans&.any? %>
-        <%= link_to "Continue Your Journey", dashboard_path, class: "btn btn-ghost btn-lg text-primary border-2 border-primary hover:bg-primary hover:text-white px-8 py-4 text-lg font-semibold" %>
+        <%= link_to "CONTINUE OPTIMIZATION", dashboard_path, class: "btn btn-neon px-8 text-lg font-semibold transition-all duration-300" %>
       <% else %>
-        <%= link_to "🌿 Start Tracking Habits", my_habit_plan_path, class: "btn btn-ghost btn-lg text-primary border-2 border-primary hover:bg-primary hover:text-white px-8 py-4 text-lg font-semibold" %>
+        <%= link_to "INITIALIZE PROTOCOLS", my_habit_plan_path, class: "btn btn-neon px-8 text-lg font-semibold transition-all duration-300" %>
       <% end %>
     </div>
     
-    <p class="text-sm text-gray-600 mt-6">
-      ✨ Free assessment • No commitment • Start thriving today
+    <p class="text-sm text-blue-300 mt-6">
+      ⚡ Free neural assessment • Advanced protocols • Peak performance today
     </p>
   </div>
 </section>
 
-<!-- Healer Family Image - Full Width -->
-<div class="w-full">
-  <%= image_tag "home/healer-family.webp", 
-      alt: "Ancient healing family", 
-      class: "w-full h-auto object-cover", loading: "lazy" %>
-</div>
-
 <!-- Enhanced Footer for Homepage -->
-<footer class="bg-neutral text-neutral-content">
+<footer class="bg-gray-900 text-blue-200">
   <div class="max-w-7xl mx-auto px-5 pt-16">
     <div class="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-8 mb-6 md:mb-12">
       
       <!-- Company Info -->
       <div class="lg:col-span-2 mb-4 md:mb-0">
         <div class="flex items-center mb-4">
-          <h3 class="text-2xl font-bold">AncientHerb</h3>
-          <span class="text-3xl mr-3">🌿</span>
+          <h3 class="futuristic-title text-2xl font-bold text-white">MIND FLOW</h3>
+          <span class="text-3xl mr-3">🧠</span>
         </div>
-        <p class="text-neutral-content/80 mb-3 md:mb-6 max-w-md">
-          Empowering your wellness journey through the ancient wisdom of Ayurveda. Transform your wellness naturally with personalized guidance and time-tested methods.
+        <p class="text-blue-200/80 mb-3 md:mb-6 max-w-md">
+          Empowering cognitive enhancement through advanced AI-powered neural optimization. Transform your mental performance with cutting-edge technology and personalized protocols.
         </p>
       </div>
 
       <!-- Quick Links -->
       <div class="mb-4 md:mb-0">
-        <h4 class="text-lg font-semibold mb-2 md:mb-4">Quick Links</h4>
+        <h4 class="text-lg font-semibold mb-2 md:mb-4 text-white">Navigation</h4>
         <ul class="space-y-1">
-          <li><%= link_to "Home", root_path, class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
-          <li><%= link_to "Dashboard", dashboard_path, class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
-          <li><%= link_to "Habit Plans", my_habit_plan_path, class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
-          <li><%= link_to "Community", demo_community_path, class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
+          <li><%= link_to "Home", root_path, class: "text-blue-200/80 hover:text-blue-200 transition-colors" %></li>
+          <li><%= link_to "Dashboard", dashboard_path, class: "text-blue-200/80 hover:text-blue-200 transition-colors" %></li>
+          <li><%= link_to "Focus Plans", my_habit_plan_path, class: "text-blue-200/80 hover:text-blue-200 transition-colors" %></li>
+          <li><%= link_to "Analytics", demo_community_path, class: "text-blue-200/80 hover:text-blue-200 transition-colors" %></li>
         </ul>
       </div>
 
       <!-- Resources -->
       <div class="mb-4 md:mb-0">
-        <h4 class="text-lg font-semibold mb-2 md:mb-4">Resources</h4>
+        <h4 class="text-lg font-semibold mb-2 md:mb-4 text-white">Resources</h4>
         <ul class="space-y-1">
-          <li><%= link_to "About MindMetrics", "#", class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
-          <li><%= link_to "Wellness Guide", "#", class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
-          <li><%= link_to "Herbal Remedies", "#", class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
-          <li><%= link_to "Success Stories", "#", class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
-          <li><%= link_to "FAQ", "#", class: "text-neutral-content/80 hover:text-neutral-content transition-colors" %></li>
+          <li><%= link_to "About MindFlow", "#", class: "text-blue-200/80 hover:text-blue-200 transition-colors" %></li>
+          <li><%= link_to "Cognitive Guide", "#", class: "text-blue-200/80 hover:text-blue-200 transition-colors" %></li>
+          <li><%= link_to "Neural Protocols", "#", class: "text-blue-200/80 hover:text-blue-200 transition-colors" %></li>
+          <li><%= link_to "Success Stories", "#", class: "text-blue-200/80 hover:text-blue-200 transition-colors" %></li>
+          <li><%= link_to "FAQ", "#", class: "text-blue-200/80 hover:text-blue-200 transition-colors" %></li>
         </ul>
       </div>
     </div>
 
     <!-- Newsletter Signup -->
-    <div class="border-t border-neutral-content/20 pt-6 md:pt-8 mb-6 md:mb-8">
+    <div class="border-t border-blue-400/20 pt-6 md:pt-8 mb-6 md:mb-8">
       <div class="max-w-md mx-auto text-center">
-        <h4 class="text-lg font-semibold mb-2">Stay Connected</h4>
-        <p class="text-neutral-content/80 mb-3 md:mb-4">Get healing tips and updates delivered to your inbox</p>
+        <h4 class="text-lg font-semibold mb-2 text-white">Stay Optimized</h4>
+        <p class="text-blue-200/80 mb-3 md:mb-4">Get cognitive enhancement tips and protocol updates</p>
         <%= render "newsletters/form", newsletter: nil %>
       </div>
     </div>
 
     <!-- Bottom Bar -->
-    <div class="border-t border-neutral-content/20 pt-4 md:pt-6">
+    <div class="border-t border-blue-400/20 pt-4 md:pt-6">
       <div class="flex flex-col lg:flex-row justify-between items-center gap-3 md:gap-4">
         <div class="text-center lg:text-left">
-          <p class="text-sm text-neutral-content/60">© 2025 AncientHerb. All rights reserved.</p>
+          <p class="text-sm text-blue-200/60">© 2025 MindFlow. All rights reserved.</p>
         </div>
         <div class="flex flex-wrap justify-center gap-6 text-sm">
-          <%= link_to "Privacy Policy", privacy_policy_path, class: "text-neutral-content/60 hover:text-neutral-content transition-colors" %>
-          <%= link_to "Terms of Service", terms_of_service_path, class: "text-neutral-content/60 hover:text-neutral-content transition-colors" %>
-          <%= link_to "Contact Us", contact_us_path, class: "text-neutral-content/60 hover:text-neutral-content transition-colors" %>
+          <%= link_to "Privacy Policy", privacy_policy_path, class: "text-blue-200/60 hover:text-blue-200 transition-colors" %>
+          <%= link_to "Terms of Service", terms_of_service_path, class: "text-blue-200/60 hover:text-blue-200 transition-colors" %>
+          <%= link_to "Contact Us", contact_us_path, class: "text-blue-200/60 hover:text-blue-200 transition-colors" %>
         </div>
       </div>
     </div>

@@ -48,9 +48,9 @@ export default function HabitPlanView({
   } = useHabitCompletion(habitLog?.id, initialCompletions)
   
   // Limit plan items to 3 per section for both authenticated and unauthenticated users
-  // Filter out unwanted sections: Dietary Guidelines, Herbal Remedies, Lifestyle Practices
+  // Filter out unwanted sections: Dietary Guidelines, Herbal Remedies, Lifestyle Practices, Quick Wins
   const filteredPlanSections = habitPlan?.plan_sections?.filter(section => {
-    const unwantedSections = ['Dietary Guidelines', 'Herbal Remedies', 'Lifestyle Practices']
+    const unwantedSections = ['Dietary Guidelines', 'Herbal Remedies', 'Lifestyle Practices', 'Quick Wins']
     return !unwantedSections.includes(section.name)
   }) || []
   

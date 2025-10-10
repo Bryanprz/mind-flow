@@ -119,6 +119,8 @@ module.exports = {
     'w-[40rem]',
     'p-7',
     'mb-8',
+    'mt-25',
+    'pt-20',
     'rounded-xl',
     'timeline', 
     'timeline-vertical', 

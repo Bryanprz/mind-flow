@@ -1,4 +1,4 @@
-<div class="navbar <%= current_page?(root_path) ? 'bg-neutral' : 'bg-base-100' %> sticky top-0 z-50 <%= current_page?(root_path) ? '' : 'border-b border-base-300/30 border-b-1' %> transition-transform duration-300 ease-in-out" data-controller="mobile-menu scroll-nav" data-scroll-nav-target="navbar">
+<div class="navbar bg-transparent sticky top-0 z-50  transition-transform duration-300 ease-in-out" data-controller="mobile-menu scroll-nav" data-scroll-nav-target="navbar">
   <div class="navbar-start">
     <% if authenticated? %>
       <%= link_to "🧬MindFlow", root_path, class: "btn btn-ghost text-2xl text-primary tracking-tighter !gap-0", style: "padding-left: 2rem;" %>
