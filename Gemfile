@@ -79,7 +79,7 @@ gem "image_processing", "~> 1.2"
 # gem 'google-cloud-storage'
 # gem 'google-apis-storage_v1', '~> 0.40.0'
 # gem 'googleauth', '~> 1.7'
-gem "tailwindcss-rails", "~> 2.7"
+gem "tailwindcss-rails", "~> 4.3"
 gem "acts_as_list"
 gem "exception_notification"
 # gem "jsbundling-rails", "~> 1.3"  # Removed - using Vite + importmap hybrid approach
