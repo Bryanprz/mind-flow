@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # Importmap routes
+  mount Importmap::Engine => "/importmap"
+  
   # Active Storage direct uploads
   direct :rails_direct_uploads do
     "/rails/active_storage/direct_uploads"

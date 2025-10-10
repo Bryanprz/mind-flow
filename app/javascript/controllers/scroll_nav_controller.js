@@ -7,6 +7,22 @@ export default class extends Controller {
     this.lastScrollY = window.scrollY
     this.ticking = false
     this.isHidden = false
+    
+    // Add padding to body to account for fixed navbar
+    const navbar = this.hasNavbarTarget ? this.navbarTarget : 
+                   document.querySelector('nav') ||
+                   document.querySelector('.navbar') ||
+                   document.querySelector('[data-controller*="scroll-nav"]')
+    
+    if (navbar) {
+      const navbarHeight = navbar.offsetHeight
+      // Only add padding to body if we're not on the dashboard page
+      // Dashboard has its own layout structure and doesn't need body padding
+      if (!window.location.pathname.includes('/dashboard')) {
+        document.body.style.paddingTop = `${navbarHeight}px`
+      }
+    }
+    
     this.bindScroll()
   }
   
@@ -45,41 +61,24 @@ export default class extends Controller {
     const navbarHeight = navbar.offsetHeight
     const scrollDirection = currentScrollY > this.lastScrollY ? 'down' : 'up'
     
-    // Clear any existing transforms and transitions first
-    navbar.style.transform = ''
-    navbar.style.transition = ''
-    
-    // Small delay to ensure clean state
-    setTimeout(() => {
-      // Hide navbar when scrolling down, show when scrolling up
-      if (scrollDirection === 'down' && currentScrollY > 100) {
-        // Scrolling down and past 100px - hide navbar
-        navbar.style.transform = `translateY(-${navbarHeight}px)`
-        navbar.style.transition = 'transform 0.3s ease-in-out'
-        
-        // Adjust sidebar if it exists to fill the space
-        const sidebar = document.querySelector('[data-sidebar]') || 
-                       document.querySelector('.sidebar') ||
-                       document.querySelector('#sidebar')
-        if (sidebar) {
-          sidebar.style.top = '0px'
-          sidebar.style.transition = 'top 0.3s ease-in-out'
-        }
-      } else {
-        // Scrolling up or at top - show navbar
-        navbar.style.transform = 'translateY(0)'
-        navbar.style.transition = 'transform 0.3s ease-in-out'
-        
-        // Adjust sidebar if it exists to make room for navbar
-        const sidebar = document.querySelector('[data-sidebar]') || 
-                       document.querySelector('.sidebar') ||
-                       document.querySelector('#sidebar')
-        if (sidebar) {
-          sidebar.style.top = `${navbarHeight}px`
-          sidebar.style.transition = 'top 0.3s ease-in-out'
-        }
-      }
-    }, 10)
+    // Hide navbar when scrolling down, show when scrolling up
+    if (scrollDirection === 'down' && currentScrollY > 100 && !this.isHidden) {
+      // Scrolling down and past 100px - hide navbar
+      navbar.style.position = 'fixed'
+      navbar.style.width = '100%'
+      navbar.style.left = '0'
+      navbar.style.top = `-${navbarHeight}px`
+      navbar.style.transition = 'top 0.3s ease-in-out'
+      this.isHidden = true
+    } else if ((scrollDirection === 'up' || currentScrollY <= 100) && this.isHidden) {
+      // Scrolling up or at top - show navbar
+      navbar.style.position = 'fixed'
+      navbar.style.width = '100%'
+      navbar.style.left = '0'
+      navbar.style.top = '0'
+      navbar.style.transition = 'top 0.3s ease-in-out'
+      this.isHidden = false
+    }
     
     this.lastScrollY = currentScrollY
   }

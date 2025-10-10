@@ -82,6 +82,6 @@ gem "image_processing", "~> 1.2"
 gem "tailwindcss-rails", "~> 2.7"
 gem "acts_as_list"
 gem "exception_notification"
-gem "jsbundling-rails", "~> 1.3"
+# gem "jsbundling-rails", "~> 1.3"  # Removed - using Vite + importmap hybrid approach
 
 gem "vite_rails", "~> 3.0"
