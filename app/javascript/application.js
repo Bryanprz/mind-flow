@@ -3,6 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "turbo_stream_actions"
 
+
 // Set a cookie with the browser's time zone once, so the server can render dates in the user's zone
 // This will be sent with every subsequent request and used in ApplicationController#set_time_zone
 (() => {

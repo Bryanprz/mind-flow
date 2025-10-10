@@ -117,7 +117,7 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
       <div className="hidden lg:flex w-full min-h-screen">
         {/* Fixed Sidebar */}
         <div className="w-80 bg-base-200 flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
-          <ul className="menu p-4 text-base-content">
+          <ul className="menu p-4 text-base-content fixed">
             <li><a href="/habit_plan" className="flex items-center gap-2"><ClipboardList className="w-4 h-4" />Habit Plan</a></li>
             <li><a href="/messages" className="flex items-center gap-2"><MessageSquare className="w-4 h-4" />Messages</a></li>
             <li><a href="/community" className="flex items-center gap-2"><Users className="w-4 h-4" />Community</a></li>
