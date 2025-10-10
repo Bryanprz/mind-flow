@@ -160,7 +160,7 @@
 
 <!-- Hero Section -->
 <section class="hero-mindflow pt-10 tech-grid w-full">
-  <div class="max-w-7xl mx-auto px-5 relative">
+  <div class="max-w-7xl mx-auto px-5 pt-10 relative">
     <div class="text-center relative z-10 min-h-screen flex flex-col">
       <!-- Main Content Container - All text centered vertically -->
       <div class="absolute inset-0 flex flex-col justify-top items-center">
@@ -186,7 +186,7 @@
         </div>
 
         <div>
-          <p class="text-base text-blue-300 mt-4 text-center text-lg lg:text-xl" style="line-height:1.9;">
+          <p class="text-base text-blue-300 mt-4 pt-10 text-center text-lg lg:text-xl" style="line-height:1.9;">
             Advanced mental training for peak mental performance
           </p>
         </div>
@@ -194,7 +194,7 @@
         <!-- CTA Button -->
         <div class="z-30 mt-10">
           <% if Current.user&.habit_plans&.any? %>
-            <%= link_to "CONTINUE SESSION", dashboard_path, class: "btn btn-neon px-8 text-lg font-semibold transition-all duration-300" %>
+            <%= link_to "CONTINUE SESSION", dashboard_path, class: "btn btn-neon mt-2 px-8 text-lg font-semibold transition-all duration-300" %>
           <% else %>
             <%= link_to "EXPLORE", my_habit_plan_path, class: "btn btn-neon px-8 text-lg font-semibold transition-all duration-300" %>
           <% end %>

@@ -48,9 +48,9 @@ export default function HabitPlanView({
   } = useHabitCompletion(habitLog?.id, initialCompletions)
   
   // Limit plan items to 3 per section for both authenticated and unauthenticated users
-  // Filter out unwanted sections: Dietary Guidelines, Herbal Remedies, Lifestyle Practices, Quick Wins
+  // Filter out unwanted sections: Dietary Guidelines, Herbal Remedies, Lifestyle Practices, Quick Wins, Mind-Body Connection
   const filteredPlanSections = habitPlan?.plan_sections?.filter(section => {
-    const unwantedSections = ['Dietary Guidelines', 'Herbal Remedies', 'Lifestyle Practices', 'Quick Wins']
+    const unwantedSections = ['Dietary Guidelines', 'Herbal Remedies', 'Lifestyle Practices', 'Quick Wins', 'Mind-Body Connection']
     return !unwantedSections.includes(section.name)
   }) || []
   
@@ -63,7 +63,7 @@ export default function HabitPlanView({
   const demoPlanSections = [
     {
       id: 'demo-1', 
-      name: 'Mind-Body Connection',
+      name: 'Daily Wellness',
       plan_items: [
         { id: 'demo-1-1', content: 'Morning meditation or mindfulness practice' },
         { id: 'demo-1-2', content: 'Gentle yoga or stretching routine' },
@@ -101,6 +101,11 @@ export default function HabitPlanView({
       text: "The way to get started is to quit talking and begin doing.",
       author: "Walt Disney",
       category: "Action"
+    },
+    {
+      text: "Your cognitive performance peaks at 2:30 PM. Schedule your most demanding tasks during this window.",
+      author: "Performance Peak",
+      category: "Optimization"
     }
   ]
   

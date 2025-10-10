@@ -38,14 +38,6 @@ export default function DailyInsights({
 
   const insights = [
     {
-      icon: "📈",
-      title: "Performance Peak",
-      description: "Your cognitive performance peaks at 2:30 PM. Schedule your most demanding tasks during this window.",
-      color: "text-blue-500",
-      bg: "bg-info",
-      border: "border-info/30"
-    },
-    {
       icon: "🧠",
       title: "Focus Patterns",
       description: "Meditation before work increases your focus by 23%. Keep this routine consistent.",
