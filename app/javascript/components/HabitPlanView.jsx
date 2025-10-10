@@ -25,7 +25,7 @@ export default function HabitPlanView({
   const [showCelebration, setShowCelebration] = useState(false)
   const [currentDate, setCurrentDate] = useState(date)
   
-  // Initialize completions from habit log
+  // Initialize completions from habit log (for authenticated users) or empty for demo
   const initialCompletions = {}
   if (habitLog?.plan_item_logs) {
     habitLog.plan_item_logs.forEach(log => {
@@ -46,6 +46,74 @@ export default function HabitPlanView({
     getCompletionPercentage,
     isUpdating
   } = useHabitCompletion(habitLog?.id, initialCompletions)
+  
+  // Limit plan items to 3 per section for both authenticated and unauthenticated users
+  // Filter out unwanted sections: Dietary Guidelines, Herbal Remedies, Lifestyle Practices
+  const filteredPlanSections = habitPlan?.plan_sections?.filter(section => {
+    const unwantedSections = ['Dietary Guidelines', 'Herbal Remedies', 'Lifestyle Practices']
+    return !unwantedSections.includes(section.name)
+  }) || []
+  
+  const limitedPlanSections = filteredPlanSections.map(section => ({
+    ...section,
+    plan_items: section.plan_items.slice(0, 3)
+  }))
+  
+  // Demo data for unauthenticated users
+  const demoPlanSections = [
+    {
+      id: 'demo-1', 
+      name: 'Mind-Body Connection',
+      plan_items: [
+        { id: 'demo-1-1', content: 'Morning meditation or mindfulness practice' },
+        { id: 'demo-1-2', content: 'Gentle yoga or stretching routine' },
+        { id: 'demo-1-3', content: 'Deep breathing exercises' }
+      ]
+    }
+  ]
+  
+  // Use demo data for unauthenticated users, limited data for authenticated users
+  const displayPlanSections = habitPlan ? limitedPlanSections : demoPlanSections
+  
+  // Daily motivational quotes carousel
+  const quotes = [
+    {
+      text: "Discipline is freedom.",
+      author: "Jocko Willink",
+      category: "Mindset"
+    },
+    {
+      text: "You can't improve what you don't measure.",
+      author: "Peter Drucker",
+      category: "Productivity"
+    },
+    {
+      text: "The mind is everything. What you think you become.",
+      author: "Buddha",
+      category: "Mindfulness"
+    },
+    {
+      text: "Success is the sum of small efforts repeated day in and day out.",
+      author: "Robert Collier",
+      category: "Consistency"
+    },
+    {
+      text: "The way to get started is to quit talking and begin doing.",
+      author: "Walt Disney",
+      category: "Action"
+    }
+  ]
+  
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0)
+  
+  // Rotate quotes every 8 seconds
+  useEffect(() => {
+    const quoteInterval = setInterval(() => {
+      setCurrentQuoteIndex((prev) => (prev + 1) % quotes.length)
+    }, 8000)
+
+    return () => clearInterval(quoteInterval)
+  }, [quotes.length])
 
   // Update habit log ID when prop changes
   useEffect(() => {
@@ -187,36 +255,68 @@ export default function HabitPlanView({
       >
         <div className="card bg-base-100/90 backdrop-blur-xl border border-base-300/30 shadow-lg">
           <div className="card-body p-6">
-            {/* Top Row: Date Navigation */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <button className="btn btn-circle btn-sm btn-ghost">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </button>
-                
-                <div className="text-center">
-                  <div className="text-lg font-semibold">Wednesday, October 8, 2025</div>
-                  <div className="flex items-center gap-2 justify-center mt-1">
-                    <div className="text-sm text-base-content/60">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline mr-1" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                      </svg>
-                      Today
-                    </div>
+          {/* Top Row: Date Navigation */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <button className="btn btn-circle btn-sm btn-ghost">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              </button>
+              
+              <div className="text-center">
+                <div className="text-lg font-semibold">Wednesday, October 8, 2025</div>
+                <div className="flex items-center gap-2 justify-center mt-1">
+                  <div className="text-sm text-base-content/60">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                    </svg>
+                    Today
                   </div>
                 </div>
-                
-                <button className="btn btn-circle btn-sm btn-ghost">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                  </svg>
-                </button>
               </div>
               
-              <button className="btn btn-sm btn-primary">Today</button>
+              <button className="btn btn-circle btn-sm btn-ghost">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                </svg>
+              </button>
             </div>
+            
+            {/* Small Quote Carousel - Right Aligned */}
+            <div className="text-right max-w-xs">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentQuoteIndex}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="text-sm font-medium text-base-content/80 italic">
+                    "{quotes[currentQuoteIndex].text}"
+                  </div>
+                  <div className="text-xs text-base-content/60">
+                    — {quotes[currentQuoteIndex].author}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+              
+              {/* Quote indicators */}
+              <div className="flex gap-1 justify-end mt-2">
+                {quotes.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-1.5 h-1.5 rounded-full transition-all ${
+                      index === currentQuoteIndex 
+                        ? 'bg-primary' 
+                        : 'bg-base-300'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
 
             {/* Bottom Row: 4 Metrics */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -241,15 +341,15 @@ export default function HabitPlanView({
         </div>
       </motion.div>
 
-      {/* Daily Insights - Full Width */}
+      {/* Performance Insight */}
       <motion.div variants={itemVariants} className="mb-8">
         <DailyInsights />
       </motion.div>
 
       {/* Main Content - 2 Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 items-start">
         {/* Left Column: Plan Sections */}
-        <motion.div variants={containerVariants} className="space-y-6">
+        <motion.div variants={containerVariants} className="flex flex-col gap-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center">
               <Target className="w-5 h-5 text-white" />
@@ -260,7 +360,7 @@ export default function HabitPlanView({
             </div>
           </div>
           
-          {habitPlan.plan_sections.map((section, index) => (
+          {displayPlanSections.map((section, index) => (
             <HabitSection
               key={section.id}
               section={section}
@@ -275,16 +375,9 @@ export default function HabitPlanView({
         {/* Right Column: Habit Schedule Builder */}
         <motion.div variants={itemVariants}>
           <HabitScheduleBuilder
-            habits={habitPlan.plan_sections.flatMap(section => 
-              section.plan_items.map(item => ({
-                id: item.id,
-                name: item.content,
-                category: section.name,
-                icon: section.name.includes('Mind') ? '🧘‍♂️' : 
-                      section.name.includes('Body') ? '💪' : '🎯',
-                completed: new Array(7).fill(false)
-              }))
-            )}
+            planSections={displayPlanSections}
+            completions={completions}
+            onToggleItem={toggleCompletion}
           />
         </motion.div>
       </div>

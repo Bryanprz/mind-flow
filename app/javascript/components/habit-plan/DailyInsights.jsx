@@ -94,59 +94,6 @@ export default function DailyInsights({
 
   return (
     <div className={`space-y-6 ${className}`}>
-      {/* Daily Quote */}
-      <motion.div
-        className="card bg-base-100/90 backdrop-blur-xl border border-base-300/30 shadow-lg"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-      >
-        <div className="card-body p-6">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
-              <Quote className="w-6 h-6 text-white" />
-            </div>
-            
-            <div className="flex-1">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentQuote}
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <blockquote className="text-lg font-medium text-base-content leading-relaxed mb-3">
-                    "{currentQuoteData.text}"
-                  </blockquote>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <cite className="text-sm font-semibold text-base-content/80 not-italic">
-                        — {currentQuoteData.author}
-                      </cite>
-                      <div className="badge badge-sm bg-blue-100 text-blue-700 border-blue-200 mt-1">
-                        {currentQuoteData.category}
-                      </div>
-                    </div>
-                    <div className="flex gap-1">
-                      {quotes.map((_, index) => (
-                        <div
-                          key={index}
-                          className={`w-2 h-2 rounded-full transition-all ${
-                            index === currentQuote 
-                              ? 'bg-blue-500' 
-                              : 'bg-blue-200'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-      </motion.div>
 
       {/* Performance Insight */}
       <motion.div

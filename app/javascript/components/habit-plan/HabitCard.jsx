@@ -20,7 +20,7 @@ const cleanActionTextContent = (content) => {
     .trim()
 }
 
-const HabitCard = React.memo(function HabitCard({ habit, index, onToggleHabit, weekDays }) {
+const HabitCard = React.memo(function HabitCard({ habit, index, onToggleHabit, weekDays, className = '' }) {
   const completedCount = habit.completed.filter(Boolean).length
   const completionRate = Math.round((completedCount / 7) * 100)
   const isToday = (dayIndex) => dayIndex === new Date().getDay() - 1 // Monday = 0
@@ -56,7 +56,7 @@ const HabitCard = React.memo(function HabitCard({ habit, index, onToggleHabit, w
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      className="card bg-gradient-to-br from-base-100/90 to-base-100/70 backdrop-blur-xl border border-base-300/30 shadow-xl hover:shadow-2xl transition-all duration-300"
+      className={`card bg-gradient-to-br from-base-100/90 to-base-100/70 backdrop-blur-xl border border-base-300/30 shadow-xl hover:shadow-2xl transition-all duration-300 ${className}`}
       style={{
         // Modern overflow handling
         contain: 'layout style',
