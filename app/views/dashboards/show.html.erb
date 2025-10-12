@@ -1,6 +1,7 @@
 <% content_for :vite_page, true %>
 <% content_for :hide_footer, true %>
-<% content_for :main_container_class, 'w-full bg-base-200 p-0' %>
+<% content_for :hide_navigation, true %>
+<% content_for :main_container_class, 'w-full h-full min-h-screen p-0' %>
 
 <div id="dashboard-root" class="w-full h-full min-h-screen" data-props="<%= @dashboard_props.to_json.gsub("'", "&#39;") %>"></div>
 

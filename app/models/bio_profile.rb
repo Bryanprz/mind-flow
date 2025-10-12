@@ -39,3 +39,4 @@ class BioProfile < ApplicationRecord
     name == STRUCTURAL
   end
 end
+
