@@ -300,48 +300,13 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
             </div>
           </div>
 
-          {/* Right Sidebar */}
+          {/* Graph Components */}
           <div className="w-72 bg-base-300 p-4 space-y-6">
-            {/* Performance Index */}
-            <div className="bg-gradient-to-r from-primary to-secondary rounded-lg p-4">
-              <div className="text-2xl font-bold text-primary-content mb-1">87</div>
-              <div className="text-primary-content/80 text-sm">Performance Index</div>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-base-content/80">Today's Focus</h3>
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs">
-                  <span className="text-base-content/60">Deep Work:</span>
-                  <span className="font-medium">2h 15m</span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-base-content/60">Meditation:</span>
-                  <span className="font-medium">45m</span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-base-content/60">Learning:</span>
-                  <span className="font-medium">1h 30m</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Next Up */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-base-content/80">Next Up</h3>
-              <div className="space-y-2">
-                {upcomingSessions.map((session, index) => (
-                  <div key={index} className="bg-base-100 rounded-lg px-3 py-2 flex items-center space-x-2">
-                    <span className="text-sm">{session.icon}</span>
-                    <div className="flex-1">
-                      <div className="text-xs font-medium text-base-content">{session.type}</div>
-                      <div className="text-xs text-base-content/60">{session.time}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Focus Score Gauge */}
+            <WellnessGauge currentUser={currentUser} />
+            
+            {/* Cognitive Metrics Chart */}
+            <HabitChart habitPlan={habitPlan} />
           </div>
         </div>
       </div>

@@ -19,14 +19,17 @@ export default function HabitChart({ habitPlan }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card bg-base-100 shadow-sm rounded-lg p-6 h-full"
+      className="card bg-base-100 shadow-sm rounded-lg p-4 h-full flex flex-col"
     >
-        <h2 className="text-lg font-semibold flex items-center gap-2 mb-4 text-base-content">
-          <Brain className="w-5 h-5 text-blue-600" />
-          Cognitive Metrics
-        </h2>
-        
-        <ResponsiveContainer width="100%" height={250}>
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-3">
+        <Brain className="w-5 h-5 text-blue-600" />
+        <h2 className="text-lg font-semibold text-base-content">Cognitive Metrics</h2>
+      </div>
+      
+      {/* Chart Section */}
+      <div className="flex-1 mb-3">
+        <ResponsiveContainer width="100%" height={200}>
           <LineChart data={data}>
             <defs>
               <linearGradient id="colorFocus" x1="0" y1="0" x2="0" y2="1">
@@ -45,12 +48,12 @@ export default function HabitChart({ habitPlan }) {
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis 
               dataKey="name" 
-              tick={{ fontSize: 12 }}
+              tick={{ fontSize: 11 }}
               stroke="#6b7280"
             />
             <YAxis 
               domain={[6, 10]}
-              tick={{ fontSize: 12 }}
+              tick={{ fontSize: 11 }}
               stroke="#6b7280"
             />
             <Tooltip 
@@ -61,44 +64,61 @@ export default function HabitChart({ habitPlan }) {
                 fontSize: '12px'
               }}
             />
-            <Legend />
             <Line 
               type="monotone" 
               dataKey="focus" 
               stroke="#3b82f6" 
-              strokeWidth={3}
-              dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }}
+              strokeWidth={2.5}
+              dot={{ fill: '#3b82f6', strokeWidth: 2, r: 3 }}
               name="Focus"
             />
             <Line 
               type="monotone" 
               dataKey="mood" 
               stroke="#8b5cf6" 
-              strokeWidth={3}
-              dot={{ fill: '#8b5cf6', strokeWidth: 2, r: 4 }}
+              strokeWidth={2.5}
+              dot={{ fill: '#8b5cf6', strokeWidth: 2, r: 3 }}
               name="Mood"
             />
             <Line 
               type="monotone" 
               dataKey="energy" 
               stroke="#10b981" 
-              strokeWidth={3}
-              dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
+              strokeWidth={2.5}
+              dot={{ fill: '#10b981', strokeWidth: 2, r: 3 }}
               name="Energy"
             />
           </LineChart>
         </ResponsiveContainer>
-        
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-base-300">
-          <div className="text-sm">
-            <span className="font-semibold text-base-content">Avg Focus:</span>
-            <span className="ml-2 text-blue-600">8.1</span>
-          </div>
-          <div className="text-sm">
-            <span className="font-semibold text-base-content">Peak Day:</span>
-            <span className="ml-2 text-green-600">Friday</span>
-          </div>
+      </div>
+      
+      {/* Legend */}
+      <div className="flex items-center justify-center gap-4 mb-3">
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+          <span className="text-xs text-base-content/70">Focus</span>
         </div>
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+          <span className="text-xs text-base-content/70">Mood</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <span className="text-xs text-base-content/70">Energy</span>
+        </div>
+      </div>
+      
+      {/* Summary Stats */}
+      <div className="flex items-center justify-between pt-3 border-t border-base-300">
+        <div className="text-xs">
+          <span className="font-medium text-base-content">Avg Focus:</span>
+          <span className="ml-1 text-blue-600 font-semibold">8.1</span>
+        </div>
+        <div className="text-xs">
+          <span className="font-medium text-base-content">Peak Day:</span>
+          <span className="ml-1 text-green-600 font-semibold">Friday</span>
+        </div>
+      </div>
     </motion.div>
   )
 }
