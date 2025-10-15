@@ -6,3 +6,5 @@ class BioProfileHealingFood < ApplicationRecord
   validates :recommendations, presence: true
 end
 
+
+

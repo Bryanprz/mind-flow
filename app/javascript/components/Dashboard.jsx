@@ -10,6 +10,7 @@ import HabitChart from './dashboard/HabitChart'
 import WellnessGauge from './dashboard/WellnessGauge'
 import MoodTimeline from './dashboard/MoodTimeline'
 import AuthenticatedFooter from './dashboard/AuthenticatedFooter'
+import StatisticsChart from './dashboard/StatisticsChart'
 import { AlertTriangle, ClipboardList, MessageSquare, Users, CheckSquare, User, Phone, BarChart3, Bell, Settings, LogOut, Search, Globe, Wifi } from 'lucide-react'
 
 const containerVariants = {
@@ -231,7 +232,7 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
                 ))}
               </div>
               
-              {/* Line Graph Placeholder */}
+              {/* Statistics Chart */}
               <div className="bg-base-100 rounded-lg p-6 h-64">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex space-x-4 text-sm">
@@ -241,17 +242,11 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
                     <span className="text-base-content">4h</span>
                   </div>
                 </div>
-                <div className="h-32 bg-base-200 rounded flex items-center justify-center">
-                  <span className="text-base-content/70">Line Graph: 7am - 10pm</span>
-                </div>
-                <div className="flex items-center justify-between mt-4 text-xs text-base-content/70">
-                  <span>7 am</span>
-                  <span>10 am</span>
-                  <span>1 pm</span>
-                  <span>4 pm</span>
-                  <span>7 pm</span>
-                  <span>10 pm</span>
-                </div>
+                <StatisticsChart 
+                  selectedDate="2024-01-15"
+                  timeRange="1h"
+                  timeInterval="1h"
+                />
               </div>
             </div>
 

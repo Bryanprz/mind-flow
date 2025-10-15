@@ -40,3 +40,5 @@ class BioProfile < ApplicationRecord
   end
 end
 
+
+
