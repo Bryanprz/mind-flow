@@ -126,23 +126,23 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-primary rounded-full"></div>
-                <span className="text-sm text-base-content">Active Calls</span>
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <span className="text-sm text-base-content">Focus Intensity</span>
               </div>
-              <span className="text-base-content font-bold text-lg">{payload[0].value}h</span>
+              <span className="text-base-content font-bold text-lg">{payload[0].value}</span>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-secondary rounded-full"></div>
-                <span className="text-sm text-base-content">Queue</span>
+                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                <span className="text-sm text-base-content">Mental Clarity</span>
               </div>
-              <span className="text-base-content font-bold text-lg">{payload[1].value}h</span>
+              <span className="text-base-content font-bold text-lg">{payload[1].value}</span>
             </div>
             {payload[2] && (
               <div className="flex items-center justify-between pt-2 border-t border-base-300">
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-accent rounded-full"></div>
-                  <span className="text-sm text-base-content">Volume</span>
+                  <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
+                  <span className="text-sm text-base-content">Energy Reserves</span>
                 </div>
                 <span className="text-base-content font-bold text-lg">{payload[2].value}</span>
               </div>
@@ -247,29 +247,22 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
 
   return (
     <div className="w-full h-full relative">
-      {/* Interactive Controls */}
-      <div className="absolute top-4 left-4 z-10 space-y-2">
-        {/* Scenario Selector */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-          <label className="text-xs font-semibold text-gray-700 mb-2 block">Scenario</label>
-          <select 
-            value={scenario} 
-            onChange={(e) => setScenario(e.target.value)}
-            className="text-xs bg-white border border-gray-300 rounded px-2 py-1"
-          >
-            <option value="normal">Normal Day</option>
-            <option value="busy">Busy Day</option>
-            <option value="quiet">Quiet Day</option>
-            <option value="emergency">Emergency</option>
-            <option value="custom">Custom</option>
-          </select>
-        </div>
-
-        {/* Volume Multiplier */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-          <label className="text-xs font-semibold text-gray-700 mb-2 block">
-            Volume: {volumeMultiplier.toFixed(1)}x
-          </label>
+      {/* Compact Controls */}
+      <div className="absolute top-3 right-3 z-10 flex items-center space-x-3">
+        <select 
+          value={scenario} 
+          onChange={(e) => setScenario(e.target.value)}
+          className="text-xs bg-white/90 backdrop-blur-sm border border-gray-300 rounded px-3 py-1 shadow-sm"
+        >
+          <option value="normal">Balanced Mind</option>
+          <option value="busy">Peak Performance</option>
+          <option value="quiet">Recovery Mode</option>
+          <option value="emergency">Flow State</option>
+          <option value="custom">Custom</option>
+        </select>
+        
+        <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm rounded px-3 py-1 shadow-sm">
+          <span className="text-xs text-gray-600">Energy:</span>
           <input
             type="range"
             min="0.1"
@@ -277,31 +270,10 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
             step="0.1"
             value={volumeMultiplier}
             onChange={(e) => setVolumeMultiplier(parseFloat(e.target.value))}
-            className="w-full"
+            className="w-16 h-1"
           />
+          <span className="text-xs font-medium text-gray-700">{volumeMultiplier.toFixed(1)}x</span>
         </div>
-
-        {/* Custom Peak Hours */}
-        {scenario === 'custom' && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-            <label className="text-xs font-semibold text-gray-700 mb-2 block">Peak Hours</label>
-            <div className="grid grid-cols-3 gap-1">
-              {[7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22].map(hour => (
-                <button
-                  key={hour}
-                  onClick={() => togglePeakHour(hour)}
-                  className={`text-xs px-2 py-1 rounded ${
-                    customPeakHours.includes(hour)
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  {hour}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Background glow effect */}
@@ -427,32 +399,26 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
         </ComposedChart>
       </ResponsiveContainer>
       
-      {/* Enhanced chart legend with stats */}
-      <div className="flex items-center justify-between mt-4 px-2">
-        <div className="flex items-center space-x-6">
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 bg-blue-500 rounded-full shadow-lg"></div>
-            <span className="text-gray-700 font-semibold">Active Calls</span>
+      {/* Clean legend */}
+      <div className="flex items-center justify-between mt-3 px-2">
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-1">
+            <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+            <span className="text-xs text-gray-600">Focus</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 bg-purple-500 rounded-full shadow-lg"></div>
-            <span className="text-gray-700 font-semibold">Queue</span>
+          <div className="flex items-center space-x-1">
+            <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+            <span className="text-xs text-gray-600">Clarity</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 bg-cyan-500 rounded-full shadow-lg opacity-70"></div>
-            <span className="text-gray-700 font-semibold">Volume</span>
+          <div className="flex items-center space-x-1">
+            <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
+            <span className="text-xs text-gray-600">Energy</span>
           </div>
         </div>
         
-        {/* Live stats */}
-        <div className="flex items-center space-x-4 text-sm">
-          <div className="flex items-center space-x-1">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-gray-600 font-medium">Live</span>
-          </div>
-          <div className="text-gray-500">
-            Selected: {selectedDate} • {timeInterval}
-          </div>
+        <div className="flex items-center space-x-1 text-xs text-gray-500">
+          <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+          <span>Live • {timeInterval}</span>
         </div>
       </div>
     </div>
