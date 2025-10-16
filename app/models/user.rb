@@ -5,12 +5,8 @@ class User < ApplicationRecord
   encrypts :time_of_birth
   encrypts :authentication_token, deterministic: true
   
-  def self.avatar_service
-    Rails.env.development? ? :local : :google_avatars
-  end
-  
-  has_one_attached :avatar, service: avatar_service
-  has_one_attached :cover_image, service: avatar_service
+  has_one_attached :avatar, service: :local
+  has_one_attached :cover_image, service: :local
   has_secure_password
   has_many :habit_plans, dependent: :destroy
 

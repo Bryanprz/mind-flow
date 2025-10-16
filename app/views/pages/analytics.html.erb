@@ -1,0 +1,169 @@
+<% content_for :title, @page_title %>
+<% content_for :hide_footer, true %>
+
+<div class="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+  <!-- Header -->
+  <div class="bg-black/20 backdrop-blur-sm border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-white flex items-center gap-3">
+            <span class="text-4xl">📊</span>
+            <%= @page_title %>
+          </h1>
+          <p class="text-blue-300 mt-2">Advanced cognitive performance insights</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="bg-white/10 rounded-lg px-4 py-2">
+            <span class="text-white text-sm">Last updated: <%= Time.current.strftime("%B %d, %Y") %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Performance Metrics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-blue-300 text-sm font-medium">Average Focus</p>
+            <p class="text-3xl font-bold text-white"><%= @analytics_data[:performance_metrics][:avg_focus] %></p>
+          </div>
+          <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+            <span class="text-2xl">🎯</span>
+          </div>
+        </div>
+        <div class="mt-4 flex items-center">
+          <span class="text-green-400 text-sm font-medium"><%= @analytics_data[:performance_metrics][:improvement_rate] %></span>
+          <span class="text-gray-400 text-sm ml-2">vs last week</span>
+        </div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-purple-300 text-sm font-medium">Flow State Hours</p>
+            <p class="text-3xl font-bold text-white"><%= @analytics_data[:performance_metrics][:flow_state_hours] %></p>
+          </div>
+          <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
+            <span class="text-2xl">🌊</span>
+          </div>
+        </div>
+        <div class="mt-4">
+          <span class="text-gray-400 text-sm">This week</span>
+        </div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-green-300 text-sm font-medium">Deep Work Sessions</p>
+            <p class="text-3xl font-bold text-white"><%= @analytics_data[:performance_metrics][:deep_work_sessions] %></p>
+          </div>
+          <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
+            <span class="text-2xl">⚡</span>
+          </div>
+        </div>
+        <div class="mt-4">
+          <span class="text-gray-400 text-sm">Completed</span>
+        </div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-yellow-300 text-sm font-medium">Consistency Score</p>
+            <p class="text-3xl font-bold text-white"><%= @analytics_data[:performance_metrics][:consistency_score] %>%</p>
+          </div>
+          <div class="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+            <span class="text-2xl">📈</span>
+          </div>
+        </div>
+        <div class="mt-4">
+          <span class="text-gray-400 text-sm">Overall performance</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <!-- Focus Trends Chart -->
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <span class="text-2xl">📈</span>
+          Focus Trends (7 Days)
+        </h3>
+        <div class="h-64 bg-black/20 rounded-lg p-4">
+          <!-- Chart placeholder - would integrate with charting library -->
+          <div class="flex items-center justify-center h-full text-gray-400">
+            <div class="text-center">
+              <div class="text-4xl mb-2">📊</div>
+              <p>Interactive Focus Trends Chart</p>
+              <p class="text-sm">Integration with Recharts or similar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance Breakdown -->
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <span class="text-2xl">🎯</span>
+          Performance Breakdown
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-gray-300">Peak Performance Day</span>
+            <span class="text-white font-semibold"><%= @analytics_data[:performance_metrics][:peak_performance] %></span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-300">Total Sessions</span>
+            <span class="text-white font-semibold"><%= @analytics_data[:weekly_summary][:total_sessions] %></span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-300">Avg Session Length</span>
+            <span class="text-white font-semibold"><%= @analytics_data[:weekly_summary][:avg_session_length] %> min</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-300">Breakthrough Moments</span>
+            <span class="text-white font-semibold"><%= @analytics_data[:weekly_summary][:breakthrough_moments] %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Summary -->
+    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+      <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+        <span class="text-2xl">📋</span>
+        Weekly Summary
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+            <span class="text-2xl">⚡</span>
+          </div>
+          <h4 class="text-white font-semibold">Energy Level</h4>
+          <p class="text-blue-300"><%= @analytics_data[:weekly_summary][:energy_level] %></p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+            <span class="text-2xl">😊</span>
+          </div>
+          <h4 class="text-white font-semibold">Mood Trend</h4>
+          <p class="text-green-300"><%= @analytics_data[:weekly_summary][:mood_trend] %></p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+            <span class="text-2xl">🎯</span>
+          </div>
+          <h4 class="text-white font-semibold">Next Week Focus</h4>
+          <p class="text-purple-300 text-sm"><%= @analytics_data[:weekly_summary][:next_week_focus] %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

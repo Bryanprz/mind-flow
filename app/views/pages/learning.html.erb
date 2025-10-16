@@ -1,0 +1,220 @@
+<% content_for :title, @page_title %>
+<% content_for :hide_footer, true %>
+
+<div class="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900">
+  <!-- Header -->
+  <div class="bg-black/20 backdrop-blur-sm border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-white flex items-center gap-3">
+            <span class="text-4xl">📚</span>
+            <%= @page_title %>
+          </h1>
+          <p class="text-purple-300 mt-2">Expand your cognitive capabilities</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="bg-white/10 rounded-lg px-4 py-2">
+            <span class="text-white text-sm">Learning Streak: <%= @learning_data[:progress][:current_streak] %> days</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Learning Progress Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+            <span class="text-2xl">🎓</span>
+          </div>
+          <h3 class="text-white font-semibold">Courses Completed</h3>
+          <p class="text-3xl font-bold text-blue-300"><%= @learning_data[:progress][:courses_completed] %></p>
+        </div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+            <span class="text-2xl">📖</span>
+          </div>
+          <h3 class="text-white font-semibold">Books Read</h3>
+          <p class="text-3xl font-bold text-purple-300"><%= @learning_data[:progress][:books_read] %></p>
+        </div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+            <span class="text-2xl">⏱️</span>
+          </div>
+          <h3 class="text-white font-semibold">Hours Studied</h3>
+          <p class="text-3xl font-bold text-green-300"><%= @learning_data[:progress][:hours_studied] %></p>
+        </div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+            <span class="text-2xl">🏆</span>
+          </div>
+          <h3 class="text-white font-semibold">Certificates</h3>
+          <p class="text-3xl font-bold text-yellow-300"><%= @learning_data[:progress][:certificates_earned] %></p>
+        </div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+            <span class="text-2xl">🔥</span>
+          </div>
+          <h3 class="text-white font-semibold">Current Streak</h3>
+          <p class="text-3xl font-bold text-red-300"><%= @learning_data[:progress][:current_streak] %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Courses -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+        <span class="text-3xl">🎯</span>
+        Current Courses
+      </h2>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <% @learning_data[:courses].each do |course| %>
+          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+            <div class="mb-4">
+              <h3 class="text-lg font-semibold text-white mb-2"><%= course[:title] %></h3>
+              <p class="text-gray-400 text-sm">by <%= course[:instructor] %></p>
+              <div class="flex items-center gap-2 mt-2">
+                <div class="flex items-center">
+                  <% 5.times do |i| %>
+                    <span class="text-<%= i < course[:rating].to_i ? 'yellow' : 'gray' %>-400">★</span>
+                  <% end %>
+                </div>
+                <span class="text-gray-400 text-sm"><%= course[:rating] %></span>
+              </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="mb-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-300">Progress</span>
+                <span class="text-sm font-semibold text-white"><%= course[:progress] %>%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-gradient-to-r from-purple-400 to-blue-500 h-2 rounded-full" 
+                     style="width: <%= course[:progress] %>%"></div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-2">
+              <button class="flex-1 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                Continue Learning
+              </button>
+              <button class="bg-gray-500/20 hover:bg-gray-500/30 text-gray-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                View Details
+              </button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Learning Resources -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Recommended Resources -->
+      <div>
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+          <span class="text-3xl">📚</span>
+          Recommended Resources
+        </h2>
+        <div class="space-y-4">
+          <% @learning_data[:resources].each do |resource| %>
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h3 class="text-white font-semibold mb-1"><%= resource[:title] %></h3>
+                  <p class="text-gray-400 text-sm"><%= resource[:type] %></p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">
+                    <%= resource[:difficulty] %>
+                  </span>
+                  <button class="text-gray-400 hover:text-white">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <button class="w-full mt-3 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                Start Learning
+              </button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Learning Path -->
+      <div>
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+          <span class="text-3xl">🗺️</span>
+          Learning Path
+        </h2>
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                <span class="text-white text-sm font-bold">✓</span>
+              </div>
+              <div>
+                <p class="text-white font-semibold">Foundation Level</p>
+                <p class="text-gray-400 text-sm">Basic cognitive principles</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                <span class="text-white text-sm font-bold">2</span>
+              </div>
+              <div>
+                <p class="text-white font-semibold">Intermediate Level</p>
+                <p class="text-gray-400 text-sm">Advanced focus techniques</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+                <span class="text-white text-sm font-bold">3</span>
+              </div>
+              <div>
+                <p class="text-gray-400 font-semibold">Advanced Level</p>
+                <p class="text-gray-500 text-sm">Flow state mastery</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+                <span class="text-white text-sm font-bold">4</span>
+              </div>
+              <div>
+                <p class="text-gray-400 font-semibold">Expert Level</p>
+                <p class="text-gray-500 text-sm">Cognitive optimization</p>
+              </div>
+            </div>
+          </div>
+          
+          <button class="w-full mt-6 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 py-3 px-4 rounded-lg font-medium transition-colors">
+            Continue Learning Path
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -24,8 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const props = JSON.parse(container.dataset.props || '{}')
     const root = createRoot(container)
     root.render(React.createElement(Dashboard, props))
-    console.log('✅ Dashboard React component mounted')
-  } else {
-    console.error('❌ Dashboard container not found')
+    // Dashboard mounted successfully
   }
 })

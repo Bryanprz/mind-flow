@@ -1,6 +1,7 @@
 class DashboardsController < ApplicationController
   # before_action :require_habit_plan, only: [:show]
   allow_unauthenticated_access only: [:show]
+  layout 'with_sidebar'
 
   def show
     # Temporary: allow access without authentication for testing

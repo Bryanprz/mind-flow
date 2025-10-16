@@ -1,0 +1,151 @@
+/* ==========================================================================
+   Drawer Layout System
+   ========================================================================== */
+
+/* Base Layout
+   ========================================================================== */
+
+/* Viewport & Body Reset */
+html,
+body {
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  border: none !important;
+}
+
+/* Drawer Container */
+.drawer {
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* Drawer Sidebar */
+.drawer-side {
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* Drawer Content Area - Primary Scroll Container */
+.drawer-content {
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Dashboard Root Element */
+#dashboard-root {
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* Remove Ghost Footer Elements */
+*, *::before, *::after {
+  border-bottom: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.drawer-content, .drawer-content > * {
+  border-bottom: none !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Scrollbar Styling
+   ========================================================================== */
+
+.drawer-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.drawer-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.drawer-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.drawer-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Medium Screens (768px - 1023px)
+   ========================================================================== */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* No additional overrides needed - base styles work */
+}
+
+/* Large Screens (1024px+)
+   ========================================================================== */
+
+@media (min-width: 1024px) {
+  html, body {
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+  
+  .drawer {
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    position: relative !important;
+  }
+  
+  .drawer-side {
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 10 !important;
+  }
+  
+  .drawer-content {
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    margin-left: 16rem !important; /* 256px = w-64 */
+    width: calc(100vw - 16rem) !important;
+    max-width: calc(100vw - 16rem) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+  
+  #dashboard-root {
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  /* DaisyUI Override - Keep drawer open */
+  .drawer-open .drawer-side {
+    transform: translateX(0) !important;
+  }
+
+  .drawer-open .drawer-content {
+    margin-left: 16rem !important;
+  }
+}
+

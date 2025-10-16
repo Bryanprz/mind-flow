@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html class="h-full m-0 p-0">
+  <head>
+    <title><%= content_for?(:title) ? "#{yield(:title)} - MindFlow" : "MindFlow" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    
+    <%= vite_client_tag %>
+    <% if content_for?(:vite_page) %>
+      <%= vite_javascript_tag 'entrypoints/dashboard.jsx' %>
+    <% else %>
+      <%= vite_javascript_tag 'entrypoints/application.js' %>
+    <% end %>
+    
+    <!-- Load Tailwind CSS -->
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    
+    <!-- Layout styles: app/assets/stylesheets/layouts/_drawer.css -->
+    
+    <%= yield :head %>
+  </head>
+
+  <body class="h-screen bg-gray-900 overflow-hidden m-0 p-0">
+    <div class="drawer drawer-open w-full h-full m-0 p-0">
+      <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" checked />
+      
+      <!-- Sidebar -->
+      <%= render 'shared/sidebar' %>
+      
+      <!-- Main Content -->
+      <div class="drawer-content w-full h-full m-0 p-0">
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+</html>

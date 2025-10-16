@@ -1,0 +1,113 @@
+<div class="drawer-side h-full m-0 p-0">
+  <label for="sidebar-toggle" class="drawer-overlay"></label>
+  <div class="bg-gradient-to-b from-gray-900 to-gray-800 p-6 w-64 h-full flex flex-col m-0">
+    <!-- MindFlow Brand -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold text-white flex items-center gap-2">
+        <span class="text-3xl">🧬</span>
+        MindFlow
+      </h1>
+      <p class="text-gray-400 text-sm mt-1">Cognitive Performance Hub</p>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex-1">
+      <ul class="space-y-2">
+        <li>
+          <%= link_to dashboard_path, 
+              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
+              🧬
+            </div>
+            <span class="font-medium text-white group-hover:text-white">MindFlow</span>
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to analytics_path, 
+              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
+              📊
+            </div>
+            <span class="font-medium text-white group-hover:text-white">Analytics</span>
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to goals_path, 
+              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
+              🎯
+            </div>
+            <span class="font-medium text-white group-hover:text-white">Goals</span>
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to learning_path, 
+              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
+              📚
+            </div>
+            <span class="font-medium text-white group-hover:text-white">Learning</span>
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to notifications_path, 
+              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
+              🔔
+            </div>
+            <span class="font-medium text-white group-hover:text-white">Notifications</span>
+            <div class="ml-auto">
+              <span class="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">2</span>
+            </div>
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to settings_path, 
+              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
+              ⚙️
+            </div>
+            <span class="font-medium text-white group-hover:text-white">Settings</span>
+          <% end %>
+        </li>
+
+        <li>
+          <%= link_to logout_path, 
+              method: :delete,
+              data: { 
+                turbo_method: "delete",
+                turbo_confirm: "Are you sure you want to logout?" 
+              },
+              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-red-500/10 hover:text-red-400" do %>
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-red-500/20">
+              🚪
+            </div>
+            <span class="font-medium text-white group-hover:text-white">Logout</span>
+          <% end %>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- User Info -->
+    <% if current_user %>
+      <div class="mt-auto pt-4 border-t border-gray-700">
+        <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-700/50">
+          <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+            <span class="text-white text-sm font-bold">
+              <%= current_user.name&.first || 'U' %>
+            </span>
+          </div>
+          <div class="flex-1">
+            <p class="text-white text-sm font-medium"><%= current_user.name || 'User' %></p>
+            <p class="text-gray-400 text-xs">Cognitive Optimizer</p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

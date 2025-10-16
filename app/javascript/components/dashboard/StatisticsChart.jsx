@@ -209,8 +209,10 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
             y={cy - height - 2}
             width={width + 4}
             height={height + 4}
-            fill="hsl(var(--w) / 0.2)"
+            fill="#fbbf24"
+            fillOpacity={0.2}
             rx={4}
+            shapeRendering="geometricPrecision"
             className="animate-pulse"
           />
         )}
@@ -220,8 +222,9 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
           y={cy - height}
           width={width}
           height={height}
-          fill={isPeak ? 'hsl(var(--w))' : 'hsl(var(--a))'}
+          fill={isPeak ? '#fbbf24' : '#06b6d4'}
           rx={4}
+          shapeRendering="geometricPrecision"
           className="transition-all duration-300 hover:brightness-110"
         />
         {/* Gradient overlay */}
@@ -279,12 +282,23 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
       {/* Background glow effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-cyan-500/5 rounded-lg blur-sm"></div>
       
-      <ResponsiveContainer width="100%" height={256}>
+      <ResponsiveContainer 
+        width="100%" 
+        height={256}
+        style={{
+          shapeRendering: 'geometricPrecision',
+          textRendering: 'optimizeLegibility'
+        }}
+      >
         <ComposedChart
           data={chartData}
           margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
           onMouseMove={(data) => setActiveIndex(data?.activeTooltipIndex)}
           onMouseLeave={() => setActiveIndex(null)}
+          style={{ 
+            shapeRendering: 'geometricPrecision',
+            textRendering: 'optimizeLegibility'
+          }}
         >
           <defs>
             {/* Dramatic gradients */}
@@ -309,6 +323,8 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
             stroke="#64748b" 
             vertical={false}
             strokeWidth={1}
+            strokeOpacity={0.3}
+            shapeRendering="geometricPrecision"
           />
           
           <XAxis 
@@ -319,7 +335,8 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
               fill: '#64748b', 
               fontSize: 11,
               fontFamily: 'system-ui',
-              fontWeight: '600'
+              fontWeight: '600',
+              textRendering: 'optimizeLegibility'
             }}
             interval="preserveStartEnd"
           />
@@ -331,7 +348,8 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
               fill: '#64748b', 
               fontSize: 11,
               fontFamily: 'system-ui',
-              fontWeight: '600'
+              fontWeight: '600',
+              textRendering: 'optimizeLegibility'
             }}
             domain={[0, 4.5]}
             tickCount={6}
@@ -346,6 +364,7 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
             opacity={0.3}
             radius={[2, 2, 0, 0]}
             maxBarSize={20}
+            shapeRendering="geometricPrecision"
           />
           
           {/* Primary area (Active Calls) */}
@@ -363,6 +382,7 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
               fill: '#3b82f6'
             }}
             connectNulls={false}
+            shapeRendering="geometricPrecision"
           />
           
           {/* Secondary line (Queue) */}
@@ -380,6 +400,7 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
               fill: '#8b5cf6'
             }}
             connectNulls={false}
+            shapeRendering="geometricPrecision"
           />
           
           {/* Multiple reference lines for context */}

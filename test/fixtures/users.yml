@@ -1,19 +1,31 @@
-<% require 'bcrypt' %>
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-<% password_digest = BCrypt::Password.create("password") %>
+cognitive_optimizer:
+  name: "Cognitive Optimizer"
+  email: "optimizer@mindflow.com"
+  slug: "cognitive-optimizer"
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  created_at: <%= 30.days.ago %>
+  updated_at: <%= 1.day.ago %>
 
-one:
-  name: MyString
-  email_address: one@example.com
-  password_digest: <%= password_digest %>
-  date_of_birth: 2025-07-25
-  prakruti: vata
-  vikruti: vata
+mind_enhancer:
+  name: "Mind Enhancer"
+  email: "enhancer@mindflow.com"
+  slug: "mind-enhancer"
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  created_at: <%= 15.days.ago %>
+  updated_at: <%= 2.hours.ago %>
 
-two:
-  name: MyString
-  email_address: two@example.com
-  password_digest: <%= password_digest %>
-  date_of_birth: 2025-07-25
-  prakruti: vata
-  vikruti: vata
+focus_master:
+  name: "Focus Master"
+  email: "focus@mindflow.com"
+  slug: "focus-master"
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  created_at: <%= 7.days.ago %>
+  updated_at: <%= 1.hour.ago %>
+
+test_user:
+  name: "Test User"
+  email: "test@mindflow.com"
+  slug: "test-user"
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 30.minutes.ago %>

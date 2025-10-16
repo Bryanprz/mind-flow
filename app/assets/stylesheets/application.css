@@ -1,5 +1,6 @@
 @import url("actiontext.css");
 @import url("message_transitions.css");
+@import url("layouts/_drawer.css");
 
 @tailwind base;
 @tailwind components;
