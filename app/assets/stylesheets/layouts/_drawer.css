@@ -21,6 +21,7 @@ body {
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
+  overflow: visible !important;
 }
 
 /* Drawer Sidebar */
@@ -44,7 +45,7 @@ body {
 
 /* Dashboard Root Element */
 #dashboard-root {
-  height: 100vh;
+  height: 100%;
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
@@ -87,7 +88,31 @@ body {
    ========================================================================== */
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  /* No additional overrides needed - base styles work */
+  html, body {
+    height: 100vh !important;
+    overflow: hidden !important;
+  }
+  
+  .drawer {
+    height: 100vh !important;
+    overflow: visible !important;
+  }
+  
+  .drawer-content {
+    height: 100vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-height: 100vh !important;
+  }
+  
+  .drawer-side {
+    height: 100vh !important;
+  }
+  
+  #dashboard-root {
+    height: 100% !important;
+    overflow: visible !important;
+  }
 }
 
 /* Large Screens (1024px+)
@@ -133,7 +158,7 @@ body {
   }
   
   #dashboard-root {
-    height: 100vh !important;
+    height: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
     border: none !important;
