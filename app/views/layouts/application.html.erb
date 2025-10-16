@@ -24,17 +24,6 @@
     <% else %>
       <%= vite_client_tag %>
     <% end %>
-    <%# <vite_javascript_tag 'application'> %>
-    <!--
-      If using a TypeScript entrypoint file:
-        vite_typescript_tag 'application'
-
-      If using a .jsx or .tsx entrypoint, add the extension:
-        vite_javascript_tag 'application.jsx'
-
-      Visit the guide for more information: https://vite-ruby.netlify.app/guide/rails
-    -->
-
   </head>
 
   <body class="min-h-screen flex flex-col" data-controller="modal">
@@ -43,15 +32,12 @@
     <% end %>
     <%= render "layouts/flash" %>
 
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col" style="overflow: scroll;">
       <div id="main_content_area" class="flex-1 <%= content_for?(:main_container_class) ? yield(:main_container_class) : 'container mx-auto px-5' %>">
         <%= yield %>
       </div>
     </div>
 
-    <% unless content_for?(:hide_footer) %>
-      <%= render "layouts/footer" %>
-    <% end %>
     <%= render "shared/sign_up_modal" %>
     
     <script>

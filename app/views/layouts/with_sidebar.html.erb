@@ -6,11 +6,11 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     
-    <%= vite_client_tag %>
-    <% if content_for?(:vite_page) %>
-      <%= vite_javascript_tag 'entrypoints/dashboard.jsx' %>
+    <% unless content_for?(:vite_page) %>
+      <%= javascript_importmap_tags %>
     <% else %>
-      <%= vite_javascript_tag 'entrypoints/application.js' %>
+      <%= vite_client_tag %>
+      <%= vite_javascript_tag 'entrypoints/dashboard.jsx' %>
     <% end %>
     
     <!-- Load Tailwind CSS -->
