@@ -237,9 +237,9 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
         </div>
 
         {/* Main Dashboard Content */}
-        <div className="flex-1 flex min-h-0">
+        <div className="flex-1 flex min-h-0 h-full">
           {/* Left Content */}
-          <div className="flex-1 p-6 overflow-y-auto min-w-0">
+          <div className="flex-1 p-6 overflow-y-auto min-w-0 h-full">
             {/* Cognitive Performance Section */}
             <div className="mb-6">
               <div className="flex items-center justify-between mb-4">
