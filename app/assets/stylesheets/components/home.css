@@ -1,0 +1,194 @@
+/* Home Page Styles - Organized CSS */
+
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Michroma:wght@400&display=swap');
+
+/* Typography styles */
+.hero-subtitle-text {
+  line-height: 1.7;
+}
+
+.nasa-style-title-positioned {
+  position: relative;
+}
+
+.hero-description-text {
+  line-height: 1.9;
+}
+
+.futuristic-title-compact {
+  line-height: 1.2;
+}
+
+.features-description-text {
+  line-height: 1.6;
+}
+
+/* Chart bar heights */
+.chart-bar-60 { height: 60%; }
+.chart-bar-80 { height: 80%; }
+.chart-bar-45 { height: 45%; }
+.chart-bar-90 { height: 90%; }
+.chart-bar-75 { height: 75%; }
+.chart-bar-55 { height: 55%; }
+.chart-bar-70 { height: 70%; }
+
+/* Progress bar width */
+.progress-bar-89 { width: 89%; }
+
+/* Dark futuristic background */
+.hero-mindflow {
+  background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Tech grid pattern overlay */
+.tech-grid {
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Glowing aura effect */
+.glow-aura {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    rgba(59, 130, 246, 0.8) 0%, 
+    rgba(139, 92, 246, 0.4) 30%,
+    transparent 70%);
+  filter: blur(40px);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Glassmorphism cards - FIXED BORDER ISSUE */
+.glass-card {
+  background: rgba(26, 26, 46, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.3) !important;
+  border-left: 1px solid rgba(59, 130, 246, 0.3) !important;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
+  overflow: visible !important;
+}
+
+/* Neon button - FIXED BORDER ISSUE */
+.btn-neon {
+  border: 2px solid #3b82f6 !important;
+  border-bottom: 2px solid #3b82f6 !important;
+  border-left: 2px solid #3b82f6 !important;
+  color: #60a5fa;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(10px);
+  overflow: visible !important;
+}
+
+.btn-neon:hover {
+  background: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+  transform: translateY(-2px);
+}
+
+.futuristic-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.nasa-style-title {
+  font-family: 'Michroma', sans-serif;
+  font-weight: 400;
+  font-size: clamp(6rem, 20vw, 12rem);
+  line-height: 0.9;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.hero-subtitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0rem 2rem;
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  max-width: fit-content;
+  white-space: nowrap;
+}
+
+.meditation-figure {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #4a5568 30%, #2d3748 70%);
+  border-radius: 50%;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.meditation-head {
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, #e2e8f0 40%, #cbd5e0 80%);
+  border-radius: 50%;
+  position: relative;
+}
+
+.meditation-head::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 20px;
+  height: 3px;
+  background: #4a5568;
+  border-radius: 2px;
+}
+
+.meditation-head::after {
+  content: '';
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  width: 20px;
+  height: 3px;
+  background: #4a5568;
+  border-radius: 2px;
+}
+
+.meditation-body {
+  position: absolute;
+  bottom: 40px;
+  width: 60px;
+  height: 80px;
+  background: linear-gradient(to bottom, #4a5568 0%, #2d3748 100%);
+  border-radius: 30px 30px 10px 10px;
+}

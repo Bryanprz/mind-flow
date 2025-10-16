@@ -9,6 +9,23 @@ export default function WellnessGauge({ currentUser }) {
   const [hoveredMetric, setHoveredMetric] = useState(null)
   const [clickCount, setClickCount] = useState(0)
   
+  // CSS class constants for better organization
+  const baseMetricCardClasses = "text-center p-2 bg-gray-700 rounded-md cursor-pointer transition-all"
+  const metricCardVariants = {
+    concentration: {
+      hover: "rgba(59, 130, 246, 0.1)",
+      active: "bg-blue-900 border border-blue-500"
+    },
+    clarity: {
+      hover: "rgba(139, 92, 246, 0.1)",
+      active: "bg-purple-900 border border-purple-500"
+    },
+    energy: {
+      hover: "rgba(16, 185, 129, 0.1)",
+      active: "bg-green-900 border border-green-500"
+    }
+  }
+  
   // Simulate very subtle real-time updates - much more stable
   useEffect(() => {
     const interval = setInterval(() => {
@@ -115,11 +132,11 @@ export default function WellnessGauge({ currentUser }) {
       {/* Metrics Grid */}
       <div className="grid grid-cols-3 gap-2">
         <motion.div 
-          whileHover={{ scale: 1.05, backgroundColor: "rgba(59, 130, 246, 0.1)" }}
+          whileHover={{ scale: 1.05, backgroundColor: metricCardVariants.concentration.hover }}
           onHoverStart={() => handleMetricHover('concentration')}
           onHoverEnd={() => handleMetricHover(null)}
-          className={`text-center p-2 bg-gray-700 rounded-md cursor-pointer transition-all ${
-            hoveredMetric === 'concentration' ? 'bg-blue-900 border border-blue-500' : ''
+          className={`${baseMetricCardClasses} ${
+            hoveredMetric === 'concentration' ? metricCardVariants.concentration.active : ''
           }`}
           title="Click to see concentration tips"
         >
@@ -131,11 +148,11 @@ export default function WellnessGauge({ currentUser }) {
         </motion.div>
         
         <motion.div 
-          whileHover={{ scale: 1.05, backgroundColor: "rgba(139, 92, 246, 0.1)" }}
+          whileHover={{ scale: 1.05, backgroundColor: metricCardVariants.clarity.hover }}
           onHoverStart={() => handleMetricHover('clarity')}
           onHoverEnd={() => handleMetricHover(null)}
-          className={`text-center p-2 bg-gray-700 rounded-md cursor-pointer transition-all ${
-            hoveredMetric === 'clarity' ? 'bg-purple-900 border border-purple-500' : ''
+          className={`${baseMetricCardClasses} ${
+            hoveredMetric === 'clarity' ? metricCardVariants.clarity.active : ''
           }`}
           title="Click to see clarity exercises"
         >
@@ -147,11 +164,11 @@ export default function WellnessGauge({ currentUser }) {
         </motion.div>
         
         <motion.div 
-          whileHover={{ scale: 1.05, backgroundColor: "rgba(16, 185, 129, 0.1)" }}
+          whileHover={{ scale: 1.05, backgroundColor: metricCardVariants.energy.hover }}
           onHoverStart={() => handleMetricHover('energy')}
           onHoverEnd={() => handleMetricHover(null)}
-          className={`text-center p-2 bg-gray-700 rounded-md cursor-pointer transition-all ${
-            hoveredMetric === 'energy' ? 'bg-green-900 border border-green-500' : ''
+          className={`${baseMetricCardClasses} ${
+            hoveredMetric === 'energy' ? metricCardVariants.energy.active : ''
           }`}
           title="Click to see energy boosters"
         >
