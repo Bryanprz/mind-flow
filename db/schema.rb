@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_19_213551) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_19_214158) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -47,6 +47,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_19_213551) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "goals", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.integer "target", default: 100, null: false
+    t.integer "progress", default: 0, null: false
+    t.date "deadline"
+    t.string "category"
+    t.integer "status", default: 0, null: false
+    t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "deadline"], name: "index_goals_on_user_id_and_deadline"
+    t.index ["user_id", "status"], name: "index_goals_on_user_id_and_status"
+    t.index ["user_id"], name: "index_goals_on_user_id"
   end
 
   create_table "habit_logs", force: :cascade do |t|
@@ -250,6 +267,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_19_213551) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "goals", "users"
   add_foreign_key "habit_logs", "habit_plans"
   add_foreign_key "habit_logs", "habit_plans"
   add_foreign_key "habit_plans", "habit_plan_templates"

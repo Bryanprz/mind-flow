@@ -1,0 +1,40 @@
+<% content_for :title, "My Goals - MindFlow" %>
+
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-white">My Goals</h1>
+    <%= link_to "New Goal", new_goal_path, class: "btn btn-primary" %>
+  </div>
+
+  <!-- Active Goals -->
+  <div class="mb-12">
+    <h2 class="text-2xl font-bold text-white mb-6">Active Goals</h2>
+    <% if @active_goals.any? %>
+      <div class="grid md:grid-cols-2 gap-6">
+        <% @active_goals.each do |goal| %>
+          <%= render 'goal_card', goal: goal %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="card bg-base-100 border border-gray-700">
+        <div class="card-body text-center">
+          <p class="text-gray-400">No active goals yet.</p>
+          <%= link_to "Create Your First Goal", new_goal_path, class: "btn btn-primary mt-4" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Completed Goals -->
+  <% if @completed_goals.any? %>
+    <div>
+      <h2 class="text-2xl font-bold text-white mb-6">Completed Goals 🎉</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <% @completed_goals.each do |goal| %>
+          <%= render 'goal_card', goal: goal %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+

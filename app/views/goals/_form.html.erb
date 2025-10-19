@@ -1,0 +1,88 @@
+<%= form_with model: goal, class: "space-y-6" do |f| %>
+  <% if goal.errors.any? %>
+    <div class="alert alert-error">
+      <div>
+        <h3 class="font-bold">Please fix the following errors:</h3>
+        <ul class="list-disc list-inside">
+          <% goal.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :title, class: "label" do %>
+      <span class="label-text">Goal Title *</span>
+    <% end %>
+    <%= f.text_field :title, class: "input input-bordered w-full", placeholder: "Master Flow State", required: true %>
+  </div>
+
+  <div>
+    <%= f.label :description, class: "label" do %>
+      <span class="label-text">Description</span>
+    <% end %>
+    <%= f.text_area :description, rows: 3, class: "textarea textarea-bordered w-full", placeholder: "Optional description of your goal..." %>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div>
+      <%= f.label :target, class: "label" do %>
+        <span class="label-text">Target *</span>
+      <% end %>
+      <%= f.number_field :target, class: "input input-bordered w-full", placeholder: "100", required: true, min: 1 %>
+      <label class="label">
+        <span class="label-text-alt text-gray-400">What number represents completion?</span>
+      </label>
+    </div>
+
+    <div>
+      <%= f.label :progress, class: "label" do %>
+        <span class="label-text">Current Progress</span>
+      <% end %>
+      <%= f.number_field :progress, class: "input input-bordered w-full", placeholder: "0", min: 0 %>
+      <label class="label">
+        <span class="label-text-alt text-gray-400">Where are you now?</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div>
+      <%= f.label :deadline, class: "label" do %>
+        <span class="label-text">Deadline</span>
+      <% end %>
+      <%= f.date_field :deadline, class: "input input-bordered w-full", min: Date.current %>
+      <label class="label">
+        <span class="label-text-alt text-gray-400">Optional target date</span>
+      </label>
+    </div>
+
+    <div>
+      <%= f.label :category, class: "label" do %>
+        <span class="label-text">Category</span>
+      <% end %>
+      <%= f.select :category, 
+          ['Focus & Concentration', 'Learning & Growth', 'Wellness & Balance', 'Mental Training', 'Meditation Practice'],
+          { include_blank: 'Select category (optional)' },
+          class: "select select-bordered w-full" %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :icon, class: "label" do %>
+      <span class="label-text">Icon (emoji)</span>
+    <% end %>
+    <%= f.text_field :icon, class: "input input-bordered w-full", placeholder: "🎯", maxlength: 2 %>
+    <label class="label">
+      <span class="label-text-alt text-gray-400">Choose an emoji to represent your goal</span>
+    </label>
+  </div>
+
+  <div class="flex gap-4">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", goals_path, class: "btn btn-ghost" %>
+  </div>
+<% end %>
+

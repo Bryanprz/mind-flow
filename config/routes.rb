@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   get "/messages", to: "pages#demo_messages", as: :demo_messages
   get "/saved_posts", to: "pages#demo_saved_posts", as: :demo_saved_posts
   
+  # Goals routes
+  resources :goals
+  
   # Habit tracking routes
   resources :habit_logs
   resources :habit_plans, except: [:new, :show] do

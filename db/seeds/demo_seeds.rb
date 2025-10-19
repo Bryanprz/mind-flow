@@ -154,27 +154,8 @@ created_users.each_with_index do |user, index|
   puts "✅ Created habit plan for #{user.name} with 7 days of sample logs"
 end
 
-# Create some assessment entries to show wellness tracking
-assessment_types = ["wellness_profile", "stress_assessment", "sleep_quality"]
-created_users.each do |user|
-  assessment_type = assessment_types.sample
-  entry = user.assessment_entries.find_or_create_by(
-    health_assessment: HealthAssessment.find_or_create_by(
-      name: assessment_type.humanize,
-      description: "Track your #{assessment_type.humanize.downcase}",
-      assessment_type: assessment_type
-    )
-  ) do |e|
-    e.completed_at = rand(1..30).days.ago
-    e.notes = [
-      "Feeling more balanced with daily routine",
-      "Sleep quality has improved significantly", 
-      "Stress levels are manageable with current practices",
-      "Overall wellness score trending upward"
-    ].sample
-  end
-  puts "✅ Created assessment entry for #{user.name}"
-end
+# Assessment entries removed - old Ayurveda feature
+# Users now focus on habit tracking and goals instead
 
 puts "🎉 Demo data creation complete!"
 puts "Created #{created_users.count} users, #{created_templates.count} habit templates, and sample habit logs"

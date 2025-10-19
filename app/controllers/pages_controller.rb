@@ -115,12 +115,8 @@ class PagesController < ApplicationController
   end
 
   def goals
-    # Goals and targets page
-    @page_title = "Cognitive Goals"
-    @goals_data = DemoDataLoader.goals_data.merge(
-      completed_goals: generate_completed_goals,
-      goal_categories: generate_goal_categories
-    )
+    # Redirect to actual goals index - this is now a real feature!
+    redirect_to goals_path
   end
 
   def learning
