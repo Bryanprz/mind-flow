@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_09_201552) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_19_213551) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -49,89 +49,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_09_201552) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "assessment_answers", force: :cascade do |t|
-    t.integer "assessment_entry_id", null: false
-    t.integer "assessment_option_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["assessment_entry_id"], name: "index_assessment_answers_on_assessment_entry_id"
-    t.index ["assessment_option_id"], name: "index_assessment_answers_on_assessment_option_id"
-  end
-
-  create_table "assessment_entries", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "health_assessment_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "type"
-    t.text "notes"
-    t.text "reason_for_visit"
-    t.datetime "completed_at"
-    t.text "results", default: "{}"
-    t.index ["health_assessment_id"], name: "index_assessment_entries_on_health_assessment_id"
-    t.index ["user_id"], name: "index_assessment_entries_on_user_id"
-  end
-
-  create_table "assessment_options", force: :cascade do |t|
-    t.integer "assessment_question_id", null: false
-    t.string "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["assessment_question_id"], name: "index_assessment_options_on_assessment_question_id"
-  end
-
-  create_table "assessment_questions", force: :cascade do |t|
-    t.integer "health_assessment_id", null: false
-    t.string "category"
-    t.string "kosha"
-    t.text "text"
-    t.integer "points"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "question_group"
-    t.index ["health_assessment_id"], name: "index_assessment_questions_on_health_assessment_id"
-  end
-
-  create_table "bio_profile_aggravating_foods", force: :cascade do |t|
-    t.integer "bio_profile_id", null: false
-    t.string "name", null: false
-    t.text "description", null: false
-    t.text "recommendations", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["bio_profile_id"], name: "index_bio_profile_aggravating_foods_on_bio_profile_id"
-  end
-
-  create_table "bio_profile_healing_foods", force: :cascade do |t|
-    t.integer "bio_profile_id", null: false
-    t.string "name", null: false
-    t.text "description", null: false
-    t.text "recommendations", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["bio_profile_id"], name: "index_bio_profile_healing_foods_on_bio_profile_id"
-  end
-
-  create_table "bio_profile_supplements", force: :cascade do |t|
-    t.integer "bio_profile_id", null: false
-    t.string "name", null: false
-    t.text "description", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["bio_profile_id"], name: "index_bio_profile_supplements_on_bio_profile_id"
-  end
-
-  create_table "bio_profiles", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "color", null: false
-    t.json "archetype_info"
-    t.json "people_manifestation"
-    t.text "general_recommendations"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_bio_profiles_on_name", unique: true
-  end
-
   create_table "habit_logs", force: :cascade do |t|
     t.integer "habit_plan_id", null: false
     t.string "completed_at"
@@ -166,33 +83,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_09_201552) do
     t.index ["habit_plan_template_id"], name: "index_habit_plans_on_habit_plan_template_id"
     t.index ["type"], name: "index_habit_plans_on_type"
     t.index ["user_id"], name: "index_habit_plans_on_user_id"
-  end
-
-  create_table "healing_plan_templates", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.string "duration_type"
-    t.string "healing_focus_type", null: false
-    t.integer "healing_focus_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["healing_focus_type", "healing_focus_id"], name: "index_healing_plan_templates_on_healing_focus"
-  end
-
-  create_table "health_assessments", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.integer "assessment_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "lifestyle_plans", force: :cascade do |t|
-    t.json "daily_routine_items"
-    t.json "seasonal_practices_data"
-    t.json "spiritual_practices_items"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "newsletters", force: :cascade do |t|
@@ -360,13 +250,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_09_201552) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "assessment_answers", "assessment_entries"
-  add_foreign_key "assessment_answers", "assessment_options"
-  add_foreign_key "assessment_options", "assessment_questions"
-  add_foreign_key "assessment_questions", "health_assessments"
-  add_foreign_key "bio_profile_aggravating_foods", "bio_profiles"
-  add_foreign_key "bio_profile_healing_foods", "bio_profiles"
-  add_foreign_key "bio_profile_supplements", "bio_profiles"
   add_foreign_key "habit_logs", "habit_plans"
   add_foreign_key "habit_logs", "habit_plans"
   add_foreign_key "habit_plans", "habit_plan_templates"

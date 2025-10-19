@@ -1,65 +1,97 @@
-# MindMetrics - Wellness Habit Tracker (Demo)
+# MindFlow - Advanced Mental Training Platform
 
-> **⚠️ Important Notice**: This is a **sanitized demo repository** created for portfolio demonstration purposes. All proprietary logic, real user data, and production configurations have been removed or replaced with demo equivalents.
+A sophisticated full-stack Rails 8 application for peak mental performance, flow state optimization, and cognitive enhancement through meditation and focus training.
 
-## Overview
+## 🚀 Overview
 
-MindMetrics is a full-stack Rails 8 wellness application that helps users track daily habits, visualize progress, and maintain accountability in their wellness journey. This demo showcases the application architecture, UI/UX design, and technical capabilities while protecting proprietary information.
+MindFlow is a modern web application that combines cutting-edge Rails 8 features with React components to deliver a seamless experience for mental training and focus optimization. Built with performance, scalability, and user experience in mind.
 
-## Key Features (Demo)
+## ✨ Key Features
 
-### ✅ Fully Functional
-- **Habit Tracking**: Daily logging of wellness habits (sleep, meditation, exercise, nutrition)
-- **Progress Visualization**: Streak tracking, completion metrics, and trend analysis
-- **User Authentication**: Secure login and session management
-- **Dashboard**: Personalized wellness metrics and insights
-- **Responsive Design**: Mobile-first UI with Tailwind CSS
+### Core Functionality
+- **🧠 Advanced Focus Training** - Track meditation sessions, monitor attention spans, and optimize mental clarity
+- **📊 Real-time Analytics** - Comprehensive performance metrics with interactive visualizations using Visx
+- **🎯 Goal Management** - Set, track, and achieve cognitive performance goals with progress visualization
+- **📚 Learning Hub** - Curated courses and resources for mindfulness and flow state mastery
+- **🏆 Achievement System** - Gamified progress tracking with earned achievements and milestones
+- **👤 User Authentication** - Secure session management with Rails 8 authentication
+- **📱 Responsive Design** - Mobile-first UI with Tailwind CSS and DaisyUI components
 
-### 🎨 UI Demonstrations Only
-- **Community Feed**: Social post interface (static demo data)
-- **Messaging**: Chat interface (static demo conversations)
-- **AI Wellness Tips**: Canned responses instead of real AI integration
+### Technical Features
+- **⚡ React Dashboard** - Dynamic, interactive dashboard built with React and Vite
+- **🎨 Modern UI/UX** - Glass-morphism effects, gradient designs, and smooth animations
+- **📈 Data Visualization** - Interactive charts powered by Visx for performance tracking
+- **🔄 Real-time Updates** - Turbo Streams for instant UI updates without page refreshes
+- **🎭 Accessible Design** - WCAG-compliant with keyboard navigation and screen reader support
+- **🌐 Demo Mode** - Comprehensive demo data system for showcasing capabilities
 
-## Tech Stack
+## 🛠 Tech Stack
 
-- **Backend**: Ruby on Rails 8.0
-- **Frontend**: React, Vite, Hotwire (Turbo, Stimulus), Tailwind CSS
-- **Database**: SQLite (with multi-database support)
-- **Job Processing**: Solid Queue
-- **Real-time**: Action Cable (demo mode)
-- **Storage**: Local disk (Active Storage)
+### Backend
+- **Ruby on Rails 8.0** - Latest Rails with Solid Queue and Solid Cache
+- **SQLite** - Multi-database setup (primary, queue, cache, cable)
+- **Active Storage** - File upload and processing with VIPS
+- **Action Cable** - WebSocket support for real-time features
+- **Solid Queue** - Modern background job processing
 
-## Architecture Highlights
+### Frontend
+- **React 18** - Component-based UI with hooks and modern patterns
+- **Vite** - Lightning-fast build tool with HMR
+- **Hotwire** - Turbo and Stimulus for enhanced interactivity
+- **Tailwind CSS 3** - Utility-first CSS framework
+- **DaisyUI** - Pre-built component library
+- **Visx** - Low-level visualization components for complex charts
 
-- **Modern Rails 8**: Leverages latest Rails features including Solid Queue and Solid Cache
-- **Clean MVC Pattern**: Well-organized controllers, models, and views
-- **Service Objects**: Encapsulated business logic for complex operations
-- **Database Normalization**: Proper relational schema with foreign keys
-- **RESTful API Design**: Standard Rails conventions throughout
+### Development Tools
+- **Foreman** - Process manager for development server
+- **Brakeman** - Security vulnerability scanner
+- **RuboCop** - Ruby code style checker
+- **ESLint** - JavaScript linter
+- **Minitest** - Testing framework with system tests
 
-## Getting Started
+## 🏗 Architecture Highlights
+
+### Modern Rails 8 Features
+- **Solid Queue** - Built-in job processing without Redis
+- **Solid Cache** - Efficient caching layer
+- **Multi-database Support** - Separate databases for different concerns
+- **Asset Pipeline** - Propshaft for modern asset management
+- **Authentication** - Built-in authentication system
+
+### Code Organization
+- **Service Objects** - `DemoDataLoader` for data management
+- **Reusable Partials** - Component-based view architecture
+- **Stimulus Controllers** - Modular JavaScript functionality
+- **React Components** - Complex interactive features
+- **Database Normalization** - Well-designed relational schema
+
+### Performance Optimizations
+- **Lazy Loading** - Components load on demand
+- **Asset Optimization** - Minified CSS/JS bundles
+- **Database Indexing** - Optimized query performance
+- **Caching Strategy** - Fragment and page caching
+- **Turbo Frames** - Partial page updates
+
+## 🚦 Getting Started
 
 ### Prerequisites
 
-- Ruby 3.2+
+- Ruby 3.3.0+
 - Rails 8.0+
-- Node.js 18+ (for Vite and React)
+- Node.js 18+
 - SQLite 3.x
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/mind-flow.git
+   git clone https://github.com/Bryanprz/mind-flow.git
    cd mind-flow
    ```
 
 2. **Install dependencies**
    ```bash
-   # Install Ruby gems
    bundle install
-   
-   # Install Node packages (React, Vite, etc.)
    npm install
    ```
 
@@ -72,127 +104,155 @@ MindMetrics is a full-stack Rails 8 wellness application that helps users track 
 
 4. **Start the development server**
    ```bash
-   # This starts Rails server, Vite dev server, and Tailwind CSS watch
    bin/dev
    ```
    
-   The `bin/dev` command uses Foreman to run multiple processes concurrently:
-   - Rails server on port 3000
-   - Vite dev server for hot module reloading of React components
-   - Tailwind CSS watcher for style compilation
+   This command starts:
+   - Rails server (port 3000)
+   - Vite dev server with HMR
+   - Tailwind CSS watcher
 
 5. **Access the application**
-   - Open your browser to `http://localhost:3000`
-   - Login with demo credentials:
+   - Navigate to `http://localhost:3000`
+   - Demo credentials:
      - Email: `sarah@demo.com`
      - Password: `demo123`
 
 ### Demo Users
 
-Three demo users are pre-configured with sample data:
-- `sarah@demo.com` / `demo123`
-- `mike@demo.com` / `demo123`
-- `emma@demo.com` / `demo123`
+Three users with sample data:
+- `sarah@demo.com` / `demo123` - Active user with progress
+- `mike@demo.com` / `demo123` - New user starting journey
+- `emma@demo.com` / `demo123` - Advanced user with achievements
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-app/
-├── controllers/      # Request handling and business logic
-├── models/           # Data models and ActiveRecord
-├── views/            # ERB templates and partials
-├── javascript/       # Stimulus controllers
-├── jobs/             # Background job processing
-└── services/         # Business logic services
-
-config/
-├── routes.rb         # Application routing
-├── database.yml      # Database configuration
-└── initializers/     # App initialization
-
-db/
-├── migrate/          # Database migrations
-├── schema.rb         # Current database schema
-└── seeds/            # Demo data seeds
-
-lib/
-└── demo_stubs/       # Stubbed services for demo mode
+mind-flow/
+├── app/
+│   ├── controllers/       # MVC controllers
+│   ├── models/            # ActiveRecord models
+│   ├── views/             # ERB templates & partials
+│   ├── javascript/        # React components & Stimulus
+│   │   ├── components/    # React components
+│   │   ├── controllers/   # Stimulus controllers
+│   │   └── entrypoints/   # Vite entry points
+│   ├── services/          # Business logic services
+│   ├── jobs/              # Background jobs
+│   └── assets/            # CSS and images
+├── config/
+│   ├── demo_data/         # YAML demo data files
+│   ├── routes.rb          # Application routes
+│   └── database.yml       # Multi-DB configuration
+├── db/
+│   ├── migrate/           # Database migrations
+│   ├── schema.rb          # Current schema
+│   └── seeds/             # Seed data scripts
+└── test/                  # Test suite
 ```
 
-## Demo Mode Limitations
+## 🎨 Design Features
 
-This demo version has the following limitations:
+### Visual Design
+- **Futuristic Aesthetic** - NASA-inspired typography and space themes
+- **Glass Morphism** - Translucent cards with backdrop blur
+- **Gradient Effects** - Dynamic color transitions
+- **Dark Mode** - Optimized for low-light environments
+- **Responsive Layout** - Adapts from mobile to desktop
 
-### Removed Features
-- ❌ Real-time AI wellness recommendations (uses canned responses)
-- ❌ Cloud storage integration (uses local disk only)
-- ❌ Private messaging backend (UI demonstration only)
-- ❌ Social post creation backend (UI demonstration only)
-- ❌ Admin panel functionality
-- ❌ Production deployment configurations
-- ❌ Third-party API integrations
+### Accessibility
+- **Keyboard Navigation** - Full keyboard support
+- **Screen Reader** - ARIA labels and semantic HTML
+- **High Contrast** - Optimized for contrast preferences
+- **Reduced Motion** - Respects user motion preferences
+- **Focus Management** - Clear focus indicators
 
-### Stubbed Services
-- `lib/demo_stubs/ai_service.rb` - Returns preset wellness tips
-- `lib/demo_stubs/recommendation_engine.rb` - Generic habit suggestions
-- `lib/demo_stubs/messaging_service.rb` - Demo mode notifications
+## 🧪 Testing
 
-## Testing
-
-Run the test suite:
 ```bash
+# Run all tests
 rails test
+
+# Run system tests
 rails test:system
+
+# Run specific test file
+rails test test/models/user_test.rb
+
+# Check code quality
+rubocop
+brakeman
 ```
 
-## Code Quality
+## 📊 Demo Data System
 
-- **Linting**: Rubocop with Rails Omakase style guide
-- **Security**: Brakeman for vulnerability scanning
-- **Type Safety**: Strong parameters and input validation
-- **Test Coverage**: Model and integration tests
+The application includes a comprehensive demo data system:
 
-## Development Workflow
+### Demo Data Files
+- `focus_sessions.yml` - Historical session data
+- `active_goals.yml` - User goals with progress
+- `courses.yml` - Learning courses
+- `performance_metrics.yml` - Analytics data
+- `achievements.yml` - Earned achievements
 
-1. Create feature branch
-2. Implement changes
-3. Run tests and linters
-4. Commit with descriptive message
-5. Push and create pull request
+### DemoDataLoader Service
+- Loads YAML data files
+- Converts keys to symbols
+- Provides default values
+- Handles errors gracefully
 
-## Environment Variables
+## 🔒 Security
 
-For local development, no environment variables are required. All configurations use sensible defaults and local storage.
+- **CSRF Protection** - Built-in Rails CSRF tokens
+- **SQL Injection Prevention** - Parameterized queries
+- **XSS Protection** - Content escaping
+- **Secure Sessions** - Encrypted session cookies
+- **Content Security Policy** - CSP headers configured
 
-For production deployment (not included in demo):
-- `RAILS_MASTER_KEY` - Rails credentials encryption key
-- `SECRET_KEY_BASE` - Session encryption key
-- `DATABASE_URL` - Production database connection
+## 🚀 Deployment
 
-## Contributing
+Configured for deployment on:
+- **Kamal** - Deployment configuration included
+- **Docker** - Dockerfile ready for containerization
+- **Cloud Platforms** - Compatible with Heroku, Render, Fly.io
 
-This is a demo repository and is not open for contributions. However, feel free to fork it for your own learning purposes.
+## 🤝 Contributing
 
-## License
+This is a portfolio project, but feedback and suggestions are welcome!
 
-This is a portfolio demonstration project. All rights reserved.
+## 📝 License
 
-## Contact
+All rights reserved - Portfolio demonstration project
 
-For questions about this demo or to discuss the full application:
-- Email: your.email@example.com
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
-- Portfolio: [Your Website](https://yourwebsite.com)
+## 👨‍💻 About the Developer
 
-## Acknowledgments
+Built by **Bryan Perez**, a full-stack developer passionate about creating performant, accessible web applications with modern technologies.
+
+### Technical Highlights
+- Rails 8 early adopter with Solid Queue/Cache
+- React expertise with modern hooks and patterns
+- Performance optimization and code organization
+- Accessibility-first development approach
+- Clean, maintainable architecture
+
+## 📧 Contact
+
+Interested in discussing this project or similar work?
+
+- **Email**: bryan.perez.dev@gmail.com
+- **LinkedIn**: [linkedin.com/in/bryanprz](https://www.linkedin.com/in/bryanprz/)
+- **Portfolio**: [bryanperezocampo.com](http://bryanperezocampo.com/)
+
+## 🙏 Acknowledgments
 
 - Built with Ruby on Rails 8
-- UI components inspired by modern wellness apps
-- Icons from Heroicons
-- Demo data is fictional and generated for demonstration purposes
+- React and Vite for modern frontend
+- Tailwind CSS and DaisyUI for styling
+- Visx for data visualization
+- Heroicons for UI icons
 
 ---
 
-**Last Updated**: October 2025
+**Built with** ❤️ **using Rails 8 and React**
 
-*This demo showcases technical capabilities while respecting proprietary information. The production version includes additional features, optimizations, and integrations not shown here.*
+*Last Updated: October 2025*

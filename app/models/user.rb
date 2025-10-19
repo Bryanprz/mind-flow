@@ -9,9 +9,7 @@ class User < ApplicationRecord
   has_one_attached :cover_image, service: :local
   has_secure_password
   has_many :habit_plans, dependent: :destroy
-
   has_many :sessions, dependent: :destroy
-  has_many :assessment_entries, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   normalizes :handle, with: ->(h) { h&.strip&.downcase }
@@ -55,10 +53,6 @@ class User < ApplicationRecord
   end
 
   # Gamification methods
-  def assessment_count
-    assessment_entries.count
-  end
-
   def habit_plans_count
     habit_plans.count
   end
@@ -74,10 +68,9 @@ class User < ApplicationRecord
   end
 
   def wellness_score
-    assessment_score = assessment_entries.count * 10
     streak_bonus = current_streak * 2
     plan_score = habit_plans.count * 15
-    (assessment_score + streak_bonus + plan_score).clamp(0, 1000)
+    (streak_bonus + plan_score).clamp(0, 1000)
   end
 
   def wellness_mastery_level
@@ -85,13 +78,9 @@ class User < ApplicationRecord
     when 0..50 then "Beginner"
     when 51..150 then "Apprentice"
     when 151..300 then "Practitioner"
-    when 301..500 then "Wellness Enthusiast"
-    else "Wellness Master"
+    when 301..500 then "Mental Training Enthusiast"
+    else "Flow State Master"
     end
-  end
-
-  def has_completed_assessments?
-    assessment_count > 0
   end
 
   def has_habit_plans?
