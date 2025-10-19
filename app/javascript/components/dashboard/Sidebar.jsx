@@ -98,7 +98,6 @@ export default function Sidebar({ currentUser }) {
               </div>
               <div className="flex-1">
                 <p className="text-white text-sm font-medium">{currentUser.name || 'User'}</p>
-                <p className="text-gray-400 text-xs">Cognitive Optimizer</p>
               </div>
             </div>
           </div>

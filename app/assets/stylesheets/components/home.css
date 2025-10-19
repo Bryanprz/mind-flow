@@ -98,12 +98,21 @@
   overflow: visible !important;
 }
 
-/* Force white text for neon buttons */
+/* Force white text for neon buttons - override browser defaults */
 .btn.btn-neon,
 .btn.btn-neon *,
 a.btn.btn-neon,
-a.btn.btn-neon * {
+a.btn.btn-neon *,
+a.btn.btn-neon:link,
+a.btn.btn-neon:link *,
+a.btn.btn-neon:visited,
+a.btn.btn-neon:visited *,
+a.btn.btn-neon:hover,
+a.btn.btn-neon:hover *,
+a.btn.btn-neon:active,
+a.btn.btn-neon:active * {
   color: #ffffff !important;
+  text-decoration: none !important;
 }
 
 .btn-neon:hover {
