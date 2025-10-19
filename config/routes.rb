@@ -36,7 +36,6 @@ Rails.application.routes.draw do
   
   # MindFlow Navigation Pages
   get '/analytics', to: 'pages#analytics', as: :analytics
-  get '/chart_comparison', to: 'pages#chart_comparison', as: :chart_comparison
   get '/goals', to: 'pages#goals', as: :goals
   get '/learning', to: 'pages#learning', as: :learning
   get '/notifications', to: 'pages#notifications', as: :notifications
@@ -46,9 +45,6 @@ Rails.application.routes.draw do
   # Newsletter routes
   resources :newsletters, only: [:create]
   get 'newsletters/unsubscribe', to: 'newsletters#unsubscribe', as: :unsubscribe_newsletter
-
-  # AI chat (demo mode with canned responses)
-  post 'ai/ask', to: 'ai#ask'
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

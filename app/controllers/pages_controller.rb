@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  allow_unauthenticated_access only: [:analytics, :chart_comparison, :goals, :learning, :notifications, :settings, :terms_of_service, :privacy_policy, :contact_us, :demo_community, :demo_messages, :demo_saved_posts]
+  allow_unauthenticated_access only: [:analytics, :goals, :learning, :notifications, :settings, :terms_of_service, :privacy_policy, :contact_us, :demo_community, :demo_messages, :demo_saved_posts]
   
   layout 'with_sidebar', only: [:analytics, :goals, :learning, :notifications, :settings]
   def terms_of_service
@@ -109,36 +109,26 @@ class PagesController < ApplicationController
   def analytics
     # Analytics page with cognitive performance metrics
     @page_title = "Cognitive Analytics"
-    @analytics_data = {
-      focus_trends: generate_focus_trends,
-      performance_metrics: generate_performance_metrics,
-      weekly_summary: generate_weekly_summary
-    }
-  end
-
-  def chart_comparison
-    # Chart comparison page
-    @page_title = "Chart Library Comparison"
+    @analytics_data = DemoDataLoader.analytics_data.merge(
+      focus_trends: generate_focus_trends
+    )
   end
 
   def goals
     # Goals and targets page
     @page_title = "Cognitive Goals"
-    @goals_data = {
-      active_goals: generate_active_goals,
+    @goals_data = DemoDataLoader.goals_data.merge(
       completed_goals: generate_completed_goals,
       goal_categories: generate_goal_categories
-    }
+    )
   end
 
   def learning
     # Learning and resources page
     @page_title = "Learning Hub"
-    @learning_data = {
-      courses: generate_courses,
-      resources: generate_learning_resources,
-      progress: generate_learning_progress
-    }
+    @learning_data = DemoDataLoader.learning_data.merge(
+      resources: generate_learning_resources
+    )
   end
 
   def notifications

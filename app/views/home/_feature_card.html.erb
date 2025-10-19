@@ -1,0 +1,19 @@
+<%# Feature Card Partial
+  icon: String (emoji)
+  title: String
+  description: String (optional)
+  size: String (optional: "large" for bigger cards)
+  Supports block content for custom card body
+%>
+<div class="<%= size == 'large' ? 'md:col-span-2 lg:col-span-2' : 'md:col-span-1 lg:col-span-1' %> p-6 glass-card rounded-xl flex flex-col">
+  <div class="flex items-center mb-4">
+    <div class="text-4xl mr-3"><%= icon %></div>
+    <h3 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"><%= title %></h3>
+  </div>
+  <% if block_given? %>
+    <%= yield %>
+  <% elsif description %>
+    <p class="text-blue-200 text-md"><%= description %></p>
+  <% end %>
+</div>
+

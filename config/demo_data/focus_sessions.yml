@@ -1,0 +1,15 @@
+- date: "2025-01-15"
+  duration: 47
+  quality: "high"
+  flow_state: 89
+
+- date: "2025-01-14"
+  duration: 62
+  quality: "high"
+  flow_state: 92
+
+- date: "2025-01-13"
+  duration: 35
+  quality: "medium"
+  flow_state: 75
+

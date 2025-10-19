@@ -1,0 +1,23 @@
+<%# Protocol Card Partial
+  number: String (e.g., "01", "02")
+  title: String
+  description: String
+  category: String
+  color_class: String (e.g., "text-blue-400")
+%>
+<div class="glass-card rounded-xl p-8 hover:border-blue-400 transition-all duration-300">
+  <div class="flex items-start gap-6">
+    <div class="text-6xl font-bold <%= color_class %> opacity-50">
+      <%= number %>
+    </div>
+    <div class="flex-1">
+      <h3 class="text-xl font-bold text-white mb-3 uppercase tracking-wide"><%= title %></h3>
+      <p class="text-blue-200 leading-relaxed mb-3">
+        <%= description %>
+      </p>
+      <div class="inline-block px-3 py-1 bg-blue-500/20 rounded-full text-sm <%= color_class %>">
+        <%= category %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -238,8 +238,6 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
       </g>
     )
   }
-
-  console.log('StatisticsChart data:', chartData)
   
   const togglePeakHour = (hour) => {
     if (customPeakHours.includes(hour)) {
