@@ -1,6 +1,8 @@
 class GoalsController < ApplicationController
   before_action :set_goal, only: [:show, :edit, :update, :destroy]
   
+  layout 'with_sidebar'
+  
   def index
     @active_goals = Current.user.goals.active
     @completed_goals = Current.user.goals.completed.limit(10)

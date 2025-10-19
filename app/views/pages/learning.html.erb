@@ -1,7 +1,7 @@
 <% content_for :title, @page_title %>
 <% content_for :hide_footer, true %>
 
-<div class="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900" style="overflow: scroll;">
+<div class="h-full bg-gray-900 overflow-auto">
   <!-- Header -->
   <div class="bg-black/20 backdrop-blur-sm border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -11,10 +11,10 @@
             <span class="text-4xl">📚</span>
             <%= @page_title %>
           </h1>
-          <p class="text-purple-300 mt-2">Expand your cognitive capabilities</p>
+          <p class="text-blue-300 mt-2">Expand your cognitive capabilities</p>
         </div>
         <div class="flex items-center gap-4">
-          <div class="bg-white/10 rounded-lg px-4 py-2">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
             <span class="text-white text-sm">Learning Streak: <%= @learning_data[:progress][:current_streak] %> days</span>
           </div>
         </div>

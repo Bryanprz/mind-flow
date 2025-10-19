@@ -2,7 +2,7 @@
 <% content_for :hide_footer, true %>
 <% content_for :vite_page, true %>
 
-<div class="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900" style="overflow: scroll;">
+<div class="h-full bg-gray-900 overflow-auto">
   <!-- Header -->
   <div class="bg-black/20 backdrop-blur-sm border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -15,7 +15,7 @@
           <p class="text-blue-300 mt-2">Advanced cognitive performance insights</p>
         </div>
         <div class="flex items-center gap-4">
-          <div class="bg-white/10 rounded-lg px-4 py-2">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
             <span class="text-white text-sm">Last updated: <%= Time.current.strftime("%B %d, %Y") %></span>
           </div>
         </div>
