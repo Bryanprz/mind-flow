@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  allow_unauthenticated_access only: [:analytics, :goals, :learning, :notifications, :settings, :terms_of_service, :privacy_policy, :contact_us, :demo_community, :demo_messages, :demo_saved_posts]
+  allow_unauthenticated_access only: [:analytics, :chart_comparison, :goals, :learning, :notifications, :settings, :terms_of_service, :privacy_policy, :contact_us, :demo_community, :demo_messages, :demo_saved_posts]
   
   layout 'with_sidebar', only: [:analytics, :goals, :learning, :notifications, :settings]
   def terms_of_service
@@ -114,6 +114,11 @@ class PagesController < ApplicationController
       performance_metrics: generate_performance_metrics,
       weekly_summary: generate_weekly_summary
     }
+  end
+
+  def chart_comparison
+    # Chart comparison page
+    @page_title = "Chart Library Comparison"
   end
 
   def goals

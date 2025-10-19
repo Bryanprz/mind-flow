@@ -1,0 +1,29 @@
+00:05:01 web.1  | started with pid 5783
+00:05:01 vite.1 | started with pid 5784
+00:05:01 css.1  | started with pid 5785
+00:05:02 web.1  | => Booting Puma
+00:05:02 web.1  | => Rails 8.0.3 application starting in development 
+00:05:02 web.1  | => Run `bin/rails server --help` for more startup options
+00:05:02 web.1  | Puma starting in single mode...
+00:05:02 web.1  | * Puma version: 6.6.1 ("Return to Forever")
+00:05:02 web.1  | * Ruby version: ruby 3.3.0 (2023-12-25 revision 5124f9ac75) +YJIT [arm64-darwin24]
+00:05:02 web.1  | *  Min threads: 3
+00:05:02 web.1  | *  Max threads: 3
+00:05:02 web.1  | *  Environment: development
+00:05:02 web.1  | *          PID: 5783
+00:05:02 web.1  | * Listening on http://127.0.0.1:3000
+00:05:02 web.1  | * Listening on http://[::1]:3000
+00:05:02 web.1  | Use Ctrl-C to stop
+00:05:02 vite.1 | 
+00:05:02 vite.1 |   VITE v5.4.20  ready in 128 ms
+00:05:02 vite.1 | 
+00:05:02 vite.1 |   ➜  Local:   http://localhost:3036/vite-dev/
+00:05:02 css.1  | Browserslist: caniuse-lite is outdated. Please run:
+00:05:02 css.1  |   npx update-browserslist-db@latest
+00:05:02 css.1  |   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+00:05:03 css.1  | exited with code 0
+00:05:03 system | sending SIGTERM to all processes
+00:05:03 web.1  | - Gracefully stopping, waiting for requests to finish
+00:05:03 web.1  | Exiting
+00:05:04 vite.1 | exited with code 0
+00:05:04 web.1  | terminated by SIGTERM

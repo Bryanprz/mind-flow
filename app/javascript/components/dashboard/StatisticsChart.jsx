@@ -57,22 +57,22 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
       switch (scenario) {
         case 'busy':
           peakHours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-          baseValue = 2.5 + Math.sin((hour - 7) * 0.3) * 1.0
+          baseValue = 25 + Math.sin((hour - 7) * 0.3) * 10
           break
         case 'quiet':
           peakHours = [12, 13]
-          baseValue = 0.8 + Math.sin((hour - 7) * 0.2) * 0.4
+          baseValue = 8 + Math.sin((hour - 7) * 0.2) * 4
           break
         case 'emergency':
           peakHours = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
-          baseValue = 4.0 + Math.sin((hour - 7) * 0.5) * 1.5
+          baseValue = 40 + Math.sin((hour - 7) * 0.5) * 15
           break
         case 'custom':
           peakHours = customPeakHours.length > 0 ? customPeakHours : [9, 10, 11, 14, 15, 16, 19, 20]
-          baseValue = 2.0 + Math.sin((hour - 7) * 0.3) * 0.8
+          baseValue = 20 + Math.sin((hour - 7) * 0.3) * 8
           break
         default: // normal
-          baseValue = 1.5 + Math.sin((hour - 7) * 0.2) * 0.6
+          baseValue = 15 + Math.sin((hour - 7) * 0.2) * 6
       }
       
       const isPeakHour = peakHours.includes(hour)
@@ -84,12 +84,13 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
         baseValue += 0.8
       }
       
-      const randomVariation = (Math.random() - 0.5) * 0.8
-      const primaryValue = Math.max(0.2, baseValue + randomVariation)
+      const randomVariation = (Math.random() - 0.5) * 8
+      const primaryValue = Math.max(2, baseValue + randomVariation)
       
-      // Secondary data (queue/backlog)
-      const queueMultiplier = isPeakHour ? 0.8 : 0.6
-      const secondaryValue = Math.max(0.1, primaryValue * queueMultiplier + (Math.random() - 0.5) * 0.5)
+      // Secondary data (clarity) - create its own pattern
+      const clarityBase = baseValue * 0.7 + Math.sin((hour - 7) * 0.4) * 5
+      const clarityVariation = (Math.random() - 0.5) * 4
+      const secondaryValue = Math.max(1, clarityBase + clarityVariation)
       
       // Volume bars (call volume) - affected by volume multiplier
       const volumeValue = Math.max(5, primaryValue * 12 * volumeMultiplier + Math.random() * 20)
@@ -351,7 +352,7 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
               fontWeight: '600',
               textRendering: 'optimizeLegibility'
             }}
-            domain={[0, 4.5]}
+            domain={[0, 60]}
             tickCount={6}
           />
           
