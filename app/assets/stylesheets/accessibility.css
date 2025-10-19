@@ -43,8 +43,8 @@
   }
   
   .btn-neon {
-    border: 3px solid #ffffff;
-    color: #ffffff;
+    border: 3px solid #ffffff !important;
+    color: #ffffff !important;
   }
 }
 

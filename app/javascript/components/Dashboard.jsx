@@ -229,10 +229,14 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
           
           <div className="flex items-center space-x-3">
             <div className="text-right">
-              <div className="text-gray-200 font-medium">James Radcliffe</div>
-              <div className="text-gray-400 text-sm">Admin</div>
+              <div className="text-gray-200 font-medium">{currentUser?.name || 'User'}</div>
+              <div className="text-gray-400 text-sm">Cognitive Optimizer</div>
             </div>
-            <div className="w-10 h-10 bg-blue-500 rounded-full"></div>
+            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-sm font-bold">
+                {currentUser?.name?.[0]?.toUpperCase() || 'U'}
+              </span>
+            </div>
           </div>
         </div>
 

@@ -1,9 +1,9 @@
 <div class="navbar <%= current_page?(root_path) ? 'bg-transparent' : 'bg-base-100' %> fixed top-0 z-50 w-full left-0" data-controller="mobile-menu scroll-nav" data-scroll-nav-target="navbar">
   <div class="navbar-start">
     <% if authenticated? %>
-      <%= link_to "🧬MindFlow", root_path, class: "btn btn-ghost text-2xl text-primary tracking-tighter !gap-0", style: "padding-left: 2rem;" %>
+      <%= link_to "🧬MindFlow", root_path, class: "btn btn-ghost text-2xl text-white tracking-tighter !gap-0", style: "padding-left: 2rem;" %>
     <% else %>
-      <%= link_to raw("🧬Mind<span class='text-primary'>Flow</span>"), root_path, class: "btn btn-ghost text-2xl text-primary tracking-tighter !gap-0", style: "padding-left: 2rem;" %>
+      <%= link_to raw("🧬Mind<span class='text-white'>Flow</span>"), root_path, class: "btn btn-ghost text-2xl text-white tracking-tighter !gap-0", style: "padding-left: 2rem;" %>
     <% end %>
   </div>
 

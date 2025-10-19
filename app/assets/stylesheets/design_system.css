@@ -207,6 +207,23 @@
   }
 }
 
+/* Force white text for specific elements */
+.btn.btn-neon,
+.btn.btn-neon *,
+a.btn.btn-neon,
+a.btn.btn-neon *,
+.btn.btn-ghost.text-white,
+.btn.btn-ghost.text-white *,
+a.btn.btn-ghost.text-white,
+a.btn.btn-ghost.text-white * {
+  color: #ffffff !important;
+}
+
+/* Override DaisyUI primary colors */
+.text-primary {
+  color: #ffffff !important;
+}
+
 /* Dark mode optimizations */
 @media (prefers-color-scheme: dark) {
   .mindflow-glass-card {

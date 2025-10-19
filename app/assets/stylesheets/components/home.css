@@ -88,7 +88,7 @@
   border: 2px solid #3b82f6 !important;
   border-bottom: 2px solid #3b82f6 !important;
   border-left: 2px solid #3b82f6 !important;
-  color: #60a5fa;
+  color: #ffffff !important;
   text-transform: uppercase;
   letter-spacing: 2px;
   position: relative;
@@ -96,6 +96,14 @@
   background: rgba(26, 26, 46, 0.8);
   backdrop-filter: blur(10px);
   overflow: visible !important;
+}
+
+/* Force white text for neon buttons */
+.btn.btn-neon,
+.btn.btn-neon *,
+a.btn.btn-neon,
+a.btn.btn-neon * {
+  color: #ffffff !important;
 }
 
 .btn-neon:hover {
