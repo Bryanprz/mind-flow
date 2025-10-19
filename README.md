@@ -6,24 +6,32 @@ A sophisticated full-stack Rails 8 application for peak mental performance, flow
 
 MindFlow is a modern web application that combines cutting-edge Rails 8 features with React components to deliver a seamless experience for mental training and focus optimization. Built with performance, scalability, and user experience in mind.
 
+### Recent Enhancements (October 2025)
+- ✅ **Real Analytics System** - Replaced demo data with actual aggregations from user habit logs
+- ✅ **Goals Management** - Built complete CRUD system for goal tracking with progress visualization
+- ✅ **Code Cleanup** - Removed 11 legacy models and 17 unused controllers for cleaner architecture
+- ✅ **Demo Data Infrastructure** - Created YAML-based demo system for UI showcases while maintaining real functionality
+
 ## ✨ Key Features
 
-### Core Functionality
-- **🧠 Advanced Focus Training** - Track meditation sessions, monitor attention spans, and optimize mental clarity
-- **📊 Real-time Analytics** - Comprehensive performance metrics with interactive visualizations using Visx
-- **🎯 Goal Management** - Set, track, and achieve cognitive performance goals with progress visualization
-- **📚 Learning Hub** - Curated courses and resources for mindfulness and flow state mastery
-- **🏆 Achievement System** - Gamified progress tracking with earned achievements and milestones
-- **👤 User Authentication** - Secure session management with Rails 8 authentication
+### Fully Functional Systems
+- **🧠 Habit Tracking** - Complete CRUD system for daily habits with comprehensive logging and streak tracking
+- **📊 Real-time Analytics** - Performance metrics aggregated from actual user habit data with Visx visualizations
+- **🎯 Goal Management** - Full CRUD for goals with progress tracking, deadline management, and auto-completion
+- **👤 User Authentication** - Secure session management with Rails 8 built-in authentication
+- **⚡ React Dashboard** - Dynamic, interactive dashboard built with React and Vite
+- **📈 Data Visualization** - Interactive charts powered by Visx displaying real user progress
 - **📱 Responsive Design** - Mobile-first UI with Tailwind CSS and DaisyUI components
 
+### UI/UX Demonstrations
+- **🎨 Learning Hub Interface** - Course browsing UI with demo content (showcase of layout and design patterns)
+- **🏆 Achievement Gallery** - Achievement display interface with sample achievements (UI demonstration)
+
 ### Technical Features
-- **⚡ React Dashboard** - Dynamic, interactive dashboard built with React and Vite
-- **🎨 Modern UI/UX** - Glass-morphism effects, gradient designs, and smooth animations
-- **📈 Data Visualization** - Interactive charts powered by Visx for performance tracking
 - **🔄 Real-time Updates** - Turbo Streams for instant UI updates without page refreshes
 - **🎭 Accessible Design** - WCAG-compliant with keyboard navigation and screen reader support
-- **🌐 Demo Mode** - Comprehensive demo data system for showcasing capabilities
+- **🌐 Demo Data System** - Comprehensive YAML-based demo data loader for UI showcases
+- **🎨 Modern UI/UX** - Glass-morphism effects, gradient designs, and smooth animations
 
 ## 🛠 Tech Stack
 
@@ -130,25 +138,41 @@ Three users with sample data:
 ```
 mind-flow/
 ├── app/
-│   ├── controllers/       # MVC controllers
-│   ├── models/            # ActiveRecord models
-│   ├── views/             # ERB templates & partials
-│   ├── javascript/        # React components & Stimulus
-│   │   ├── components/    # React components
-│   │   ├── controllers/   # Stimulus controllers
-│   │   └── entrypoints/   # Vite entry points
-│   ├── services/          # Business logic services
-│   ├── jobs/              # Background jobs
-│   └── assets/            # CSS and images
+│   ├── controllers/      # Request handling and business logic
+│   │   ├── goals_controller.rb         # Full CRUD for goals
+│   │   ├── habit_plans_controller.rb   # Habit tracking with logging
+│   │   └── dashboards_controller.rb    # Main dashboard
+│   ├── models/           # Data models and ActiveRecord
+│   │   ├── goal.rb                     # Goal management (NEW)
+│   │   ├── habit_plan.rb               # Habit plans
+│   │   ├── habit_log.rb                # Daily habit logs
+│   │   └── user.rb                     # User authentication
+│   ├── views/            # ERB templates and partials
+│   │   ├── goals/                      # Goal CRUD views (NEW)
+│   │   ├── home/                       # Landing page partials
+│   │   └── dashboards/                 # Dashboard components
+│   ├── javascript/       # React components & Stimulus
+│   │   ├── components/                 # React components
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── HabitPlanView.jsx
+│   │   │   └── dashboard/StatisticsChart.jsx
+│   │   └── controllers/                # Stimulus controllers
+│   ├── services/         # Business logic services
+│   │   ├── analytics_service.rb        # Real data aggregation (NEW)
+│   │   └── demo_data_loader.rb         # Demo UI data
+│   └── assets/           # CSS and images
+│       └── stylesheets/
+│           ├── accessibility.css       # WCAG compliance
+│           └── components/home.css     # Landing page styles
 ├── config/
-│   ├── demo_data/         # YAML demo data files
-│   ├── routes.rb          # Application routes
-│   └── database.yml       # Multi-DB configuration
+│   ├── routes.rb         # Application routing
+│   ├── database.yml      # Multi-database configuration
+│   └── demo_data/        # YAML demo files for UI showcases
 ├── db/
-│   ├── migrate/           # Database migrations
-│   ├── schema.rb          # Current schema
-│   └── seeds/             # Seed data scripts
-└── test/                  # Test suite
+│   ├── migrate/          # Database migrations
+│   ├── schema.rb         # Current database schema
+│   └── seeds/            # Demo data generation
+└── test/                 # Test suite
 ```
 
 ## 🎨 Design Features
@@ -184,22 +208,28 @@ rubocop
 brakeman
 ```
 
-## 📊 Demo Data System
+## 📊 Data Architecture
 
-The application includes a comprehensive demo data system:
+### Real Data Systems
+The following features use actual database records:
+- **Habit Tracking** - `HabitPlan`, `HabitLog`, `PlanItem` models with full persistence
+- **Analytics** - Aggregated from real habit logs via `AnalyticsService`
+- **Goals** - Complete CRUD with `Goal` model storing all user goals
 
-### Demo Data Files
-- `focus_sessions.yml` - Historical session data
-- `active_goals.yml` - User goals with progress
-- `courses.yml` - Learning courses
-- `performance_metrics.yml` - Analytics data
-- `achievements.yml` - Earned achievements
+### Demo Data System (UI Showcases)
+For UI demonstrations, the application includes a YAML-based demo system:
 
-### DemoDataLoader Service
-- Loads YAML data files
-- Converts keys to symbols
-- Provides default values
+**Demo Data Files:**
+- `courses.yml` - Learning courses for UI showcase
+- `achievements.yml` - Achievement gallery for UI showcase
+
+**DemoDataLoader Service:**
+- Loads YAML data files for UI demonstrations
+- Converts keys to symbols for consistency
+- Provides default values when files missing
 - Handles errors gracefully
+
+**Note**: Demo features showcase UI/UX capabilities and design patterns. The core functionality (habits, analytics, goals) uses real database persistence.
 
 ## 🔒 Security
 
