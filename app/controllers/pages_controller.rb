@@ -107,10 +107,10 @@ class PagesController < ApplicationController
   end
 
   def analytics
-    # Analytics page with cognitive performance metrics
+    # Analytics page with cognitive performance metrics from real user data
     @page_title = "Cognitive Analytics"
-    @analytics_data = DemoDataLoader.analytics_data.merge(
-      focus_trends: generate_focus_trends
+    @analytics_data = AnalyticsService.new(Current.user).call.merge(
+      focus_trends: generate_focus_trends # Keep as fallback visualization
     )
   end
 
