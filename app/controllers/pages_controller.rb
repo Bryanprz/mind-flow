@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
-  allow_unauthenticated_access only: [:analytics, :goals, :learning, :notifications, :settings, :terms_of_service, :privacy_policy, :contact_us, :demo_community, :demo_messages, :demo_saved_posts]
+  allow_unauthenticated_access only: [:analytics, :learning, :notifications, :settings, :terms_of_service, :privacy_policy, :contact_us, :demo_community, :demo_messages, :demo_saved_posts]
   
-  layout 'with_sidebar', only: [:analytics, :goals, :learning, :notifications, :settings]
+  layout 'with_sidebar', only: [:analytics, :learning, :notifications, :settings]
   def terms_of_service
   end
 
@@ -114,10 +114,6 @@ class PagesController < ApplicationController
     )
   end
 
-  def goals
-    # Redirect to actual goals index - this is now a real feature!
-    redirect_to goals_path
-  end
 
   def learning
     # Learning and resources page

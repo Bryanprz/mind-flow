@@ -39,7 +39,6 @@ Rails.application.routes.draw do
   
   # MindFlow Navigation Pages
   get '/analytics', to: 'pages#analytics', as: :analytics
-  get '/goals', to: 'pages#goals', as: :goals
   get '/learning', to: 'pages#learning', as: :learning
   get '/notifications', to: 'pages#notifications', as: :notifications
   get '/settings', to: 'pages#settings', as: :settings
