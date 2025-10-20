@@ -1,90 +1,14 @@
-<%# Streak Card - Displays the user's current streak and progress %>
-<div class="card bg-base-100 border border-gray-300 h-full">
-  <div class="card-body p-3 pb-1">
-        <h3 class="card-title text-lg flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="text-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-              </svg>
-            </span>
-            Daily Streak
-          </div>
-          
-          <!-- Motivational Message - Same row as title -->
-          <% if Current.user&.has_checked_in_today? %>
-            <div class="text-right">
-              <div class="text-sm font-medium text-success">🎉 You're on fire!</div>
-              <div class="text-xs text-gray-500">Keep the momentum going</div>
-            </div>
-          <% end %>
-        </h3>
-    
-    <div class="flex flex-col items-center justify-center py-2">
-      <!-- Current Streak -->
-      <div class="text-4xl font-bold text-center mb-2">
-        <%= @habit_plan.current_streak %>
-      </div>
-      <div class="text-sm text-gray-500 mb-3">
-        day<%= 's' if @habit_plan.current_streak != 1 %> in a row
-      </div>
-      
-      <!-- Progress Bar -->
-      <% if (progress = @habit_plan.milestone_progress) > 0 %>
-        <div class="w-full max-w-xs mb-2">
-          <div class="text-xs text-gray-500 mb-1 text-center">
-            <% if (next_milestone = @habit_plan.next_milestone) %>
-              <%= (@habit_plan.milestone_progress * 100).round %>% to next milestone
-            <% end %>
-          </div>
-          <progress 
-            class="progress progress-primary w-full h-2" 
-            value="<%= progress * 100 %>" 
-            max="100">
-          </progress>
-          <div class="text-xs text-gray-500 text-center mt-1">
-            <% if next_milestone %>
-              <%= next_milestone %> days
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-      
-      <!-- Milestone Message -->
-      <% if (milestone_msg = @habit_plan.milestone_message).present? %>
-        <div class="alert alert-success shadow-lg mt-4">
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span><%= milestone_msg %></span>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    
-    <!-- Tip -->
-    <% unless Current.user&.has_checked_in_today? %>
-      <div class="text-xs text-gray-500 text-center mt-2">
-        Complete your daily plan to keep your streak going!
-      </div>
-    <% end %>
-    
-    <!-- Check-in Button -->
-    <div class="w-full flex justify-center mt-2">
-      <% if Current.user&.has_checked_in_today? %>
-        <div class="flex flex-col items-center gap-2">
-          <!-- Achievement Badge -->
-          <div class="badge badge-success badge-lg gap-2 px-4 py-2">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-            </svg>
-            <span class="font-semibold">Daily Check-in Complete!</span>
-          </div>
-        </div>
-      <% else %>
-        <%= link_to "✨ Check-in for Today", my_habit_plan_path, class: "btn btn-md btn-primary w-1/2 text-white" %>
-      <% end %>
-    </div>
+<div style="border: 1px solid #ccc; padding: 20px; background: white;">
+  <h3>Daily Streak</h3>
+  <div style="text-align: center; font-size: 48px; font-weight: bold; margin: 20px 0;">
+    0
+  </div>
+  <div style="text-align: center; color: #666;">
+    days in a row
+  </div>
+  <div style="text-align: center; margin-top: 20px;">
+    <button disabled style="padding: 10px 20px; background: #ccc; color: white; border: none; border-radius: 4px;">
+      Check-in for Today
+    </button>
   </div>
 </div>

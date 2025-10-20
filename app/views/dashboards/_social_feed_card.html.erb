@@ -1,56 +1,20 @@
-<!-- Social Feed Card -->
-<div class="card bg-base-100 border border-gray-300 h-full flex flex-col min-h-0 social-feed-card" data-image-preview-target="card">
-  <div class="card-body p-0 flex flex-col flex-1 min-h-0">
-    <!-- Feed Header -->
-    <div class="py-2 px-4 border-b border-gray-200 flex items-start justify-between gap-3">
-      <div>
-        <h2 class="card-title text-lg font-semibold text-gray-800">
-          Community Feed
-        </h2>
-        <p class="text-xs text-gray-500">Share your wins, struggles, questions — anything on your mind</p>
-      </div>
-      <div class="flex-shrink-0">
-        <%= link_to "View full feed", demo_community_path, class: "link link-primary text-xs" %>
-      </div>
+<div style="border: 1px solid #ccc; padding: 20px; background: white;">
+  <h3>Community Feed</h3>
+  <div style="margin: 20px 0;">
+    <div style="border: 1px solid #eee; padding: 15px; margin: 10px 0; background: #f9f9f9;">
+      <strong>Sarah Wellness</strong><br>
+      Just completed my morning meditation! 7 days strong 💪
     </div>
-    
-    <!-- Feed Content -->
-    <div class="flex-1 flex flex-col min-h-0 max-h-full">
-      <div class="relative flex-1 min-h-0 max-h-full">
-        <div class="absolute inset-0 max-h-full">
-          <div class="h-full max-h-full overflow-y-auto" id="social-feed-scroll">
-            <%= render 'dashboards/demo_social_posts' %>
-          </div>
-        </div>
-      </div>
+    <div style="border: 1px solid #eee; padding: 15px; margin: 10px 0; background: #f9f9f9;">
+      <strong>Mike Health</strong><br>
+      Sleep tracking has been a game changer. Getting 8+ hours consistently now!
     </div>
-    
-    <!-- New Post Form (Demo Mode) -->
-    <div class="px-3 pt-3 border-t border-gray-200">
-      <div class="w-full">
-        <div class="flex items-start gap-3">
-          <div class="flex-1 relative min-w-0 flex items-center gap-2 mb-2">
-            <textarea 
-              class="textarea flex-1 social-feed-input" 
-              placeholder="Write something..."
-              rows="1"
-              onclick="alert('Demo Mode: Posting is disabled. Visit the full community page to see more!')"
-            ></textarea>
-            <div class="flex items-center gap-2">
-              <label class="cursor-pointer text-gray-400 hover:text-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" />
-                </svg>
-              </label>
-              <button type="button" class="text-gray-400 hover:text-primary border-0 bg-transparent p-0" onclick="alert('Demo Mode: Posting is disabled')">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div style="border: 1px solid #eee; padding: 15px; margin: 10px 0; background: #f9f9f9;">
+      <strong>Emma Balance</strong><br>
+      Gratitude journaling before bed has improved my sleep quality significantly ✨
     </div>
+  </div>
+  <div style="margin-top: 20px;">
+    <textarea placeholder="Write something..." disabled style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; height: 60px;"></textarea>
   </div>
 </div>

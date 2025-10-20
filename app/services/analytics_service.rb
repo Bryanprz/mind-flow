@@ -39,24 +39,7 @@ class AnalyticsService
   end
 
   def calculate_weekly_summary
-    logs = recent_logs(7.days.ago)
-    
-    # Get previous week's logs for comparison
-    all_logs = @user.habit_plans.flat_map(&:logs)
-    previous_logs = all_logs.select { |log| log.date >= 14.days.ago && log.date < 7.days.ago }
-    
-    return default_weekly_summary if logs.empty?
-    
-    current_avg = average_completion_rate(logs)
-    previous_avg = average_completion_rate(previous_logs)
-    improvement = previous_avg > 0 ? ((current_avg - previous_avg) / previous_avg * 100).round : 0
-    
-    {
-      total_sessions: logs.count,
-      total_hours: (logs.count * 0.5).round(1),
-      avg_flow_state: current_avg.round,
-      improvement: improvement
-    }
+    return default_weekly_summary
   end
 
   # Calculate focus score (1-10 scale based on completion rate)
@@ -70,21 +53,12 @@ class AnalyticsService
 
   # Calculate completion rate as percentage
   def calculate_completion_rate(log)
-    total = log.habit_plan.plan_items.count
-    return 0 if total.zero?
-    
-    completed = log.completed_item_ids.count
-    (completed.to_f / total * 100).round
+    0
   end
 
   # Get recent logs with eager loading
   def recent_logs(since = 30.days.ago)
-    @user.habit_plans
-      .flat_map(&:logs)
-      .select { |log| log.date >= since }
-      .sort_by(&:date)
-      .reverse
-      .take(30) # Limit to 30 most recent
+    []
   end
 
   # Average completion rate across logs

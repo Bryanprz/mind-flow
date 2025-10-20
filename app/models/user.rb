@@ -8,7 +8,6 @@ class User < ApplicationRecord
   has_one_attached :avatar, service: :local
   has_one_attached :cover_image, service: :local
   has_secure_password
-  has_many :habit_plans, dependent: :destroy
   has_many :sessions, dependent: :destroy
   has_many :goals, dependent: :destroy
 
@@ -23,9 +22,6 @@ class User < ApplicationRecord
     name.to_s.split(' ').first
   end
 
-  def active_habit_plan
-    habit_plans.find_by(is_active: true)
-  end
 
   def daily_check_in_streak
     "30 days"
@@ -39,57 +35,29 @@ class User < ApplicationRecord
     30
   end
 
-  def habit_plan_progress_percentage
-    83
-  end
-
   def has_checked_in_today?
-    return false unless active_habit_plan
-    
-    # Check if user has completed a habit log for today
-    active_habit_plan.logs
-      .where(date: Date.current)
-      .where.not(completed_at: nil)
-      .exists?
+    false
   end
 
   # Gamification methods
-  def habit_plans_count
-    habit_plans.count
-  end
-
   def current_streak
-    active_habit_plan&.current_streak || 0
+    0
   end
 
   def longest_streak
-    return 0 if habit_plans.none?
-    
-    habit_plans.map(&:current_streak).max || 0
+    0
   end
 
   def wellness_score
-    streak_bonus = current_streak * 2
-    plan_score = habit_plans.count * 15
-    (streak_bonus + plan_score).clamp(0, 1000)
+    0
   end
 
   def wellness_mastery_level
-    case wellness_score
-    when 0..50 then "Beginner"
-    when 51..150 then "Apprentice"
-    when 151..300 then "Practitioner"
-    when 301..500 then "Mental Training Enthusiast"
-    else "Flow State Master"
-    end
-  end
-
-  def has_habit_plans?
-    habit_plans_count > 0
+    "Beginner"
   end
 
   def has_streak?
-    current_streak > 0
+    false
   end
 
 

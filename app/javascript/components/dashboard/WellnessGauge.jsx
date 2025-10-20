@@ -10,19 +10,19 @@ export default function WellnessGauge({ currentUser }) {
   const [clickCount, setClickCount] = useState(0)
   
   // CSS class constants for better organization
-  const baseMetricCardClasses = "text-center p-2 bg-gray-700 rounded-md cursor-pointer transition-all"
+  const baseMetricCardClasses = "text-center p-3 bg-gray-800/50 rounded-lg cursor-pointer transition-all"
   const metricCardVariants = {
     concentration: {
-      hover: "rgba(59, 130, 246, 0.1)",
-      active: "bg-blue-900 border border-blue-500"
+      hover: "rgba(34, 211, 238, 0.1)",
+      active: "bg-cyan-500/10"
     },
     clarity: {
       hover: "rgba(139, 92, 246, 0.1)",
-      active: "bg-purple-900 border border-purple-500"
+      active: "bg-purple-500/10"
     },
     energy: {
-      hover: "rgba(16, 185, 129, 0.1)",
-      active: "bg-green-900 border border-green-500"
+      hover: "rgba(245, 158, 11, 0.1)",
+      active: "bg-amber-500/10"
     }
   }
   
@@ -65,25 +65,25 @@ export default function WellnessGauge({ currentUser }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card bg-gray-800 shadow-sm rounded-lg p-4 h-full flex flex-col border border-gray-700"
+      className="card bg-black/60 backdrop-blur-sm shadow-lg shadow-cyan-400/10 rounded-xl p-6 h-full flex flex-col"
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <Brain className="w-5 h-5 text-blue-600" />
-          <h2 className="text-lg font-semibold text-gray-200">Focus Score</h2>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <Brain className="w-6 h-6 text-cyan-400" />
+          <h2 className="text-xl font-semibold text-white tracking-wide">FOCUS GAUGE</h2>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-400">Clicks: {clickCount}</span>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-gray-400">Boosts: {clickCount}</span>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleGaugeClick}
             disabled={isAnimating}
-            className="p-1 rounded-full hover:bg-gray-700 transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-700/50 transition-colors border border-cyan-400/30"
             title="Click to boost focus!"
           >
-            <RefreshCw className={`w-4 h-4 text-blue-600 ${isAnimating ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-4 h-4 text-cyan-400 ${isAnimating ? 'animate-spin' : ''}`} />
           </motion.button>
         </div>
       </div>
@@ -99,12 +99,12 @@ export default function WellnessGauge({ currentUser }) {
         <GaugeChart
           id="focus-gauge"
           nrOfLevels={20}
-          colors={["#EF4444", "#F59E0B", "#3B82F6"]}
+          colors={["#EF4444", "#F59E0B", "#22d3ee"]}
           arcWidth={0.3}
           percent={focusScore}
           textColor="#ffffff"
-          needleColor={isAnimating ? "#fbbf24" : "#3B82F6"}
-          needleBaseColor={isAnimating ? "#fbbf24" : "#3B82F6"}
+          needleColor={isAnimating ? "#fbbf24" : "#22d3ee"}
+          needleBaseColor={isAnimating ? "#fbbf24" : "#22d3ee"}
           formatTextValue={(value) => `${Math.round(value)}%`}
           animate={true}
           animDelay={100}
@@ -113,7 +113,7 @@ export default function WellnessGauge({ currentUser }) {
             width: '100%', 
             maxWidth: '280px', 
             height: '140px',
-            filter: isAnimating ? 'drop-shadow(0 0 10px #fbbf24)' : 'none',
+            filter: isAnimating ? 'drop-shadow(0 0 15px #22d3ee)' : 'drop-shadow(0 0 5px #22d3ee)',
             transition: 'all 0.5s ease-in-out'
           }}
         />

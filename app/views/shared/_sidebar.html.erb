@@ -1,94 +1,114 @@
 <div class="drawer-side h-full m-0 p-0">
   <label for="sidebar-toggle" class="drawer-overlay"></label>
-  <div class="bg-gradient-to-b from-gray-900 to-gray-800 p-6 w-64 h-full flex flex-col m-0">
+  <div class="bg-gray-900 border-r border-gray-700 px-6 w-72 h-full flex flex-col relative flex-shrink-0 z-30">
     <!-- MindFlow Brand -->
-    <div class="mb-8">
-      <%= link_to root_path, class: "block" do %>
-        <h1 class="text-2xl font-bold text-white flex items-center gap-2">
-          <span class="text-3xl">🧬</span>
-          MindFlow
-        </h1>
-        <p class="text-gray-400 text-sm mt-1">Cognitive Performance Hub</p>
-      <% end %>
+    <div class="py-6 mb-6">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+          <span class="text-white text-lg font-bold">M</span>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-white tracking-tight">MindFlow</h1>
+          <p class="text-gray-400 text-sm font-medium">Mission Control</p>
+        </div>
+      </div>
     </div>
 
     <!-- Navigation Menu -->
     <nav class="flex-1">
-      <ul class="space-y-2">
+      <ul class="space-y-1">
         <li>
           <%= link_to dashboard_path, 
-              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
-            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
-              🏠
+              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(dashboard_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(dashboard_path)}" do %>
+            <div class="w-5 h-5 flex items-center justify-center">
+              <span class="text-lg">🧠</span>
             </div>
-            <span class="font-medium text-white group-hover:text-white">Dashboard</span>
+            <span class="font-medium">Dashboard</span>
+            <% if current_page?(dashboard_path) %>
+              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+            <% end %>
           <% end %>
         </li>
 
         <li>
           <%= link_to analytics_path, 
-              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
-            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
-              📊
+              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(analytics_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(analytics_path)}" do %>
+            <div class="w-5 h-5 flex items-center justify-center">
+              <span class="text-lg">📊</span>
             </div>
-            <span class="font-medium text-white group-hover:text-white">Analytics</span>
+            <span class="font-medium">Analytics</span>
+            <% if current_page?(analytics_path) %>
+              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+            <% end %>
           <% end %>
         </li>
 
         <li>
           <%= link_to goals_path, 
-              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
-            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
-              🎯
+              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(goals_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(goals_path)}" do %>
+            <div class="w-5 h-5 flex items-center justify-center">
+              <span class="text-lg">🎯</span>
             </div>
-            <span class="font-medium text-white group-hover:text-white">Goals</span>
+            <span class="font-medium">Goals</span>
+            <% if current_page?(goals_path) %>
+              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+            <% end %>
           <% end %>
         </li>
 
         <li>
           <%= link_to learning_path, 
-              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
-            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
-              📚
+              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(learning_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(learning_path)}" do %>
+            <div class="w-5 h-5 flex items-center justify-center">
+              <span class="text-lg">📚</span>
             </div>
-            <span class="font-medium text-white group-hover:text-white">Learning</span>
+            <span class="font-medium">Learning</span>
+            <% if current_page?(learning_path) %>
+              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+            <% end %>
           <% end %>
         </li>
 
         <li>
           <%= link_to notifications_path, 
-              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
-            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
-              🔔
+              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(notifications_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(notifications_path)}" do %>
+            <div class="w-5 h-5 flex items-center justify-center">
+              <span class="text-lg">🔔</span>
             </div>
-            <span class="font-medium text-white group-hover:text-white">Notifications</span>
+            <span class="font-medium">Notifications</span>
             <div class="ml-auto">
-              <span class="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">2</span>
+              <span class="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center font-medium">2</span>
             </div>
+            <% if current_page?(notifications_path) %>
+              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+            <% end %>
           <% end %>
         </li>
 
         <li>
           <%= link_to settings_path, 
-              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-blue-500/10 hover:text-blue-400" do %>
-            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-blue-500/20">
-              ⚙️
+              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(settings_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(settings_path)}" do %>
+            <div class="w-5 h-5 flex items-center justify-center">
+              <span class="text-lg">⚙️</span>
             </div>
-            <span class="font-medium text-white group-hover:text-white">Settings</span>
+            <span class="font-medium">Settings</span>
+            <% if current_page?(settings_path) %>
+              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+            <% end %>
           <% end %>
         </li>
 
         <li>
-          <%= link_to root_path, 
+          <%= button_to logout_path, 
+              method: :delete,
               data: { 
                 turbo_confirm: "Are you sure you want to logout?" 
               },
-              onclick: "alert('Logged out!');",
-              class: "flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group relative hover:bg-red-500/10 hover:text-red-400" do %>
-            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-gray-700 group-hover:bg-red-500/20">
-              🚪
+              class: "w-full flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group text-gray-300 hover:bg-red-600 hover:text-white text-left" do %>
+            <div class="w-5 h-5 flex items-center justify-center">
+              <span class="text-lg">🚪</span>
             </div>
-            <span class="font-medium text-white group-hover:text-white">Logout</span>
+            <span class="font-medium">Logout</span>
           <% end %>
         </li>
       </ul>
@@ -96,16 +116,18 @@
 
     <!-- User Info -->
     <% if current_user %>
-      <div class="mt-auto pt-4 border-t border-gray-700">
-        <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-700/50">
-          <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+      <div class="mt-auto py-4">
+        <div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
+          <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
             <span class="text-white text-sm font-bold">
               <%= current_user.name&.first || 'U' %>
             </span>
           </div>
           <div class="flex-1">
             <p class="text-white text-sm font-medium"><%= current_user.name || 'User' %></p>
+            <p class="text-gray-400 text-xs">Commander</p>
           </div>
+          <div class="w-2 h-2 bg-green-400 rounded-full"></div>
         </div>
       </div>
     <% end %>

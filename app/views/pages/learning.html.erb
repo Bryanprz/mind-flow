@@ -1,10 +1,14 @@
 <% content_for :title, @page_title %>
 <% content_for :hide_footer, true %>
 
-<div class="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900" style="overflow: scroll;">
+<div class="min-h-screen bg-black relative overflow-y-auto">
+  <!-- NASA-style space background effects -->
+  <div class="fixed inset-0 bg-gradient-to-br from-black via-purple-900/20 to-indigo-900/20 opacity-90 pointer-events-none"></div>
+  <div class="fixed inset-0 bg-[radial-gradient(circle_at_center,rgba(147,51,234,0.1)_0%,transparent_50%)] pointer-events-none"></div>
+  <div class="fixed inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(99,102,241,0.05)_0%,transparent_50%)] pointer-events-none"></div>
   <!-- Header -->
-  <div class="bg-black/20 backdrop-blur-sm border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <div class="bg-black/20 backdrop-blur-sm border-b border-white/10 relative z-10">
+    <div class="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16 py-6 ml-72">
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-3xl font-bold text-white flex items-center gap-3">
@@ -23,7 +27,7 @@
   </div>
 
   <!-- Main Content -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="max-w-6xl mx-auto px-8 sm:px-12 lg:px-16 py-8 relative z-10 ml-72">
     <!-- Learning Progress Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
       <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">

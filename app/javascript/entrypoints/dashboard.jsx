@@ -24,6 +24,5 @@ document.addEventListener('DOMContentLoaded', () => {
     const props = JSON.parse(container.dataset.props || '{}')
     const root = createRoot(container)
     root.render(React.createElement(Dashboard, props))
-    // Dashboard mounted successfully
   }
 })

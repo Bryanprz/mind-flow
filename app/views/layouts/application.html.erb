@@ -17,12 +17,45 @@
     <link rel="icon" href="/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="/favicon.png">
 
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    
+    <!-- Global CSS Reset to disable all browser default link styles -->
+    <style>
+      /* Nuclear option: completely disable all browser default link styles */
+      a, a:link, a:visited, a:hover, a:active, a:focus, a:target {
+        color: inherit !important;
+        text-decoration: none !important;
+        background: none !important;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-touch-callout: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+      }
+      
+      /* Force all links to behave like regular elements */
+      a {
+        all: unset !important;
+        display: inline !important;
+        cursor: pointer !important;
+      }
+      
+      /* Remove any browser default focus styles */
+      *:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+    </style>
     <% unless content_for?(:vite_page) %>
       <%= javascript_importmap_tags %>
     <% else %>
       <%= vite_client_tag %>
+      <%= vite_javascript_tag 'entrypoints/dashboard.jsx' %>
     <% end %>
   </head>
 
@@ -33,7 +66,7 @@
     <%= render "layouts/flash" %>
 
     <div class="flex-1 flex flex-col" style="overflow: scroll;">
-      <div id="main_content_area" class="flex-1 <%= content_for?(:main_container_class) ? yield(:main_container_class) : 'container mx-auto px-5' %>">
+      <div id="main_content_area" class="flex-1 <%= content_for?(:main_container_class) ? yield(:main_container_class) : (content_for?(:hide_navigation) ? 'w-full h-full' : 'container mx-auto px-5') %>">
         <%= yield %>
       </div>
     </div>

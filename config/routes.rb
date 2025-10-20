@@ -17,14 +17,6 @@ Rails.application.routes.draw do
   
   # Habit tracking routes
   resources :habit_logs
-  resources :habit_plans, except: [:new, :show] do
-    collection do
-      post 'log_item_progress'
-      post 'save_journal_log'
-      post 'create_daily_log'
-    end
-  end
-  resource :habit_plan, only: [:show], as: :my_habit_plan
 
   # Core app routes
   resource :dashboard, only: [:show]

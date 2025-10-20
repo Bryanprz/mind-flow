@@ -62,20 +62,20 @@ export default function HabitChart({ habitPlan }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card bg-gray-800 shadow-sm rounded-lg p-4 h-full flex flex-col border border-gray-700"
+      className="card bg-black/60 backdrop-blur-sm shadow-lg shadow-cyan-400/10 rounded-xl p-6 h-full flex flex-col"
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <Brain className="w-5 h-5 text-blue-600" />
-          <h2 className="text-lg font-semibold text-gray-200">Cognitive Metrics</h2>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <Brain className="w-6 h-6 text-cyan-400" />
+          <h2 className="text-xl font-semibold text-white tracking-wide">COGNITIVE METRICS</h2>
         </div>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsLiveMode(!isLiveMode)}
-          className={`p-1 rounded-full transition-colors ${
-            isLiveMode ? 'bg-green-900 text-green-400' : 'bg-gray-700 text-gray-400'
+          className={`p-2 rounded-lg transition-colors ${
+            isLiveMode ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-700/50 text-gray-400'
           }`}
           title={isLiveMode ? 'Live mode ON - Click to pause' : 'Live mode OFF - Click to resume'}
         >
@@ -102,21 +102,21 @@ export default function HabitChart({ habitPlan }) {
           >
             <defs>
               <linearGradient id="colorFocus" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#22d3ee" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#22d3ee" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="colorMood" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8}/>
                 <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
               </linearGradient>
               <linearGradient id="colorEnergy" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
               </linearGradient>
             </defs>
             <CartesianGrid 
               strokeDasharray="3 3" 
-              stroke="#e5e7eb" 
+              stroke="#374151" 
               shapeRendering="geometricPrecision"
             />
             <XAxis 
@@ -131,9 +131,9 @@ export default function HabitChart({ habitPlan }) {
             />
             <Tooltip 
               contentStyle={{ 
-                backgroundColor: '#1f2937',
-                border: '1px solid #374151',
-                borderRadius: '8px',
+                backgroundColor: '#000000',
+                border: '1px solid #22d3ee',
+                borderRadius: '12px',
                 fontSize: '12px',
                 color: 'white'
               }}
@@ -146,10 +146,10 @@ export default function HabitChart({ habitPlan }) {
             <Line 
               type="monotone" 
               dataKey="focus" 
-              stroke="#3b82f6" 
+              stroke="#22d3ee" 
               strokeWidth={selectedMetric === 'focus' || !selectedMetric ? 3 : 2}
               dot={{ 
-                fill: '#3b82f6', 
+                fill: '#22d3ee', 
                 strokeWidth: 2, 
                 r: selectedMetric === 'focus' || !selectedMetric ? 4 : 3,
                 onClick: () => setSelectedMetric('focus')
@@ -172,10 +172,10 @@ export default function HabitChart({ habitPlan }) {
             <Line 
               type="monotone" 
               dataKey="energy" 
-              stroke="#10b981" 
+              stroke="#f59e0b" 
               strokeWidth={selectedMetric === 'energy' || !selectedMetric ? 3 : 2}
               dot={{ 
-                fill: '#10b981', 
+                fill: '#f59e0b', 
                 strokeWidth: 2, 
                 r: selectedMetric === 'energy' || !selectedMetric ? 4 : 3,
                 onClick: () => setSelectedMetric('energy')
@@ -195,15 +195,15 @@ export default function HabitChart({ habitPlan }) {
           whileTap={{ scale: 0.95 }}
         >
           <div className={`w-2 h-2 rounded-full transition-all ${
-            selectedMetric === 'focus' ? 'bg-blue-600 scale-125' : 'bg-blue-500'
+            selectedMetric === 'focus' ? 'bg-cyan-400 scale-125' : 'bg-cyan-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'focus' ? 'text-blue-600 font-semibold' : 'text-base-content/70'
+            selectedMetric === 'focus' ? 'text-cyan-400 font-semibold' : 'text-gray-300'
           }`}>Focus</span>
           {getTrend('focus') === 'up' ? (
-            <TrendingUp className="w-3 h-3 text-green-500" />
+            <TrendingUp className="w-3 h-3 text-emerald-400" />
           ) : (
-            <TrendingDown className="w-3 h-3 text-red-500" />
+            <TrendingDown className="w-3 h-3 text-red-400" />
           )}
         </motion.div>
         
@@ -214,15 +214,15 @@ export default function HabitChart({ habitPlan }) {
           whileTap={{ scale: 0.95 }}
         >
           <div className={`w-2 h-2 rounded-full transition-all ${
-            selectedMetric === 'mood' ? 'bg-purple-600 scale-125' : 'bg-purple-500'
+            selectedMetric === 'mood' ? 'bg-purple-400 scale-125' : 'bg-purple-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'mood' ? 'text-purple-600 font-semibold' : 'text-base-content/70'
+            selectedMetric === 'mood' ? 'text-purple-400 font-semibold' : 'text-gray-300'
           }`}>Mood</span>
           {getTrend('mood') === 'up' ? (
-            <TrendingUp className="w-3 h-3 text-green-500" />
+            <TrendingUp className="w-3 h-3 text-emerald-400" />
           ) : (
-            <TrendingDown className="w-3 h-3 text-red-500" />
+            <TrendingDown className="w-3 h-3 text-red-400" />
           )}
         </motion.div>
         
@@ -233,30 +233,30 @@ export default function HabitChart({ habitPlan }) {
           whileTap={{ scale: 0.95 }}
         >
           <div className={`w-2 h-2 rounded-full transition-all ${
-            selectedMetric === 'energy' ? 'bg-green-600 scale-125' : 'bg-green-500'
+            selectedMetric === 'energy' ? 'bg-amber-400 scale-125' : 'bg-amber-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'energy' ? 'text-green-600 font-semibold' : 'text-base-content/70'
+            selectedMetric === 'energy' ? 'text-amber-400 font-semibold' : 'text-gray-300'
           }`}>Energy</span>
           {getTrend('energy') === 'up' ? (
-            <TrendingUp className="w-3 h-3 text-green-500" />
+            <TrendingUp className="w-3 h-3 text-emerald-400" />
           ) : (
-            <TrendingDown className="w-3 h-3 text-red-500" />
+            <TrendingDown className="w-3 h-3 text-red-400" />
           )}
         </motion.div>
       </div>
       
       {/* Summary Stats */}
-      <div className="flex items-center justify-between pt-3 border-t border-base-300">
-        <div className="text-xs">
-          <span className="font-medium text-base-content">Avg Focus:</span>
-          <span className="ml-1 text-blue-600 font-semibold">
+      <div className="flex items-center justify-between pt-4">
+        <div className="text-sm">
+          <span className="font-medium text-gray-300">Avg Focus:</span>
+          <span className="ml-2 text-cyan-400 font-semibold">
             {(data.reduce((sum, day) => sum + day.focus, 0) / data.length).toFixed(1)}
           </span>
         </div>
-        <div className="text-xs">
-          <span className="font-medium text-base-content">Peak Day:</span>
-          <span className="ml-1 text-green-600 font-semibold">
+        <div className="text-sm">
+          <span className="font-medium text-gray-300">Peak Day:</span>
+          <span className="ml-2 text-emerald-400 font-semibold">
             {data.reduce((peak, day) => day.focus > peak.focus ? day : peak, data[0]).name}
           </span>
         </div>

@@ -17,9 +17,8 @@ export default class extends Controller {
     if (navbar) {
       const navbarHeight = navbar.offsetHeight
       // Only add padding to body if we're not on pages with custom layouts
-      // Dashboard and habit plan pages have their own layout structure and don't need body padding
-      if (!window.location.pathname.includes('/dashboard') && 
-          !window.location.pathname.includes('/habit_plan')) {
+      // Dashboard pages have their own layout structure and don't need body padding
+      if (!window.location.pathname.includes('/dashboard')) {
         document.body.style.paddingTop = `${navbarHeight}px`
       }
     }
