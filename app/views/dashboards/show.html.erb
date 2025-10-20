@@ -1,6 +1,7 @@
-<% content_for :title, "Dashboard" %>
+<% content_for :title, "Dashboard - MindFlow" %>
 <% content_for :hide_footer, true %>
+<% content_for :vite_page, true %>
 
-<div style="padding: 20px; background: #f5f5f5; min-height: 100vh;">
-  <%= render 'dashboards/dashboard_content' %>
+<div class="w-full h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden">
+  <div id="react-dashboard" data-current-user="<%= Current.user.to_json %>" class="w-full h-full"></div>
 </div>

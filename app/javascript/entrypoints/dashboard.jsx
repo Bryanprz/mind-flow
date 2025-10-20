@@ -18,10 +18,22 @@ application.register("scroll-nav", ScrollNavController)
 application.register("mobile-menu", MobileMenuController)
 
 document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('dashboard-root')
+  const container = document.getElementById('react-dashboard')
   
   if (container) {
-    const props = JSON.parse(container.dataset.props || '{}')
+    let currentUser = null
+    try {
+      currentUser = JSON.parse(container.dataset.currentUser || 'null')
+    } catch (e) {
+      console.error('Error parsing current user data:', e)
+    }
+    
+    const props = {
+      currentUser: currentUser,
+      habitPlan: null,
+      sectionPresenters: []
+    }
+    
     const root = createRoot(container)
     root.render(React.createElement(Dashboard, props))
   }

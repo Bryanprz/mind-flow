@@ -185,105 +185,104 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
           </div>
         </motion.div>
       )}
-      {/* Main Content Area */}
-      <div className="w-full h-full flex flex-col relative z-10">
-        {/* Header removed - now handled by ERB template */}
-
-        {/* Main Dashboard Content */}
-        <div className="w-full">
-          {/* Dashboard Content */}
-          <div className="w-full">
-            {/* Cognitive Performance Section */}
-            <div className="mb-10">
-              <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-4xl font-bold text-white tracking-wide mb-2">MISSION PERFORMANCE</h2>
-                <div className="flex items-center space-x-6 text-sm">
-                  <span className="text-cyan-400 font-medium border-b-2 border-cyan-400 pb-1">Today</span>
-                  <span className="text-gray-400 hover:text-cyan-400 cursor-pointer transition-colors">Week</span>
-                  <span className="text-gray-400 hover:text-cyan-400 cursor-pointer transition-colors">Month</span>
-                </div>
-              </div>
-              
-              {/* Key Metrics Cards */}
-              <div className="grid grid-cols-3 gap-6 mb-8">
-                    <div className="bg-black/80 backdrop-blur-sm rounded-xl p-8 hover:shadow-xl hover:shadow-cyan-400/20 transition-all duration-300 border border-gray-700/30 hover:border-cyan-400/30">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center">
-                      <span className="text-cyan-400 text-lg">🧬</span>
-                    </div>
-                    <span className="text-xs text-gray-400 font-light tracking-wide uppercase">Focus Score</span>
-                  </div>
-                  <div className="text-3xl font-bold text-white mb-2">92%</div>
-                  <div className="text-xs text-emerald-400 font-medium">↑ 8% from yesterday</div>
-                </div>
-                
-                    <div className="bg-black/80 backdrop-blur-sm rounded-xl p-8 hover:shadow-xl hover:shadow-purple-400/20 transition-all duration-300 border border-gray-700/30 hover:border-purple-400/30">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                      <span className="text-purple-400 text-lg">🎯</span>
-                    </div>
-                    <span className="text-xs text-gray-400 font-light tracking-wide uppercase">Clarity Level</span>
-                  </div>
-                  <div className="text-3xl font-bold text-white mb-2">87%</div>
-                  <div className="text-xs text-emerald-400 font-medium">↑ 5% from yesterday</div>
-                </div>
-                
-                    <div className="bg-black/80 backdrop-blur-sm rounded-xl p-8 hover:shadow-xl hover:shadow-amber-400/20 transition-all duration-300 border border-gray-700/30 hover:border-amber-400/30">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center">
-                      <span className="text-amber-400 text-lg">⚡</span>
-                    </div>
-                    <span className="text-xs text-gray-400 font-light tracking-wide uppercase">Energy Reserves</span>
-                  </div>
-                  <div className="text-3xl font-bold text-white mb-2">74%</div>
-                  <div className="text-xs text-amber-400 font-medium">↓ 12% from yesterday</div>
-                </div>
-              </div>
-              
-              {/* Performance Chart */}
-              <div className="bg-black/60 backdrop-blur-sm rounded-xl p-6 h-80 transition-all duration-300">
-                <StatisticsChart 
-                  selectedDate="2024-01-15"
-                  timeRange="1h"
-                  timeInterval="1h"
-                />
+      {/* Main Content Area - Flex Layout with Right Sidebar */}
+      <div className="w-full h-full flex relative z-10 p-6 gap-6 overflow-hidden">
+        
+        {/* Main Content Column */}
+        <div className="flex-1 flex flex-col overflow-y-auto space-y-6">
+          
+          {/* Cognitive Performance Section */}
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold text-white tracking-wide">COGNITIVE PERFORMANCE</h2>
+              <div className="flex items-center space-x-4 text-sm">
+                <span className="text-cyan-400 font-medium border-b-2 border-cyan-400 pb-1">Today</span>
+                <span className="text-gray-400 hover:text-cyan-400 cursor-pointer transition-colors">Week</span>
+                <span className="text-gray-400 hover:text-cyan-400 cursor-pointer transition-colors">Month</span>
               </div>
             </div>
-
-            {/* Active Sessions - Simplified */}
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-white tracking-wide">CURRENT SESSION</h2>
-                <div className="flex items-center space-x-2 text-sm">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                  <span className="text-emerald-400 font-medium">LIVE</span>
+            
+            {/* Key Metrics Cards */}
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="bg-black/80 backdrop-blur-sm rounded-xl p-6 hover:shadow-xl hover:shadow-cyan-400/20 transition-all duration-300 border border-gray-700/30 hover:border-cyan-400/30">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                    <span className="text-cyan-400 text-lg">🧬</span>
+                  </div>
+                  <span className="text-xs text-gray-400 font-light tracking-wide uppercase">Focus</span>
                 </div>
+                <div className="text-3xl font-bold text-white mb-1">92%</div>
+                <div className="text-xs text-emerald-400 font-medium">↑ 8% from yesterday</div>
               </div>
               
-              <div className="bg-black/40 backdrop-blur-sm rounded-xl p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="text-3xl">🧠</div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-white">Deep Work Session</h3>
-                      <p className="text-sm text-gray-300">High Focus • 92% Performance</p>
-                    </div>
+              <div className="bg-black/80 backdrop-blur-sm rounded-xl p-6 hover:shadow-xl hover:shadow-purple-400/20 transition-all duration-300 border border-gray-700/30 hover:border-purple-400/30">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                    <span className="text-purple-400 text-lg">🎯</span>
                   </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-cyan-400">01:54:38</div>
-                    <div className="text-xs text-gray-400">Session Time</div>
+                  <span className="text-xs text-gray-400 font-light tracking-wide uppercase">Clarity</span>
+                </div>
+                <div className="text-3xl font-bold text-white mb-1">87%</div>
+                <div className="text-xs text-emerald-400 font-medium">↑ 5% from yesterday</div>
+              </div>
+              
+              <div className="bg-black/80 backdrop-blur-sm rounded-xl p-6 hover:shadow-xl hover:shadow-amber-400/20 transition-all duration-300 border border-gray-700/30 hover:border-amber-400/30">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-10 h-10 bg-amber-500/20 rounded-lg flex items-center justify-center">
+                    <span className="text-amber-400 text-lg">⚡</span>
                   </div>
+                  <span className="text-xs text-gray-400 font-light tracking-wide uppercase">Energy</span>
+                </div>
+                <div className="text-3xl font-bold text-white mb-1">74%</div>
+                <div className="text-xs text-amber-400 font-medium">↓ 12% from yesterday</div>
+              </div>
+            </div>
+            
+            {/* Performance Chart */}
+            <div className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
+              <StatisticsChart 
+                selectedDate="2024-01-15"
+                timeRange="1h"
+                timeInterval="1h"
+              />
+            </div>
+          </div>
+
+          {/* Active Session */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-white tracking-wide">CURRENT SESSION</h2>
+              <div className="flex items-center space-x-2 text-sm">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                <span className="text-emerald-400 font-medium">LIVE</span>
+              </div>
+            </div>
+            
+            <div className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="text-3xl">🧠</div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">Deep Work Session</h3>
+                    <p className="text-sm text-gray-300">High Focus • 92% Performance</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-cyan-400">01:54:38</div>
+                  <div className="text-xs text-gray-400">Session Time</div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Graph Components */}
-          <div className="w-80 bg-black/40 backdrop-blur-sm p-6 space-y-6 h-full overflow-y-auto flex-shrink-0">
-            {/* Focus Score Gauge */}
-            <WellnessGauge currentUser={currentUser} />
-            
-            {/* Cognitive Metrics Chart */}
+        {/* Right Sidebar - Graph Components */}
+        <div className="w-96 flex-shrink-0 space-y-6 overflow-y-auto">
+          {/* Focus Score Gauge */}
+          <WellnessGauge currentUser={currentUser} />
+          
+          {/* Cognitive Metrics Chart */}
+          <div className="h-96">
             <HabitChart habitPlan={null} />
           </div>
         </div>
