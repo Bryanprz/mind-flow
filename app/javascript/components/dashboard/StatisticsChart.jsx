@@ -248,7 +248,7 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
   }
 
   return (
-    <div className="w-full h-full relative theme-glass-card p-4 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
+    <div className="w-full h-full relative theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
       {/* Compact Controls */}
       <div className="absolute top-3 right-3 z-10 flex items-center space-x-3">
         <select 
@@ -283,7 +283,7 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
       
       <ResponsiveContainer 
         width="100%" 
-        height={256}
+        height={320}
         style={{
           shapeRendering: 'geometricPrecision',
           textRendering: 'optimizeLegibility'
@@ -291,7 +291,7 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
       >
         <ComposedChart
           data={chartData}
-          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+          margin={{ top: 30, right: 40, left: 30, bottom: 5 }}
           onMouseMove={(data) => setActiveIndex(data?.activeTooltipIndex)}
           onMouseLeave={() => setActiveIndex(null)}
           style={{ 
