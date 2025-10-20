@@ -23,7 +23,7 @@
   --theme-text-muted: #94a3b8;
   
   /* Glass Effects */
-  --theme-glass-bg: rgba(26, 26, 46, 0.7);
+  --theme-glass-bg: rgba(26, 26, 46, 0.4);
   --theme-glass-border: rgba(59, 130, 246, 0.3);
   --theme-glass-shadow: rgba(59, 130, 246, 0.1);
   
@@ -61,6 +61,11 @@
   position: relative;
   overflow: hidden;
   min-height: 100vh;
+}
+
+/* Background Image Support */
+.authenticated-theme.with-bg-image {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(10, 10, 10, 0.9) 50%, rgba(17, 17, 17, 0.8) 100%);
 }
 
 /* Tech Grid Pattern */
@@ -104,18 +109,32 @@
 
 .theme-glass-card {
   background: var(--theme-glass-bg);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
   border: 1px solid var(--theme-glass-border);
   box-shadow: var(--theme-shadow-md);
   border-radius: var(--theme-border-radius);
+  transition: all 0.3s ease;
+}
+
+.theme-glass-card:hover {
+  background: rgba(26, 26, 46, 0.6);
+  box-shadow: 0 12px 48px rgba(59, 130, 246, 0.25);
+  transform: translateY(-2px);
 }
 
 .theme-glass-card-sm {
   background: var(--theme-glass-bg);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
   border: 1px solid var(--theme-glass-border);
   box-shadow: var(--theme-shadow-sm);
   border-radius: var(--theme-border-radius-sm);
+  transition: all 0.3s ease;
+}
+
+.theme-glass-card-sm:hover {
+  background: rgba(26, 26, 46, 0.6);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+  transform: translateY(-1px);
 }
 
 .theme-glass-card-lg {
