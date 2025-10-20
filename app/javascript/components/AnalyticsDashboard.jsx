@@ -168,7 +168,11 @@ export default function AnalyticsDashboard({ analyticsData }) {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full h-full flex flex-col overflow-hidden p-6 space-y-6"
+        style={{ 
+          opacity: 1,
+          overflow: 'scroll'
+        }}
+        className="w-full h-full flex flex-col p-6 space-y-6"
       >
         {/* Header */}
         <motion.div variants={itemVariants} className="flex items-center justify-between">
