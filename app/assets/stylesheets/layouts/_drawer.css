@@ -150,9 +150,9 @@ body {
     margin: 0 !important;
     padding: 0 !important;
     border: none !important;
-    margin-left: 16rem !important; /* 256px = w-64 */
-    width: calc(100vw - 16rem) !important;
-    max-width: calc(100vw - 16rem) !important;
+    margin-left: 18rem !important; /* 288px = w-72 */
+    width: calc(100vw - 18rem) !important;
+    max-width: calc(100vw - 18rem) !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
   }
@@ -170,7 +170,7 @@ body {
   }
 
   .drawer-open .drawer-content {
-    margin-left: 16rem !important;
+    margin-left: 18rem !important;
   }
 }
 
