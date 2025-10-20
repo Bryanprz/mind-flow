@@ -1,0 +1,309 @@
+/* ==========================================================================
+   Authenticated Pages Theme - NASA Futuristic Style
+   ========================================================================== */
+
+/* CSS Custom Properties - Theme Configuration */
+:root {
+  /* Background Colors - Darker */
+  --theme-bg-primary: #000000;
+  --theme-bg-secondary: #0a0a0a;
+  --theme-bg-tertiary: #111111;
+  
+  /* Accent Colors */
+  --theme-primary: #3b82f6;
+  --theme-secondary: #8b5cf6;
+  --theme-accent: #22d3ee;
+  --theme-success: #10b981;
+  --theme-warning: #f59e0b;
+  --theme-error: #ef4444;
+  
+  /* Text Colors */
+  --theme-text-primary: #ffffff;
+  --theme-text-secondary: #e2e8f0;
+  --theme-text-muted: #94a3b8;
+  
+  /* Glass Effects */
+  --theme-glass-bg: rgba(26, 26, 46, 0.7);
+  --theme-glass-border: rgba(59, 130, 246, 0.3);
+  --theme-glass-shadow: rgba(59, 130, 246, 0.1);
+  
+  /* Neon Effects */
+  --theme-neon-glow: rgba(59, 130, 246, 0.5);
+  --theme-neon-border: rgba(59, 130, 246, 0.3);
+  
+  /* Grid Pattern */
+  --theme-grid-color: rgba(59, 130, 246, 0.1);
+  --theme-grid-size: 50px;
+  
+  /* Typography */
+  --theme-font-title: 'Orbitron', monospace;
+  --theme-font-subtitle: 'Space Grotesk', sans-serif;
+  --theme-font-body: 'Inter', sans-serif;
+  
+  /* Spacing */
+  --theme-border-radius: 12px;
+  --theme-border-radius-sm: 8px;
+  --theme-border-radius-lg: 16px;
+  
+  /* Shadows */
+  --theme-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --theme-shadow-md: 0 8px 32px rgba(59, 130, 246, 0.1);
+  --theme-shadow-lg: 0 16px 64px rgba(59, 130, 246, 0.2);
+}
+
+/* ==========================================================================
+   Base Theme Styles
+   ========================================================================== */
+
+.authenticated-theme {
+  /* Background - Much Darker */
+  background: linear-gradient(135deg, var(--theme-bg-primary) 0%, var(--theme-bg-secondary) 50%, var(--theme-bg-tertiary) 100%);
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Tech Grid Pattern */
+.authenticated-theme.tech-grid {
+  background-image: 
+    linear-gradient(var(--theme-grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--theme-grid-color) 1px, transparent 1px);
+  background-size: var(--theme-grid-size) var(--theme-grid-size);
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+.theme-title {
+  font-family: var(--theme-font-title);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--theme-text-primary);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.theme-subtitle {
+  font-family: var(--theme-font-subtitle);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--theme-text-primary);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.theme-body {
+  font-family: var(--theme-font-body);
+  color: var(--theme-text-secondary);
+}
+
+/* ==========================================================================
+   Glass Cards
+   ========================================================================== */
+
+.theme-glass-card {
+  background: var(--theme-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--theme-glass-border);
+  box-shadow: var(--theme-shadow-md);
+  border-radius: var(--theme-border-radius);
+}
+
+.theme-glass-card-sm {
+  background: var(--theme-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--theme-glass-border);
+  box-shadow: var(--theme-shadow-sm);
+  border-radius: var(--theme-border-radius-sm);
+}
+
+.theme-glass-card-lg {
+  background: var(--theme-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--theme-glass-border);
+  box-shadow: var(--theme-shadow-lg);
+  border-radius: var(--theme-border-radius-lg);
+}
+
+/* ==========================================================================
+   Neon Effects
+   ========================================================================== */
+
+.theme-neon-glow {
+  box-shadow: 0 0 20px var(--theme-neon-glow);
+  border: 1px solid var(--theme-neon-border);
+  transition: all 0.3s ease;
+}
+
+.theme-neon-glow:hover {
+  box-shadow: 0 0 30px var(--theme-neon-glow);
+  transform: translateY(-2px);
+}
+
+.theme-neon-button {
+  background: var(--theme-glass-bg);
+  border: 2px solid var(--theme-primary);
+  color: var(--theme-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px var(--theme-neon-glow);
+}
+
+.theme-neon-button:hover {
+  background: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 0 30px var(--theme-neon-glow);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Status Indicators
+   ========================================================================== */
+
+.theme-status-active {
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.8) 0%, transparent 70%);
+  animation: theme-pulse 2s ease-in-out infinite;
+}
+
+.theme-status-optimal {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, transparent 70%);
+  animation: theme-pulse 2s ease-in-out infinite;
+}
+
+.theme-status-warning {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.8) 0%, transparent 70%);
+  animation: theme-pulse 2s ease-in-out infinite;
+}
+
+@keyframes theme-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* ==========================================================================
+   Sidebar Theme
+   ========================================================================== */
+
+.theme-sidebar {
+  background: var(--theme-glass-bg);
+  backdrop-filter: blur(15px);
+  border-right: 1px solid var(--theme-glass-border);
+}
+
+.theme-sidebar-brand {
+  font-family: var(--theme-font-title);
+  font-weight: 900;
+  color: var(--theme-text-primary);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.theme-sidebar-nav-item {
+  color: var(--theme-text-secondary);
+  transition: all 0.3s ease;
+  border-radius: var(--theme-border-radius-sm);
+}
+
+.theme-sidebar-nav-item:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--theme-text-primary);
+}
+
+.theme-sidebar-nav-item.active {
+  background: var(--theme-primary);
+  color: var(--theme-text-primary);
+  box-shadow: 0 0 20px var(--theme-neon-glow);
+}
+
+/* ==========================================================================
+   Dashboard Components
+   ========================================================================== */
+
+.theme-metric-card {
+  background: var(--theme-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--theme-glass-border);
+  border-radius: var(--theme-border-radius);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.theme-metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--theme-shadow-lg);
+}
+
+.theme-metric-value {
+  font-family: var(--theme-font-title);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--theme-text-primary);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.theme-metric-label {
+  font-family: var(--theme-font-subtitle);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--theme-text-muted);
+}
+
+/* ==========================================================================
+   Charts and Visualizations
+   ========================================================================== */
+
+.theme-chart-container {
+  background: var(--theme-glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--theme-glass-border);
+  border-radius: var(--theme-border-radius);
+  padding: 1.5rem;
+}
+
+.theme-chart-title {
+  font-family: var(--theme-font-subtitle);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--theme-text-primary);
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .theme-title {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+  
+  .theme-subtitle {
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .theme-metric-value {
+    font-size: 1.5rem;
+  }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+.theme-text-primary { color: var(--theme-text-primary); }
+.theme-text-secondary { color: var(--theme-text-secondary); }
+.theme-text-muted { color: var(--theme-text-muted); }
+
+.theme-bg-primary { background-color: var(--theme-primary); }
+.theme-bg-secondary { background-color: var(--theme-secondary); }
+.theme-bg-accent { background-color: var(--theme-accent); }
+
+.theme-border-primary { border-color: var(--theme-primary); }
+.theme-border-secondary { border-color: var(--theme-secondary); }
+.theme-border-accent { border-color: var(--theme-accent); }
