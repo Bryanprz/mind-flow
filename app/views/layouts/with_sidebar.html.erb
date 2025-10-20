@@ -21,8 +21,13 @@
     <%= yield :head %>
   </head>
 
-  <body class="h-screen bg-gray-900 overflow-hidden m-0 p-0">
-    <div class="drawer drawer-open w-full h-full m-0 p-0">
+  <body class="h-screen bg-gray-900 overflow-hidden m-0 p-0 authenticated-theme tech-grid">
+    <!-- Background Image for entire layout -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30" 
+         style="background-image: url('https://images.unsplash.com/photo-1446776877081-d282a0f896e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80');">
+    </div>
+    
+    <div class="drawer drawer-open w-full h-full m-0 p-0 relative z-10">
       <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" checked />
       
       <!-- Sidebar -->

@@ -254,7 +254,7 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
         <select 
           value={scenario} 
           onChange={(e) => setScenario(e.target.value)}
-          className="text-xs theme-glass-card-sm border border-cyan-400/30 rounded px-3 py-1 text-white"
+          className="text-xs bg-transparent border border-cyan-400/30 rounded px-3 py-1 text-cyan-300"
         >
           <option value="normal">Balanced Mind</option>
           <option value="busy">Peak Performance</option>

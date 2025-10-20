@@ -268,7 +268,7 @@
    ========================================================================== */
 
 .theme-sidebar {
-  background: var(--theme-glass-bg);
+  background: transparent;
   backdrop-filter: blur(15px);
 }
 
