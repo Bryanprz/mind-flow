@@ -13,7 +13,7 @@
     </ul>
   </div>
 
-  <div class="navbar-end" style="padding-right: 0.7rem;">
+  <div class="navbar-end pr-3">
 
     <% if authenticated? %>
       <!-- Avatar Dropdown for All Screen Sizes -->
@@ -31,7 +31,7 @@
         </div>
         <div class="absolute left-0 right-0 top-full <%= current_page?(root_path) ? 'bg-neutral' : 'bg-base-100' %> shadow-lg z-50 hidden" data-mobile-menu-target="menu">
           <ul class="menu menu-vertical p-2 w-full">
-            <li class="font-light text-gray-500 italic" style="margin-left:-0.3rem;"><span>Logged in as <%= Current.user.name %></span></li>
+            <li class="font-light text-gray-500 italic -ml-1"><span>Logged in as <%= Current.user.name %></span></li>
             <%= render "layouts/avatar_dropdown_links" %>
           </ul>
         </div>

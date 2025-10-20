@@ -1,5 +1,6 @@
 // Import and register all your controllers from the importmap via controllers/**/*_controller
 import { application } from "./application"
-import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
+import { lazyLoadControllersFrom } from "@hotwired/stimulus-loading"
 
-eagerLoadControllersFrom("./", application)
+// Use lazy loading to reduce log noise - controllers load on demand
+lazyLoadControllersFrom("controllers", application)

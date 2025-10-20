@@ -9,5 +9,5 @@
   <li><%= link_to "Profile", profile_path, class: nav_link_class(profile_path) %></li>
   
   <!-- Logout (at very bottom) -->
-  <li style="margin-left:-0.3rem;"><%= button_to "Logout", session_path, method: :delete, class: "link-button text-gray-400" %></li>
+  <li class="-ml-1"><%= button_to "Logout", session_path, method: :delete, class: "link-button text-gray-400" %></li>
 <% end %>

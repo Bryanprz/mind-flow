@@ -1,130 +1,107 @@
-@import url("design_system.css");
+/* MindFlow - Rails 8 + Tailwind CSS */
+@import url("actiontext.css");
+@import url("message_transitions.css");
+@import url("accessibility.css");
+@import url("layouts/_drawer.css");
+@import url("components/home.css");
+@import url("pages/goals.css");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Fix border rendering consistency - force all borders to be equal */
-* {
-  box-sizing: border-box;
-}
-
-/* Custom override for active menu item background */
-.menu li > *:not(ul):not(.menu-title).active {
-  @apply bg-success text-base-content; /* Use bg-base-200 for background and text-base-content for text color */
-}
-
-/* Styles moved from app/views/dashboards/_calendar_card.html.erb */
-calendar-multi {
-  svg {
-    height: 16px;
-    width: 16px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.5;
+@layer base {
+  /* Clean link reset - remove ALL browser defaults */
+  a,
+  a:link,
+  a:visited,
+  a:hover,
+  a:active,
+  a:focus {
+    color: inherit;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
   }
-
-  path {
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  
+  /* Fix box-sizing for consistency */
+  * {
+    box-sizing: border-box;
+  }
+  
+  /* Remove browser focus outlines - use Tailwind ring utilities instead */
+  *:focus {
+    outline: none;
   }
 }
 
-calendar-month {
-  --color-accent: oklch(var(--p));
-  --color-text-on-accent: #fff;
+@layer components {
+  /* DaisyUI active menu override */
+  .menu li > *:not(ul):not(.menu-title).active {
+    @apply bg-success text-base-content;
+  }
+  
+  /* Calendar styles for dashboard */
+  calendar-month {
+    --color-accent: oklch(var(--p));
+    --color-text-on-accent: #fff;
+  }
+  
+  calendar-month::part(today) {
+    @apply font-bold;
+    color: oklch(var(--p));
+  }
+  
+  calendar-month::part(selected) {
+    @apply text-white;
+  }
+  
+  /* Chat bubble styles */
+  .chat-bubble-primary:before,
+  .chat-bubble-secondary:before {
+    border-style: solid !important;
+    shape-rendering: crispEdges;
+  }
 }
 
-calendar-month::part(today) {
-  font-weight: bold;
-  color: oklch(var(--p));
+@layer utilities {
+  /* Sharp rendering for crisp UI */
+  .crisp-edges {
+    shape-rendering: crispEdges;
+    image-rendering: crisp-edges;
+  }
+  
+  /* Neon button effect for landing page */
+  .btn-neon {
+    @apply relative overflow-hidden;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  
+  .btn-neon:hover {
+    @apply shadow-lg;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
 }
 
-calendar-month::part(selected) {
-  color: #fff;
+/* Rotating text animation on landing page */
+#rotating-text {
+  @apply inline-block font-black px-2 py-1;
+  transition: all 0.5s ease-in-out;
+  transform: scaleY(1.3);
+  text-shadow: 
+    0.3px 0.3px 0.5px rgba(0, 0, 0, 0.6),
+    -0.3px -0.3px 0.5px rgba(0, 0, 0, 0.6),
+    0.3px -0.3px 0.5px rgba(0, 0, 0, 0.6),
+    -0.3px 0.3px 0.5px rgba(0, 0, 0, 0.6),
+    0 0.3px 0.5px rgba(0, 0, 0, 0.6),
+    0 -0.3px 0.5px rgba(0, 0, 0, 0.6),
+    0.3px 0 0.5px rgba(0, 0, 0, 0.6),
+    -0.3px 0 0.5px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.1em;
 }
 
-/* Force sharp, crisp chat bubble tails */
-.chat-bubble-primary:before,
-.chat-bubble-secondary:before {
-  border-style: solid !important;
-  transform: translateZ(0) !important;
-  backface-visibility: hidden !important;
-  -webkit-backface-visibility: hidden !important;
-  will-change: transform !important;
-}
-
-/* Specific sharp rendering for chat-end tails */
-.chat-end .chat-bubble-primary:before {
-  border-width: 8px 0 8px 8px !important;
-  right: -8px !important;
-  top: 12px !important;
-  transform: translateZ(0) scale(1) !important;
-  backface-visibility: hidden !important;
-  -webkit-backface-visibility: hidden !important;
-}
-
-/* Specific sharp rendering for chat-start tails */
-.chat-start .chat-bubble-secondary:before {
-  border-width: 8px 8px 8px 0 !important;
-  left: -8px !important;
-  top: 12px !important;
-  transform: translateZ(0) scale(1) !important;
-  backface-visibility: hidden !important;
-  -webkit-backface-visibility: hidden !important;
-}
-
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Completely disable all browser default link styles */
-a, a:link, a:visited, a:hover, a:active, a:focus {
-  color: inherit !important;
-  text-decoration: none !important;
-  background-color: transparent !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Remove all default link styling globally */
-* {
-  -webkit-tap-highlight-color: transparent !important;
-}
-
-/* Ensure no browser default styles interfere */
-a:visited {
-  color: inherit !important;
-  text-decoration: none !important;
-}
-
-a:hover {
-  color: inherit !important;
-  text-decoration: none !important;
-}
-
-a:active {
-  color: inherit !important;
-  text-decoration: none !important;
-}
-
-a:focus {
-  color: inherit !important;
-  text-decoration: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Force all links to use our custom styles only */
-a {
-  all: unset !important;
-  display: inline !important;
-  cursor: pointer !important;
-}
-
-
+#rotating-text.text-neutral { color: #4e4eba !important; }
+#rotating-text.text-error { color: #4b6ca3 !important; }
+#rotating-text.text-info { color: #3e80a3 !important; }
+#rotating-text.text-accent { color: #abe6e3 !important; }
+#rotating-text.text-warning { color: oklch(0.5 0.12 60) !important; }

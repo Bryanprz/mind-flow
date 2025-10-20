@@ -88,6 +88,13 @@
   z-index: 1;
 }
 
+/* Responsive font size for smaller screens */
+@media (max-width: 768px) {
+  .nasa-style-title {
+    font-size: clamp(4rem, 15vw, 10rem);
+  }
+}
+
 .hero-subtitle {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 500;

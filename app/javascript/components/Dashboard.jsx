@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useDashboardStore } from '../stores/dashboardStore'
-import CalendarCard from './dashboard/CalendarCard'
-import AIChatCard from './dashboard/AIChatCard'
-import SocialFeedCard from './dashboard/SocialFeedCard'
-import StatsOverview from './dashboard/StatsOverview'
 import HabitChart from './dashboard/HabitChart'
 import WellnessGauge from './dashboard/WellnessGauge'
-import MoodTimeline from './dashboard/MoodTimeline'
 import StatisticsChart from './dashboard/StatisticsChart'
-// Sidebar removed - now using shared ERB sidebar
-import { AlertTriangle, ClipboardList, MessageSquare, Users, CheckSquare, User, Phone, BarChart3, Bell, Settings, LogOut, Search, Globe, Wifi } from 'lucide-react'
 
 const containerVariants = {
   hidden: { opacity: 0 },

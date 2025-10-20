@@ -1,5 +1,4 @@
-/* Import existing application styles */
-@import url('../../assets/stylesheets/application.css');
+/* Tailwind styles imported via application.tailwind.css instead */
 
 @tailwind base;
 @tailwind components;
