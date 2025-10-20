@@ -84,15 +84,16 @@ export default function HabitChart({ habitPlan }) {
       </div>
       
       {/* Chart Section */}
-      <div className="flex-1 mb-2">
-        <ResponsiveContainer 
-          width="100%" 
-          height={160}
-          style={{
-            shapeRendering: 'geometricPrecision',
-            textRendering: 'optimizeLegibility'
-          }}
-        >
+      <div className="flex-1 mb-2 w-full flex justify-center">
+        <div className="w-full max-w-full">
+          <ResponsiveContainer 
+            width="100%" 
+            height={160}
+            style={{
+              shapeRendering: 'geometricPrecision',
+              textRendering: 'optimizeLegibility'
+            }}
+          >
           <LineChart 
             data={data}
             style={{
@@ -184,6 +185,7 @@ export default function HabitChart({ habitPlan }) {
             />
           </LineChart>
         </ResponsiveContainer>
+        </div>
       </div>
       
       {/* Interactive Legend */}
@@ -198,7 +200,7 @@ export default function HabitChart({ habitPlan }) {
             selectedMetric === 'focus' ? 'bg-cyan-400 scale-125' : 'bg-cyan-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'focus' ? 'text-cyan-400 font-semibold' : 'theme-text-accent'
+            selectedMetric === 'focus' ? 'text-cyan-400 font-semibold' : 'text-cyan-300'
           }`}>Focus</span>
           {getTrend('focus') === 'up' ? (
             <TrendingUp className="w-3 h-3 text-emerald-400" />
@@ -217,7 +219,7 @@ export default function HabitChart({ habitPlan }) {
             selectedMetric === 'mood' ? 'bg-purple-400 scale-125' : 'bg-purple-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'mood' ? 'text-purple-400 font-semibold' : 'theme-text-accent'
+            selectedMetric === 'mood' ? 'text-purple-400 font-semibold' : 'text-purple-300'
           }`}>Mood</span>
           {getTrend('mood') === 'up' ? (
             <TrendingUp className="w-3 h-3 text-emerald-400" />
@@ -236,7 +238,7 @@ export default function HabitChart({ habitPlan }) {
             selectedMetric === 'energy' ? 'bg-amber-400 scale-125' : 'bg-amber-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'energy' ? 'text-amber-400 font-semibold' : 'theme-text-accent'
+            selectedMetric === 'energy' ? 'text-amber-400 font-semibold' : 'text-amber-300'
           }`}>Energy</span>
           {getTrend('energy') === 'up' ? (
             <TrendingUp className="w-3 h-3 text-emerald-400" />

@@ -183,7 +183,7 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
         
         {/* Header Section */}
         <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-6 bg-transparent z-20">
-          <h2 className="text-3xl font-bold theme-title tracking-wide">COGNITIVE PERFORMANCE</h2>
+          <h2 className="text-3xl font-bold text-cyan-300 tracking-wide">COGNITIVE PERFORMANCE</h2>
           <div className="flex items-center space-x-4 text-sm">
             <span className="text-cyan-400 font-medium border-b-2 border-cyan-400 pb-1">Today</span>
             <span className="theme-text-accent hover:text-cyan-400 cursor-pointer transition-colors">Week</span>
