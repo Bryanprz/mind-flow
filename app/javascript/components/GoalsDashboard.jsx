@@ -239,7 +239,7 @@ export default function GoalsDashboard({ goalsData }) {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full h-full flex flex-col overflow-hidden p-6 space-y-6"
+        className="w-full h-full flex flex-col overflow-y-auto p-6 space-y-6"
       >
         {/* Header */}
         <motion.div variants={itemVariants} className="flex items-center justify-between">
@@ -264,7 +264,7 @@ export default function GoalsDashboard({ goalsData }) {
         </motion.div>
 
         {/* Category Filter */}
-        <motion.div variants={itemVariants} className="flex items-center gap-2 overflow-x-auto pb-2">
+        <motion.div variants={itemVariants} className="flex items-center gap-2 flex-wrap pb-2">
           {categories.map((category) => {
             const Icon = category.icon
             return (
@@ -273,8 +273,8 @@ export default function GoalsDashboard({ goalsData }) {
                 onClick={() => setSelectedCategory(category.key)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                   selectedCategory === category.key
-                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-400/30'
-                    : 'bg-gray-700/50 text-gray-400 hover:bg-gray-600/50'
+                    ? 'bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-cyan-300 border border-cyan-400/50 shadow-lg shadow-cyan-400/20'
+                    : 'bg-gray-800/60 text-gray-300 hover:bg-gray-700/80 hover:text-white border border-gray-600/30 hover:border-gray-500/50'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -285,7 +285,7 @@ export default function GoalsDashboard({ goalsData }) {
         </motion.div>
 
         {/* Active Goals */}
-        <motion.div variants={itemVariants} className="flex-1 overflow-y-auto">
+        <motion.div variants={itemVariants} className="flex-1">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <Zap className="w-6 h-6 text-cyan-400" />
@@ -298,7 +298,7 @@ export default function GoalsDashboard({ goalsData }) {
           </div>
           
           {filteredGoals.length > 0 ? (
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {filteredGoals.map((goal) => (
                 <GoalCard key={goal.id} goal={goal} />
               ))}
@@ -326,7 +326,7 @@ export default function GoalsDashboard({ goalsData }) {
               <Award className="w-6 h-6 text-emerald-400" />
               <h2 className="text-2xl font-bold text-white">COMPLETED OBJECTIVES</h2>
             </div>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {completedGoals.map((goal) => (
                 <GoalCard key={goal.id} goal={goal} isCompleted={true} />
               ))}
