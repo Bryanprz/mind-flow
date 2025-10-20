@@ -204,11 +204,11 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
                 <div className="w-8 h-8 bg-gradient-to-br from-cyan-500/30 to-blue-500/30 rounded-lg flex items-center justify-center border border-cyan-400/40">
                   <span className="text-cyan-300 text-sm">🧬</span>
                 </div>
-                <span className="text-xs text-cyan-300 font-medium tracking-wide uppercase">Focus</span>
+                <span className="text-md text-cyan-300 font-medium tracking-wide uppercase">Focus</span>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-cyan-300 mb-1">92%</div>
-                <div className="text-xs text-emerald-400 font-medium">↑ 8% from yesterday</div>
+                <div className="text-lg font-bold text-cyan-300 mb-1">92%</div>
+                <div className="text-md text-emerald-400 font-medium">↑ 8% from yesterday</div>
               </div>
             </div>
             
@@ -217,11 +217,11 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-lg flex items-center justify-center border border-purple-400/40">
                   <span className="text-purple-300 text-sm">🎯</span>
                 </div>
-                <span className="text-xs text-purple-300 font-medium tracking-wide uppercase">Clarity</span>
+                <span className="text-md text-purple-300 font-medium tracking-wide uppercase">Clarity</span>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-300 mb-1">87%</div>
-                <div className="text-xs text-emerald-400 font-medium">↑ 5% from yesterday</div>
+                <div className="text-lg font-bold text-purple-300 mb-1">87%</div>
+                <div className="text-md text-emerald-400 font-medium">↑ 5% from yesterday</div>
               </div>
             </div>
             
@@ -230,11 +230,11 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
                 <div className="w-8 h-8 bg-gradient-to-br from-amber-500/30 to-orange-500/30 rounded-lg flex items-center justify-center border border-amber-400/40">
                   <span className="text-amber-300 text-sm">⚡</span>
                 </div>
-                <span className="text-xs text-amber-300 font-medium tracking-wide uppercase">Energy</span>
+                <span className="text-md text-amber-300 font-medium tracking-wide uppercase">Energy</span>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-amber-300 mb-1">74%</div>
-                <div className="text-xs text-amber-400 font-medium">↓ 12% from yesterday</div>
+                <div className="text-lg font-bold text-amber-300 mb-1">74%</div>
+                <div className="text-md text-amber-400 font-medium">↓ 12% from yesterday</div>
               </div>
             </div>
           </div>
