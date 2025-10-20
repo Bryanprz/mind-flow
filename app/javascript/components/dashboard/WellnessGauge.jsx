@@ -65,7 +65,7 @@ export default function WellnessGauge({ currentUser }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card theme-glass-card p-6 h-full flex flex-col hover:theme-neon-glow transition-all"
+      className="card theme-glass-card p-6 h-full flex flex-col hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
@@ -74,7 +74,7 @@ export default function WellnessGauge({ currentUser }) {
           <h2 className="text-xl font-semibold theme-title tracking-wide">FOCUS GAUGE</h2>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs theme-text-muted">Boosts: {clickCount}</span>
+          <span className="text-xs theme-text-accent">Boosts: {clickCount}</span>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -141,8 +141,8 @@ export default function WellnessGauge({ currentUser }) {
           title="Click to see concentration tips"
         >
           <Brain className="w-5 h-5 text-blue-600 mx-auto mb-1" />
-          <div className="text-xs font-medium theme-text-secondary leading-tight">Concentration</div>
-          <div className="text-xs theme-text-muted">
+          <div className="text-xs font-medium theme-text-accent leading-tight">Concentration</div>
+          <div className="text-xs theme-text-success">
             {hoveredMetric === 'concentration' ? 'Tap to improve' : 'Excellent'}
           </div>
         </motion.div>
@@ -157,8 +157,8 @@ export default function WellnessGauge({ currentUser }) {
           title="Click to see clarity exercises"
         >
           <Target className="w-5 h-5 text-purple-600 mx-auto mb-1" />
-          <div className="text-xs font-medium theme-text-secondary leading-tight">Clarity</div>
-          <div className="text-xs theme-text-muted">
+          <div className="text-xs font-medium theme-text-accent leading-tight">Clarity</div>
+          <div className="text-xs theme-text-success">
             {hoveredMetric === 'clarity' ? 'Meditate more' : 'High'}
           </div>
         </motion.div>
@@ -173,8 +173,8 @@ export default function WellnessGauge({ currentUser }) {
           title="Click to see energy boosters"
         >
           <Zap className="w-5 h-5 text-green-600 mx-auto mb-1" />
-          <div className="text-xs font-medium theme-text-secondary leading-tight">Mental Energy</div>
-          <div className="text-xs theme-text-muted">
+          <div className="text-xs font-medium theme-text-accent leading-tight">Mental Energy</div>
+          <div className="text-xs theme-text-success">
             {hoveredMetric === 'energy' ? 'Take a break' : 'Strong'}
           </div>
         </motion.div>

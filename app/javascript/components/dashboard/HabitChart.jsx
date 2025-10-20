@@ -62,7 +62,7 @@ export default function HabitChart({ habitPlan }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card theme-glass-card p-6 h-full flex flex-col hover:theme-neon-glow transition-all"
+      className="card theme-glass-card p-6 h-full flex flex-col hover:theme-neon-glow transition-all duration-300 rounded-xl border border-purple-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
@@ -198,7 +198,7 @@ export default function HabitChart({ habitPlan }) {
             selectedMetric === 'focus' ? 'bg-cyan-400 scale-125' : 'bg-cyan-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'focus' ? 'text-cyan-400 font-semibold' : 'theme-text-secondary'
+            selectedMetric === 'focus' ? 'text-cyan-400 font-semibold' : 'theme-text-accent'
           }`}>Focus</span>
           {getTrend('focus') === 'up' ? (
             <TrendingUp className="w-3 h-3 text-emerald-400" />
@@ -217,7 +217,7 @@ export default function HabitChart({ habitPlan }) {
             selectedMetric === 'mood' ? 'bg-purple-400 scale-125' : 'bg-purple-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'mood' ? 'text-purple-400 font-semibold' : 'theme-text-secondary'
+            selectedMetric === 'mood' ? 'text-purple-400 font-semibold' : 'theme-text-accent'
           }`}>Mood</span>
           {getTrend('mood') === 'up' ? (
             <TrendingUp className="w-3 h-3 text-emerald-400" />
@@ -236,7 +236,7 @@ export default function HabitChart({ habitPlan }) {
             selectedMetric === 'energy' ? 'bg-amber-400 scale-125' : 'bg-amber-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'energy' ? 'text-amber-400 font-semibold' : 'theme-text-secondary'
+            selectedMetric === 'energy' ? 'text-amber-400 font-semibold' : 'theme-text-accent'
           }`}>Energy</span>
           {getTrend('energy') === 'up' ? (
             <TrendingUp className="w-3 h-3 text-emerald-400" />
@@ -249,13 +249,13 @@ export default function HabitChart({ habitPlan }) {
       {/* Summary Stats */}
       <div className="flex items-center justify-between pt-2">
         <div className="text-sm">
-          <span className="font-medium theme-text-secondary">Avg Focus:</span>
+          <span className="font-medium theme-text-accent">Avg Focus:</span>
           <span className="ml-2 text-cyan-400 font-semibold">
             {(data.reduce((sum, day) => sum + day.focus, 0) / data.length).toFixed(1)}
           </span>
         </div>
         <div className="text-sm">
-          <span className="font-medium theme-text-secondary">Peak Day:</span>
+          <span className="font-medium theme-text-accent">Peak Day:</span>
           <span className="ml-2 text-emerald-400 font-semibold">
             {data.reduce((peak, day) => day.focus > peak.focus ? day : peak, data[0]).name}
           </span>

@@ -53,13 +53,11 @@ body {
 
 /* Remove Ghost Footer Elements */
 *, *::before, *::after {
-  border-bottom: none !important;
   box-shadow: none !important;
   outline: none !important;
 }
 
 .drawer-content, .drawer-content > * {
-  border-bottom: none !important;
   margin-bottom: 0 !important;
   padding-bottom: 0 !important;
 }

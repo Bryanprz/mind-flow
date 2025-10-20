@@ -72,22 +72,16 @@
   50% { opacity: 1; transform: scale(1.1); }
 }
 
-/* Glassmorphism cards - FIXED BORDER ISSUE */
+/* Glassmorphism cards */
 .glass-card {
   background: rgba(26, 26, 46, 0.7);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(59, 130, 246, 0.3) !important;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.3) !important;
-  border-left: 1px solid rgba(59, 130, 246, 0.3) !important;
   box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
   overflow: visible !important;
 }
 
-/* Neon button - FIXED BORDER ISSUE */
+/* Neon button */
 .btn-neon {
-  border: 2px solid #3b82f6 !important;
-  border-bottom: 2px solid #3b82f6 !important;
-  border-left: 2px solid #3b82f6 !important;
   color: #ffffff !important;
   text-transform: uppercase;
   letter-spacing: 2px;

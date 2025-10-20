@@ -19,12 +19,17 @@
   
   /* Text Colors */
   --theme-text-primary: #ffffff;
-  --theme-text-secondary: #e2e8f0;
-  --theme-text-muted: #94a3b8;
+  --theme-text-secondary: #22d3ee; /* Cyan neon */
+  --theme-text-muted: #06b6d4; /* Bright cyan for better readability */
+  
+  /* Additional neon text colors for better readability */
+  --theme-text-accent: #8b5cf6; /* Purple neon */
+  --theme-text-success: #10b981; /* Green neon */
+  --theme-text-warning: #f59e0b; /* Amber neon */
   
   /* Glass Effects */
-  --theme-glass-bg: rgba(26, 26, 46, 0.4);
-  --theme-glass-border: rgba(59, 130, 246, 0.3);
+  --theme-glass-bg: rgba(15, 15, 35, 0.6);
+  --theme-glass-border: rgba(59, 130, 246, 0.4);
   --theme-glass-shadow: rgba(59, 130, 246, 0.1);
   
   /* Neon Effects */
@@ -107,53 +112,111 @@
    Glass Cards
    ========================================================================== */
 
-.theme-glass-card {
-  background: var(--theme-glass-bg);
-  backdrop-filter: blur(15px);
-  border: 1px solid var(--theme-glass-border);
-  box-shadow: var(--theme-shadow-md);
+      .theme-glass-card {
+        background: linear-gradient(135deg, 
+          rgba(10, 10, 25, 0.9) 0%, 
+          rgba(20, 20, 35, 0.8) 50%, 
+          rgba(15, 15, 30, 0.85) 100%);
+        backdrop-filter: blur(15px) saturate(1.1);
+        -webkit-backdrop-filter: blur(15px) saturate(1.1);
+        box-shadow: 
+          0 8px 32px rgba(0, 0, 0, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 0.75rem;
+        transition: all 0.3s ease;
+        position: relative;
+        /* Fallback for browsers that don't support backdrop-filter */
+        background-color: rgba(15, 15, 30, 0.85);
+      }
+
+.theme-glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    transparent 50%, 
+    rgba(0, 0, 0, 0.1) 100%);
   border-radius: var(--theme-border-radius);
-  transition: all 0.3s ease;
+  pointer-events: none;
 }
 
 .theme-glass-card:hover {
-  background: rgba(26, 26, 46, 0.6);
-  box-shadow: 0 12px 48px rgba(59, 130, 246, 0.25);
+  background: linear-gradient(135deg, 
+    rgba(20, 20, 40, 0.8) 0%, 
+    rgba(30, 30, 50, 0.6) 50%, 
+    rgba(20, 20, 40, 0.7) 100%);
+  box-shadow: 
+    0 12px 48px rgba(59, 130, 246, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
 }
 
-.theme-glass-card-sm {
-  background: var(--theme-glass-bg);
-  backdrop-filter: blur(15px);
-  border: 1px solid var(--theme-glass-border);
-  box-shadow: var(--theme-shadow-sm);
+      .theme-glass-card-sm {
+        background: linear-gradient(135deg, 
+          rgba(12, 12, 28, 0.85) 0%, 
+          rgba(22, 22, 38, 0.75) 50%, 
+          rgba(17, 17, 32, 0.8) 100%);
+        backdrop-filter: blur(12px) saturate(1.1);
+        -webkit-backdrop-filter: blur(12px) saturate(1.1);
+        box-shadow: 
+          0 4px 16px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        position: relative;
+        /* Fallback for browsers that don't support backdrop-filter */
+        background-color: rgba(17, 17, 32, 0.8);
+      }
+
+.theme-glass-card-sm::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.08) 0%, 
+    transparent 50%, 
+    rgba(0, 0, 0, 0.08) 100%);
   border-radius: var(--theme-border-radius-sm);
-  transition: all 0.3s ease;
+  pointer-events: none;
 }
 
 .theme-glass-card-sm:hover {
-  background: rgba(26, 26, 46, 0.6);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+  background: linear-gradient(135deg, 
+    rgba(18, 18, 38, 0.7) 0%, 
+    rgba(28, 28, 48, 0.5) 50%, 
+    rgba(18, 18, 38, 0.6) 100%);
+  box-shadow: 
+    0 8px 24px rgba(59, 130, 246, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25);
   transform: translateY(-1px);
 }
 
-.theme-glass-card-lg {
-  background: var(--theme-glass-bg);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--theme-glass-border);
-  box-shadow: var(--theme-shadow-lg);
-  border-radius: var(--theme-border-radius-lg);
-}
+      .theme-glass-card-lg {
+        background: var(--theme-glass-bg);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--theme-shadow-lg);
+        border-radius: var(--theme-border-radius-lg);
+      }
 
 /* ==========================================================================
    Neon Effects
    ========================================================================== */
 
-.theme-neon-glow {
-  box-shadow: 0 0 20px var(--theme-neon-glow);
-  border: 1px solid var(--theme-neon-border);
-  transition: all 0.3s ease;
-}
+      .theme-neon-glow {
+        box-shadow: 0 0 20px var(--theme-neon-glow);
+        transition: all 0.3s ease;
+      }
 
 .theme-neon-glow:hover {
   box-shadow: 0 0 30px var(--theme-neon-glow);
@@ -162,7 +225,6 @@
 
 .theme-neon-button {
   background: var(--theme-glass-bg);
-  border: 2px solid var(--theme-primary);
   color: var(--theme-text-primary);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -208,7 +270,6 @@
 .theme-sidebar {
   background: var(--theme-glass-bg);
   backdrop-filter: blur(15px);
-  border-right: 1px solid var(--theme-glass-border);
 }
 
 .theme-sidebar-brand {
@@ -242,7 +303,6 @@
 .theme-metric-card {
   background: var(--theme-glass-bg);
   backdrop-filter: blur(10px);
-  border: 1px solid var(--theme-glass-border);
   border-radius: var(--theme-border-radius);
   padding: 1.5rem;
   transition: all 0.3s ease;
@@ -277,7 +337,6 @@
 .theme-chart-container {
   background: var(--theme-glass-bg);
   backdrop-filter: blur(10px);
-  border: 1px solid var(--theme-glass-border);
   border-radius: var(--theme-border-radius);
   padding: 1.5rem;
 }
@@ -319,10 +378,12 @@
 .theme-text-secondary { color: var(--theme-text-secondary); }
 .theme-text-muted { color: var(--theme-text-muted); }
 
+/* Additional neon text classes for better readability */
+.theme-text-accent { color: var(--theme-text-accent); }
+.theme-text-success { color: var(--theme-text-success); }
+.theme-text-warning { color: var(--theme-text-warning); }
+
 .theme-bg-primary { background-color: var(--theme-primary); }
 .theme-bg-secondary { background-color: var(--theme-secondary); }
 .theme-bg-accent { background-color: var(--theme-accent); }
 
-.theme-border-primary { border-color: var(--theme-primary); }
-.theme-border-secondary { border-color: var(--theme-secondary); }
-.theme-border-accent { border-color: var(--theme-accent); }

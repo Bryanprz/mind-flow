@@ -115,11 +115,11 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
-        <div className="bg-base-100 border border-base-300 rounded-xl shadow-2xl p-4 min-w-[200px]">
+        <div className="theme-glass-card border border-cyan-400/30 rounded-xl shadow-2xl p-4 min-w-[200px]">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-base-content font-bold text-lg">{label}</p>
+            <p className="theme-text-primary font-bold text-lg">{label}</p>
             {data.isPeak && (
-              <div className="bg-warning text-warning-content px-2 py-1 rounded-full text-xs font-bold">
+              <div className="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full text-xs font-bold border border-yellow-400/30">
                 PEAK
               </div>
             )}
@@ -128,24 +128,24 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                <span className="text-sm text-base-content">Focus Intensity</span>
+                <span className="text-sm theme-text-accent">Focus Intensity</span>
               </div>
-              <span className="text-base-content font-bold text-lg">{payload[0].value}</span>
+              <span className="theme-text-primary font-bold text-lg">{payload[0].value}</span>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                <span className="text-sm text-base-content">Mental Clarity</span>
+                <span className="text-sm theme-text-accent">Mental Clarity</span>
               </div>
-              <span className="text-base-content font-bold text-lg">{payload[1].value}</span>
+              <span className="theme-text-primary font-bold text-lg">{payload[1].value}</span>
             </div>
             {payload[2] && (
-              <div className="flex items-center justify-between pt-2 border-t border-base-300">
+              <div className="flex items-center justify-between pt-2 border-t border-cyan-400/20">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
-                  <span className="text-sm text-base-content">Energy Reserves</span>
+                  <span className="text-sm theme-text-accent">Energy Reserves</span>
                 </div>
-                <span className="text-base-content font-bold text-lg">{payload[2].value}</span>
+                <span className="theme-text-primary font-bold text-lg">{payload[2].value}</span>
               </div>
             )}
           </div>
@@ -248,13 +248,13 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
   }
 
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full relative theme-glass-card p-4 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
       {/* Compact Controls */}
       <div className="absolute top-3 right-3 z-10 flex items-center space-x-3">
         <select 
           value={scenario} 
           onChange={(e) => setScenario(e.target.value)}
-          className="text-xs bg-white/90 backdrop-blur-sm border border-gray-300 rounded px-3 py-1 shadow-sm"
+          className="text-xs theme-glass-card-sm border border-cyan-400/30 rounded px-3 py-1 text-white"
         >
           <option value="normal">Balanced Mind</option>
           <option value="busy">Peak Performance</option>
@@ -263,8 +263,8 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
           <option value="custom">Custom</option>
         </select>
         
-        <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm rounded px-3 py-1 shadow-sm">
-          <span className="text-xs text-gray-600">Energy:</span>
+        <div className="flex items-center space-x-2 theme-glass-card-sm rounded px-3 py-1">
+          <span className="text-xs theme-text-accent">Energy:</span>
           <input
             type="range"
             min="0.1"
@@ -274,7 +274,7 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
             onChange={(e) => setVolumeMultiplier(parseFloat(e.target.value))}
             className="w-16 h-1"
           />
-          <span className="text-xs font-medium text-gray-700">{volumeMultiplier.toFixed(1)}x</span>
+          <span className="text-xs font-medium theme-text-primary">{volumeMultiplier.toFixed(1)}x</span>
         </div>
       </div>
 
@@ -424,19 +424,19 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span className="text-xs text-gray-600">Focus</span>
+            <span className="text-xs theme-text-accent">Focus</span>
           </div>
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-            <span className="text-xs text-gray-600">Clarity</span>
+            <span className="text-xs theme-text-accent">Clarity</span>
           </div>
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
-            <span className="text-xs text-gray-600">Energy</span>
+            <span className="text-xs theme-text-accent">Energy</span>
           </div>
         </div>
         
-        <div className="flex items-center space-x-1 text-xs text-gray-500">
+        <div className="flex items-center space-x-1 text-xs theme-text-accent">
           <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
           <span>Live • {timeInterval}</span>
         </div>
