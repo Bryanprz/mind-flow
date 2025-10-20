@@ -68,7 +68,7 @@ export default function WellnessGauge({ currentUser }) {
       className="card bg-black/60 backdrop-blur-sm shadow-lg shadow-cyan-400/10 rounded-xl p-6 h-full flex flex-col"
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           <Brain className="w-6 h-6 text-cyan-400" />
           <h2 className="text-xl font-semibold text-white tracking-wide">FOCUS GAUGE</h2>
@@ -90,7 +90,7 @@ export default function WellnessGauge({ currentUser }) {
       
       {/* Gauge Section */}
       <motion.div 
-        className="flex-1 flex flex-col items-center justify-center mb-4 cursor-pointer"
+        className="flex-1 flex flex-col items-center justify-center mb-3 cursor-pointer"
         onClick={handleGaugeClick}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -111,8 +111,8 @@ export default function WellnessGauge({ currentUser }) {
           animateDuration={2000}
           style={{ 
             width: '100%', 
-            maxWidth: '280px', 
-            height: '140px',
+            maxWidth: '240px', 
+            height: '120px',
             filter: isAnimating ? 'drop-shadow(0 0 15px #22d3ee)' : 'drop-shadow(0 0 5px #22d3ee)',
             transition: 'all 0.5s ease-in-out'
           }}
@@ -130,7 +130,7 @@ export default function WellnessGauge({ currentUser }) {
       </motion.div>
       
       {/* Metrics Grid */}
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-1">
         <motion.div 
           whileHover={{ scale: 1.05, backgroundColor: metricCardVariants.concentration.hover }}
           onHoverStart={() => handleMetricHover('concentration')}

@@ -270,12 +270,14 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
         </div>
 
         {/* Right Sidebar - Graph Components */}
-        <div className="w-96 flex-shrink-0 space-y-6 overflow-y-auto">
+        <div className="w-96 flex-shrink-0 space-y-4 overflow-y-auto">
           {/* Focus Score Gauge */}
-          <WellnessGauge currentUser={currentUser} />
+          <div className="h-80">
+            <WellnessGauge currentUser={currentUser} />
+          </div>
           
           {/* Cognitive Metrics Chart */}
-          <div className="h-96">
+          <div className="h-80">
             <HabitChart habitPlan={null} />
           </div>
         </div>

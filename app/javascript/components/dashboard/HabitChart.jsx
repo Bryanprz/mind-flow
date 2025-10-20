@@ -65,7 +65,7 @@ export default function HabitChart({ habitPlan }) {
       className="card bg-black/60 backdrop-blur-sm shadow-lg shadow-cyan-400/10 rounded-xl p-6 h-full flex flex-col"
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           <Brain className="w-6 h-6 text-cyan-400" />
           <h2 className="text-xl font-semibold text-white tracking-wide">COGNITIVE METRICS</h2>
@@ -84,10 +84,10 @@ export default function HabitChart({ habitPlan }) {
       </div>
       
       {/* Chart Section */}
-      <div className="flex-1 mb-3">
+      <div className="flex-1 mb-2">
         <ResponsiveContainer 
           width="100%" 
-          height={200}
+          height={160}
           style={{
             shapeRendering: 'geometricPrecision',
             textRendering: 'optimizeLegibility'
@@ -187,7 +187,7 @@ export default function HabitChart({ habitPlan }) {
       </div>
       
       {/* Interactive Legend */}
-      <div className="flex items-center justify-center gap-4 mb-3">
+      <div className="flex items-center justify-center gap-3 mb-2">
         <motion.div 
           className="flex items-center gap-1 cursor-pointer"
           onClick={() => handleMetricClick('focus')}
@@ -247,7 +247,7 @@ export default function HabitChart({ habitPlan }) {
       </div>
       
       {/* Summary Stats */}
-      <div className="flex items-center justify-between pt-4">
+      <div className="flex items-center justify-between pt-2">
         <div className="text-sm">
           <span className="font-medium text-gray-300">Avg Focus:</span>
           <span className="ml-2 text-cyan-400 font-semibold">
