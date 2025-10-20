@@ -65,22 +65,22 @@ export default function WellnessGauge({ currentUser }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card bg-black/60 backdrop-blur-sm shadow-lg shadow-cyan-400/10 rounded-xl p-6 h-full flex flex-col"
+      className="card theme-glass-card p-6 h-full flex flex-col hover:theme-neon-glow transition-all"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           <Brain className="w-6 h-6 text-cyan-400" />
-          <h2 className="text-xl font-semibold text-white tracking-wide">FOCUS GAUGE</h2>
+          <h2 className="text-xl font-semibold theme-title tracking-wide">FOCUS GAUGE</h2>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-gray-400">Boosts: {clickCount}</span>
+          <span className="text-xs theme-text-muted">Boosts: {clickCount}</span>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleGaugeClick}
             disabled={isAnimating}
-            className="p-2 rounded-lg hover:bg-gray-700/50 transition-colors border border-cyan-400/30"
+            className="p-2 rounded-lg theme-glass-card-sm hover:theme-neon-glow transition-colors"
             title="Click to boost focus!"
           >
             <RefreshCw className={`w-4 h-4 text-cyan-400 ${isAnimating ? 'animate-spin' : ''}`} />
@@ -135,14 +135,14 @@ export default function WellnessGauge({ currentUser }) {
           whileHover={{ scale: 1.05, backgroundColor: metricCardVariants.concentration.hover }}
           onHoverStart={() => handleMetricHover('concentration')}
           onHoverEnd={() => handleMetricHover(null)}
-          className={`${baseMetricCardClasses} ${
+          className={`text-center p-3 theme-glass-card-sm rounded-lg cursor-pointer transition-all ${
             hoveredMetric === 'concentration' ? metricCardVariants.concentration.active : ''
           }`}
           title="Click to see concentration tips"
         >
           <Brain className="w-5 h-5 text-blue-600 mx-auto mb-1" />
-          <div className="text-xs font-medium text-gray-200 leading-tight">Concentration</div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs font-medium theme-text-secondary leading-tight">Concentration</div>
+          <div className="text-xs theme-text-muted">
             {hoveredMetric === 'concentration' ? 'Tap to improve' : 'Excellent'}
           </div>
         </motion.div>
@@ -151,14 +151,14 @@ export default function WellnessGauge({ currentUser }) {
           whileHover={{ scale: 1.05, backgroundColor: metricCardVariants.clarity.hover }}
           onHoverStart={() => handleMetricHover('clarity')}
           onHoverEnd={() => handleMetricHover(null)}
-          className={`${baseMetricCardClasses} ${
+          className={`text-center p-3 theme-glass-card-sm rounded-lg cursor-pointer transition-all ${
             hoveredMetric === 'clarity' ? metricCardVariants.clarity.active : ''
           }`}
           title="Click to see clarity exercises"
         >
           <Target className="w-5 h-5 text-purple-600 mx-auto mb-1" />
-          <div className="text-xs font-medium text-gray-200 leading-tight">Clarity</div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs font-medium theme-text-secondary leading-tight">Clarity</div>
+          <div className="text-xs theme-text-muted">
             {hoveredMetric === 'clarity' ? 'Meditate more' : 'High'}
           </div>
         </motion.div>
@@ -167,14 +167,14 @@ export default function WellnessGauge({ currentUser }) {
           whileHover={{ scale: 1.05, backgroundColor: metricCardVariants.energy.hover }}
           onHoverStart={() => handleMetricHover('energy')}
           onHoverEnd={() => handleMetricHover(null)}
-          className={`${baseMetricCardClasses} ${
+          className={`text-center p-3 theme-glass-card-sm rounded-lg cursor-pointer transition-all ${
             hoveredMetric === 'energy' ? metricCardVariants.energy.active : ''
           }`}
           title="Click to see energy boosters"
         >
           <Zap className="w-5 h-5 text-green-600 mx-auto mb-1" />
-          <div className="text-xs font-medium text-gray-200 leading-tight">Mental Energy</div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs font-medium theme-text-secondary leading-tight">Mental Energy</div>
+          <div className="text-xs theme-text-muted">
             {hoveredMetric === 'energy' ? 'Take a break' : 'Strong'}
           </div>
         </motion.div>

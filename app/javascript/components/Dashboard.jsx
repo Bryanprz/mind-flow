@@ -167,14 +167,14 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
-          className="fixed top-6 right-6 bg-gray-900/95 backdrop-blur-sm p-6 rounded-xl shadow-2xl z-50 border border-cyan-400/20"
+          className="fixed top-6 right-6 theme-glass-card p-6 shadow-2xl z-50 hover:theme-neon-glow"
         >
-          <h3 className="font-semibold mb-3 text-white">Mission Control Shortcuts</h3>
-          <div className="space-y-2 text-sm text-gray-300">
-            <div><kbd className="bg-gray-800 border border-cyan-400/30 text-cyan-400 px-2 py-1 rounded">Ctrl</kbd> + <kbd className="bg-gray-800 border border-cyan-400/30 text-cyan-400 px-2 py-1 rounded">F</kbd> Focus Boost</div>
-            <div><kbd className="bg-gray-800 border border-cyan-400/30 text-cyan-400 px-2 py-1 rounded">Ctrl</kbd> + <kbd className="bg-gray-800 border border-cyan-400/30 text-cyan-400 px-2 py-1 rounded">M</kbd> Meditation</div>
-            <div><kbd className="bg-gray-800 border border-cyan-400/30 text-cyan-400 px-2 py-1 rounded">Ctrl</kbd> + <kbd className="bg-gray-800 border border-cyan-400/30 text-cyan-400 px-2 py-1 rounded">E</kbd> Energy Boost</div>
-            <div><kbd className="bg-gray-800 border border-cyan-400/30 text-cyan-400 px-2 py-1 rounded">Ctrl</kbd> + <kbd className="bg-gray-800 border border-cyan-400/30 text-cyan-400 px-2 py-1 rounded">/</kbd> Show Help</div>
+          <h3 className="font-semibold mb-3 theme-text-primary theme-subtitle">Mission Control Shortcuts</h3>
+          <div className="space-y-2 text-sm theme-text-secondary">
+            <div><kbd className="theme-glass-card-sm text-cyan-400 px-2 py-1 rounded">Ctrl</kbd> + <kbd className="theme-glass-card-sm text-cyan-400 px-2 py-1 rounded">F</kbd> Focus Boost</div>
+            <div><kbd className="theme-glass-card-sm text-cyan-400 px-2 py-1 rounded">Ctrl</kbd> + <kbd className="theme-glass-card-sm text-cyan-400 px-2 py-1 rounded">M</kbd> Meditation</div>
+            <div><kbd className="theme-glass-card-sm text-cyan-400 px-2 py-1 rounded">Ctrl</kbd> + <kbd className="theme-glass-card-sm text-cyan-400 px-2 py-1 rounded">E</kbd> Energy Boost</div>
+            <div><kbd className="theme-glass-card-sm text-cyan-400 px-2 py-1 rounded">Ctrl</kbd> + <kbd className="theme-glass-card-sm text-cyan-400 px-2 py-1 rounded">/</kbd> Show Help</div>
           </div>
         </motion.div>
       )}
@@ -187,52 +187,52 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
           {/* Cognitive Performance Section */}
           <div>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold text-white tracking-wide">COGNITIVE PERFORMANCE</h2>
+              <h2 className="text-3xl font-bold theme-title tracking-wide">COGNITIVE PERFORMANCE</h2>
               <div className="flex items-center space-x-4 text-sm">
                 <span className="text-cyan-400 font-medium border-b-2 border-cyan-400 pb-1">Today</span>
-                <span className="text-gray-400 hover:text-cyan-400 cursor-pointer transition-colors">Week</span>
-                <span className="text-gray-400 hover:text-cyan-400 cursor-pointer transition-colors">Month</span>
+                <span className="theme-text-muted hover:text-cyan-400 cursor-pointer transition-colors">Week</span>
+                <span className="theme-text-muted hover:text-cyan-400 cursor-pointer transition-colors">Month</span>
               </div>
             </div>
             
             {/* Key Metrics Cards */}
             <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-black/80 backdrop-blur-sm rounded-xl p-6 hover:shadow-xl hover:shadow-cyan-400/20 transition-all duration-300 border border-gray-700/30 hover:border-cyan-400/30">
+              <div className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
                     <span className="text-cyan-400 text-lg">🧬</span>
                   </div>
-                  <span className="text-xs text-gray-400 font-light tracking-wide uppercase">Focus</span>
+                  <span className="text-xs theme-text-muted font-light tracking-wide uppercase">Focus</span>
                 </div>
-                <div className="text-3xl font-bold text-white mb-1">92%</div>
+                <div className="text-3xl font-bold theme-text-primary mb-1">92%</div>
                 <div className="text-xs text-emerald-400 font-medium">↑ 8% from yesterday</div>
               </div>
               
-              <div className="bg-black/80 backdrop-blur-sm rounded-xl p-6 hover:shadow-xl hover:shadow-purple-400/20 transition-all duration-300 border border-gray-700/30 hover:border-purple-400/30">
+              <div className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
                     <span className="text-purple-400 text-lg">🎯</span>
                   </div>
-                  <span className="text-xs text-gray-400 font-light tracking-wide uppercase">Clarity</span>
+                  <span className="text-xs theme-text-muted font-light tracking-wide uppercase">Clarity</span>
                 </div>
-                <div className="text-3xl font-bold text-white mb-1">87%</div>
+                <div className="text-3xl font-bold theme-text-primary mb-1">87%</div>
                 <div className="text-xs text-emerald-400 font-medium">↑ 5% from yesterday</div>
               </div>
               
-              <div className="bg-black/80 backdrop-blur-sm rounded-xl p-6 hover:shadow-xl hover:shadow-amber-400/20 transition-all duration-300 border border-gray-700/30 hover:border-amber-400/30">
+              <div className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300">
                 <div className="flex items-center justify-between mb-3">
                   <div className="w-10 h-10 bg-amber-500/20 rounded-lg flex items-center justify-center">
                     <span className="text-amber-400 text-lg">⚡</span>
                   </div>
-                  <span className="text-xs text-gray-400 font-light tracking-wide uppercase">Energy</span>
+                  <span className="text-xs theme-text-muted font-light tracking-wide uppercase">Energy</span>
                 </div>
-                <div className="text-3xl font-bold text-white mb-1">74%</div>
+                <div className="text-3xl font-bold theme-text-primary mb-1">74%</div>
                 <div className="text-xs text-amber-400 font-medium">↓ 12% from yesterday</div>
               </div>
             </div>
             
             {/* Performance Chart */}
-            <div className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
+            <div className="theme-glass-card p-6">
               <StatisticsChart 
                 selectedDate="2024-01-15"
                 timeRange="1h"
@@ -244,25 +244,25 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
           {/* Active Session */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-white tracking-wide">CURRENT SESSION</h2>
+              <h2 className="text-xl font-bold theme-title tracking-wide">CURRENT SESSION</h2>
               <div className="flex items-center space-x-2 text-sm">
-                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse theme-status-optimal"></div>
                 <span className="text-emerald-400 font-medium">LIVE</span>
               </div>
             </div>
             
-            <div className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
+            <div className="theme-glass-card p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <div className="text-3xl">🧠</div>
                   <div>
-                    <h3 className="text-lg font-semibold text-white">Deep Work Session</h3>
-                    <p className="text-sm text-gray-300">High Focus • 92% Performance</p>
+                    <h3 className="text-lg font-semibold theme-text-primary">Deep Work Session</h3>
+                    <p className="text-sm theme-text-secondary">High Focus • 92% Performance</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-2xl font-bold text-cyan-400">01:54:38</div>
-                  <div className="text-xs text-gray-400">Session Time</div>
+                  <div className="text-xs theme-text-muted">Session Time</div>
                 </div>
               </div>
             </div>

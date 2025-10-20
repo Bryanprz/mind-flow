@@ -62,20 +62,20 @@ export default function HabitChart({ habitPlan }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="card bg-black/60 backdrop-blur-sm shadow-lg shadow-cyan-400/10 rounded-xl p-6 h-full flex flex-col"
+      className="card theme-glass-card p-6 h-full flex flex-col hover:theme-neon-glow transition-all"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           <Brain className="w-6 h-6 text-cyan-400" />
-          <h2 className="text-xl font-semibold text-white tracking-wide">COGNITIVE METRICS</h2>
+          <h2 className="text-xl font-semibold theme-title tracking-wide">COGNITIVE METRICS</h2>
         </div>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsLiveMode(!isLiveMode)}
-          className={`p-2 rounded-lg transition-colors ${
-            isLiveMode ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-700/50 text-gray-400'
+          className={`p-2 rounded-lg theme-glass-card-sm transition-colors ${
+            isLiveMode ? 'theme-status-optimal text-emerald-400' : 'text-gray-400'
           }`}
           title={isLiveMode ? 'Live mode ON - Click to pause' : 'Live mode OFF - Click to resume'}
         >
@@ -198,7 +198,7 @@ export default function HabitChart({ habitPlan }) {
             selectedMetric === 'focus' ? 'bg-cyan-400 scale-125' : 'bg-cyan-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'focus' ? 'text-cyan-400 font-semibold' : 'text-gray-300'
+            selectedMetric === 'focus' ? 'text-cyan-400 font-semibold' : 'theme-text-secondary'
           }`}>Focus</span>
           {getTrend('focus') === 'up' ? (
             <TrendingUp className="w-3 h-3 text-emerald-400" />
@@ -217,7 +217,7 @@ export default function HabitChart({ habitPlan }) {
             selectedMetric === 'mood' ? 'bg-purple-400 scale-125' : 'bg-purple-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'mood' ? 'text-purple-400 font-semibold' : 'text-gray-300'
+            selectedMetric === 'mood' ? 'text-purple-400 font-semibold' : 'theme-text-secondary'
           }`}>Mood</span>
           {getTrend('mood') === 'up' ? (
             <TrendingUp className="w-3 h-3 text-emerald-400" />
@@ -236,7 +236,7 @@ export default function HabitChart({ habitPlan }) {
             selectedMetric === 'energy' ? 'bg-amber-400 scale-125' : 'bg-amber-500'
           }`}></div>
           <span className={`text-xs transition-colors ${
-            selectedMetric === 'energy' ? 'text-amber-400 font-semibold' : 'text-gray-300'
+            selectedMetric === 'energy' ? 'text-amber-400 font-semibold' : 'theme-text-secondary'
           }`}>Energy</span>
           {getTrend('energy') === 'up' ? (
             <TrendingUp className="w-3 h-3 text-emerald-400" />
@@ -249,13 +249,13 @@ export default function HabitChart({ habitPlan }) {
       {/* Summary Stats */}
       <div className="flex items-center justify-between pt-2">
         <div className="text-sm">
-          <span className="font-medium text-gray-300">Avg Focus:</span>
+          <span className="font-medium theme-text-secondary">Avg Focus:</span>
           <span className="ml-2 text-cyan-400 font-semibold">
             {(data.reduce((sum, day) => sum + day.focus, 0) / data.length).toFixed(1)}
           </span>
         </div>
         <div className="text-sm">
-          <span className="font-medium text-gray-300">Peak Day:</span>
+          <span className="font-medium theme-text-secondary">Peak Day:</span>
           <span className="ml-2 text-emerald-400 font-semibold">
             {data.reduce((peak, day) => day.focus > peak.focus ? day : peak, data[0]).name}
           </span>
