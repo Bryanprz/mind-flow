@@ -424,15 +424,15 @@ export default function StatisticsChart({ selectedDate, timeRange, timeInterval 
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span className="text-xs theme-text-accent">Focus</span>
+            <span className="text-xs text-blue-300">Focus</span>
           </div>
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-            <span className="text-xs theme-text-accent">Clarity</span>
+            <span className="text-xs text-purple-300">Mood</span>
           </div>
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
-            <span className="text-xs theme-text-accent">Energy</span>
+            <span className="text-xs text-amber-300">Energy</span>
           </div>
         </div>
         

@@ -68,7 +68,7 @@ export default function HabitChart({ habitPlan }) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           <Brain className="w-6 h-6 text-cyan-400" />
-          <h2 className="text-xl font-semibold theme-title tracking-wide">COGNITIVE METRICS</h2>
+          <h2 className="text-xl font-semibold text-cyan-300 tracking-wide">COGNITIVE METRICS</h2>
         </div>
         <motion.button
           whileHover={{ scale: 1.1 }}
@@ -249,13 +249,13 @@ export default function HabitChart({ habitPlan }) {
       {/* Summary Stats */}
       <div className="flex items-center justify-between pt-2">
         <div className="text-sm">
-          <span className="font-medium theme-text-accent">Avg Focus:</span>
+          <span className="font-medium text-cyan-300">Avg Focus:</span>
           <span className="ml-2 text-cyan-400 font-semibold">
             {(data.reduce((sum, day) => sum + day.focus, 0) / data.length).toFixed(1)}
           </span>
         </div>
         <div className="text-sm">
-          <span className="font-medium theme-text-accent">Peak Day:</span>
+          <span className="font-medium text-emerald-300">Peak Day:</span>
           <span className="ml-2 text-emerald-400 font-semibold">
             {data.reduce((peak, day) => day.focus > peak.focus ? day : peak, data[0]).name}
           </span>

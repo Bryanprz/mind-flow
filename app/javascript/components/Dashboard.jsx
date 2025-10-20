@@ -251,7 +251,7 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
           {/* Current Session */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold theme-title tracking-wide">CURRENT SESSION</h2>
+              <h2 className="text-xl font-bold text-purple-300 tracking-wide">CURRENT SESSION</h2>
               <div className="flex items-center space-x-2 text-sm">
                 <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse theme-status-optimal"></div>
                 <span className="text-emerald-400 font-medium">LIVE</span>
@@ -263,13 +263,13 @@ export default function Dashboard({ habitPlan, currentUser, sectionPresenters })
                 <div className="flex items-center space-x-4">
                   <div className="text-3xl">🧠</div>
                   <div>
-                    <h3 className="text-lg font-semibold theme-text-primary">Deep Work Session</h3>
-                    <p className="text-sm theme-text-accent">High Focus • 92% Performance</p>
+                    <h3 className="text-lg font-semibold text-cyan-300">Deep Work Session</h3>
+                    <p className="text-sm text-emerald-300">High Focus • 92% Performance</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-2xl font-bold text-cyan-400">01:54:38</div>
-                  <div className="text-xs theme-text-accent">Session Time</div>
+                  <div className="text-xs text-cyan-300">Session Time</div>
                 </div>
               </div>
             </div>

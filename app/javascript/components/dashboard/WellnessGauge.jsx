@@ -141,7 +141,7 @@ export default function WellnessGauge({ currentUser }) {
           title="Click to see concentration tips"
         >
           <Brain className="w-5 h-5 text-blue-600 mx-auto mb-1" />
-          <div className="text-xs font-medium text-blue-300 leading-tight">Concentration</div>
+          <div className="text-xs font-medium text-blue-300 leading-tight mb-1">Concentration</div>
           <div className="text-xs text-emerald-400">
             {hoveredMetric === 'concentration' ? 'Tap to improve' : 'Excellent'}
           </div>
@@ -157,7 +157,7 @@ export default function WellnessGauge({ currentUser }) {
           title="Click to see clarity exercises"
         >
           <Target className="w-5 h-5 text-purple-600 mx-auto mb-1" />
-          <div className="text-xs font-medium text-purple-300 leading-tight">Clarity</div>
+          <div className="text-xs font-medium text-purple-300 leading-tight mb-1">Clarity</div>
           <div className="text-xs text-emerald-400">
             {hoveredMetric === 'clarity' ? 'Meditate more' : 'High'}
           </div>
@@ -173,7 +173,7 @@ export default function WellnessGauge({ currentUser }) {
           title="Click to see energy boosters"
         >
           <Zap className="w-5 h-5 text-green-600 mx-auto mb-1" />
-          <div className="text-xs font-medium text-green-300 leading-tight">Mental Energy</div>
+          <div className="text-xs font-medium text-green-300 leading-tight mb-1">Mental Energy</div>
           <div className="text-xs text-emerald-400">
             {hoveredMetric === 'energy' ? 'Take a break' : 'Strong'}
           </div>
