@@ -120,52 +120,147 @@ export default function SettingsDashboard({ settingsData }) {
     console.log('Settings saved:', settings)
   }
 
-  const SettingToggle = ({ title, description, category, setting, value }) => (
-    <div className="flex items-center justify-between">
-      <div>
-        <h3 className="text-white font-semibold">{title}</h3>
-        <p className="text-gray-400 text-sm">{description}</p>
+  const SettingToggle = ({ title, description, category, setting, value, color = 'cyan' }) => {
+    const colorClasses = {
+      cyan: {
+        title: 'text-cyan-300',
+        description: 'text-cyan-400',
+        ring: 'peer-focus:ring-cyan-300',
+        toggle: 'peer-checked:bg-cyan-500'
+      },
+      emerald: {
+        title: 'text-emerald-300',
+        description: 'text-emerald-400',
+        ring: 'peer-focus:ring-emerald-300',
+        toggle: 'peer-checked:bg-emerald-500'
+      },
+      amber: {
+        title: 'text-amber-300',
+        description: 'text-amber-400',
+        ring: 'peer-focus:ring-amber-300',
+        toggle: 'peer-checked:bg-amber-500'
+      },
+      purple: {
+        title: 'text-purple-300',
+        description: 'text-purple-400',
+        ring: 'peer-focus:ring-purple-300',
+        toggle: 'peer-checked:bg-purple-500'
+      }
+    }
+    
+    const colors = colorClasses[color] || colorClasses.cyan
+    
+    return (
+      <div className="theme-glass-card-sm p-4 rounded-lg border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60 hover:theme-neon-glow transition-all duration-200">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className={`${colors.title} font-semibold`}>{title}</h3>
+            <p className={`${colors.description} text-sm`}>{description}</p>
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input 
+              type="checkbox" 
+              className="sr-only peer" 
+              checked={value}
+              onChange={(e) => handleSettingChange(category, setting, e.target.checked)}
+            />
+            <div className={`w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 ${colors.ring} rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all ${colors.toggle}`}></div>
+          </label>
+        </div>
       </div>
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input 
-          type="checkbox" 
-          className="sr-only peer" 
-          checked={value}
-          onChange={(e) => handleSettingChange(category, setting, e.target.checked)}
+    )
+  }
+
+  const SettingInput = ({ title, description, category, setting, value, type = 'text', color = 'cyan' }) => {
+    const colorClasses = {
+      cyan: {
+        title: 'text-cyan-300',
+        description: 'text-cyan-400',
+        border: 'border-cyan-400/30',
+        focus: 'focus:border-cyan-400 focus:ring-cyan-400/20'
+      },
+      emerald: {
+        title: 'text-emerald-300',
+        description: 'text-emerald-400',
+        border: 'border-emerald-400/30',
+        focus: 'focus:border-emerald-400 focus:ring-emerald-400/20'
+      },
+      amber: {
+        title: 'text-amber-300',
+        description: 'text-amber-400',
+        border: 'border-amber-400/30',
+        focus: 'focus:border-amber-400 focus:ring-amber-400/20'
+      },
+      purple: {
+        title: 'text-purple-300',
+        description: 'text-purple-400',
+        border: 'border-purple-400/30',
+        focus: 'focus:border-purple-400 focus:ring-purple-400/20'
+      }
+    }
+    
+    const colors = colorClasses[color] || colorClasses.cyan
+    
+    return (
+      <div className="theme-glass-card-sm p-4 rounded-lg border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60 hover:theme-neon-glow transition-all duration-200">
+        <label className={`block ${colors.title} font-semibold mb-2`}>{title}</label>
+        <p className={`${colors.description} text-sm mb-3`}>{description}</p>
+        <input
+          type={type}
+          value={value}
+          onChange={(e) => handleSettingChange(category, setting, e.target.value)}
+          className={`w-full bg-slate-800/50 border ${colors.border} rounded-lg px-4 py-3 text-white ${colors.focus} transition-colors backdrop-blur-sm`}
         />
-        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
-      </label>
-    </div>
-  )
+      </div>
+    )
+  }
 
-  const SettingInput = ({ title, description, category, setting, value, type = 'text' }) => (
-    <div>
-      <label className="block text-white font-semibold mb-2">{title}</label>
-      <p className="text-gray-400 text-sm mb-3">{description}</p>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => handleSettingChange(category, setting, e.target.value)}
-        className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-colors"
-      />
-    </div>
-  )
-
-  const SettingSelect = ({ title, description, category, setting, value, options }) => (
-    <div>
-      <label className="block text-white font-semibold mb-2">{title}</label>
-      <p className="text-gray-400 text-sm mb-3">{description}</p>
-      <select
-        value={value}
-        onChange={(e) => handleSettingChange(category, setting, e.target.value)}
-        className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-colors"
-      >
-        {options.map(option => (
-          <option key={option.value} value={option.value}>{option.label}</option>
-        ))}
-      </select>
-    </div>
-  )
+  const SettingSelect = ({ title, description, category, setting, value, options, color = 'cyan' }) => {
+    const colorClasses = {
+      cyan: {
+        title: 'text-cyan-300',
+        description: 'text-cyan-400',
+        border: 'border-cyan-400/30',
+        focus: 'focus:border-cyan-400 focus:ring-cyan-400/20'
+      },
+      emerald: {
+        title: 'text-emerald-300',
+        description: 'text-emerald-400',
+        border: 'border-emerald-400/30',
+        focus: 'focus:border-emerald-400 focus:ring-emerald-400/20'
+      },
+      amber: {
+        title: 'text-amber-300',
+        description: 'text-amber-400',
+        border: 'border-amber-400/30',
+        focus: 'focus:border-amber-400 focus:ring-amber-400/20'
+      },
+      purple: {
+        title: 'text-purple-300',
+        description: 'text-purple-400',
+        border: 'border-purple-400/30',
+        focus: 'focus:border-purple-400 focus:ring-purple-400/20'
+      }
+    }
+    
+    const colors = colorClasses[color] || colorClasses.cyan
+    
+    return (
+      <div className="theme-glass-card-sm p-4 rounded-lg border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60 hover:theme-neon-glow transition-all duration-200">
+        <label className={`block ${colors.title} font-semibold mb-2`}>{title}</label>
+        <p className={`${colors.description} text-sm mb-3`}>{description}</p>
+        <select
+          value={value}
+          onChange={(e) => handleSettingChange(category, setting, e.target.value)}
+          className={`w-full bg-slate-800/50 border ${colors.border} rounded-lg px-4 py-3 text-white ${colors.focus} transition-colors backdrop-blur-sm`}
+        >
+          {options.map(option => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+        </select>
+      </div>
+    )
+  }
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -178,6 +273,7 @@ export default function SettingsDashboard({ settingsData }) {
               category="profile"
               setting="name"
               value={settings.profile?.name || ''}
+              color="cyan"
             />
             <SettingInput
               title="Email Address"
@@ -186,6 +282,7 @@ export default function SettingsDashboard({ settingsData }) {
               setting="email"
               value={settings.profile?.email || ''}
               type="email"
+              color="emerald"
             />
             <SettingInput
               title="Bio"
@@ -193,6 +290,7 @@ export default function SettingsDashboard({ settingsData }) {
               category="profile"
               setting="bio"
               value={settings.profile?.bio || ''}
+              color="amber"
             />
             <SettingSelect
               title="Timezone"
@@ -200,6 +298,7 @@ export default function SettingsDashboard({ settingsData }) {
               category="profile"
               setting="timezone"
               value={settings.profile?.timezone || 'UTC-8'}
+              color="purple"
               options={[
                 { value: 'UTC-8', label: 'Pacific Time (UTC-8)' },
                 { value: 'UTC-5', label: 'Eastern Time (UTC-5)' },
@@ -213,6 +312,7 @@ export default function SettingsDashboard({ settingsData }) {
               category="profile"
               setting="language"
               value={settings.profile?.language || 'English'}
+              color="cyan"
               options={[
                 { value: 'English', label: 'English' },
                 { value: 'Spanish', label: 'Spanish' },
@@ -232,6 +332,7 @@ export default function SettingsDashboard({ settingsData }) {
               category="preferences"
               setting="theme"
               value={settings.preferences?.theme || 'dark'}
+              color="cyan"
               options={[
                 { value: 'dark', label: 'Dark (NASA Style)' },
                 { value: 'light', label: 'Light' },
@@ -244,6 +345,7 @@ export default function SettingsDashboard({ settingsData }) {
               category="preferences"
               setting="focus_sound"
               value={settings.preferences?.focus_sound || 'nature'}
+              color="emerald"
               options={[
                 { value: 'nature', label: 'Nature Sounds' },
                 { value: 'ocean', label: 'Ocean Waves' },
@@ -257,6 +359,7 @@ export default function SettingsDashboard({ settingsData }) {
               category="preferences"
               setting="reminder_frequency"
               value={settings.preferences?.reminder_frequency || 'smart'}
+              color="amber"
               options={[
                 { value: 'smart', label: 'Smart (AI Optimized)' },
                 { value: 'frequent', label: 'Frequent' },
@@ -270,6 +373,7 @@ export default function SettingsDashboard({ settingsData }) {
               category="preferences"
               setting="sound_effects"
               value={settings.preferences?.sound_effects || true}
+              color="purple"
             />
             <SettingToggle
               title="Email Digest"
@@ -277,6 +381,7 @@ export default function SettingsDashboard({ settingsData }) {
               category="preferences"
               setting="email_digest"
               value={settings.preferences?.email_digest || true}
+              color="cyan"
             />
           </div>
         )
@@ -449,75 +554,80 @@ export default function SettingsDashboard({ settingsData }) {
 
   return (
     <div className="w-full h-full bg-transparent relative">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="w-full min-h-full flex flex-col p-6 space-y-6"
-      >
-        {/* Header */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl flex items-center justify-center">
-              <Settings className="w-6 h-6 text-white" />
+      {/* Header Section */}
+      <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-6 bg-transparent z-20">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl flex items-center justify-center">
+            <Settings className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold text-cyan-300 tracking-wide">MISSION CONTROL</h1>
+            <p className="text-cyan-400 text-sm">Configure your cognitive optimization settings</p>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-4">
+          {hasChanges && (
+            <div className="flex items-center gap-2 text-amber-400 text-sm">
+              <RefreshCw className="w-4 h-4" />
+              <span>Unsaved changes</span>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white tracking-wide">MISSION CONTROL</h1>
-              <p className="text-cyan-400 text-sm">Configure your cognitive optimization settings</p>
+          )}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleSave}
+            disabled={!hasChanges}
+            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+              hasChanges 
+                ? 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white shadow-lg shadow-cyan-400/20'
+                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+            }`}
+          >
+            <Save className="w-5 h-5" />
+            Save Changes
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Scrollable Content Container */}
+      <div className="w-full h-full flex pt-20 overflow-y-auto">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="w-full min-h-full flex flex-col p-6 space-y-6"
+        >
+
+          {/* Tabs */}
+          <motion.div variants={itemVariants} className="flex items-center gap-2 overflow-x-auto pb-2">
+            {tabs.map((tab) => {
+              const Icon = tab.icon
+              return (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                    activeTab === tab.key
+                      ? 'theme-glass-card-sm text-cyan-300 border border-cyan-400/30'
+                      : 'theme-glass-card-sm text-cyan-400 hover:theme-neon-glow'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  {tab.label}
+                </button>
+              )
+            })}
+          </motion.div>
+
+          {/* Tab Content */}
+          <motion.div variants={itemVariants} className="flex-1">
+            <div className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
+              {renderTabContent()}
             </div>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            {hasChanges && (
-              <div className="flex items-center gap-2 text-amber-400 text-sm">
-                <RefreshCw className="w-4 h-4" />
-                <span>Unsaved changes</span>
-              </div>
-            )}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleSave}
-              disabled={!hasChanges}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
-                hasChanges 
-                  ? 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white shadow-lg shadow-cyan-400/20'
-                  : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              <Save className="w-5 h-5" />
-              Save Changes
-            </motion.button>
-          </div>
+          </motion.div>
         </motion.div>
-
-        {/* Tabs */}
-        <motion.div variants={itemVariants} className="flex items-center gap-2 overflow-x-auto pb-2">
-          {tabs.map((tab) => {
-            const Icon = tab.icon
-            return (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-                  activeTab === tab.key
-                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-400/30'
-                    : 'bg-gray-700/50 text-gray-400 hover:bg-gray-600/50'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                {tab.label}
-              </button>
-            )
-          })}
-        </motion.div>
-
-        {/* Tab Content */}
-        <motion.div variants={itemVariants} className="flex-1">
-          <div className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
-            {renderTabContent()}
-          </div>
-        </motion.div>
+      </div>
       </motion.div>
     </div>
   )

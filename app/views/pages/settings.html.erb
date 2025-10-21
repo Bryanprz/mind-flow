@@ -1,7 +1,8 @@
 <% content_for :title, "Settings - MindFlow" %>
 <% content_for :hide_footer, true %>
+<% content_for :vite_page, true %>
 
-<div class="w-full h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden">
+<div class="w-full h-screen overflow-hidden relative">
   <div id="react-settings" data-settings-data="<%= @settings_data.to_json %>" class="w-full h-full"></div>
 </div>
 
