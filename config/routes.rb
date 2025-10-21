@@ -52,9 +52,6 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Static pages
-  get "terms-of-service", to: "pages#terms_of_service", as: :terms_of_service
-  get "privacy-policy", to: "pages#privacy_policy", as: :privacy_policy
-  get "contact-us", to: "pages#contact_us", as: :contact_us
   get 'profile', to: 'users#show', as: :profile
 
   # Defines the root path route ("/")

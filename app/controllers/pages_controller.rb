@@ -1,15 +1,7 @@
 class PagesController < ApplicationController
-  allow_unauthenticated_access only: [:analytics, :learning, :notifications, :settings, :terms_of_service, :privacy_policy, :contact_us, :demo_community, :demo_messages, :demo_saved_posts]
+  allow_unauthenticated_access only: [:analytics, :learning, :notifications, :settings, :demo_community, :demo_messages, :demo_saved_posts]
   
   layout 'with_sidebar', only: [:analytics, :learning, :notifications, :settings]
-  def terms_of_service
-  end
-
-  def privacy_policy
-  end
-
-  def contact_us
-  end
 
   def demo_community
     # Demo mode - show static social posts UI
