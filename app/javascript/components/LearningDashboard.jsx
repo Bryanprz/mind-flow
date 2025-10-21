@@ -52,35 +52,40 @@ export default function LearningDashboard({ learningData }) {
       value: 3,
       icon: GraduationCap,
       color: "cyan",
-      change: "+1 this week"
+      change: "+1 this week",
+      changeColor: "cyan"
     },
     {
       title: "Books Read",
       value: 12,
       icon: BookOpen,
       color: "purple",
-      change: "+2 this month"
+      change: "+2 this month",
+      changeColor: "purple"
     },
     {
       title: "Hours Studied",
       value: 48,
       icon: Clock,
       color: "emerald",
-      change: "+8 this week"
+      change: "+8 this week",
+      changeColor: "emerald"
     },
     {
       title: "Certificates",
       value: 2,
       icon: Award,
       color: "amber",
-      change: "+1 recently"
+      change: "+1 recently",
+      changeColor: "amber"
     },
     {
       title: "Current Streak",
       value: currentStreak,
       icon: Flame,
       color: "red",
-      change: "Keep it up!"
+      change: "Keep it up!",
+      changeColor: "emerald"
     }
   ]
 
@@ -123,21 +128,24 @@ export default function LearningDashboard({ learningData }) {
       title: "The Focused Mind: A Complete Guide",
       type: "Book",
       difficulty: "Intermediate",
-      category: "Focus"
+      category: "Focus",
+      color: "cyan"
     },
     {
       id: 2,
       title: "Meditation for Peak Performance",
       type: "Course",
       difficulty: "Beginner",
-      category: "Meditation"
+      category: "Meditation",
+      color: "emerald"
     },
     {
       id: 3,
       title: "Flow State Research Papers",
       type: "Research",
       difficulty: "Advanced",
-      category: "Research"
+      category: "Research",
+      color: "red"
     }
   ]
 
@@ -147,37 +155,41 @@ export default function LearningDashboard({ learningData }) {
       title: "Foundation Level",
       description: "Basic cognitive principles",
       status: "completed",
-      icon: CheckCircle
+      icon: CheckCircle,
+      color: "emerald"
     },
     {
       level: 2,
       title: "Intermediate Level",
       description: "Advanced focus techniques",
       status: "current",
-      icon: Circle
+      icon: Circle,
+      color: "cyan"
     },
     {
       level: 3,
       title: "Advanced Level",
       description: "Flow state mastery",
       status: "locked",
-      icon: Circle
+      icon: Circle,
+      color: "purple"
     },
     {
       level: 4,
       title: "Expert Level",
       description: "Cognitive optimization",
       status: "locked",
-      icon: Circle
+      icon: Circle,
+      color: "amber"
     }
   ]
 
   const categories = [
-    { key: 'all', label: 'All Content', icon: BookOpen },
-    { key: 'Focus', label: 'Focus', icon: Target },
-    { key: 'Flow', label: 'Flow', icon: Zap },
-    { key: 'Cognitive', label: 'Cognitive', icon: Brain },
-    { key: 'Meditation', label: 'Meditation', icon: Star }
+    { key: 'all', label: 'All Content', icon: BookOpen, color: 'cyan' },
+    { key: 'Focus', label: 'Focus', icon: Target, color: 'purple' },
+    { key: 'Flow', label: 'Flow', icon: Zap, color: 'amber' },
+    { key: 'Cognitive', label: 'Cognitive', icon: Brain, color: 'emerald' },
+    { key: 'Meditation', label: 'Meditation', icon: Star, color: 'red' }
   ]
 
   const filteredCourses = selectedCategory === 'all' 
@@ -218,6 +230,13 @@ export default function LearningDashboard({ learningData }) {
       amber: 'from-amber-500/20 to-orange-500/20 border-amber-400/30 text-amber-300',
       red: 'from-red-500/20 to-pink-500/20 border-red-400/30 text-red-300'
     }
+    const changeColorClasses = {
+      cyan: 'text-cyan-400',
+      purple: 'text-purple-400',
+      emerald: 'text-emerald-400',
+      amber: 'text-amber-400',
+      red: 'text-red-400'
+    }
     return (
       <motion.div
         variants={itemVariants}
@@ -228,7 +247,7 @@ export default function LearningDashboard({ learningData }) {
           <div className={`w-8 h-8 bg-gradient-to-br ${colorClasses[stat.color].split(' ')[0]} ${colorClasses[stat.color].split(' ')[1]} rounded-lg flex items-center justify-center border ${colorClasses[stat.color].split(' ')[2]}`}>
             <Icon className={`w-4 h-4 ${colorClasses[stat.color].split(' ')[3]}`} />
           </div>
-          <span className="text-md text-emerald-400 font-medium">{stat.change}</span>
+          <span className={`text-md ${changeColorClasses[stat.changeColor]} font-medium`}>{stat.change}</span>
         </div>
         <div className="text-center">
           <div className={`text-lg font-bold ${colorClasses[stat.color].split(' ')[3]} mb-1`}>{stat.value}</div>
@@ -298,31 +317,53 @@ export default function LearningDashboard({ learningData }) {
     </motion.div>
   )
 
-  const ResourceCard = ({ resource }) => (
-    <motion.div
-      variants={itemVariants}
-      className="theme-glass-card p-4 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-purple-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60"
-      whileHover={{ scale: 1.01 }}
-    >
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex-1">
-          <h3 className="text-purple-300 font-semibold mb-1">{resource.title}</h3>
-          <p className="text-purple-400 text-sm">{resource.type}</p>
+  const ResourceCard = ({ resource }) => {
+    const colorClasses = {
+      cyan: 'text-cyan-300 border-cyan-400/30',
+      emerald: 'text-emerald-300 border-emerald-400/30',
+      red: 'text-red-300 border-red-400/30'
+    }
+    const typeColorClasses = {
+      cyan: 'text-cyan-400',
+      emerald: 'text-emerald-400',
+      red: 'text-red-400'
+    }
+    const buttonColorClasses = {
+      cyan: 'text-cyan-300',
+      emerald: 'text-emerald-300',
+      red: 'text-red-300'
+    }
+    const iconColorClasses = {
+      cyan: 'text-cyan-300 hover:text-cyan-200',
+      emerald: 'text-emerald-300 hover:text-emerald-200',
+      red: 'text-red-300 hover:text-red-200'
+    }
+    return (
+      <motion.div
+        variants={itemVariants}
+        className={`theme-glass-card p-4 hover:theme-neon-glow transition-all duration-300 rounded-xl border ${colorClasses[resource.color].split(' ')[1]} bg-gradient-to-br from-slate-900/80 to-slate-800/60`}
+        whileHover={{ scale: 1.01 }}
+      >
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex-1">
+            <h3 className={`${colorClasses[resource.color].split(' ')[0]} font-semibold mb-1`}>{resource.title}</h3>
+            <p className={`${typeColorClasses[resource.color]} text-sm`}>{resource.type}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(resource.difficulty)}`}>
+              {resource.difficulty}
+            </span>
+            <button className={`${iconColorClasses[resource.color]} transition-colors`}>
+              <Eye className="w-4 h-4" />
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(resource.difficulty)}`}>
-            {resource.difficulty}
-          </span>
-          <button className="text-purple-300 hover:text-purple-200 transition-colors">
-            <Eye className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-      <button className="w-full theme-glass-card-sm text-purple-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors hover:theme-neon-glow">
-        Start Learning
-      </button>
-    </motion.div>
-  )
+        <button className={`w-full theme-glass-card-sm ${buttonColorClasses[resource.color]} py-2 px-4 rounded-lg text-sm font-medium transition-colors hover:theme-neon-glow`}>
+          Start Learning
+        </button>
+      </motion.div>
+    )
+  }
 
   return (
     <div className="w-full h-full bg-transparent relative">
@@ -369,14 +410,28 @@ export default function LearningDashboard({ learningData }) {
         <motion.div variants={itemVariants} className="flex items-center gap-2 overflow-x-auto pb-2">
           {categories.map((category) => {
             const Icon = category.icon
+            const colorClasses = {
+              cyan: 'text-cyan-300 border-cyan-400/30',
+              purple: 'text-purple-300 border-purple-400/30',
+              amber: 'text-amber-300 border-amber-400/30',
+              emerald: 'text-emerald-300 border-emerald-400/30',
+              red: 'text-red-300 border-red-400/30'
+            }
+            const inactiveColorClasses = {
+              cyan: 'text-cyan-400',
+              purple: 'text-purple-400',
+              amber: 'text-amber-400',
+              emerald: 'text-emerald-400',
+              red: 'text-red-400'
+            }
             return (
               <button
                 key={category.key}
                 onClick={() => setSelectedCategory(category.key)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                   selectedCategory === category.key
-                    ? 'theme-glass-card-sm text-cyan-300 border border-cyan-400/30'
-                    : 'theme-glass-card-sm text-cyan-400 hover:theme-neon-glow'
+                    ? `theme-glass-card-sm ${colorClasses[category.color]} border`
+                    : `theme-glass-card-sm ${inactiveColorClasses[category.color]} hover:theme-neon-glow`
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -425,14 +480,26 @@ export default function LearningDashboard({ learningData }) {
               <div className="space-y-4">
                 {learningPath.map((level, index) => {
                   const Icon = level.icon
+                  const colorClasses = {
+                    emerald: 'text-emerald-300',
+                    cyan: 'text-cyan-300',
+                    purple: 'text-purple-300',
+                    amber: 'text-amber-300'
+                  }
+                  const descriptionColorClasses = {
+                    emerald: 'text-emerald-400',
+                    cyan: 'text-cyan-400',
+                    purple: 'text-purple-400',
+                    amber: 'text-amber-400'
+                  }
                   return (
                     <div key={level.level} className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center ${getLevelStatus(level.status)}`}>
                         <Icon className="w-4 h-4" />
                       </div>
                       <div>
-                        <p className="text-emerald-300 font-semibold">{level.title}</p>
-                        <p className="text-emerald-400 text-sm">{level.description}</p>
+                        <p className={`${colorClasses[level.color]} font-semibold`}>{level.title}</p>
+                        <p className={`${descriptionColorClasses[level.color]} text-sm`}>{level.description}</p>
                       </div>
                     </div>
                   )
