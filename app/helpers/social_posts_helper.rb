@@ -1,2 +1,0 @@
-module SocialPostsHelper
-end

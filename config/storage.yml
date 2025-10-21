@@ -1,5 +1,4 @@
-# Demo Mode: All storage uses local disk only
-# Google Cloud Storage configuration removed for sanitized demo
+# All storage uses local disk only
 
 test:
   service: Disk
@@ -8,22 +7,3 @@ test:
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
-
-# In production, these would use cloud storage services
-# google_social_posts:
-#   service: GCS
-#   project: your-project-id
-#   bucket: your-bucket-name
-#   credentials: <path-to-credentials>
-
-# google_avatars:
-#   service: GCS
-#   project: your-project-id
-#   bucket: your-avatars-bucket
-#   credentials: <path-to-credentials>
-
-# google_message_attachments:
-#   service: GCS
-#   project: your-project-id
-#   bucket: your-attachments-bucket
-#   credentials: <path-to-credentials>
