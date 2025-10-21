@@ -56,7 +56,8 @@ export default function GoalsDashboard({ goalsData }) {
         category: "Focus",
         icon: "🧠",
         status: "active",
-        daysRemaining: 27
+        daysRemaining: 27,
+        color: "cyan"
       },
       {
         id: 2,
@@ -68,7 +69,8 @@ export default function GoalsDashboard({ goalsData }) {
         category: "Productivity",
         icon: "⚡",
         status: "active",
-        daysRemaining: 40
+        daysRemaining: 40,
+        color: "purple"
       },
       {
         id: 3,
@@ -80,7 +82,8 @@ export default function GoalsDashboard({ goalsData }) {
         category: "Wellness",
         icon: "🧘",
         status: "active",
-        daysRemaining: 22
+        daysRemaining: 22,
+        color: "emerald"
       },
       {
         id: 4,
@@ -92,7 +95,8 @@ export default function GoalsDashboard({ goalsData }) {
         category: "Learning",
         icon: "📚",
         status: "active",
-        daysRemaining: 71
+        daysRemaining: 71,
+        color: "amber"
       }
     ]
 
@@ -126,11 +130,11 @@ export default function GoalsDashboard({ goalsData }) {
   }, [])
 
   const categories = [
-    { key: 'all', label: 'All Goals', icon: Target },
-    { key: 'Focus', label: 'Focus', icon: Brain },
-    { key: 'Productivity', label: 'Productivity', icon: Zap },
-    { key: 'Wellness', label: 'Wellness', icon: Star },
-    { key: 'Learning', label: 'Learning', icon: Award }
+    { key: 'all', label: 'All Goals', icon: Target, color: 'cyan' },
+    { key: 'Focus', label: 'Focus', icon: Brain, color: 'cyan' },
+    { key: 'Productivity', label: 'Productivity', icon: Zap, color: 'purple' },
+    { key: 'Wellness', label: 'Wellness', icon: Star, color: 'emerald' },
+    { key: 'Learning', label: 'Learning', icon: Award, color: 'amber' }
   ]
 
   const filteredGoals = selectedCategory === 'all' 
@@ -152,86 +156,145 @@ export default function GoalsDashboard({ goalsData }) {
     return 'text-cyan-400'
   }
 
-  const GoalCard = ({ goal, isCompleted = false }) => (
-    <motion.div
-      variants={itemVariants}
-      className={`theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60 ${
-        isCompleted ? 'opacity-75' : ''
-      } min-h-[280px] flex flex-col`}
-      whileHover={{ scale: 1.005 }}
-    >
-      <div className="flex items-start justify-between mb-4 flex-shrink-0">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-2xl">{goal.icon}</span>
+  const GoalCard = ({ goal, isCompleted = false }) => {
+    const colorClasses = {
+      cyan: {
+        border: 'border-cyan-400/30',
+        title: 'text-cyan-300',
+        description: 'text-cyan-300',
+        category: 'bg-cyan-500/20 text-cyan-300 border-cyan-400/30',
+        calendar: 'text-cyan-300',
+        calendarIcon: 'text-cyan-400',
+        progress: 'text-cyan-300',
+        progressLabel: 'text-cyan-300',
+        iconBg: 'from-cyan-500/20 to-blue-500/20',
+        editBtn: 'bg-cyan-500/20 hover:bg-cyan-500/30',
+        editIcon: 'text-cyan-400 group-hover:text-cyan-300'
+      },
+      purple: {
+        border: 'border-purple-400/30',
+        title: 'text-purple-300',
+        description: 'text-purple-300',
+        category: 'bg-purple-500/20 text-purple-300 border-purple-400/30',
+        calendar: 'text-purple-300',
+        calendarIcon: 'text-purple-400',
+        progress: 'text-purple-300',
+        progressLabel: 'text-purple-300',
+        iconBg: 'from-purple-500/20 to-pink-500/20',
+        editBtn: 'bg-purple-500/20 hover:bg-purple-500/30',
+        editIcon: 'text-purple-400 group-hover:text-purple-300'
+      },
+      emerald: {
+        border: 'border-emerald-400/30',
+        title: 'text-emerald-300',
+        description: 'text-emerald-300',
+        category: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30',
+        calendar: 'text-emerald-300',
+        calendarIcon: 'text-emerald-400',
+        progress: 'text-emerald-300',
+        progressLabel: 'text-emerald-300',
+        iconBg: 'from-emerald-500/20 to-green-500/20',
+        editBtn: 'bg-emerald-500/20 hover:bg-emerald-500/30',
+        editIcon: 'text-emerald-400 group-hover:text-emerald-300'
+      },
+      amber: {
+        border: 'border-amber-400/30',
+        title: 'text-amber-300',
+        description: 'text-amber-300',
+        category: 'bg-amber-500/20 text-amber-300 border-amber-400/30',
+        calendar: 'text-amber-300',
+        calendarIcon: 'text-amber-400',
+        progress: 'text-amber-300',
+        progressLabel: 'text-amber-300',
+        iconBg: 'from-amber-500/20 to-orange-500/20',
+        editBtn: 'bg-amber-500/20 hover:bg-amber-500/30',
+        editIcon: 'text-amber-400 group-hover:text-amber-300'
+      }
+    }
+    
+    const colors = colorClasses[goal.color] || colorClasses.cyan
+    
+    return (
+      <motion.div
+        variants={itemVariants}
+        className={`theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border ${colors.border} bg-gradient-to-br from-slate-900/80 to-slate-800/60 ${
+          isCompleted ? 'opacity-75' : ''
+        } min-h-[280px] flex flex-col`}
+        whileHover={{ scale: 1.005 }}
+      >
+        <div className="flex items-start justify-between mb-4 flex-shrink-0">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-3 mb-3">
+              <div className={`w-12 h-12 bg-gradient-to-br ${colors.iconBg} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                <span className="text-2xl">{goal.icon}</span>
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className={`text-lg font-semibold ${colors.title} truncate`}>
+                  {goal.title}
+                </h3>
+                {isCompleted ? (
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 mt-1">
+                    <CheckCircle className="w-3 h-3 mr-1" />
+                    Completed
+                  </span>
+                ) : goal.daysRemaining <= 7 ? (
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-500/20 text-red-400 border border-red-500/30 mt-1">
+                    <Clock className="w-3 h-3 mr-1" />
+                    Due Soon
+                  </span>
+                ) : null}
+              </div>
             </div>
-            <div className="min-w-0 flex-1">
-              <h3 className="text-lg font-semibold text-cyan-300 truncate">
-                {goal.title}
-              </h3>
-              {isCompleted ? (
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 mt-1">
-                  <CheckCircle className="w-3 h-3 mr-1" />
-                  Completed
-                </span>
-              ) : goal.daysRemaining <= 7 ? (
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-500/20 text-red-400 border border-red-500/30 mt-1">
-                  <Clock className="w-3 h-3 mr-1" />
-                  Due Soon
-                </span>
-              ) : null}
+            
+            <div className="flex flex-wrap gap-2 mb-3">
+              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${colors.category}`}>
+                {goal.category}
+              </span>
             </div>
+            
+            {goal.deadline && (
+              <p className={`${colors.calendar} text-sm flex items-center gap-2`}>
+                <Calendar className={`w-4 h-4 ${colors.calendarIcon} flex-shrink-0`} />
+                <span className="truncate">{isCompleted ? `Completed ${goal.completedAt}` : `${goal.daysRemaining} days remaining`}</span>
+              </p>
+            )}
           </div>
           
-          <div className="flex flex-wrap gap-2 mb-3">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
-              {goal.category}
+          <div className="flex gap-2 flex-shrink-0 ml-2">
+            <button className={`w-8 h-8 ${colors.editBtn} rounded-lg flex items-center justify-center transition-all duration-200 group`}>
+              <Edit className={`w-4 h-4 ${colors.editIcon}`} />
+            </button>
+            <button className="w-8 h-8 bg-red-500/20 hover:bg-red-500/30 rounded-lg flex items-center justify-center transition-all duration-200 group">
+              <Trash2 className="w-4 h-4 text-red-400 group-hover:text-red-300" />
+            </button>
+          </div>
+        </div>
+
+        {goal.description && (
+          <p className={`${colors.description} text-sm mb-4 leading-relaxed flex-1`}>{goal.description}</p>
+        )}
+
+        <div className="space-y-3 mt-auto">
+          <div className="flex justify-between items-center">
+            <span className={`${colors.progress} text-sm font-medium`}>Progress</span>
+            <span className={`${colors.progress} font-bold text-sm`}>{goal.progress} / {goal.target}</span>
+          </div>
+          <div className="w-full bg-gray-700/50 rounded-full h-3 overflow-hidden">
+            <div 
+              className={`bg-gradient-to-r ${getProgressColor(goal.progress, goal.target)} h-3 rounded-full transition-all duration-500 ease-out`}
+              style={{ width: `${Math.min((goal.progress / goal.target) * 100, 100)}%` }}
+            ></div>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className={`text-xs ${colors.progressLabel}`}>Progress</span>
+            <span className={`text-sm font-semibold ${getStatusColor(goal)}`}>
+              {Math.round((goal.progress / goal.target) * 100)}% Complete
             </span>
           </div>
-          
-          {goal.deadline && (
-            <p className="text-cyan-300 text-sm flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-              <span className="truncate">{isCompleted ? `Completed ${goal.completedAt}` : `${goal.daysRemaining} days remaining`}</span>
-            </p>
-          )}
         </div>
-        
-        <div className="flex gap-2 flex-shrink-0 ml-2">
-          <button className="w-8 h-8 bg-cyan-500/20 hover:bg-cyan-500/30 rounded-lg flex items-center justify-center transition-all duration-200 group">
-            <Edit className="w-4 h-4 text-cyan-400 group-hover:text-cyan-300" />
-          </button>
-          <button className="w-8 h-8 bg-red-500/20 hover:bg-red-500/30 rounded-lg flex items-center justify-center transition-all duration-200 group">
-            <Trash2 className="w-4 h-4 text-red-400 group-hover:text-red-300" />
-          </button>
-        </div>
-      </div>
-
-      {goal.description && (
-        <p className="text-cyan-300 text-sm mb-4 leading-relaxed flex-1">{goal.description}</p>
-      )}
-
-      <div className="space-y-3 mt-auto">
-        <div className="flex justify-between items-center">
-          <span className="text-cyan-300 text-sm font-medium">Progress</span>
-          <span className="text-cyan-300 font-bold text-sm">{goal.progress} / {goal.target}</span>
-        </div>
-        <div className="w-full bg-gray-700/50 rounded-full h-3 overflow-hidden">
-          <div 
-            className={`bg-gradient-to-r ${getProgressColor(goal.progress, goal.target)} h-3 rounded-full transition-all duration-500 ease-out`}
-            style={{ width: `${Math.min((goal.progress / goal.target) * 100, 100)}%` }}
-          ></div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-cyan-300">Progress</span>
-          <span className={`text-sm font-semibold ${getStatusColor(goal)}`}>
-            {Math.round((goal.progress / goal.target) * 100)}% Complete
-          </span>
-        </div>
-      </div>
-    </motion.div>
-  )
+      </motion.div>
+    )
+  }
 
   return (
     <div className="w-full h-full bg-transparent relative">
@@ -271,14 +334,26 @@ export default function GoalsDashboard({ goalsData }) {
         <motion.div variants={itemVariants} className="flex items-center gap-2 flex-wrap pb-2">
           {categories.map((category) => {
             const Icon = category.icon
+            const colorClasses = {
+              cyan: 'bg-cyan-500/20 text-cyan-300 border-cyan-400/50 shadow-cyan-400/20',
+              purple: 'bg-purple-500/20 text-purple-300 border-purple-400/50 shadow-purple-400/20',
+              emerald: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/50 shadow-emerald-400/20',
+              amber: 'bg-amber-500/20 text-amber-300 border-amber-400/50 shadow-amber-400/20'
+            }
+            const inactiveColorClasses = {
+              cyan: 'text-cyan-300 hover:bg-cyan-500/10 border-cyan-400/30 hover:border-cyan-400/50',
+              purple: 'text-purple-300 hover:bg-purple-500/10 border-purple-400/30 hover:border-purple-400/50',
+              emerald: 'text-emerald-300 hover:bg-emerald-500/10 border-emerald-400/30 hover:border-emerald-400/50',
+              amber: 'text-amber-300 hover:bg-amber-500/10 border-amber-400/30 hover:border-amber-400/50'
+            }
             return (
               <button
                 key={category.key}
                 onClick={() => setSelectedCategory(category.key)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                   selectedCategory === category.key
-                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/50 shadow-lg shadow-cyan-400/20'
-                    : 'bg-transparent text-cyan-300 hover:bg-cyan-500/10 border border-cyan-400/30 hover:border-cyan-400/50'
+                    ? `${colorClasses[category.color]} border shadow-lg`
+                    : `bg-transparent ${inactiveColorClasses[category.color]}`
                 }`}
               >
                 <Icon className="w-4 h-4" />

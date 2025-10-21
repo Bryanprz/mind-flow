@@ -139,7 +139,7 @@ export default function NotificationsDashboard({ notificationsData }) {
     return (
       <motion.div
         variants={itemVariants}
-        className={`bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 hover:border-cyan-400/30 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-400/10 ${
+        className={`theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60 ${
           notification.unread ? 'ring-2 ring-cyan-400/20' : ''
         }`}
         whileHover={{ scale: 1.01 }}
@@ -152,26 +152,26 @@ export default function NotificationsDashboard({ notificationsData }) {
           <div className="flex-1">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-white mb-1">{notification.title}</h3>
-                <p className="text-gray-300 mb-2">{notification.message}</p>
-                <p className="text-gray-400 text-sm">{notification.time}</p>
+                <h3 className="text-lg font-semibold text-cyan-300 mb-1">{notification.title}</h3>
+                <p className="text-cyan-400 mb-2">{notification.message}</p>
+                <p className="text-cyan-300 text-sm">{notification.time}</p>
               </div>
               <div className="flex items-center gap-2">
                 {notification.unread && (
                   <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
                 )}
-                <button className="text-gray-400 hover:text-white transition-colors">
+                <button className="text-cyan-300 hover:text-cyan-200 transition-colors">
                   <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
             
             <div className="flex gap-2 mt-4">
-              <button className="bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+              <button className="theme-glass-card-sm text-cyan-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors hover:theme-neon-glow">
                 View Details
               </button>
               {notification.unread && (
-                <button className="bg-gray-500/20 hover:bg-gray-500/30 text-gray-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                <button className="theme-glass-card-sm text-cyan-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors hover:theme-neon-glow">
                   Mark as Read
                 </button>
               )}
@@ -185,8 +185,8 @@ export default function NotificationsDashboard({ notificationsData }) {
   const SettingToggle = ({ title, description, setting, onChange }) => (
     <div className="flex items-center justify-between">
       <div>
-        <h3 className="text-white font-semibold">{title}</h3>
-        <p className="text-gray-400 text-sm">{description}</p>
+        <h3 className="text-purple-300 font-semibold">{title}</h3>
+        <p className="text-purple-400 text-sm">{description}</p>
       </div>
       <label className="relative inline-flex items-center cursor-pointer">
         <input 
@@ -195,7 +195,7 @@ export default function NotificationsDashboard({ notificationsData }) {
           checked={settings[setting]}
           onChange={() => onChange(setting, !settings[setting])}
         />
-        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
+        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
       </label>
     </div>
   )
@@ -208,72 +208,79 @@ export default function NotificationsDashboard({ notificationsData }) {
 
   return (
     <div className="w-full h-full bg-transparent relative">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="w-full min-h-full flex flex-col p-6 space-y-6"
-      >
-        {/* Header */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl flex items-center justify-center">
-              <Bell className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white tracking-wide">COMMUNICATION HUB</h1>
-              <p className="text-cyan-400 text-sm">Stay updated with your cognitive journey</p>
-            </div>
+      {/* Header Section */}
+      <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-6 bg-transparent z-20">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl flex items-center justify-center">
+            <Bell className="w-6 h-6 text-white" />
           </div>
-          
-          <div className="flex items-center gap-4">
-            <div className="bg-black/60 backdrop-blur-sm rounded-lg px-4 py-2 border border-gray-700/30">
-              <span className="text-white text-sm">Unread: {unreadCount}</span>
-            </div>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white rounded-lg font-semibold transition-all duration-200 shadow-lg shadow-cyan-400/20"
-            >
-              <Settings className="w-5 h-5" />
-              Settings
-            </motion.button>
+          <div>
+            <h1 className="text-3xl font-bold text-cyan-300 tracking-wide">COMMUNICATION HUB</h1>
+            <p className="text-cyan-400 text-sm">Stay updated with your cognitive journey</p>
           </div>
-        </motion.div>
+        </div>
+        
+        <div className="flex items-center gap-4">
+          <div className="theme-glass-card-sm px-4 py-2 rounded-lg border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
+            <span className="text-cyan-300 text-sm font-medium">Unread: {unreadCount}</span>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center gap-2 px-6 py-3 theme-glass-card-sm text-cyan-300 rounded-lg font-semibold transition-all duration-200 hover:theme-neon-glow"
+          >
+            <Settings className="w-5 h-5" />
+            Settings
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Scrollable Content Container */}
+      <div className="w-full h-full flex pt-20 overflow-y-auto">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ 
+            opacity: 1,
+            overflow: 'scroll'
+          }}
+          className="w-full h-full flex flex-col p-6 space-y-6"
+        >
 
         {/* Stats Cards */}
         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 hover:border-cyan-400/30 transition-all duration-300">
+          <div className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-cyan-300 text-sm font-medium">Unread</p>
-                <p className="text-3xl font-bold text-white">{unreadCount}</p>
+                <p className="text-3xl font-bold text-cyan-300">{unreadCount}</p>
               </div>
-              <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg flex items-center justify-center border border-cyan-400/30">
                 <Bell className="w-6 h-6 text-cyan-400" />
               </div>
             </div>
           </div>
 
-          <div className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 hover:border-emerald-400/30 transition-all duration-300">
+          <div className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-emerald-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-emerald-300 text-sm font-medium">Today</p>
-                <p className="text-3xl font-bold text-white">{notifications.length}</p>
+                <p className="text-3xl font-bold text-emerald-300">{notifications.length}</p>
               </div>
-              <div className="w-12 h-12 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-lg flex items-center justify-center border border-emerald-400/30">
                 <Clock className="w-6 h-6 text-emerald-400" />
               </div>
             </div>
           </div>
 
-          <div className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 hover:border-purple-400/30 transition-all duration-300">
+          <div className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-purple-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-purple-300 text-sm font-medium">This Week</p>
-                <p className="text-3xl font-bold text-white">12</p>
+                <p className="text-3xl font-bold text-purple-300">12</p>
               </div>
-              <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-purple-400/30">
                 <TrendingUp className="w-6 h-6 text-purple-400" />
               </div>
             </div>
@@ -281,17 +288,17 @@ export default function NotificationsDashboard({ notificationsData }) {
         </motion.div>
 
         {/* Filter Tabs */}
-        <motion.div variants={itemVariants} className="flex items-center gap-2 overflow-x-auto pb-2">
+        <motion.div variants={itemVariants} className="flex items-center gap-2 overflow-x-auto pb-6 min-h-[80px]">
           {filters.map((filter) => {
             const Icon = filter.icon
             return (
               <button
                 key={filter.key}
                 onClick={() => setSelectedFilter(filter.key)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                className={`flex items-center gap-2 px-4 py-4 rounded-lg text-sm font-medium transition-all whitespace-nowrap min-h-[56px] ${
                   selectedFilter === filter.key
-                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-400/30'
-                    : 'bg-gray-700/50 text-gray-400 hover:bg-gray-600/50'
+                    ? 'theme-glass-card-sm text-cyan-300 border border-cyan-400/30'
+                    : 'theme-glass-card-sm text-cyan-400 hover:theme-neon-glow'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -305,7 +312,7 @@ export default function NotificationsDashboard({ notificationsData }) {
         <motion.div variants={itemVariants} className="flex-1">
           <div className="flex items-center gap-3 mb-6">
             <Bell className="w-6 h-6 text-cyan-400" />
-            <h2 className="text-2xl font-bold text-white">
+            <h2 className="text-2xl font-bold text-cyan-300">
               {selectedFilter === 'unread' ? 'UNREAD NOTIFICATIONS' : 'ALL NOTIFICATIONS'}
             </h2>
           </div>
@@ -318,10 +325,10 @@ export default function NotificationsDashboard({ notificationsData }) {
         </motion.div>
 
         {/* Notification Settings */}
-        <motion.div variants={itemVariants} className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
+        <motion.div variants={itemVariants} className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-purple-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
           <div className="flex items-center gap-3 mb-6">
             <Settings className="w-6 h-6 text-purple-400" />
-            <h2 className="text-2xl font-bold text-white">NOTIFICATION PREFERENCES</h2>
+            <h2 className="text-2xl font-bold text-purple-300">NOTIFICATION PREFERENCES</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -362,17 +369,18 @@ export default function NotificationsDashboard({ notificationsData }) {
             </div>
           </div>
           
-          <div className="mt-6 pt-6 border-t border-gray-700/30">
+          <div className="mt-6 pt-6 border-t border-purple-400/30">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200"
+              className="theme-glass-card-sm text-purple-300 px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:theme-neon-glow"
             >
               Save Preferences
             </motion.button>
           </div>
         </motion.div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   )
 }
