@@ -41,6 +41,7 @@ export default function GoalsDashboard({ goalsData }) {
   const [activeGoals, setActiveGoals] = useState([])
   const [completedGoals, setCompletedGoals] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [showNewObjectiveModal, setShowNewObjectiveModal] = useState(false)
 
   // Mock data for demonstration
   useEffect(() => {
@@ -154,7 +155,7 @@ export default function GoalsDashboard({ goalsData }) {
   const GoalCard = ({ goal, isCompleted = false }) => (
     <motion.div
       variants={itemVariants}
-      className={`bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 hover:border-cyan-400/30 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-400/10 ${
+      className={`theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60 ${
         isCompleted ? 'opacity-75' : ''
       } min-h-[280px] flex flex-col`}
       whileHover={{ scale: 1.005 }}
@@ -166,7 +167,7 @@ export default function GoalsDashboard({ goalsData }) {
               <span className="text-2xl">{goal.icon}</span>
             </div>
             <div className="min-w-0 flex-1">
-              <h3 className="text-lg font-semibold text-white truncate">
+              <h3 className="text-lg font-semibold text-cyan-300 truncate">
                 {goal.title}
               </h3>
               {isCompleted ? (
@@ -184,13 +185,13 @@ export default function GoalsDashboard({ goalsData }) {
           </div>
           
           <div className="flex flex-wrap gap-2 mb-3">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-700/50 text-gray-300 border border-gray-600/50">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
               {goal.category}
             </span>
           </div>
           
           {goal.deadline && (
-            <p className="text-gray-400 text-sm flex items-center gap-2">
+            <p className="text-cyan-300 text-sm flex items-center gap-2">
               <Calendar className="w-4 h-4 text-cyan-400 flex-shrink-0" />
               <span className="truncate">{isCompleted ? `Completed ${goal.completedAt}` : `${goal.daysRemaining} days remaining`}</span>
             </p>
@@ -208,13 +209,13 @@ export default function GoalsDashboard({ goalsData }) {
       </div>
 
       {goal.description && (
-        <p className="text-gray-300 text-sm mb-4 leading-relaxed flex-1">{goal.description}</p>
+        <p className="text-cyan-300 text-sm mb-4 leading-relaxed flex-1">{goal.description}</p>
       )}
 
       <div className="space-y-3 mt-auto">
         <div className="flex justify-between items-center">
-          <span className="text-gray-400 text-sm font-medium">Progress</span>
-          <span className="text-white font-bold text-sm">{goal.progress} / {goal.target}</span>
+          <span className="text-cyan-300 text-sm font-medium">Progress</span>
+          <span className="text-cyan-300 font-bold text-sm">{goal.progress} / {goal.target}</span>
         </div>
         <div className="w-full bg-gray-700/50 rounded-full h-3 overflow-hidden">
           <div 
@@ -223,7 +224,7 @@ export default function GoalsDashboard({ goalsData }) {
           ></div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-xs text-gray-500">Progress</span>
+          <span className="text-xs text-cyan-300">Progress</span>
           <span className={`text-sm font-semibold ${getStatusColor(goal)}`}>
             {Math.round((goal.progress / goal.target) * 100)}% Complete
           </span>
@@ -234,34 +235,37 @@ export default function GoalsDashboard({ goalsData }) {
 
   return (
     <div className="w-full h-full bg-transparent relative">
-
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="w-full h-full flex flex-col overflow-y-auto p-6 space-y-6"
-      >
-        {/* Header */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl flex items-center justify-center">
-              <Target className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white tracking-wide">MISSION OBJECTIVES</h1>
-              <p className="text-cyan-400 text-sm">Track your progress and achieve your targets</p>
-            </div>
+      {/* Header Section */}
+      <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-6 bg-transparent z-20">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl flex items-center justify-center">
+            <Target className="w-6 h-6 text-white" />
           </div>
-          
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white rounded-lg font-semibold transition-all duration-200 shadow-lg shadow-cyan-400/20"
-          >
-            <Plus className="w-5 h-5" />
-            New Objective
-          </motion.button>
-        </motion.div>
+          <div>
+            <h1 className="text-3xl font-bold text-cyan-300 tracking-wide">MISSION OBJECTIVES</h1>
+            <p className="text-cyan-400 text-sm">Track your progress and achieve your targets</p>
+          </div>
+        </div>
+        
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setShowNewObjectiveModal(true)}
+          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white rounded-lg font-semibold transition-all duration-200 shadow-lg shadow-cyan-400/20"
+        >
+          <Plus className="w-5 h-5" />
+          New Objective
+        </motion.button>
+      </div>
+
+      {/* Scrollable Content Container */}
+      <div className="w-full h-full flex pt-20 overflow-y-auto" style={{overflow: 'scroll'}}>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="w-full h-full flex flex-col p-6 pb-20 space-y-6"
+        >
 
         {/* Category Filter */}
         <motion.div variants={itemVariants} className="flex items-center gap-2 flex-wrap pb-2">
@@ -273,8 +277,8 @@ export default function GoalsDashboard({ goalsData }) {
                 onClick={() => setSelectedCategory(category.key)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                   selectedCategory === category.key
-                    ? 'bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-cyan-300 border border-cyan-400/50 shadow-lg shadow-cyan-400/20'
-                    : 'bg-gray-800/60 text-gray-300 hover:bg-gray-700/80 hover:text-white border border-gray-600/30 hover:border-gray-500/50'
+                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/50 shadow-lg shadow-cyan-400/20'
+                    : 'bg-transparent text-cyan-300 hover:bg-cyan-500/10 border border-cyan-400/30 hover:border-cyan-400/50'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -289,9 +293,9 @@ export default function GoalsDashboard({ goalsData }) {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <Zap className="w-6 h-6 text-cyan-400" />
-              <h2 className="text-2xl font-bold text-white">ACTIVE OBJECTIVES</h2>
+              <h2 className="text-2xl font-bold text-cyan-300 tracking-wide">ACTIVE OBJECTIVES</h2>
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-cyan-300">
               <TrendingUp className="w-4 h-4" />
               <span>{filteredGoals.length} in progress</span>
             </div>
@@ -304,10 +308,10 @@ export default function GoalsDashboard({ goalsData }) {
               ))}
             </div>
           ) : (
-            <div className="bg-black/60 backdrop-blur-sm rounded-xl p-8 border border-gray-700/30 text-center">
+            <div className="theme-glass-card p-8 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60 text-center">
               <div className="text-6xl mb-4">🎯</div>
-              <h3 className="text-xl font-semibold text-white mb-2">No active objectives</h3>
-              <p className="text-gray-400 mb-6">Start your mission by creating your first objective</p>
+              <h3 className="text-xl font-semibold text-cyan-300 mb-2">No active objectives</h3>
+              <p className="text-cyan-300 mb-6">Start your mission by creating your first objective</p>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -324,7 +328,7 @@ export default function GoalsDashboard({ goalsData }) {
           <motion.div variants={itemVariants}>
             <div className="flex items-center gap-3 mb-6">
               <Award className="w-6 h-6 text-emerald-400" />
-              <h2 className="text-2xl font-bold text-white">COMPLETED OBJECTIVES</h2>
+              <h2 className="text-2xl font-bold text-emerald-300 tracking-wide">COMPLETED OBJECTIVES</h2>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {completedGoals.map((goal) => (
@@ -333,7 +337,88 @@ export default function GoalsDashboard({ goalsData }) {
             </div>
           </motion.div>
         )}
-      </motion.div>
+        
+        {/* Bottom Padding */}
+        <div className="h-20 flex-shrink-0"></div>
+        </motion.div>
+      </div>
+
+      {/* New Objective Modal */}
+      {showNewObjectiveModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="theme-glass-card p-8 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60 max-w-md w-full mx-4"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-2xl font-bold text-cyan-300">New Objective</h3>
+              <button
+                onClick={() => setShowNewObjectiveModal(false)}
+                className="w-8 h-8 bg-red-500/20 hover:bg-red-500/30 rounded-lg flex items-center justify-center transition-all duration-200"
+              >
+                <span className="text-red-400 text-lg">×</span>
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-cyan-300 text-sm font-medium mb-2">Objective Title</label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-cyan-400/30 rounded-lg text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none"
+                  placeholder="Enter your objective..."
+                />
+              </div>
+              
+              <div>
+                <label className="block text-cyan-300 text-sm font-medium mb-2">Description</label>
+                <textarea
+                  className="w-full px-4 py-3 bg-slate-800/50 border border-cyan-400/30 rounded-lg text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none resize-none"
+                  rows="3"
+                  placeholder="Describe your objective..."
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-cyan-300 text-sm font-medium mb-2">Target</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-3 bg-slate-800/50 border border-cyan-400/30 rounded-lg text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none"
+                    placeholder="100"
+                  />
+                </div>
+                <div>
+                  <label className="block text-cyan-300 text-sm font-medium mb-2">Category</label>
+                  <select className="w-full px-4 py-3 bg-slate-800/50 border border-cyan-400/30 rounded-lg text-white focus:border-cyan-400 focus:outline-none">
+                    <option value="Focus">Focus</option>
+                    <option value="Productivity">Productivity</option>
+                    <option value="Wellness">Wellness</option>
+                    <option value="Learning">Learning</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-end gap-4 mt-8">
+              <button
+                onClick={() => setShowNewObjectiveModal(false)}
+                className="px-6 py-3 bg-gray-600/50 hover:bg-gray-600/70 text-white rounded-lg font-medium transition-all duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => setShowNewObjectiveModal(false)}
+                className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white rounded-lg font-semibold transition-all duration-200"
+              >
+                Create Objective
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }
