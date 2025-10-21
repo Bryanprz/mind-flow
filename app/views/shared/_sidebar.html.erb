@@ -24,96 +24,96 @@
         </div>
         
         <ul class="space-y-2">
-        <li>
-          <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-cyan-500/10 transition-all duration-200">
-            <%= link_to dashboard_path, 
+          <li class="hover:text-cyan-300 text-gray-300">
+            <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-cyan-500/10 transition-all duration-200">
+              <%= link_to dashboard_path, 
                 class: "flex items-center gap-3 text-white hover:text-cyan-300 transition-colors" do %>
-              <div class="w-8 h-8 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg flex items-center justify-center border border-cyan-400/30">
-                <span class="text-cyan-300 text-sm">🧠</span>
-              </div>
-              <div class="flex-1">
-                <div class="font-medium text-sm">Dashboard</div>
-                <div class="text-xs text-gray-400">Cognitive Performance</div>
-              </div>
-              <% if current_page?(dashboard_path) %>
-                <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                <div class="w-8 h-8 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg flex items-center justify-center border border-cyan-400/30">
+                  <span class="text-cyan-300 text-sm">🧠</span>
+                </div>
+                <div class="flex-1">
+                  <div class="font-normal text-sm">Dashboard</div>
+                  <div class="text-xs text-gray-400">Cognitive Performance</div>
+                </div>
+                <% if current_page?(dashboard_path) %>
+                  <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                <% end %>
               <% end %>
-            <% end %>
-          </div>
-        </li>
+            </div>
+          </li>
 
-        <li>
-          <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-purple-500/10 transition-all duration-200">
-            <%= link_to analytics_path, 
+          <li class="hover:text-cyan-300 text-gray-300">
+            <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-purple-500/10 transition-all duration-200">
+              <%= link_to analytics_path, 
                 class: "flex items-center gap-3 text-white hover:text-cyan-300 transition-colors" do %>
-              <div class="w-8 h-8 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-purple-400/30">
-                <span class="text-purple-300 text-sm">📊</span>
-              </div>
-              <div class="flex-1">
-                <div class="font-medium text-sm">Analytics</div>
-                <div class="text-xs text-gray-400">Performance Insights</div>
-              </div>
-              <% if current_page?(analytics_path) %>
-                <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                <div class="w-8 h-8 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-purple-400/30">
+                  <span class="text-purple-300 text-sm">📊</span>
+                </div>
+                <div class="flex-1">
+                  <div class="font-normal text-sm">Analytics</div>
+                  <div class="text-xs text-gray-400">Performance Insights</div>
+                </div>
+                <% if current_page?(analytics_path) %>
+                  <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                <% end %>
               <% end %>
-            <% end %>
-          </div>
-        </li>
+            </div>
+          </li>
 
-        <li>
-          <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-amber-500/10 transition-all duration-200">
-            <%= link_to goals_path, 
+          <li class="hover:text-cyan-300 text-gray-300">
+            <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-amber-500/10 transition-all duration-200">
+              <%= link_to goals_path, 
                 class: "flex items-center gap-3 text-white hover:text-cyan-300 transition-colors" do %>
-              <div class="w-8 h-8 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-lg flex items-center justify-center border border-amber-400/30">
-                <span class="text-amber-300 text-sm">🎯</span>
-              </div>
-              <div class="flex-1">
-                <div class="font-medium text-sm">Goals</div>
-                <div class="text-xs text-gray-400">Mission Objectives</div>
-              </div>
-              <% if current_page?(goals_path) %>
-                <div class="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
+                <div class="w-8 h-8 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-lg flex items-center justify-center border border-amber-400/30">
+                  <span class="text-amber-300 text-sm">🎯</span>
+                </div>
+                <div class="flex-1">
+                  <div class="font-normal text-sm">Goals</div>
+                  <div class="text-xs text-gray-400">Mission Objectives</div>
+                </div>
+                <% if current_page?(goals_path) %>
+                  <div class="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
+                <% end %>
               <% end %>
-            <% end %>
-          </div>
-        </li>
+            </div>
+          </li>
 
-        <li>
-          <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-green-500/10 transition-all duration-200">
-            <%= link_to learning_path, 
+          <li class="hover:text-cyan-300 text-gray-300">
+            <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-green-500/10 transition-all duration-200">
+              <%= link_to learning_path, 
                 class: "flex items-center gap-3 text-white hover:text-cyan-300 transition-colors" do %>
-              <div class="w-8 h-8 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg flex items-center justify-center border border-green-400/30">
-                <span class="text-green-300 text-sm">📚</span>
-              </div>
-              <div class="flex-1">
-                <div class="font-medium text-sm">Learning</div>
-                <div class="text-xs text-gray-400">Knowledge Base</div>
-              </div>
-              <% if current_page?(learning_path) %>
-                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <div class="w-8 h-8 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg flex items-center justify-center border border-green-400/30">
+                  <span class="text-green-300 text-sm">📚</span>
+                </div>
+                <div class="flex-1">
+                  <div class="font-normal text-sm">Learning</div>
+                  <div class="text-xs text-gray-400">Knowledge Base</div>
+                </div>
+                <% if current_page?(learning_path) %>
+                  <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <% end %>
               <% end %>
-            <% end %>
-          </div>
-        </li>
+            </div>
+          </li>
 
-        <li>
-          <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-red-500/10 transition-all duration-200">
-            <%= link_to notifications_path, 
+          <li class="hover:text-cyan-300 text-gray-300">
+            <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-red-500/10 transition-all duration-200">
+              <%= link_to notifications_path, 
                 class: "flex items-center gap-3 text-white hover:text-cyan-300 transition-colors" do %>
-              <div class="w-8 h-8 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-red-400/30">
-                <span class="text-red-300 text-sm">🔔</span>
-              </div>
-              <div class="flex-1">
-                <div class="font-medium text-sm">Notifications</div>
-                <div class="text-xs text-gray-400">Alerts & Updates</div>
-              </div>
-              <span class="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center font-medium">2</span>
-              <% if current_page?(notifications_path) %>
-                <div class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+                <div class="w-8 h-8 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-red-400/30">
+                  <span class="text-red-300 text-sm">🔔</span>
+                </div>
+                <div class="flex-1">
+                  <div class="font-normal text-sm">Notifications</div>
+                  <div class="text-xs text-gray-400">Alerts & Updates</div>
+                </div>
+                <span class="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center font-medium">2</span>
+                <% if current_page?(notifications_path) %>
+                  <div class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+                <% end %>
               <% end %>
-            <% end %>
-          </div>
-        </li>
+            </div>
+          </li>
         </ul>
       </div>
     </nav>

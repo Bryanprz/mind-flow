@@ -42,123 +42,66 @@ demo_users.each do |user_attrs|
   puts "✅ Created user: #{user.name}"
 end
 
-# Create habit plan templates
-habit_templates = [
-  {
-    name: "Daily Wellness Routine",
-    description: "A comprehensive daily routine focusing on sleep, meditation, and physical activity",
-    duration_type: "daily"
-  },
-  {
-    name: "Sleep Optimization Plan", 
-    description: "Track and improve sleep quality with consistent bedtime routines",
-    duration_type: "daily"
-  },
-  {
-    name: "Meditation Practice",
-    description: "Build a consistent meditation practice with progressive techniques",
-    duration_type: "three_month"
-  }
-]
+# Seed sample goals for demo users
+puts "🎯 Seeding goals..."
 
-created_templates = []
-habit_templates.each do |template_attrs|
-  template = HabitPlanTemplate.find_or_create_by(name: template_attrs[:name]) do |t|
-    t.assign_attributes(template_attrs)
-  end
-  created_templates << template
-  puts "✅ Created habit template: #{template.name}"
-end
-
-# Create plan sections and items for the Daily Wellness Routine
-daily_template = created_templates.find { |t| t.name == "Daily Wellness Routine" }
-if daily_template
-  sections_data = [
+created_users.each do |user|
+  next if user.goals.any? # Skip if already has goals
+  
+  user.goals.create!([
     {
-      name: "Morning Routine",
-      position: 1,
-      items: [
-        "Wake up at consistent time (within 30 minutes)",
-        "Drink a glass of water immediately",
-        "5 minutes of deep breathing",
-        "Write down 3 things you're grateful for"
-      ]
+      title: "Master Flow State",
+      description: "Achieve consistent flow state during focus sessions",
+      progress: rand(30..80),
+      target: 100,
+      deadline: rand(1..3).months.from_now,
+      category: "Focus & Concentration",
+      icon: "🎯",
+      status: :active
     },
     {
-      name: "Evening Routine", 
-      position: 2,
-      items: [
-        "Stop screens 1 hour before bed",
-        "Light stretching or gentle yoga",
-        "Prepare for tomorrow",
-        "Reflect on the day in journal"
-      ]
+      title: "Daily Meditation Practice",
+      description: "Meditate every day for 30 days straight",
+      progress: rand(10..25),
+      target: 30,
+      deadline: 1.month.from_now,
+      category: "Meditation Practice",
+      icon: "🧘",
+      status: :active
     },
     {
-      name: "Wellness Tracking",
-      position: 3,
-      items: [
-        "Log sleep quality (1-10 scale)",
-        "Track mood throughout day",
-        "Note any stress triggers",
-        "Record water intake (glasses)"
-      ]
+      title: "Improve Cognitive Performance",
+      description: "Complete all daily habit tracking consistently",
+      progress: rand(20..60),
+      target: 100,
+      deadline: 2.months.from_now,
+      category: "Mental Training",
+      icon: "🧠",
+      status: :active
     }
-  ]
+  ])
   
-  sections_data.each do |section_data|
-    section = daily_template.plan_section_templates.find_or_create_by(name: section_data[:name]) do |s|
-      s.position = section_data[:position]
-    end
-    
-    section_data[:items].each_with_index do |item_content, index|
-      section.plan_item_templates.find_or_create_by(content: item_content) do |item|
-        item.position = index + 1
-      end
-    end
+  # Add some completed goals
+  if rand > 0.5
+    user.goals.create!([
+      {
+        title: "Establish Morning Routine",
+        description: "Build a consistent morning meditation practice",
+        progress: 100,
+        target: 100,
+        deadline: 1.week.ago,
+        category: "Wellness & Balance",
+        icon: "☀️",
+        status: :completed
+      }
+    ])
   end
-  puts "✅ Created plan sections and items for Daily Wellness Routine"
+  
+  puts "✅ Created goals for #{user.name}"
 end
-
-# Create habit plans for demo users
-created_users.each_with_index do |user, index|
-  template = created_templates[index % created_templates.length]
-  
-  habit_plan = user.habit_plans.find_or_create_by(habit_plan_template: template) do |plan|
-    plan.name = template.name
-    plan.description = template.description
-    plan.duration_type = template.duration_type
-    plan.is_active = true
-    plan.version = 1
-  end
-  
-  # Create some sample habit logs for the past 7 days
-  (7.days.ago.to_date..Date.current).each do |date|
-    log = habit_plan.logs.find_or_create_by(date: date)
-    
-    # Randomly complete some items to show progress
-    if rand > 0.3 # 70% chance of completion
-      log.update!(
-        completed_at: date.beginning_of_day + rand(8..20).hours,
-        journal_entry: [
-          "Great day! Feeling energized and focused.",
-          "Struggled with morning routine but evening went well.",
-          "Consistent sleep schedule is paying off.",
-          "Meditation session was particularly calming today.",
-          "Had some stress but used breathing techniques effectively."
-        ].sample
-      )
-    end
-  end
-  
-  puts "✅ Created habit plan for #{user.name} with 7 days of sample logs"
-end
-
-# Assessment entries removed - old Ayurveda feature
-# Users now focus on habit tracking and goals instead
 
 puts "🎉 Demo data creation complete!"
-puts "Created #{created_users.count} users, #{created_templates.count} habit templates, and sample habit logs"
-puts "Demo users can log in with email: demo@example.com and password: demo123"
+puts "Created #{created_users.count} users with sample goals"
+puts "Demo users can log in with email: sarah@demo.com, mike@demo.com, or emma@demo.com and password: demo123"
 
 
