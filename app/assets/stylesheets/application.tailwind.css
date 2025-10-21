@@ -81,6 +81,32 @@
     @apply shadow-lg;
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
   }
+  
+  /* Animation delay utilities for staggered animations */
+  .animation-delay-500 {
+    animation-delay: 0.5s;
+  }
+  
+  .animation-delay-800 {
+    animation-delay: 0.8s;
+  }
+  
+  .animation-delay-1000 {
+    animation-delay: 1s;
+  }
+  
+  .animation-delay-1200 {
+    animation-delay: 1.2s;
+  }
+  
+  .animation-delay-1500 {
+    animation-delay: 1.5s;
+  }
+  
+  /* Reverse animation direction utility */
+  .animate-reverse {
+    animation-direction: reverse;
+  }
 }
 
 /* Rotating text animation on landing page */
