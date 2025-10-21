@@ -2,7 +2,7 @@
   <label for="sidebar-toggle" class="drawer-overlay"></label>
   <div class="theme-sidebar border-r border-cyan-400/30 px-6 w-72 h-full flex flex-col relative flex-shrink-0 z-30">
     <!-- MindFlow Brand -->
-    <div class="py-6 mb-6">
+    <div class="py-6 mb-2">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 bg-gradient-to-br from-cyan-900 to-blue-900 rounded-xl flex items-center justify-center shadow-lg border border-cyan-400/30">
           <span class="text-cyan-300 text-lg">🧬</span>
@@ -16,120 +16,167 @@
 
     <!-- Navigation Menu -->
     <nav class="flex-1">
-      <ul class="space-y-1">
+      <!-- Navigation Card Container -->
+      <div class="theme-glass-card p-4 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60 mb-6">
+        <div class="mb-4">
+          <h3 class="text-xs font-normal text-gray-500 uppercase tracking-wide">Navigation</h3>
+          <p class="text-xs text-gray-500">Mission Control Center</p>
+        </div>
+        
+        <ul class="space-y-2">
         <li>
-          <%= link_to dashboard_path, 
-              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(dashboard_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(dashboard_path)}" do %>
-            <div class="w-5 h-5 flex items-center justify-center">
-              <span class="text-lg">🧠</span>
-            </div>
-            <span class="font-medium">Dashboard</span>
-            <% if current_page?(dashboard_path) %>
-              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+          <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-cyan-500/10 transition-all duration-200">
+            <%= link_to dashboard_path, 
+                class: "flex items-center gap-3 text-white hover:text-cyan-300 transition-colors" do %>
+              <div class="w-8 h-8 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-lg flex items-center justify-center border border-cyan-400/30">
+                <span class="text-cyan-300 text-sm">🧠</span>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-sm">Dashboard</div>
+                <div class="text-xs text-gray-400">Cognitive Performance</div>
+              </div>
+              <% if current_page?(dashboard_path) %>
+                <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </li>
 
         <li>
-          <%= link_to analytics_path, 
-              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(analytics_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(analytics_path)}" do %>
-            <div class="w-5 h-5 flex items-center justify-center">
-              <span class="text-lg">📊</span>
-            </div>
-            <span class="font-medium">Analytics</span>
-            <% if current_page?(analytics_path) %>
-              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+          <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-purple-500/10 transition-all duration-200">
+            <%= link_to analytics_path, 
+                class: "flex items-center gap-3 text-white hover:text-cyan-300 transition-colors" do %>
+              <div class="w-8 h-8 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-purple-400/30">
+                <span class="text-purple-300 text-sm">📊</span>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-sm">Analytics</div>
+                <div class="text-xs text-gray-400">Performance Insights</div>
+              </div>
+              <% if current_page?(analytics_path) %>
+                <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </li>
 
         <li>
-          <%= link_to goals_path, 
-              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(goals_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(goals_path)}" do %>
-            <div class="w-5 h-5 flex items-center justify-center">
-              <span class="text-lg">🎯</span>
-            </div>
-            <span class="font-medium">Goals</span>
-            <% if current_page?(goals_path) %>
-              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+          <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-amber-500/10 transition-all duration-200">
+            <%= link_to goals_path, 
+                class: "flex items-center gap-3 text-white hover:text-cyan-300 transition-colors" do %>
+              <div class="w-8 h-8 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-lg flex items-center justify-center border border-amber-400/30">
+                <span class="text-amber-300 text-sm">🎯</span>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-sm">Goals</div>
+                <div class="text-xs text-gray-400">Mission Objectives</div>
+              </div>
+              <% if current_page?(goals_path) %>
+                <div class="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </li>
 
         <li>
-          <%= link_to learning_path, 
-              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(learning_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(learning_path)}" do %>
-            <div class="w-5 h-5 flex items-center justify-center">
-              <span class="text-lg">📚</span>
-            </div>
-            <span class="font-medium">Learning</span>
-            <% if current_page?(learning_path) %>
-              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+          <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-green-500/10 transition-all duration-200">
+            <%= link_to learning_path, 
+                class: "flex items-center gap-3 text-white hover:text-cyan-300 transition-colors" do %>
+              <div class="w-8 h-8 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg flex items-center justify-center border border-green-400/30">
+                <span class="text-green-300 text-sm">📚</span>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-sm">Learning</div>
+                <div class="text-xs text-gray-400">Knowledge Base</div>
+              </div>
+              <% if current_page?(learning_path) %>
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </li>
 
         <li>
-          <%= link_to notifications_path, 
-              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(notifications_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(notifications_path)}" do %>
-            <div class="w-5 h-5 flex items-center justify-center">
-              <span class="text-lg">🔔</span>
-            </div>
-            <span class="font-medium">Notifications</span>
-            <div class="ml-auto">
+          <div class="theme-glass-card-sm p-3 rounded-lg hover:theme-neon-glow hover:bg-red-500/10 transition-all duration-200">
+            <%= link_to notifications_path, 
+                class: "flex items-center gap-3 text-white hover:text-cyan-300 transition-colors" do %>
+              <div class="w-8 h-8 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-red-400/30">
+                <span class="text-red-300 text-sm">🔔</span>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-sm">Notifications</div>
+                <div class="text-xs text-gray-400">Alerts & Updates</div>
+              </div>
               <span class="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center font-medium">2</span>
-            </div>
-            <% if current_page?(notifications_path) %>
-              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
+              <% if current_page?(notifications_path) %>
+                <div class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </li>
-
-        <li>
-          <%= link_to settings_path, 
-              class: "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group #{'bg-blue-600 text-white' if current_page?(settings_path)} #{'text-gray-300 hover:bg-gray-800 hover:text-white' unless current_page?(settings_path)}" do %>
-            <div class="w-5 h-5 flex items-center justify-center">
-              <span class="text-lg">⚙️</span>
-            </div>
-            <span class="font-medium">Settings</span>
-            <% if current_page?(settings_path) %>
-              <div class="ml-auto w-2 h-2 bg-white rounded-full"></div>
-            <% end %>
-          <% end %>
-        </li>
-
-        <li>
-          <%= button_to logout_path, 
-              method: :delete,
-              data: { 
-                turbo_confirm: "Are you sure you want to logout?" 
-              },
-              class: "w-full flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-200 group text-gray-300 hover:bg-red-600 hover:text-white text-left" do %>
-            <div class="w-5 h-5 flex items-center justify-center">
-              <span class="text-lg">🚪</span>
-            </div>
-            <span class="font-medium">Logout</span>
-          <% end %>
-        </li>
-      </ul>
+        </ul>
+      </div>
     </nav>
 
-    <!-- User Info -->
+    <!-- User Info with Popup Menu -->
     <% if current_user %>
-      <div class="mt-auto py-4">
-        <div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
+      <div class="mt-auto py-4 relative">
+        <button id="user-menu-button" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg theme-glass-card-sm hover:theme-neon-glow transition-all duration-200 cursor-pointer">
           <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
             <span class="text-white text-sm font-bold">
               <%= current_user.name&.first || 'U' %>
             </span>
           </div>
-          <div class="flex-1">
+          <div class="flex-1 text-left">
             <p class="text-white text-sm font-medium"><%= current_user.name || 'User' %></p>
             <p class="text-gray-400 text-xs">Commander</p>
           </div>
           <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+        </button>
+
+        <!-- Popup Menu -->
+        <div id="user-menu" class="hidden absolute bottom-full left-0 right-0 mb-2 theme-glass-card-sm rounded-lg shadow-lg border border-cyan-400/30">
+          <div class="py-2">
+            <%= link_to settings_path, 
+                class: "flex items-center gap-3 px-4 py-3 text-white hover:text-cyan-300 hover:bg-cyan-500/10 transition-colors" do %>
+              <div class="w-6 h-6 bg-gradient-to-br from-gray-500/20 to-slate-500/20 rounded-lg flex items-center justify-center border border-gray-400/30">
+                <span class="text-gray-300 text-sm">⚙️</span>
+              </div>
+              <span class="text-sm font-medium">Settings</span>
+            <% end %>
+            
+            <%= button_to logout_path, 
+                method: :delete,
+                data: { 
+                  turbo_confirm: "Are you sure you want to logout?" 
+                },
+                class: "w-full flex items-center gap-3 px-4 py-3 text-white hover:text-red-300 hover:bg-red-500/10 transition-colors text-left" do %>
+              <div class="w-6 h-6 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-red-400/30">
+                <span class="text-red-300 text-sm">🚪</span>
+              </div>
+              <span class="text-sm font-medium">Logout</span>
+            <% end %>
+          </div>
         </div>
       </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const userMenuButton = document.getElementById('user-menu-button');
+          const userMenu = document.getElementById('user-menu');
+          
+          userMenuButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userMenu.classList.toggle('hidden');
+          });
+          
+          document.addEventListener('click', function(e) {
+            if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+              userMenu.classList.add('hidden');
+            }
+          });
+        });
+      </script>
     <% end %>
   </div>
 </div>
