@@ -211,19 +211,28 @@ export default function LearningDashboard({ learningData }) {
 
   const StatCard = ({ stat }) => {
     const Icon = stat.icon
+    const colorClasses = {
+      cyan: 'from-cyan-500/20 to-blue-500/20 border-cyan-400/30 text-cyan-300',
+      purple: 'from-purple-500/20 to-pink-500/20 border-purple-400/30 text-purple-300',
+      emerald: 'from-green-500/20 to-emerald-500/20 border-green-400/30 text-green-300',
+      amber: 'from-amber-500/20 to-orange-500/20 border-amber-400/30 text-amber-300',
+      red: 'from-red-500/20 to-pink-500/20 border-red-400/30 text-red-300'
+    }
     return (
       <motion.div
         variants={itemVariants}
-        className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 hover:border-cyan-400/30 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-400/10"
+        className={`theme-glass-card p-4 hover:theme-neon-glow transition-all duration-300 rounded-xl border ${colorClasses[stat.color].split(' ')[2]} bg-gradient-to-br from-slate-900/80 to-slate-800/60 h-32 flex flex-col justify-between`}
         whileHover={{ scale: 1.02 }}
       >
-        <div className="text-center">
-          <div className={`w-16 h-16 bg-${stat.color}-500/20 rounded-full flex items-center justify-center mx-auto mb-3`}>
-            <Icon className={`w-8 h-8 text-${stat.color}-400`} />
+        <div className="flex items-center justify-between">
+          <div className={`w-8 h-8 bg-gradient-to-br ${colorClasses[stat.color].split(' ')[0]} ${colorClasses[stat.color].split(' ')[1]} rounded-lg flex items-center justify-center border ${colorClasses[stat.color].split(' ')[2]}`}>
+            <Icon className={`w-4 h-4 ${colorClasses[stat.color].split(' ')[3]}`} />
           </div>
-          <h3 className="text-white font-semibold text-sm mb-1">{stat.title}</h3>
-          <p className={`text-3xl font-bold text-${stat.color}-300 mb-1`}>{stat.value}</p>
-          <p className="text-xs text-gray-400">{stat.change}</p>
+          <span className="text-md text-emerald-400 font-medium">{stat.change}</span>
+        </div>
+        <div className="text-center">
+          <div className={`text-lg font-bold ${colorClasses[stat.color].split(' ')[3]} mb-1`}>{stat.value}</div>
+          <div className={`text-md ${colorClasses[stat.color].split(' ')[3]} font-medium tracking-wide uppercase`}>{stat.title}</div>
         </div>
       </motion.div>
     )
@@ -232,12 +241,12 @@ export default function LearningDashboard({ learningData }) {
   const CourseCard = ({ course }) => (
     <motion.div
       variants={itemVariants}
-      className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 hover:border-cyan-400/30 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-400/10"
+      className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60"
       whileHover={{ scale: 1.01 }}
     >
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-white mb-2">{course.title}</h3>
-        <p className="text-gray-400 text-sm mb-2">by {course.instructor}</p>
+        <h3 className="text-lg font-semibold text-cyan-300 mb-2">{course.title}</h3>
+        <p className="text-cyan-400 text-sm mb-2">by {course.instructor}</p>
         <div className="flex items-center gap-2 mb-3">
           <div className="flex items-center">
             {[...Array(5)].map((_, i) => (
@@ -247,15 +256,15 @@ export default function LearningDashboard({ learningData }) {
               />
             ))}
           </div>
-          <span className="text-gray-400 text-sm">{course.rating}</span>
+          <span className="text-cyan-300 text-sm">{course.rating}</span>
           <span className="text-gray-500 text-sm">•</span>
-          <span className="text-gray-400 text-sm">{course.duration}</span>
+          <span className="text-cyan-300 text-sm">{course.duration}</span>
         </div>
         <div className="flex items-center gap-2">
           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(course.difficulty)}`}>
             {course.difficulty}
           </span>
-          <span className="px-2 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full">
+          <span className="px-2 py-1 bg-cyan-500/20 text-cyan-300 text-xs rounded-full">
             {course.category}
           </span>
         </div>
@@ -264,8 +273,8 @@ export default function LearningDashboard({ learningData }) {
       {/* Progress Bar */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-gray-300">Progress</span>
-          <span className="text-sm font-semibold text-white">{course.progress}%</span>
+          <span className="text-sm text-cyan-300">Progress</span>
+          <span className="text-sm font-semibold text-cyan-300">{course.progress}%</span>
         </div>
         <div className="w-full bg-gray-700 rounded-full h-2">
           <div 
@@ -277,11 +286,11 @@ export default function LearningDashboard({ learningData }) {
 
       {/* Action Buttons */}
       <div className="flex gap-2">
-        <button className="flex-1 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+        <button className="flex-1 theme-glass-card-sm text-cyan-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 hover:theme-neon-glow">
           <Play className="w-4 h-4" />
           Continue
         </button>
-        <button className="bg-gray-500/20 hover:bg-gray-500/30 text-gray-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+        <button className="theme-glass-card-sm text-cyan-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 hover:theme-neon-glow">
           <Eye className="w-4 h-4" />
           Details
         </button>
@@ -292,24 +301,24 @@ export default function LearningDashboard({ learningData }) {
   const ResourceCard = ({ resource }) => (
     <motion.div
       variants={itemVariants}
-      className="bg-black/60 backdrop-blur-sm rounded-xl p-4 border border-gray-700/30 hover:border-cyan-400/30 transition-all duration-300"
+      className="theme-glass-card p-4 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-purple-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60"
       whileHover={{ scale: 1.01 }}
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
-          <h3 className="text-white font-semibold mb-1">{resource.title}</h3>
-          <p className="text-gray-400 text-sm">{resource.type}</p>
+          <h3 className="text-purple-300 font-semibold mb-1">{resource.title}</h3>
+          <p className="text-purple-400 text-sm">{resource.type}</p>
         </div>
         <div className="flex items-center gap-2">
           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(resource.difficulty)}`}>
             {resource.difficulty}
           </span>
-          <button className="text-gray-400 hover:text-white transition-colors">
+          <button className="text-purple-300 hover:text-purple-200 transition-colors">
             <Eye className="w-4 h-4" />
           </button>
         </div>
       </div>
-      <button className="w-full bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+      <button className="w-full theme-glass-card-sm text-purple-300 py-2 px-4 rounded-lg text-sm font-medium transition-colors hover:theme-neon-glow">
         Start Learning
       </button>
     </motion.div>
@@ -317,30 +326,37 @@ export default function LearningDashboard({ learningData }) {
 
   return (
     <div className="w-full h-full bg-transparent relative">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="w-full h-full flex flex-col overflow-hidden p-6 space-y-6"
-      >
-        {/* Header */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl flex items-center justify-center">
-              <BookOpen className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white tracking-wide">KNOWLEDGE ACQUISITION</h1>
-              <p className="text-cyan-400 text-sm">Expand your cognitive capabilities</p>
-            </div>
+      {/* Header Section */}
+      <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-6 bg-transparent z-20">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl flex items-center justify-center">
+            <BookOpen className="w-6 h-6 text-white" />
           </div>
-          
-          <div className="flex items-center gap-4">
-            <div className="bg-black/60 backdrop-blur-sm rounded-lg px-4 py-2 border border-gray-700/30">
-              <span className="text-white text-sm">Learning Streak: {currentStreak} days</span>
-            </div>
+          <div>
+            <h1 className="text-3xl font-bold text-cyan-300 tracking-wide">KNOWLEDGE ACQUISITION</h1>
+            <p className="text-cyan-400 text-sm">Expand your cognitive capabilities</p>
           </div>
-        </motion.div>
+        </div>
+        
+        <div className="flex items-center gap-4">
+          <div className="theme-glass-card-sm px-4 py-2 rounded-lg border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
+            <span className="text-cyan-300 text-sm font-medium">Learning Streak: {currentStreak} days</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Scrollable Content Container */}
+      <div className="w-full h-full flex pt-20 overflow-y-auto">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ 
+            opacity: 1,
+            overflow: 'scroll'
+          }}
+          className="w-full h-full flex flex-col p-6 space-y-6"
+        >
 
         {/* Progress Stats */}
         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -359,8 +375,8 @@ export default function LearningDashboard({ learningData }) {
                 onClick={() => setSelectedCategory(category.key)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                   selectedCategory === category.key
-                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-400/30'
-                    : 'bg-gray-700/50 text-gray-400 hover:bg-gray-600/50'
+                    ? 'theme-glass-card-sm text-cyan-300 border border-cyan-400/30'
+                    : 'theme-glass-card-sm text-cyan-400 hover:theme-neon-glow'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -374,7 +390,7 @@ export default function LearningDashboard({ learningData }) {
         <motion.div variants={itemVariants} className="flex-1 overflow-y-auto">
           <div className="flex items-center gap-3 mb-6">
             <Target className="w-6 h-6 text-cyan-400" />
-            <h2 className="text-2xl font-bold text-white">CURRENT COURSES</h2>
+            <h2 className="text-2xl font-bold text-cyan-300">CURRENT COURSES</h2>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -390,7 +406,7 @@ export default function LearningDashboard({ learningData }) {
           <motion.div variants={itemVariants}>
             <div className="flex items-center gap-3 mb-6">
               <BookOpen className="w-6 h-6 text-purple-400" />
-              <h2 className="text-2xl font-bold text-white">RECOMMENDED RESOURCES</h2>
+              <h2 className="text-2xl font-bold text-purple-300">RECOMMENDED RESOURCES</h2>
             </div>
             <div className="space-y-4">
               {resources.map((resource) => (
@@ -403,9 +419,9 @@ export default function LearningDashboard({ learningData }) {
           <motion.div variants={itemVariants}>
             <div className="flex items-center gap-3 mb-6">
               <TrendingUp className="w-6 h-6 text-emerald-400" />
-              <h2 className="text-2xl font-bold text-white">LEARNING PATH</h2>
+              <h2 className="text-2xl font-bold text-emerald-300">LEARNING PATH</h2>
             </div>
-            <div className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
+            <div className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-emerald-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
               <div className="space-y-4">
                 {learningPath.map((level, index) => {
                   const Icon = level.icon
@@ -415,22 +431,23 @@ export default function LearningDashboard({ learningData }) {
                         <Icon className="w-4 h-4" />
                       </div>
                       <div>
-                        <p className="text-white font-semibold">{level.title}</p>
-                        <p className="text-gray-400 text-sm">{level.description}</p>
+                        <p className="text-emerald-300 font-semibold">{level.title}</p>
+                        <p className="text-emerald-400 text-sm">{level.description}</p>
                       </div>
                     </div>
                   )
                 })}
               </div>
               
-              <button className="w-full mt-6 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+              <button className="w-full mt-6 theme-glass-card-sm text-emerald-300 py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 hover:theme-neon-glow">
                 Continue Learning Path
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </motion.div>
         </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   )
 }
