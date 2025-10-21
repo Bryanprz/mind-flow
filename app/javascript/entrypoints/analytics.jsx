@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let analyticsData = null
     try {
       analyticsData = JSON.parse(container.dataset.analyticsData || 'null')
+      console.log('Analytics data loaded:', analyticsData)
     } catch (e) {
       console.error('Error parsing analytics data:', e)
     }
@@ -32,7 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
       analyticsData: analyticsData
     }
 
+    console.log('Rendering AnalyticsDashboard with props:', props)
     const root = createRoot(container)
     root.render(React.createElement(AnalyticsDashboard, props))
+  } else {
+    console.error('Analytics container not found!')
   }
 })

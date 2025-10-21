@@ -109,9 +109,17 @@ class PagesController < ApplicationController
   def analytics
     # Analytics page with cognitive performance metrics from real user data
     @page_title = "Cognitive Analytics"
-    @analytics_data = AnalyticsService.new(Current.user).call.merge(
-      focus_trends: generate_focus_trends # Keep as fallback visualization
-    )
+    
+    # Get real analytics data or fallback to demo data
+    real_analytics = AnalyticsService.new(Current.user).call
+    demo_analytics = {
+      focus_sessions: generate_focus_trends,
+      performance_metrics: generate_performance_metrics,
+      weekly_summary: generate_weekly_summary
+    }
+    
+    # Use real data if available, otherwise use demo data
+    @analytics_data = real_analytics[:focus_sessions].any? ? real_analytics : demo_analytics
   end
 
 

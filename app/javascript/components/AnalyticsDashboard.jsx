@@ -50,6 +50,8 @@ const itemVariants = {
 }
 
 export default function AnalyticsDashboard({ analyticsData }) {
+  console.log('AnalyticsDashboard rendering with data:', analyticsData)
+  
   const [selectedTimeframe, setSelectedTimeframe] = useState('7d')
   const [isLiveMode, setIsLiveMode] = useState(true)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -164,81 +166,98 @@ export default function AnalyticsDashboard({ analyticsData }) {
         <div className="w-5 h-5 bg-cyan-400/30 rounded-full border border-cyan-400/60 shadow-lg shadow-cyan-400/20"></div>
       </div>
 
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        style={{ 
-          opacity: 1,
-          overflow: 'scroll'
-        }}
-        className="w-full h-full flex flex-col p-6 space-y-6"
-      >
-        {/* Header */}
-        <motion.div variants={itemVariants} className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl flex items-center justify-center">
-              <BrainCircuit className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white tracking-wide">COGNITIVE ANALYTICS</h1>
-              <p className="text-cyan-400 text-sm">Advanced performance insights</p>
-            </div>
+      {/* Header Section */}
+      <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-6 bg-transparent z-20">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl flex items-center justify-center">
+            <BrainCircuit className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold text-cyan-300 tracking-wide">COGNITIVE ANALYTICS</h1>
+            <p className="text-cyan-400 text-sm">Advanced performance insights</p>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            {['7d', '30d', '90d'].map((timeframe) => (
+              <button
+                key={timeframe}
+                onClick={() => setSelectedTimeframe(timeframe)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  selectedTimeframe === timeframe
+                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-400/30'
+                    : 'bg-transparent text-cyan-300 hover:bg-cyan-500/10'
+                }`}
+              >
+                {timeframe}
+              </button>
+            ))}
           </div>
           
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              {['7d', '30d', '90d'].map((timeframe) => (
-                <button
-                  key={timeframe}
-                  onClick={() => setSelectedTimeframe(timeframe)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    selectedTimeframe === timeframe
-                      ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-400/30'
-                      : 'bg-gray-700/50 text-gray-400 hover:bg-gray-600/50'
-                  }`}
-                >
-                  {timeframe}
-                </button>
-              ))}
-            </div>
-            
-            <button
-              onClick={() => setIsLiveMode(!isLiveMode)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                isLiveMode 
-                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-400/30' 
-                  : 'bg-gray-700/50 text-gray-400 hover:bg-gray-600/50'
-              }`}
-            >
-              <RefreshCw className={`w-4 h-4 ${isLiveMode ? 'animate-spin' : ''}`} />
-              {isLiveMode ? 'Live' : 'Paused'}
-            </button>
-          </div>
-        </motion.div>
+          <button
+            onClick={() => setIsLiveMode(!isLiveMode)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              isLiveMode 
+                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-400/30' 
+                : 'bg-transparent text-cyan-300 hover:bg-emerald-500/10'
+            }`}
+          >
+            <RefreshCw className={`w-4 h-4 ${isLiveMode ? 'animate-spin' : ''}`} />
+            {isLiveMode ? 'Live' : 'Paused'}
+          </button>
+        </div>
+      </div>
+
+      {/* Scrollable Content Container */}
+      <div className="w-full h-full flex pt-20 overflow-y-auto">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ 
+            opacity: 1,
+            overflow: 'scroll'
+          }}
+          className="w-full h-full flex flex-col p-6 space-y-6"
+        >
 
         {/* Metrics Grid */}
         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {metrics.map((metric, index) => {
             const Icon = metric.icon
+            const colorClasses = {
+              cyan: 'from-cyan-500/20 to-blue-500/20 border-cyan-400/30 text-cyan-300',
+              purple: 'from-purple-500/20 to-pink-500/20 border-purple-400/30 text-purple-300',
+              green: 'from-green-500/20 to-emerald-500/20 border-green-400/30 text-green-300',
+              amber: 'from-amber-500/20 to-orange-500/20 border-amber-400/30 text-amber-300'
+            }
+            const bgClasses = {
+              cyan: 'from-slate-900/80 to-slate-800/60',
+              purple: 'from-slate-900/80 to-slate-800/60',
+              green: 'from-slate-900/80 to-slate-800/60',
+              amber: 'from-slate-900/80 to-slate-800/60'
+            }
             return (
               <div 
                 key={index}
-                className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 hover:border-cyan-400/30 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-400/10"
+                className={`theme-glass-card p-4 hover:theme-neon-glow transition-all duration-300 rounded-xl border ${colorClasses[metric.color].split(' ')[2]} bg-gradient-to-br ${bgClasses[metric.color]} h-32 flex flex-col justify-between`}
               >
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`w-12 h-12 bg-${metric.color}-500/20 rounded-lg flex items-center justify-center`}>
-                    <Icon className={`w-6 h-6 text-${metric.color}-400`} />
+                <div className="flex items-center justify-between">
+                  <div className={`w-8 h-8 bg-gradient-to-br ${colorClasses[metric.color].split(' ')[0]} ${colorClasses[metric.color].split(' ')[1]} rounded-lg flex items-center justify-center border ${colorClasses[metric.color].split(' ')[2]}`}>
+                    <Icon className={`w-4 h-4 ${colorClasses[metric.color].split(' ')[3]}`} />
                   </div>
-                  <span className={`text-xs text-${metric.color}-400 font-medium`}>
+                  <span className={`text-md text-emerald-400 font-medium`}>
                     {metric.change}
                   </span>
                 </div>
-                <div className="text-3xl font-bold text-white mb-1">
-                  {metric.value}
-                  <span className="text-lg text-gray-400 ml-1">{metric.unit}</span>
+                <div className="text-center">
+                  <div className={`text-lg font-bold ${colorClasses[metric.color].split(' ')[3]} mb-1`}>
+                    {metric.value}
+                    <span className="text-md text-gray-400 ml-1">{metric.unit}</span>
+                  </div>
+                  <div className={`text-md ${colorClasses[metric.color].split(' ')[3]} font-medium tracking-wide uppercase`}>{metric.title}</div>
                 </div>
-                <div className="text-sm text-gray-400">{metric.title}</div>
               </div>
             )
           })}
@@ -247,13 +266,13 @@ export default function AnalyticsDashboard({ analyticsData }) {
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Performance Trends */}
-          <motion.div variants={itemVariants} className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
+          <motion.div variants={itemVariants} className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <TrendingUp className="w-6 h-6 text-cyan-400" />
-                <h3 className="text-xl font-bold text-white">PERFORMANCE TRENDS</h3>
+                <h3 className="text-xl font-bold text-cyan-300 tracking-wide">PERFORMANCE TRENDS</h3>
               </div>
-              <div className="flex items-center gap-2 text-sm text-gray-400">
+              <div className="flex items-center gap-2 text-sm text-cyan-300">
                 <Activity className="w-4 h-4" />
                 <span>7-day overview</span>
               </div>
@@ -289,13 +308,13 @@ export default function AnalyticsDashboard({ analyticsData }) {
           </motion.div>
 
           {/* Session Breakdown */}
-          <motion.div variants={itemVariants} className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
+          <motion.div variants={itemVariants} className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-purple-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <BarChart3 className="w-6 h-6 text-purple-400" />
-                <h3 className="text-xl font-bold text-white">SESSION BREAKDOWN</h3>
+                <h3 className="text-xl font-bold text-purple-300 tracking-wide">SESSION BREAKDOWN</h3>
               </div>
-              <div className="flex items-center gap-2 text-sm text-gray-400">
+              <div className="flex items-center gap-2 text-sm text-purple-300">
                 <Clock className="w-4 h-4" />
                 <span>This week</span>
               </div>
@@ -327,13 +346,13 @@ export default function AnalyticsDashboard({ analyticsData }) {
         </div>
 
         {/* Weekly Summary */}
-        <motion.div variants={itemVariants} className="bg-black/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
+        <motion.div variants={itemVariants} className="theme-glass-card p-6 hover:theme-neon-glow transition-all duration-300 rounded-xl border border-cyan-400/30 bg-gradient-to-br from-slate-900/80 to-slate-800/60">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <Brain className="w-6 h-6 text-cyan-400" />
-              <h3 className="text-xl font-bold text-white">WEEKLY INSIGHTS</h3>
+              <h3 className="text-xl font-bold text-cyan-300 tracking-wide">WEEKLY INSIGHTS</h3>
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-cyan-300">
               <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
               <span>Updated 2 minutes ago</span>
             </div>
@@ -344,28 +363,29 @@ export default function AnalyticsDashboard({ analyticsData }) {
               <div className="w-16 h-16 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Zap className="w-8 h-8 text-cyan-400" />
               </div>
-              <h4 className="text-white font-semibold text-lg mb-2">Peak Performance</h4>
-              <p className="text-cyan-400 text-sm">Thursday was your best day with 91% focus score</p>
+              <h4 className="text-cyan-300 font-semibold text-lg mb-2">Peak Performance</h4>
+              <p className="text-cyan-300 text-sm">Thursday was your best day with 91% focus score</p>
             </div>
             
             <div className="text-center">
               <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Target className="w-8 h-8 text-purple-400" />
               </div>
-              <h4 className="text-white font-semibold text-lg mb-2">Flow State</h4>
-              <p className="text-purple-400 text-sm">3.2 hours in deep flow this week</p>
+              <h4 className="text-purple-300 font-semibold text-lg mb-2">Flow State</h4>
+              <p className="text-purple-300 text-sm">3.2 hours in deep flow this week</p>
             </div>
             
             <div className="text-center">
               <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Award className="w-8 h-8 text-emerald-400" />
               </div>
-              <h4 className="text-white font-semibold text-lg mb-2">Consistency</h4>
-              <p className="text-emerald-400 text-sm">94% consistency score - excellent!</p>
+              <h4 className="text-emerald-300 font-semibold text-lg mb-2">Consistency</h4>
+              <p className="text-emerald-300 text-sm">94% consistency score - excellent!</p>
             </div>
           </div>
         </motion.div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   )
 }
