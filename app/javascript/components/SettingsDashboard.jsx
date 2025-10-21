@@ -600,14 +600,14 @@ export default function SettingsDashboard({ settingsData }) {
         >
 
           {/* Tabs */}
-          <motion.div variants={itemVariants} className="flex items-center gap-2 overflow-x-auto pb-2">
+          <motion.div variants={itemVariants} className="flex items-center gap-2 overflow-x-auto pb-2 min-h-[72px]">
             {tabs.map((tab) => {
               const Icon = tab.icon
               return (
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                  className={`flex items-center gap-2 px-6 py-5 rounded-lg text-sm font-medium transition-all whitespace-nowrap min-h-[64px] ${
                     activeTab === tab.key
                       ? 'theme-glass-card-sm text-cyan-300 border border-cyan-400/30'
                       : 'theme-glass-card-sm text-cyan-400 hover:theme-neon-glow'
@@ -628,7 +628,6 @@ export default function SettingsDashboard({ settingsData }) {
           </motion.div>
         </motion.div>
       </div>
-      </motion.div>
     </div>
   )
 }
