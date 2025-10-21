@@ -231,23 +231,54 @@ export default function NotificationsDashboard({ notificationsData }) {
     )
   }
 
-  const SettingToggle = ({ title, description, setting, onChange }) => (
-    <div className="flex items-center justify-between">
-      <div>
-        <h3 className="text-purple-300 font-semibold">{title}</h3>
-        <p className="text-purple-400 text-sm">{description}</p>
+  const SettingToggle = ({ title, description, setting, onChange, color = 'purple' }) => {
+    const colorClasses = {
+      cyan: {
+        title: 'text-cyan-300',
+        description: 'text-cyan-400',
+        ring: 'peer-focus:ring-cyan-300',
+        toggle: 'peer-checked:bg-cyan-500'
+      },
+      emerald: {
+        title: 'text-emerald-300',
+        description: 'text-emerald-400',
+        ring: 'peer-focus:ring-emerald-300',
+        toggle: 'peer-checked:bg-emerald-500'
+      },
+      amber: {
+        title: 'text-amber-300',
+        description: 'text-amber-400',
+        ring: 'peer-focus:ring-amber-300',
+        toggle: 'peer-checked:bg-amber-500'
+      },
+      purple: {
+        title: 'text-purple-300',
+        description: 'text-purple-400',
+        ring: 'peer-focus:ring-purple-300',
+        toggle: 'peer-checked:bg-purple-500'
+      }
+    }
+    
+    const colors = colorClasses[color] || colorClasses.purple
+    
+    return (
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className={`${colors.title} font-semibold`}>{title}</h3>
+          <p className={`${colors.description} text-sm`}>{description}</p>
+        </div>
+        <label className="relative inline-flex items-center cursor-pointer">
+          <input 
+            type="checkbox" 
+            className="sr-only peer" 
+            checked={settings[setting]}
+            onChange={() => onChange(setting, !settings[setting])}
+          />
+          <div className={`w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 ${colors.ring} rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all ${colors.toggle}`}></div>
+        </label>
       </div>
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input 
-          type="checkbox" 
-          className="sr-only peer" 
-          checked={settings[setting]}
-          onChange={() => onChange(setting, !settings[setting])}
-        />
-        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
-      </label>
-    </div>
-  )
+    )
+  }
 
   const handleSettingChange = (setting, value) => {
     setSettings(prev => ({ ...prev, [setting]: value }))
@@ -387,18 +418,21 @@ export default function NotificationsDashboard({ notificationsData }) {
                 description="Daily focus session reminders"
                 setting="focus_reminders"
                 onChange={handleSettingChange}
+                color="cyan"
               />
               <SettingToggle
                 title="Goal Milestones"
                 description="Achievement notifications"
                 setting="goal_milestones"
                 onChange={handleSettingChange}
+                color="emerald"
               />
               <SettingToggle
                 title="Weekly Reports"
                 description="Performance summaries"
                 setting="weekly_reports"
                 onChange={handleSettingChange}
+                color="amber"
               />
             </div>
             
@@ -408,21 +442,23 @@ export default function NotificationsDashboard({ notificationsData }) {
                 description="New content and courses"
                 setting="course_updates"
                 onChange={handleSettingChange}
+                color="purple"
               />
               <SettingToggle
                 title="Email Notifications"
                 description="Receive notifications via email"
                 setting="email_notifications"
                 onChange={handleSettingChange}
+                color="cyan"
               />
             </div>
           </div>
           
-          <div className="mt-6 pt-6 border-t border-purple-400/30">
+          <div className="mt-6 pt-6 border-t border-emerald-400/30">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="theme-glass-card-sm text-purple-300 px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:theme-neon-glow"
+              className="theme-glass-card-sm text-emerald-300 px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:theme-neon-glow"
             >
               Save Preferences
             </motion.button>
