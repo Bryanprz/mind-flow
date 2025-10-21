@@ -39,7 +39,11 @@ gem "rails", "~> 8.0.0"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 
-gem 'sqlite3', '~> 2.0', '>= 2.0.2'
+# Use SQLite for development and test
+gem 'sqlite3', '~> 2.0', '>= 2.0.2', group: [:development, :test]
+
+# Use PostgreSQL for production
+gem 'pg', '~> 1.1', group: :production
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]

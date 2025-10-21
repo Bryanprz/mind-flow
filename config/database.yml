@@ -40,17 +40,25 @@ test:
 
 production:
   primary:
-    <<: *default
-    database: /rails/storage/production.sqlite3
+    adapter: postgresql
+    url: <%= ENV['DATABASE_URL'] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    timeout: 5000
   cache:
-    <<: *default
-    database: /rails/storage/production_cache.sqlite3
+    adapter: postgresql
+    url: <%= ENV['DATABASE_URL'] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    timeout: 5000
     migrations_paths: db/cache_migrate
   queue:
-    <<: *default
-    database: /rails/storage/production_queue.sqlite3
+    adapter: postgresql
+    url: <%= ENV['DATABASE_URL'] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    timeout: 5000
     migrations_paths: db/queue_migrate
   cable:
-    <<: *default
-    database: /rails/storage/production_cable.sqlite3
+    adapter: postgresql
+    url: <%= ENV['DATABASE_URL'] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    timeout: 5000
     migrations_paths: db/cable_migrate

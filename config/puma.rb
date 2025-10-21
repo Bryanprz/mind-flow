@@ -8,7 +8,11 @@
 # You can control the number of workers using ENV["WEB_CONCURRENCY"]. You
 # should only set this value when you want to run 2 or more workers. The
 # default is already 1.
-#
+workers ENV.fetch("WEB_CONCURRENCY") { 2 }
+
+# Preload the app for better memory usage
+preload_app!
+
 # The ideal number of threads per worker depends both on how much time the
 # application spends waiting for IO operations and on how much you wish to
 # prioritize throughput over latency.
@@ -39,3 +43,8 @@ plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+
+# Worker boot hook for database connections
+on_worker_boot do
+  ActiveRecord::Base.establish_connection
+end
