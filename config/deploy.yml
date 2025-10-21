@@ -129,6 +129,7 @@ env:
     RAILS_ENV: production
     RAILS_SERVE_STATIC_FILES: true
     RAILS_LOG_TO_STDOUT: true
+    PORT: 3001
   secret:
     - RAILS_MASTER_KEY
     - SECRET_KEY_BASE
