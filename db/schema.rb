@@ -269,8 +269,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_19_214158) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "goals", "users"
   add_foreign_key "habit_logs", "habit_plans"
-  add_foreign_key "habit_logs", "habit_plans"
-  add_foreign_key "habit_plans", "habit_plan_templates"
   add_foreign_key "habit_plans", "habit_plan_templates"
   add_foreign_key "habit_plans", "users"
   add_foreign_key "plan_item_logs", "habit_logs"
@@ -278,8 +276,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_19_214158) do
   add_foreign_key "plan_item_templates", "plan_section_templates"
   add_foreign_key "plan_items", "plan_sections"
   add_foreign_key "plan_section_templates", "habit_plan_templates"
-  add_foreign_key "plan_section_templates", "habit_plan_templates"
-  add_foreign_key "plan_sections", "habit_plans"
   add_foreign_key "plan_sections", "habit_plans"
   add_foreign_key "sessions", "users"
 end
