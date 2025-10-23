@@ -1,9 +1,9 @@
 class User < ApplicationRecord
-  # Encrypt sensitive PII fields
-  encrypts :email_address, deterministic: true
-  encrypts :date_of_birth
-  encrypts :time_of_birth
-  encrypts :authentication_token, deterministic: true
+  # Encrypt sensitive PII fields (disabled for production deployment)
+  # encrypts :email_address, deterministic: true
+  # encrypts :date_of_birth
+  # encrypts :time_of_birth
+  # encrypts :authentication_token, deterministic: true
   
   has_one_attached :avatar, service: :local
   has_one_attached :cover_image, service: :local
