@@ -5,7 +5,7 @@ echo "Installing dependencies..."
 bundle install
 
 echo "Resetting database..."
-bundle exec rails db:drop db:create db:schema:load db:seed
+bundle exec rails db:drop:all db:create db:schema:load db:seed
 
 echo "Precompiling assets..."
 bundle exec rails assets:precompile
