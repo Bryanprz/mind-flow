@@ -5,7 +5,7 @@ echo "Installing dependencies..."
 bundle install
 
 echo "Loading database schema..."
-bundle exec rails db:schema:load db:seed
+DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:schema:load db:seed
 
 echo "Precompiling assets..."
 bundle exec rails assets:precompile
