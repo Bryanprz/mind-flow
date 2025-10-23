@@ -2,6 +2,8 @@
 
 A sophisticated full-stack Rails 8 and React application for peak mental performance, flow state optimization, and cognitive enhancement through meditation and focus training.
 
+<img width="1512" height="857" alt="Screenshot 2025-10-23 at 12 53 49 AM" src="https://github.com/user-attachments/assets/cab02ed6-6950-43fa-8bd3-b59220ade124" />
+
 ## 🌐 Live Demo
 
 **🔗 [Try MindFlow Now](https://mind-flow-yfaq.onrender.com/){:target="_blank"}**
@@ -16,6 +18,8 @@ Experience the full application with demo data and interactive features.
 ## 🚀 Overview
 
 MindFlow is a modern web application that combines cutting-edge Rails 8 features with React components to deliver a seamless experience for mental training and focus optimization. Built with performance, scalability, and user experience in mind.
+
+<img width="1512" height="855" alt="Screenshot 2025-10-23 at 12 35 16 AM" src="https://github.com/user-attachments/assets/9d287e9a-8203-4a65-a4a4-852ab5f7ae8f" />
 
 ### Recent Enhancements (October 2025)
 - ✅ **Real Analytics System** - Replaced demo data with actual aggregations from user habit logs
@@ -156,6 +160,9 @@ MindFlow is a modern web application that combines cutting-edge Rails 8 features
 ## 🎯 Application Pages & Features
 
 ### 🏠 Landing Page
+
+<img width="1512" height="857" alt="Screenshot 2025-10-23 at 12 53 49 AM" src="https://github.com/user-attachments/assets/2039da6f-1b22-4305-80da-d56f0ea4364b" />
+
 **Style**: Futuristic NASA-inspired design with glass morphism effects
 **Functionality**: 
 - Hero section with animated flow state visualization
@@ -165,6 +172,9 @@ MindFlow is a modern web application that combines cutting-edge Rails 8 features
 **Built with**: ERB templates, Tailwind CSS, custom animations
 
 ### 🧠 Dashboard (React)
+
+<img width="1512" height="855" alt="Screenshot 2025-10-23 at 12 35 16 AM" src="https://github.com/user-attachments/assets/64fc0b77-ce68-4246-8d81-1942974dfbed" />
+
 **Style**: Modern glass-morphism cards with gradient backgrounds
 **Functionality**:
 - Real-time habit tracking with streak counters
@@ -174,6 +184,9 @@ MindFlow is a modern web application that combines cutting-edge Rails 8 features
 **Built with**: React 18, Vite, Visx charts, Tailwind CSS
 
 ### 📊 Analytics Page
+
+<img width="1512" height="854" alt="Screenshot 2025-10-23 at 12 35 28 AM" src="https://github.com/user-attachments/assets/47fcdbd2-732c-4774-bf6b-386ddda08884" />
+
 **Style**: Data-focused design with professional charts and metrics
 **Functionality**:
 - Comprehensive performance analytics
@@ -183,6 +196,11 @@ MindFlow is a modern web application that combines cutting-edge Rails 8 features
 **Built with**: Visx visualization library, React components, real-time data aggregation
 
 ### 🎯 Goals Management
+
+<img width="1510" height="856" alt="Screenshot 2025-10-23 at 12 35 48 AM" src="https://github.com/user-attachments/assets/a3723fec-4dfb-4f3c-925d-db3c9ee7780e" />
+
+<img width="1198" height="772" alt="Screenshot 2025-10-23 at 12 35 58 AM" src="https://github.com/user-attachments/assets/4e18d704-0451-4355-9a3c-6996c91bd978" />
+
 **Style**: Clean, task-oriented interface with progress indicators
 **Functionality**:
 - Full CRUD operations for goal management
@@ -192,6 +210,9 @@ MindFlow is a modern web application that combines cutting-edge Rails 8 features
 **Built with**: Rails controllers, ERB templates, Stimulus controllers, Tailwind CSS
 
 ### 📚 Learning Hub
+
+<img width="1512" height="851" alt="Screenshot 2025-10-23 at 12 36 22 AM" src="https://github.com/user-attachments/assets/d9661a07-d1d7-40c0-bff0-241540d14d21" />
+
 **Style**: Educational interface with course cards and progress tracking
 **Functionality**:
 - Course browsing with categories
