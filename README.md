@@ -367,7 +367,4 @@ Interested in discussing this project or similar work?
 - Heroicons for UI icons
 
 ---
-
-**Built with** ❤️ **using Rails 8 and React**
-
 *Last Updated: October 2025*
