@@ -40,7 +40,7 @@ gem "rails", "~> 8.0.0"
 gem "propshaft"
 
 # Use SQLite for development and test
-gem 'sqlite3', '~> 2.0', '>= 2.0.2', group: [:development, :test]
+gem 'sqlite3', '~> 2.7', group: [:development, :test]
 
 # Use PostgreSQL for production
 gem 'pg', '~> 1.1', group: :production
