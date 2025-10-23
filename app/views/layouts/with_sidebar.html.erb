@@ -6,6 +6,10 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     
+    <!-- Add favicon links -->
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    
     <% unless content_for?(:vite_page) %>
       <%= javascript_importmap_tags %>
     <% else %>
