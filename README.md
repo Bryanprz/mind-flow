@@ -6,7 +6,7 @@ A sophisticated full-stack Rails 8 and React application for peak mental perform
 
 ## 🌐 Live Demo
 
-**🔗 [Try MindFlow Now](https://mind-flow-yfaq.onrender.com/){:target="_blank"}**
+**🔗 <a href="https://mind-flow-yfaq.onrender.com/" target="_blank">Try MindFlow Now</a>**
 
 Experience the full application with demo data and interactive features.
 
@@ -152,7 +152,7 @@ MindFlow is a modern web application that combines cutting-edge Rails 8 features
 | `emma@demo.com` | `demo123` | Advanced user with achievements |
 
 **How to login:**
-1. Visit [https://mind-flow-yfaq.onrender.com/](https://mind-flow-yfaq.onrender.com/){:target="_blank"}
+1. Visit <a href="https://mind-flow-yfaq.onrender.com/" target="_blank">https://mind-flow-yfaq.onrender.com/</a>
 2. Click "Join" or "Sign In" 
 3. Use any of the demo credentials above
 4. Explore the dashboard, analytics, and goals features
@@ -376,8 +376,8 @@ Built by **Bryan Perez**, a full-stack developer passionate about creating perfo
 Interested in discussing this project or similar work?
 
 - **Email**: bryan.perez.dev@gmail.com
-- **LinkedIn**: [linkedin.com/in/bryanprz](https://www.linkedin.com/in/bryanprz/){:target="_blank"}
-- **Portfolio**: [bryanperezocampo.com](http://bryanperezocampo.com/){:target="_blank"}
+- **LinkedIn**: <a href="https://www.linkedin.com/in/bryanprz/" target="_blank">linkedin.com/in/bryanprz</a>
+- **Portfolio**: <a href="http://bryanperezocampo.com/" target="_blank">bryanperezocampo.com</a>
 
 ## 🙏 Acknowledgments
 
