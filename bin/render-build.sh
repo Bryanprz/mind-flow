@@ -4,8 +4,8 @@ set -o errexit
 echo "Installing dependencies..."
 bundle install
 
-echo "Running database migrations..."
-bundle exec rails db:migrate db:seed
+echo "Loading database schema..."
+bundle exec rails db:schema:load db:seed
 
 echo "Precompiling assets..."
 bundle exec rails assets:precompile
