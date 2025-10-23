@@ -1,6 +1,17 @@
 # MindFlow - Advanced Mental Training Platform
 
-A sophisticated full-stack Rails 8 application for peak mental performance, flow state optimization, and cognitive enhancement through meditation and focus training.
+A sophisticated full-stack Rails 8 and React application for peak mental performance, flow state optimization, and cognitive enhancement through meditation and focus training.
+
+## 🌐 Live Demo
+
+**🔗 [Try MindFlow Now](https://mind-flow-yfaq.onrender.com/)**
+
+Experience the full application with demo data and interactive features.
+
+**Demo Login Credentials:**
+- **Email**: `sarah@demo.com` | **Password**: `demo123`
+- **Email**: `mike@demo.com` | **Password**: `demo123`  
+- **Email**: `emma@demo.com` | **Password**: `demo123`
 
 ## 🚀 Overview
 
@@ -128,10 +139,84 @@ MindFlow is a modern web application that combines cutting-edge Rails 8 features
 
 ### Demo Users
 
-Three users with sample data:
-- `sarah@demo.com` / `demo123` - Active user with progress
-- `mike@demo.com` / `demo123` - New user starting journey
-- `emma@demo.com` / `demo123` - Advanced user with achievements
+**Login to the live demo with these credentials:**
+
+| Email | Password | Profile |
+|-------|----------|---------|
+| `sarah@demo.com` | `demo123` | Active user with progress |
+| `mike@demo.com` | `demo123` | New user starting journey |
+| `emma@demo.com` | `demo123` | Advanced user with achievements |
+
+**How to login:**
+1. Visit [https://mind-flow-yfaq.onrender.com/](https://mind-flow-yfaq.onrender.com/)
+2. Click "Join" or "Sign In" 
+3. Use any of the demo credentials above
+4. Explore the dashboard, analytics, and goals features
+
+## 🎯 Application Pages & Features
+
+### 🏠 Landing Page
+**Style**: Futuristic NASA-inspired design with glass morphism effects
+**Functionality**: 
+- Hero section with animated flow state visualization
+- Performance metrics display with real-time data
+- Feature showcase with interactive elements
+- Responsive design with mobile-first approach
+**Built with**: ERB templates, Tailwind CSS, custom animations
+
+### 🧠 Dashboard (React)
+**Style**: Modern glass-morphism cards with gradient backgrounds
+**Functionality**:
+- Real-time habit tracking with streak counters
+- Interactive charts showing progress over time
+- Quick action buttons for starting sessions
+- Personalized recommendations based on user data
+**Built with**: React 18, Vite, Visx charts, Tailwind CSS
+
+### 📊 Analytics Page
+**Style**: Data-focused design with professional charts and metrics
+**Functionality**:
+- Comprehensive performance analytics
+- Interactive charts with zoom and filtering
+- Export capabilities for data analysis
+- Trend analysis with predictive insights
+**Built with**: Visx visualization library, React components, real-time data aggregation
+
+### 🎯 Goals Management
+**Style**: Clean, task-oriented interface with progress indicators
+**Functionality**:
+- Full CRUD operations for goal management
+- Progress tracking with visual indicators
+- Deadline management and notifications
+- Goal categorization and filtering
+**Built with**: Rails controllers, ERB templates, Stimulus controllers, Tailwind CSS
+
+### 📚 Learning Hub
+**Style**: Educational interface with course cards and progress tracking
+**Functionality**:
+- Course browsing with categories
+- Progress tracking for learning modules
+- Interactive content with multimedia support
+- Achievement system integration
+**Built with**: Demo data system, YAML configuration, responsive grid layouts
+
+### 🔔 Notifications
+**Style**: Clean notification center with priority indicators
+**Functionality**:
+- Real-time notification delivery
+- Priority-based sorting and filtering
+- Mark as read/unread functionality
+- Notification history and management
+**Built with**: Turbo Streams, Stimulus controllers, real-time updates
+
+### ⚙️ Settings
+**Style**: Organized settings panels with clear navigation
+**Functionality**:
+- User profile management
+- Privacy and security settings
+- Notification preferences
+- Data export and account management
+**Built with**: Rails forms, validation, secure data handling
 
 ## 📁 Project Structure
 
