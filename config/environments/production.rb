@@ -96,6 +96,9 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
 
+  # Disable Active Record encryption in production
+  config.active_record.encryption.encrypt_attributes = false
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # When running behind a trusted proxy (like Render), it's common to allow all hosts
   # for internal communication, as the proxy handles external host validation.
