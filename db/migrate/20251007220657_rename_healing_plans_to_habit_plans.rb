@@ -16,8 +16,8 @@ class RenameHealingPlansToHabitPlans < ActiveRecord::Migration[8.0]
     remove_foreign_key :plan_sections, :healing_plans if foreign_key_exists?(:plan_sections, :healing_plans)
     remove_foreign_key :plan_section_templates, :healing_plan_templates if foreign_key_exists?(:plan_section_templates, :healing_plan_templates)
     
-    add_foreign_key :habit_logs, :habit_plans
-    add_foreign_key :plan_sections, :habit_plans
-    add_foreign_key :plan_section_templates, :habit_plan_templates
+    add_foreign_key :habit_logs, :habit_plans unless foreign_key_exists?(:habit_logs, :habit_plans)
+    add_foreign_key :plan_sections, :habit_plans unless foreign_key_exists?(:plan_sections, :habit_plans)
+    add_foreign_key :plan_section_templates, :habit_plan_templates unless foreign_key_exists?(:plan_section_templates, :habit_plan_templates)
   end
 end
