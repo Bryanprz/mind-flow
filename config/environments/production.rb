@@ -97,7 +97,7 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  # When running behind a trusted proxy (like Kamal), it's common to allow all hosts
+  # When running behind a trusted proxy (like Render), it's common to allow all hosts
   # for internal communication, as the proxy handles external host validation.
   if ENV["RAILS_SERVE_STATIC_FILES"].present?
     config.hosts.clear # Allow all hosts for internal communication with the proxy

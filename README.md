@@ -242,7 +242,7 @@ For UI demonstrations, the application includes a YAML-based demo system:
 ## 🚀 Deployment
 
 Configured for deployment on:
-- **Kamal** - Deployment configuration included
+- **Render** - Production deployment configuration included
 - **Docker** - Dockerfile ready for containerization
 - **Cloud Platforms** - Compatible with Heroku, Render, Fly.io
 
