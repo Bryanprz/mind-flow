@@ -78,7 +78,7 @@ gem "image_processing", "~> 1.2"
 
 # Removed for demo version - use local storage only
 # gem 'ruby_llm'
-gem "tailwindcss-rails", "~> 2.7"
+gem "tailwindcss-rails", "~> 4.4"
 gem "acts_as_list"
 gem "exception_notification"
 # gem "jsbundling-rails", "~> 1.3"  # Removed - using Vite + importmap hybrid approach
